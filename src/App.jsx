@@ -3,6 +3,7 @@ import React from 'react';
 import { RouterProvider, createBrowserRouter, BrowserRouter, Routes, Route } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
 import OnboardingPage from './pages/OnboardingPage';
+import LoginPage from './pages/LoginPage';
 // import AuthPage from './AuthPage';
 // import ProfileSetupPage from './ProfileSetupPage';
 // import HomePage from './HomePage';
@@ -11,6 +12,7 @@ import OnboardingPage from './pages/OnboardingPage';
 const router = createBrowserRouter([
   { path: "/", Component: LandingPage },
   { path: "/onboarding", Component: OnboardingPage },
+  { path: "/login", Component: LoginPage },
 ]);
 function App() {
   return (

@@ -22,7 +22,7 @@ const OnboardingPage = () => {
       loop={true}
       className="mySwiper">
         <SwiperSlide>
-          <div className='flex items-center justify-center h-52' style={{backgroundColor: '#8A7FF9'}}>
+          <div className='flex items-center justify-center h-[157px]' style={{backgroundColor: '#8A7FF9'}}>
             <p className='text-white'><span className='text-xl'>복잡하고 번거로운</span> 룸메이트 구하는 과정</p>
           </div>
           <div className='mt-12 mb-12 px-[38px] flex flex-col justify-center'>
