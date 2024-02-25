@@ -4,6 +4,7 @@ import { RouterProvider, createBrowserRouter, BrowserRouter, Routes, Route } fro
 import LandingPage from './pages/LandingPage';
 import OnboardingPage from './pages/OnboardingPage';
 import LoginPage from './pages/LoginPage';
+import RoommatePage from './pages/RoommatePage';
 // import AuthPage from './AuthPage';
 // import ProfileSetupPage from './ProfileSetupPage';
 // import HomePage from './HomePage';
@@ -13,6 +14,7 @@ const router = createBrowserRouter([
   { path: "/", Component: LandingPage },
   { path: "/onboarding", Component: OnboardingPage },
   { path: "/login", Component: LoginPage },
+  { path: "/roommate", Component: RoommatePage },
 ]);
 function App() {
   return (
