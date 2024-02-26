@@ -1,6 +1,6 @@
 import React from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react';
-import BestRoommate from '../components/RoommatePage/BestRoommate';
+import BestRoommate from '../RoommatePage/BestRoommate';
 
 const BestRoommateList = () => {
   return (
