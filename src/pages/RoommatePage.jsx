@@ -1,5 +1,9 @@
 import React, {useState} from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react';
+
+// Import Swiper styles
+import 'swiper/css';
+
 import SearchIcon from '../assets/images/search-icon.png'
 import Bell from '../assets/images/bell.png'
 import Premium from '../assets/images/premium-quality.png'
@@ -43,8 +47,7 @@ const RoommatePage = () => {
         <Swiper
           spaceBetween={0}
           slidesPerView={4}
-          mousewheel={true}
-          className='mb-[23px]'
+          className='mySwiper mb-[23px]'
         >
           <SwiperSlide>
             <button className='border border-[#978EF3] text-[11px] text-[#978EF3] rounded-[10px] p-[9px] bg-white ml-[24px]'>베스트 룸메</button>

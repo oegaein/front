@@ -22,8 +22,8 @@ const OnboardingPage = () => {
       loop={true}
       className="mySwiper">
         <SwiperSlide>
-          <div className='flex items-center justify-center h-[157px]' style={{backgroundColor: '#8A7FF9'}}>
-            <p className='text-white'><span className='text-xl'>복잡하고 번거로운</span> 룸메이트 구하는 과정</p>
+          <div className='flex items-center justify-center h-[207px]' style={{backgroundColor: '#8A7FF9'}}>
+            <p className='text-white mt-[25px]'><span className='text-xl'>복잡하고 번거로운</span> 룸메이트 구하는 과정</p>
           </div>
           <div className='mt-12 mb-12 px-[38px] flex flex-col justify-center'>
           <div className='h-[477px]'>
@@ -37,7 +37,7 @@ const OnboardingPage = () => {
       </SwiperSlide>
         <SwiperSlide>
           <div className='flex items-center justify-center h-52' style={{backgroundColor: '#8A7FF9'}}>
-            <p className='text-white'>하나부터 열까지 다 안 맞는 <span className='text-xl'>최악의</span> 룸메이트</p>
+            <p className='text-white mt-[25px]'>하나부터 열까지 다 안 맞는 <span className='text-xl'>최악의</span> 룸메이트</p>
           </div>
           <div className='mt-12 mb-12 px-[38px] flex flex-col justify-center'>
             <div className='h-[477px]'>
@@ -52,7 +52,7 @@ const OnboardingPage = () => {
         </SwiperSlide>
         <SwiperSlide>
           <div className='flex items-center justify-center h-52' style={{backgroundColor: '#8A7FF9'}}>
-            <p className='text-white'><span className='text-xl'>기숙사생</span>만의 커뮤니티 부족</p>
+            <p className='text-white mt-[25px]'><span className='text-xl'>기숙사생</span>만의 커뮤니티 부족</p>
           </div>
           <div className='mt-12 mb-12 px-[38px] flex flex-col justify-center'>
             <div className='h-[477px]'>
@@ -67,7 +67,7 @@ const OnboardingPage = () => {
         </SwiperSlide>
         <SwiperSlide>
           <div className='flex flex-col items-center justify-center h-52' style={{backgroundColor: '#8A7FF9'}}>
-            <p className='text-white'>기숙사에서 혼자 시키기에는</p>
+            <p className='text-white mt-[25px]'>기숙사에서 혼자 시키기에는</p>
             <p className='text-white'>많은 양과 <span className='text-xl'>부담스러운 배달비</span></p>
           </div>
           <div className='mt-12 mb-12 px-[38px] flex flex-col justify-center'>

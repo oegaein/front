@@ -1,10 +1,11 @@
 import './App.css';
 import React from 'react';
-import { RouterProvider, createBrowserRouter, BrowserRouter, Routes, Route } from 'react-router-dom';
+import { RouterProvider, createBrowserRouter, Routes, Route } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
 import OnboardingPage from './pages/OnboardingPage';
 import LoginPage from './pages/LoginPage';
 import RoommatePage from './pages/RoommatePage';
+import Navbar from './components/common/Navbar';
 // import AuthPage from './AuthPage';
 // import ProfileSetupPage from './ProfileSetupPage';
 // import HomePage from './HomePage';
@@ -17,26 +18,13 @@ const router = createBrowserRouter([
   { path: "/roommate", Component: RoommatePage },
 ]);
 function App() {
+  const path = window.location.pathname
   return (
     <div className="App">
       <RouterProvider router={router} />
-      {/* <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<LandingPage/>} />
-          <Route path="/onboarding" element={<OnboardingPage/>} />
-        </Routes>
-      </BrowserRouter> */}
+      {(path !== '/' && path !== '/onboarding') && <Navbar />}
     </div>
   );
-}
-
-function Root() {
-  return (
-    <Routes>
-      <Route path="/" element={<LandingPage/>} />
-      <Route path="/onboarding" element={<OnboardingPage/>} />
-    </Routes>
-  )
 }
 
 export default App;
