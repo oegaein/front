@@ -7,7 +7,7 @@ import LoginPage from './pages/LoginPage';
 import RoommatePage from './pages/RoommatePage';
 import HomePage from './pages/HomePage';
 import Navbar from './components/common/Navbar';
-
+import MyPage from './pages/MyPage';
 function App() {
   const path = window.location.pathname
 
@@ -21,6 +21,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/home" element={<HomePage />} />
           <Route path="/roommate" element={<RoommatePage />} />
+          <Route path="/mypage" element={<MyPage />} />
         </Routes>
       </Router>
     </div>

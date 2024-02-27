@@ -33,12 +33,12 @@ const Navbar = () => {
             </div>
             <span>공동배달</span>
           </div>
-          <div className='flex flex-col items-center'>
+          <Link to='/mypage' className='flex flex-col items-center'>
             <div className='h-[27px]'>
               <img src={MypageIcon}/>
             </div>
             <span>마이페이지</span>
-          </div>
+          </Link>
         </div>
   )
 }
