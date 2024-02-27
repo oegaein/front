@@ -5,11 +5,13 @@ import LandingPage from './pages/LandingPage';
 import OnboardingPage from './pages/OnboardingPage';
 import LoginPage from './pages/LoginPage';
 import RoommatePage from './pages/RoommatePage';
+import HomePage from './pages/HomePage';
 import Navbar from './components/common/Navbar';
 const router = createBrowserRouter([
   { path: "/", Component: LandingPage },
   { path: "/onboarding", Component: OnboardingPage },
   { path: "/login", Component: LoginPage },
+  { path: "/home", Component: HomePage },
   { path: "/roommate", Component: RoommatePage },
 ]);
 function App() {

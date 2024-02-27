@@ -1,6 +1,6 @@
 import React from 'react'
-import Star from '../../assets/images/star.png'
-import Yoo from '../../assets/images/유재석.png'
+import Star from '../../assets/images/star.svg'
+import Yoo from '../../assets/images/유재석.svg'
 
 const Roommate = () => {
   return (
@@ -8,7 +8,7 @@ const Roommate = () => {
       <div className='flex justify-between text-[12px] mb-[5px]'>
         <div className='flex items-center'>
           <span className='text-[#7F6FD8]'>룸메 평점</span>
-          <div className='flex ml-[5px]'>
+          <div className='flex ml-[5px] gap-0.5'>
             <img src={Star}/>
             <img src={Star}/>
             <img src={Star}/>

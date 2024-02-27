@@ -1,6 +1,6 @@
 import React from 'react'
-import Star from '../../assets/images/star.png'
-import Yoo from '../../assets/images/유재석.png'
+import Star from '../../assets/images/star.svg'
+import Yoo from '../../assets/images/유재석.svg'
 const BestRoommate = () => {
   return (
     <button className='w-[192px] h-[179px] rounded-[20px] bg-white p-[20px] ml-[12px]'>
