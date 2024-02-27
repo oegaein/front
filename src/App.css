@@ -10,6 +10,7 @@
     width: 393px;
     height: 852px;
     margin: 0 auto;
+    position: relative;
     /* overflow: scroll; */
 }
 

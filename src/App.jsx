@@ -6,11 +6,6 @@ import OnboardingPage from './pages/OnboardingPage';
 import LoginPage from './pages/LoginPage';
 import RoommatePage from './pages/RoommatePage';
 import Navbar from './components/common/Navbar';
-// import AuthPage from './AuthPage';
-// import ProfileSetupPage from './ProfileSetupPage';
-// import HomePage from './HomePage';
-// import RoommateMatchingPage from './RoommateMatchingPage';
-// import CoDeliveryPage from './CoDeliveryPage';
 const router = createBrowserRouter([
   { path: "/", Component: LandingPage },
   { path: "/onboarding", Component: OnboardingPage },

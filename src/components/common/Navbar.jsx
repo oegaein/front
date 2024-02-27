@@ -7,7 +7,7 @@ import MypageIcon from '../../assets/images/user-icon.svg'
 
 const Navbar = () => {
   return (
-    <div className='flex justify-around items-center h-[66px] bg-white text-[#707070] text-[10px] relative'>
+    <div className='flex absolute bottom-0 justify-around items-center h-[66px] bg-white text-[#707070] text-[10px] w-full'>
           <div className='flex flex-col items-center'>
             <div className='h-[27px]'>
               <img src={ChatIcon}/>
