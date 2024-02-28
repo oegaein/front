@@ -1,13 +1,13 @@
 import './App.css';
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import LandingPage from './pages/LandingPage';
-import OnboardingPage from './pages/OnboardingPage';
-import LoginPage from './pages/LoginPage';
-import RoommatePage from './pages/RoommatePage';
-import HomePage from './pages/HomePage';
+import LandingPage from './pages/LandingPage/LandingPage';
+import OnboardingPage from './pages/OnboardingPage/OnboardingPage';
+import LoginPage from './pages/LoginPage/LoginPage';
+import RoommatePage from './pages/RoommatePage/RoommatePage';
+import HomePage from './pages/HomePage/HomePage';
 import Navbar from './components/common/Navbar';
-import MyPage from './pages/MyPage';
+import MyPage from './pages/MyPage/MyPage';
 function App() {
   const path = window.location.pathname
 

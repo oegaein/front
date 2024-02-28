@@ -1,6 +1,6 @@
 import React from 'react'
-import LoginImage from '../assets/images/login.svg'
-import GoogleIcon from '../assets/images/google-icon.svg'
+import LoginImage from '../../assets/images/login.svg'
+import GoogleIcon from '../../assets/images/google-icon.svg'
 const LoginPage = () => {
   return (
     <>

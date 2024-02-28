@@ -4,12 +4,12 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 // Import Swiper styles
 import 'swiper/css';
 
-import Filter from '../assets/images/filter.svg'
-import BestRoommateList from '../components/common/BestRoommateList';
-import Roommate from '../components/RoommatePage/Roommate';
-import Write from '../assets/images/write.svg'
+import Filter from '../../assets/images/filter.svg'
+import Write from '../../assets/images/write.svg'
 
-import SearchAndNotice from '../components/common/SearchAndNotice';
+import Roommate from '../../components/RoommatePage/Roommate';
+import BestRoommateList from '../../components/common/BestRoommateList';
+import SearchAndNotice from '../../components/common/SearchAndNotice';
 const RoommatePage = () => {
   const [input, setInput] = useState('')
   const handleChange = (e) => {

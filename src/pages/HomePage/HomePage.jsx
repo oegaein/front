@@ -6,10 +6,10 @@ import { Pagination, Autoplay } from 'swiper/modules';
 import "swiper/css";
 
 
-import SearchAndNotice from '../components/common/SearchAndNotice'
-import BestRoommateList from '../components/common/BestRoommateList'
+import SearchAndNotice from '../../components/common/SearchAndNotice'
+import BestRoommateList from '../../components/common/BestRoommateList'
 
-import Next from '../assets/images/next.svg'
+import Next from '../../assets/images/next.svg'
 const HomePage = () => {
   const [input, setInput] = useState('')
   const handleChange = (e) => {

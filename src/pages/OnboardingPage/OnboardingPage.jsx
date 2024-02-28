@@ -4,10 +4,10 @@ import { Autoplay, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
-import Image1 from '../assets/images/OnboardingImage.svg'
-import Image2 from '../assets/images/fighting-couple.svg'
-import Image3 from '../assets/images/friendly-faces.svg'
-import Image4 from '../assets/images/OnboardingImage2.svg'
+import Image1 from '../../assets/images/OnboardingImage.svg'
+import Image2 from '../../assets/images/fighting-couple.svg'
+import Image3 from '../../assets/images/friendly-faces.svg'
+import Image4 from '../../assets/images/OnboardingImage2.svg'
 const OnboardingPage = () => {
   return (
     <>
