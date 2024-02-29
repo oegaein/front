@@ -16,7 +16,7 @@ const HomePage = () => {
     setInput(e.target.value)
   }
   return (
-    <div className='bg-[#F3F5F7] py-[11px] scroll-smooth'>
+    <div className='bg-[#F3F5F7] pt-[50px] pb-[11px] scroll-smooth'>
       <SearchAndNotice handleChange={handleChange}/>
       <BestRoommateList/>
       <div className='px-[24px]'>

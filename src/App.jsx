@@ -8,6 +8,8 @@ import RoommatePage from './pages/RoommatePage/RoommatePage';
 import HomePage from './pages/HomePage/HomePage';
 import Navbar from './components/common/Navbar';
 import MyPage from './pages/MyPage/MyPage';
+import UserPage from 'pages/UserPage/UserPage';
+
 function App() {
   const path = window.location.pathname
 
@@ -22,6 +24,7 @@ function App() {
           <Route path="/home" element={<HomePage />} />
           <Route path="/roommate" element={<RoommatePage />} />
           <Route path="/mypage" element={<MyPage />} />
+          <Route path="/user/:id" component={<UserPage/>} />
         </Routes>
       </Router>
     </div>
