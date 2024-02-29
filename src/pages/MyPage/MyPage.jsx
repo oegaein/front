@@ -14,7 +14,7 @@ const MyPage = () => {
   const [profileImage, setProfileImage] = useState(Profile)
   console.log(profileImage)
   return (
-    <>
+    <div className='h-full'>
       <ProfileImageContainer profileImage={profileImage}/>
       <div className='flex flex-col bg-[#F3F5F7] gap-[10px] border-b border-[#DEDEDE]'>
         <UserInfoAndLifeStyles type={'mypage'}/>
@@ -22,7 +22,7 @@ const MyPage = () => {
         <BookmarkList/>
         <RoommateReviewList/>
       </div>
-    </>
+    </div>
   )
 }
 

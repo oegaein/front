@@ -15,7 +15,7 @@ import MypageIconClicked from '../../assets/images/user-icon-clicked.svg'
 const Navbar = () => {
   const [activeLink, setActiveLink] = useState('home')
   return (
-    <div className='z-10 flex absolute bottom-0 justify-around items-center h-[66px] bg-white text-[#707070] text-[10px] w-full'>
+    <div style={{flexShrink: 0}} className='z-10 flex sticky bottom-0 right-0 left-0 justify-around items-center h-[66px] bg-white text-[#707070] text-[10px] w-full'>
           <Link to='#' className='flex flex-col items-center' onClick={()=>setActiveLink('chat')}>
             <div className='h-[27px]'>
               <img src={activeLink === 'chat' ? ChatIconClicked : ChatIcon}/>
