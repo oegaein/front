@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^13.5.0",
     "craco-alias": "^3.0.1",
     "react": "^18.2.0",
+    "react-app-alias": "^2.2.2",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.1",
     "react-scripts": "5.0.1",
@@ -18,7 +19,7 @@
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
-    "eject": "craco eject"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
