@@ -30,10 +30,14 @@ function App() {
 }
 
 function MainLayout() {
+  const path = window.location.pathname
   return (
     <div className="main-layout">
-      <Outlet/>
-      <Navbar />
+      <div className="content">
+        <Outlet/>
+      </div>
+      {(path !== '/' && path !== '/onboarding' && path !== '/login') && <Navbar />}
+
     </div>
   );
 }

@@ -7,9 +7,11 @@
 .App {
   text-align: center;
   font-family: 'Pretendard-Regular';
-    width: 393px;
-    min-height: 100vh;
-    margin: 0 auto;
-    position: relative;
+  width: 393px;
+  margin: 0 auto;
+  position: relative;
 }
 
+.content {
+  min-height: 100vh;
+}
