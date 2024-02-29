@@ -24,7 +24,7 @@ function App() {
           <Route path="/home" element={<HomePage />} />
           <Route path="/roommate" element={<RoommatePage />} />
           <Route path="/mypage" element={<MyPage />} />
-          <Route path="/user/:id" component={<UserPage/>} />
+          <Route path="/user/:id" element={<UserPage/>} />
         </Routes>
       </Router>
     </div>

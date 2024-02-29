@@ -1,5 +1,6 @@
 import React from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { Link } from 'react-router-dom';
 import BestRoommate from '../RoommatePage/BestRoommate';
 
 import Premium from '../../assets/images/premium-quality.svg'
@@ -12,10 +13,10 @@ const BestRoommateList = () => {
           <h1 className=' text-left mr-[3px]'>베스트 룸메</h1>
           <img src={Premium}/>
         </div>
-        <a href='#' className='flex mr-[24px] text-[12px]'>
+        <Link to='#' className='flex mr-[24px] text-[12px]'>
           다른 룸메 찾아보기
           <img src={Next}/>
-        </a>
+        </Link>
       </div>
       <Swiper
       spaceBetween={12}

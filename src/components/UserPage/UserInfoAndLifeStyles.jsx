@@ -10,9 +10,9 @@ import House from '../../assets/images/house.svg'
 import Ear from '../../assets/images/ear.svg'
 
 
-const UserInfoAndLifeStyles = () => {
+const UserInfoAndLifeStyles = ({type}) => {
   return (
-    <div className='bg-white'>
+    <div className='bg-white pt-[40px]'>
       <div>
         <p className='mb-[20px]'>MY 룸메 평점</p>
         <span className='font-bold'>4</span>
