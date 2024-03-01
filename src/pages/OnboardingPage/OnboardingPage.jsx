@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { Link } from 'react-router-dom';
 import { Autoplay, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -11,9 +12,6 @@ import Image4 from '../../assets/images/OnboardingImage2.svg'
 const OnboardingPage = () => {
   return (
     <>
-      {/* <div className='h-52' style={{backgroundColor: '#8A7FF9'}}>
-        {slides[slideNumber].content}
-      </div> */}
       <Swiper 
       pagination={{clickable: true}} 
       modules={[Pagination, Autoplay]} 
@@ -32,7 +30,7 @@ const OnboardingPage = () => {
             </div>
             <p className='mb-[84px]'>프로필 설정 한 번으로 <span className='text-lg' style={{color: '#8A7FF9'}}>간단하게</span> 룸메이트 구하기!</p>
           </div>
-            <button className='rounded-[20px] w-[76px] h-[41px] self-center' style={{backgroundColor: '#EBDBFF'}}>SKIP</button>
+            <Link to='/login' className='flex items-center justify-center rounded-[20px] w-[76px] h-[41px] self-center' style={{backgroundColor: '#EBDBFF'}}>SKIP</Link>
           </div>
       </SwiperSlide>
         <SwiperSlide>
@@ -47,7 +45,7 @@ const OnboardingPage = () => {
               <p>취향, 성향, mbti까지 하나하나 살펴보고</p>
               <p>나랑 <span className='text-lg' style={{color: '#8A7FF9'}}>찰떡궁합 룸메이트</span> 찾기!</p>
             </div>
-            <button className='rounded-[20px] w-[76px] h-[41px] self-center' style={{backgroundColor: '#EBDBFF'}}>SKIP</button>
+            <Link to='/login' className='flex items-center justify-center rounded-[20px] w-[76px] h-[41px] self-center' style={{backgroundColor: '#EBDBFF'}}>SKIP</Link>
           </div>
         </SwiperSlide>
         <SwiperSlide>
@@ -62,7 +60,7 @@ const OnboardingPage = () => {
               <p>기숙사에서 <span className='text-lg' style={{color: '#8A7FF9'}}>도움이 필요할 때, 정보를</span></p>
               <p><span className='text-lg' style={{color: '#8A7FF9'}}>얻고 싶을 때</span> 커뮤니티 활용하기!</p>
             </div>
-            <button className='rounded-[20px] w-[76px] h-[41px] self-center' style={{backgroundColor: '#EBDBFF'}}>SKIP</button>
+            <Link to='/login' className='flex items-center justify-center rounded-[20px] w-[76px] h-[41px] self-center' style={{backgroundColor: '#EBDBFF'}}>SKIP</Link>
           </div>
         </SwiperSlide>
         <SwiperSlide>
@@ -77,7 +75,7 @@ const OnboardingPage = () => {
               </div>
               <p>공동 배달로 음식도 나누고 <span className='text-lg' style={{color: '#8A7FF9'}}>배달비도 절약</span>하기!</p>
             </div>
-            <button className='rounded-[20px] w-[76px] h-[41px] self-center' style={{backgroundColor: '#EBDBFF'}}>SKIP</button>
+            <Link to='/login' className='flex items-center justify-center rounded-[20px] w-[76px] h-[41px] self-center' style={{backgroundColor: '#EBDBFF'}}>SKIP</Link>
           </div>
         </SwiperSlide>
 
