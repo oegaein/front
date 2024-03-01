@@ -5,13 +5,15 @@ const BestRoommate = () => {
   return (
     <button className='w-[192px] h-[179px] rounded-[20px] bg-white p-[20px] ml-[12px]'>
       <div className='flex items-center justify-between text-[12px] text-[#7F6FD8] mb-[12px]'>
-        <span>룸메 평점</span>
-        <div className='flex gap-0.5'>
-          <img src={Star}/>
-          <img src={Star}/>
-          <img src={Star}/>
-          <img src={Star}/>
-          <img src={Star}/>
+        <div className='flex'>
+          <span>룸메 평점</span>
+          <div className='flex gap-0.5 ml-[8px]'>
+            <img src={Star}/>
+            <img src={Star}/>
+            <img src={Star}/>
+            <img src={Star}/>
+            <img src={Star}/>
+          </div>
         </div>
         <span className='text-[#BEBBCF]'>D-7</span>
       </div>

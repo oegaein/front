@@ -30,7 +30,19 @@ const RoommateAndDeliveryStatus = () => {
           className="mySwiper mb-[28px]">
             <SwiperSlide>
             <button className='border w-[185px] h-[131px] rounded-[20px] bg-white p-[15px] ml-[12px]'>
-              <p className='text-[11px] text-[#7F6FD8] text-left mb-[10px]'>룸메 매칭률 80%</p>
+            <div className='flex items-center justify-between text-[12px] text-[#7F6FD8] mb-[12px]'>
+              <div className='flex'>
+                <span>룸메 평점</span>
+                <div className='flex gap-0.5 ml-[8px]'>
+                  <img src={Star}/>
+                  <img src={Star}/>
+                  <img src={Star}/>
+                  <img src={Star}/>
+                  <img src={Star}/>
+                </div>
+              </div>
+              <span className='text-[#BEBBCF]'>D-7</span>
+            </div>
               <div className='flex items-center'>
                 <img className='w-[60px] h-[60px]' src={Yoo} alt='user-image'/>
                 <div className='text-[11px] ml-[18px]'>
@@ -46,7 +58,19 @@ const RoommateAndDeliveryStatus = () => {
             </SwiperSlide>
             <SwiperSlide>
             <button className='border w-[185px] h-[131px] rounded-[20px] bg-white p-[15px] ml-[12px]'>
-              <p className='text-[11px] text-[#7F6FD8] text-left mb-[10px]'>룸메 매칭률 80%</p>
+            <div className='flex items-center justify-between text-[12px] text-[#7F6FD8] mb-[12px]'>
+              <div className='flex'>
+                <span>룸메 평점</span>
+                <div className='flex gap-0.5 ml-[8px]'>
+                  <img src={Star}/>
+                  <img src={Star}/>
+                  <img src={Star}/>
+                  <img src={Star}/>
+                  <img src={Star}/>
+                </div>
+              </div>
+              <span className='text-[#BEBBCF]'>D-7</span>
+            </div>
               <div className='flex items-center'>
                 <img src={Yoo} alt='user-image'/>
                 <div className='text-[11px] ml-[18px]'>
@@ -62,7 +86,19 @@ const RoommateAndDeliveryStatus = () => {
             </SwiperSlide>
             <SwiperSlide>
             <button className='border w-[185px] h-[131px] rounded-[20px] bg-white p-[15px] ml-[12px]'>
-              <p className='text-[11px] text-[#7F6FD8] text-left mb-[10px]'>룸메 매칭률 80%</p>
+            <div className='flex items-center justify-between text-[12px] text-[#7F6FD8] mb-[12px]'>
+              <div className='flex'>
+                <span>룸메 평점</span>
+                <div className='flex gap-0.5 ml-[8px]'>
+                  <img src={Star}/>
+                  <img src={Star}/>
+                  <img src={Star}/>
+                  <img src={Star}/>
+                  <img src={Star}/>
+                </div>
+              </div>
+              <span className='text-[#BEBBCF]'>D-7</span>
+            </div>
               <div className='flex items-center'>
                 <img src={Yoo} alt='user-image'/>
                 <div className='text-[11px] ml-[18px]'>
