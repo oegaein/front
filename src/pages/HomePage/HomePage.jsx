@@ -1,14 +1,15 @@
 import React, {useState} from 'react'
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Autoplay } from 'swiper/modules';
-
+import { Link } from 'react-router-dom';
 // Import Swiper styles
 import "swiper/css";
 
 
 import SearchAndNotice from '../../components/common/SearchAndNotice'
-import BestRoommateList from '../../components/common/BestRoommateList'
+import RoommateSwiperList from '../../components/common/RoommateSwiperList'
 
+import Premium from '../../assets/images/premium-quality.svg'
 import Next from '../../assets/images/next.svg'
 const HomePage = () => {
   const [input, setInput] = useState('')
@@ -18,11 +19,21 @@ const HomePage = () => {
   return (
     <div className='bg-[#F3F5F7] pt-[50px] pb-[11px] scroll-smooth'>
       <SearchAndNotice handleChange={handleChange}/>
-      <BestRoommateList/>
+      <div className='flex justify-between items-center mb-[15px] ml-[24px] pt-[27px]'>
+        <div className='flex '>
+          <h1 className=' text-left font-bold mr-[3px]'>베스트 룸메</h1>
+          <img src={Premium}/>
+        </div>
+        <Link to='/roommate' className='flex mr-[24px] text-[12px]'>
+          다른 룸메 찾아보기
+          <img src={Next}/>
+        </Link>
+      </div>
+      <RoommateSwiperList/>
       <div className='px-[24px]'>
         <div className='flex justify-between items-center mb-[15px]'>
           <div className='flex'>
-            <h1 className=' text-left mr-[3px]'>오늘의 기숙사 소식</h1>
+            <h1 className=' text-left font-bold mr-[3px]'>오늘의 기숙사 소식</h1>
           </div>
           <a href='#' className='flex text-[12px]'>
             소식 더보기
@@ -49,7 +60,16 @@ const HomePage = () => {
           </SwiperSlide>
         </Swiper>
       </div>
-      <BestRoommateList/>
+      <div className='flex justify-between items-center mb-[15px] ml-[24px] pt-[27px]'>
+        <div className='flex'>
+          <h1 className=' text-left font-bold mr-[3px]'>새로 올라온 룸메이트</h1>
+        </div>
+        <Link to='/roommate' className='flex mr-[24px] text-[12px]'>
+          더보기
+          <img src={Next}/>
+        </Link>
+      </div>
+      <RoommateSwiperList/>
       <div>새로 올라온 공동배달</div>
     </div>
   )
