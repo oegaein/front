@@ -20,7 +20,7 @@ const HomePage = () => {
     <div className='bg-[#F3F5F7] pt-[50px] pb-[11px] scroll-smooth'>
       <SearchAndNotice handleChange={handleChange}/>
       <div className='flex justify-between items-center mb-[15px] ml-[24px] pt-[27px]'>
-        <div className='flex '>
+        <div className='flex'>
           <h1 className=' text-left font-bold mr-[3px]'>베스트 룸메</h1>
           <img src={Premium}/>
         </div>

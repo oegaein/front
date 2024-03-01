@@ -1,6 +1,6 @@
 import './App.css';
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Outlet, useLocation } from 'react-router-dom';
 import LandingPage from './pages/LandingPage/LandingPage';
 import OnboardingPage from './pages/OnboardingPage/OnboardingPage';
 import LoginPage from './pages/LoginPage/LoginPage';
@@ -30,13 +30,13 @@ function App() {
 }
 
 function MainLayout() {
-  const path = window.location.pathname
+  const location = useLocation()
   return (
     <div className="main-layout">
       <div className="content">
         <Outlet/>
       </div>
-      {(path !== '/' && path !== '/onboarding' && path !== '/login') && <Navbar />}
+      {(location.pathname !== '/' && location.pathname !== '/onboarding' && location.pathname !== '/login') && <Navbar />}
 
     </div>
   );

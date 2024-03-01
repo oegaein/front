@@ -3,7 +3,7 @@ import Star from '../../assets/images/star.svg'
 import Yoo from '../../assets/images/유재석.svg'
 const BestRoommate = () => {
   return (
-    <button className='w-[192px] h-[179px] rounded-[20px] bg-white p-[20px] ml-[12px]'>
+    <button className='w-[192px] h-[179px] rounded-[20px] bg-white p-[20px] pb-[11px] ml-[12px]'>
       <div className='flex items-center justify-between text-[12px] text-[#7F6FD8] mb-[12px]'>
         <div className='flex'>
           <span>룸메 평점</span>

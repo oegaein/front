@@ -1,5 +1,4 @@
 import React, {useState} from 'react'
-import { Link } from 'react-router-dom'
 
 import Filter from '../../assets/images/filter.svg'
 import Write from '../../assets/images/write.svg'
@@ -25,8 +24,8 @@ const RoommatePage = () => {
       </div>
       <RoommateSwiperList/>
       <div className='border-t border-[#DEDEDE] pt-[24px]'>
-        <button className='flex flex-col items-center fixed z-10 bottom-[100px] right-[10px]'>
-          <img src={Write}/><span className='text-[10px] mt-[5px]'>글쓰기</span>
+        <button className='flex flex-col items-center fixed z-10 bottom-[100px] right-[10px] min-[393px]:right-[calc(50%-12rem)]'>
+          <img src={Write} alt='글쓰기'/><span className='text-[10px] mt-[5px]'>글쓰기</span>
         </button>
         <div className='flex justify-between items-center mb-[14px] px-[24px]'>
           <h1 className='font-bold'>룸메리스트</h1>
