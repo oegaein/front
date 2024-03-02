@@ -14,7 +14,7 @@ const BasicInfoLanding = () => {
 				</p>
 			</GradientContainer>
 			<div className="flex justify-center w-full absolute bottom-11">
-				<BasicInfoButton text={'설정 하러 가기'} path={'/setting'} />
+				<BasicInfoButton text={'설정 하러 가기'} path={'/basicinfo/setting'} />
 			</div>
 		</>
 	);
