@@ -56,19 +56,19 @@ const BasicInfoSetting = () => {
 					<p className="text-xs mb-9">
 						{count >= 1 && count <= 3 ? '기본 정보' : '라이프 스타일'}
 					</p>
-					<p className="text-base">{step[count].title}</p>
+					<p className="text-base">{step[count - 1].title}</p>
 				</section>
 				<section>
-					{step[count].step === 'nickname' && <Nickname />}
-					{step[count].step === 'profile' && <Profile />}
-					{step[count].step === 'introduce' && <Introduce />}
-					{step[count].step === 'mbti' && <Mbti />}
-					{step[count].step === 'sleephabit' && <Sleephabits />}
-					{step[count].step === 'lifepattern' && <Lifepattern />}
-					{step[count].step === 'smoking' && <Smoking />}
-					{step[count].step === 'cleaning' && <Cleaning />}
-					{step[count].step === 'outing' && <Outing />}
-					{step[count].step === 'sound' && <Sound />}
+					{count === 1 && <Nickname />}
+					{count === 2 && <Profile />}
+					{count === 3 && <Introduce />}
+					{count === 4 && <Mbti />}
+					{count === 5 && <Sleephabits />}
+					{count === 6 && <Lifepattern />}
+					{count === 7 && <Smoking />}
+					{count === 8 && <Cleaning />}
+					{count === 9 && <Outing />}
+					{count === 10 && <Sound />}
 				</section>
 				<BasicInfoButton
 					text={count >= 1 && count <= 3 ? '설정 완료' : '알려주고 싶지 않아요'}
