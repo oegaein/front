@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import backgroundImage from '@assets/images/basicInfo/basicInfoLanding.svg';
+import BasicInfoButton from '@common/button/BasicInfoButton';
 
 const BasicInfoLanding = () => {
 	return (
@@ -12,6 +13,9 @@ const BasicInfoLanding = () => {
 					<br />몇 가지 프로필 설정이 필요해요!
 				</p>
 			</GradientContainer>
+			<div className="flex justify-center w-full absolute bottom-11">
+				<BasicInfoButton text={'설정 하러 가기'} path={'/setting'} />
+			</div>
 		</>
 	);
 };
@@ -35,10 +39,11 @@ const GradientContainer = styled.div`
 	);
 
 	> img {
-		top: 6rem;
+		top: 5.2rem;
 	}
 
 	> p {
+		font-size: 17px;
 		margin-top: 40vh;
 		text-align: center;
 	}
