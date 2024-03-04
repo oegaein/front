@@ -1,4 +1,5 @@
 import BasicInfoButton from '@common/button/BasicInfoButton';
+import { BasicInput } from '@components/basicInfo/BasicSettingInput';
 import Cleaning from '@components/basicInfo/Cleaning';
 import Introduce from '@components/basicInfo/Introduce';
 import Lifepattern from '@components/basicInfo/Lifepattern';
@@ -14,6 +15,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 const BasicInfoSetting = () => {
+	const [activeButton, setActiveButton] = useState(false);
 	const [count, setCount] = useState(1);
 	const [info, setInfo] = useState({
 		nickname: '',
@@ -31,6 +33,7 @@ const BasicInfoSetting = () => {
 		outing: '',
 		sound: '',
 	});
+
 	const step = [
 		{ id: 1, step: 'nickname', title: '닉네임을 입력해 주세요' },
 		{ id: 2, step: 'profile', title: '프로필을 완성해 주세요' },
@@ -46,6 +49,15 @@ const BasicInfoSetting = () => {
 
 	const handleNext = () => {
 		setCount((prev) => prev + 1);
+		setActiveButton(false);
+	};
+
+	const handleNickname = (value) => {
+		setInfo((prevInfo) => ({
+			...prevInfo,
+			nickname: value,
+		}));
+		setActiveButton(true);
 	};
 
 	return (
@@ -58,8 +70,8 @@ const BasicInfoSetting = () => {
 					</p>
 					<p className="text-base">{step[count - 1].title}</p>
 				</section>
-				<section>
-					{count === 1 && <Nickname />}
+				<section className="flex flex-col items-center w-full">
+					{count === 1 && <Nickname onGetValue={handleNickname} />}
 					{count === 2 && <Profile />}
 					{count === 3 && <Introduce />}
 					{count === 4 && <Mbti />}
@@ -70,11 +82,16 @@ const BasicInfoSetting = () => {
 					{count === 9 && <Outing />}
 					{count === 10 && <Sound />}
 				</section>
-				<BasicInfoButton
-					text={count >= 1 && count <= 3 ? '설정 완료' : '알려주고 싶지 않아요'}
-					path={count === 10 && '/home'}
-					eventName={handleNext}
-				/>
+				{activeButton && (
+					<BasicInfoButton
+						text={
+							count >= 1 && count <= 3 ? '설정 완료' : '알려주고 싶지 않아요'
+						}
+						path={count === 10 ? '/home' : ''}
+						eventName={handleNext}
+					/>
+				)}
+				{count >= 1 && count <= 3 && <div></div>}
 			</SettingStyle>
 		</>
 	);
@@ -87,6 +104,7 @@ const SettingStyle = styled.div`
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	width: 100%;
 	padding: 110px 30px 45px 30px;
 
 	.countbox {
