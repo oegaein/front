@@ -82,15 +82,11 @@ const BasicInfoSetting = () => {
 					{count === 9 && <Outing />}
 					{count === 10 && <Sound />}
 				</section>
-				{activeButton && (
-					<BasicInfoButton
-						text={
-							count >= 1 && count <= 3 ? '설정 완료' : '알려주고 싶지 않아요'
-						}
-						path={count === 10 ? '/home' : ''}
-						eventName={handleNext}
-					/>
-				)}
+				<BasicInfoButton
+					text={count >= 1 && count <= 3 ? '설정 완료' : '알려주고 싶지 않아요'}
+					path={count === 10 ? '/home' : ''}
+					eventName={handleNext}
+				/>
 				{count >= 1 && count <= 3 && <div></div>}
 			</SettingStyle>
 		</>
