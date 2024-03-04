@@ -4,16 +4,17 @@ import COLOR from '@styles/color';
 import styled from 'styled-components';
 import { useState } from 'react';
 
-const Nickname = ({ onGetValue }) => {
+const Nickname = ({ onGetValue, setButton }) => {
 	const handleChangeValue = (nickname) => {
 		if (nickname.length < 2 || nickname.length > 10) {
-			// 글자수 만족하지 않으면
 			console.log('글자 수 이상있음.');
+			setButton(true);
 		} else if (!handleDuplicate(nickname)) {
-			// 중복이라면
 			console.log('중복입니다.');
+			setButton(true);
 		} else {
 			onGetValue(nickname);
+			setButton(false);
 		}
 	};
 

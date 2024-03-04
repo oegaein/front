@@ -1,5 +1,4 @@
 import BasicInfoButton from '@common/button/BasicInfoButton';
-import { BasicInput } from '@components/basicInfo/BasicSettingInput';
 import Cleaning from '@components/basicInfo/Cleaning';
 import Introduce from '@components/basicInfo/Introduce';
 import Lifepattern from '@components/basicInfo/Lifepattern';
@@ -13,9 +12,10 @@ import Sound from '@components/basicInfo/Sound';
 import COLOR from '@styles/color';
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import BackButton from '@common/button/BackButton';
 
 const BasicInfoSetting = () => {
-	const [activeButton, setActiveButton] = useState(false);
+	const [activeButton, setActiveButton] = useState(true);
 	const [count, setCount] = useState(1);
 	const [info, setInfo] = useState({
 		nickname: '',
@@ -47,9 +47,14 @@ const BasicInfoSetting = () => {
 		{ id: 10, step: 'sound', title: '소리에 예민하신 편인가요?' },
 	];
 
+	const handleBack = () => {
+		setCount((prev) => prev - 1);
+		setActiveButton(true);
+	};
+
 	const handleNext = () => {
 		setCount((prev) => prev + 1);
-		setActiveButton(false);
+		setActiveButton(true);
 	};
 
 	const handleNickname = (value) => {
@@ -57,12 +62,28 @@ const BasicInfoSetting = () => {
 			...prevInfo,
 			nickname: value,
 		}));
-		setActiveButton(true);
+	};
+
+	const handleProfile = (value) => {
+		setInfo((prevInfo) => ({
+			...prevInfo,
+			gender: value.gender,
+			studentId: value.studentId,
+			major: value.major,
+			birth: value.birth,
+			building: value.building,
+		}));
+		setActiveButton(false);
 	};
 
 	return (
 		<>
 			<SettingStyle>
+				{count >= 1 && count <= 3 ? (
+					<BackButton backPath={false} eventName={handleBack} />
+				) : (
+					<div className="w-full h-12"></div>
+				)}
 				<section className="flex flex-col items-center mb-6">
 					<div className="countbox">{count}</div>
 					<p className="text-xs mb-9">
@@ -71,8 +92,10 @@ const BasicInfoSetting = () => {
 					<p className="text-base">{step[count - 1].title}</p>
 				</section>
 				<section className="flex flex-col items-center w-full">
-					{count === 1 && <Nickname onGetValue={handleNickname} />}
-					{count === 2 && <Profile />}
+					{count === 1 && (
+						<Nickname onGetValue={handleNickname} setButton={setActiveButton} />
+					)}
+					{count === 2 && <Profile onGetValue={handleProfile} />}
 					{count === 3 && <Introduce />}
 					{count === 4 && <Mbti />}
 					{count === 5 && <Sleephabits />}
@@ -86,8 +109,8 @@ const BasicInfoSetting = () => {
 					text={count >= 1 && count <= 3 ? '설정 완료' : '알려주고 싶지 않아요'}
 					path={count === 10 ? '/home' : ''}
 					eventName={handleNext}
+					disabled={activeButton}
 				/>
-				{count >= 1 && count <= 3 && <div></div>}
 			</SettingStyle>
 		</>
 	);
@@ -101,7 +124,7 @@ const SettingStyle = styled.div`
 	justify-content: center;
 	align-items: center;
 	width: 100%;
-	padding: 110px 30px 45px 30px;
+	padding: 62px 30px 45px 30px;
 
 	.countbox {
 		margin-bottom: 10px;
