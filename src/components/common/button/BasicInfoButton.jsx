@@ -36,7 +36,7 @@ BasicInfoButton.propTypes = {
 	text: PropTypes.oneOf(['설정 하러 가기', '설정 완료', '알려주고 싶지 않아요'])
 		.isRequired,
 	path: PropTypes.string,
-	eventName: PropTypes.string,
+	eventName: PropTypes.func,
 };
 
 const ButtonWrapper = styled.button`
