@@ -13,7 +13,7 @@ const BasicInfoLanding = () => {
 					<br />몇 가지 프로필 설정이 필요해요!
 				</p>
 			</GradientContainer>
-			<div className="flex justify-center w-full absolute bottom-11">
+			<div className="flex justify-center w-full absolute bottom-11 left-0">
 				<BasicInfoButton text={'설정 하러 가기'} path={'/basicinfo/setting'} />
 			</div>
 		</>
@@ -27,7 +27,7 @@ const GradientContainer = styled.div`
 	justify-content: center;
 	align-items: center;
 	position: relative;
-	height: 100vh;
+	height: 100%;
 	background: linear-gradient(
 		180deg,
 		#8a7ff9 6.16%,
@@ -39,7 +39,7 @@ const GradientContainer = styled.div`
 	);
 
 	> img {
-		top: 5.2rem;
+		top: 10%;
 	}
 
 	> p {
