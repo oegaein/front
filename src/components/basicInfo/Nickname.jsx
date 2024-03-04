@@ -25,7 +25,7 @@ const Nickname = ({ onGetValue }) => {
 	return (
 		<>
 			<Subtitle>닉네임</Subtitle>
-			<div className="flex pb-1 mb-3 w-full border-b border-solid border-[#DEDEDE]">
+			<div className="flex pb-1 mb-3 w-full">
 				<BasicInput onChangeValue={handleChangeValue} limitNum={10} />
 				{/* <DuplicateButton onClick={() => {}}>중복확인</DuplicateButton> */}
 			</div>

@@ -16,7 +16,7 @@ export const BasicInput = ({ onChangeValue, limitNum }) => {
 	return (
 		<>
 			<input
-				className="w-4/5 pl-1 focus:outline-none"
+				className="w-full pl-1 border-b border-solid border-[#DEDEDE] focus:outline-none"
 				type="text"
 				value={value}
 				onChange={handleChange}
