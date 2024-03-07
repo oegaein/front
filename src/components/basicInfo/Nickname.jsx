@@ -7,10 +7,8 @@ import { useState } from 'react';
 const Nickname = ({ onGetValue, setButton }) => {
 	const handleChangeValue = (nickname) => {
 		if (nickname.length < 2 || nickname.length > 10) {
-			console.log('글자 수 이상있음.');
 			setButton(true);
 		} else if (!handleDuplicate(nickname)) {
-			console.log('중복입니다.');
 			setButton(true);
 		} else {
 			onGetValue(nickname);
