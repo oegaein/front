@@ -47,7 +47,7 @@ const BasicDropdown = ({ label = '미선택', options, setSelected }) => {
 
 export default BasicDropdown;
 
-const DropdownWrapper = styled.div`
+export const DropdownWrapper = styled.div`
 	margin-bottom: 28px;
 	position: relative;
 	width: 100%;
@@ -59,11 +59,11 @@ const DropdownWrapper = styled.div`
 		align-items: center;
 		justify-content: space-between;
 		padding: 14px 16px 14px 11px;
-		height: 42px;
+		height: 58px;
 		cursor: pointer;
 
 		> span {
-			font-size: 12px;
+			font-size: 15px;
 			color: ${COLOR.gray70};
 		}
 	}
@@ -88,7 +88,7 @@ const DropdownList = styled.div`
 		justify-content: flex-start;
 		width: 100%;
 		padding: 10px 16px 10px 11px;
-		font-size: 12px;
+		font-size: 15px;
 		color: ${COLOR.black};
 
 		&:hover {
