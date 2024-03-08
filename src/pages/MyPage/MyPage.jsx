@@ -1,5 +1,4 @@
 import React, {useState} from 'react'
-import { Swiper, SwiperSlide } from 'swiper/react';
 // 컴포넌트
 import RoommateReviewList from '../../components/UserPage/RoommateReviewList'
 
