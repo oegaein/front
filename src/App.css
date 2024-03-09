@@ -5,11 +5,11 @@
   font-style: normal;
 }
 .App {
-  text-align: center;
+    text-align: center;
     width: 393px;
     height: 852px;
     margin: 0 auto;
-   font-family: 'Pretendard';
+    font-family: 'Pretendard';
 }
 .content {
     min-height: 100vh;

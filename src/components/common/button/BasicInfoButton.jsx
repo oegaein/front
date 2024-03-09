@@ -4,10 +4,14 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import COLOR from '@styles/color';
 
-const BasicInfoButton = ({ text, path, eventName }) => {
+const BasicInfoButton = ({ text, path, eventName, disabled }) => {
 	const navigate = useNavigate();
 
 	const handleClick = (e) => {
+		if (disabled) {
+			return;
+		}
+
 		if (eventName) {
 			eventName(e);
 		}
@@ -23,7 +27,7 @@ const BasicInfoButton = ({ text, path, eventName }) => {
 
 	return (
 		<>
-			<ButtonWrapper onClick={handleClick} text={text}>
+			<ButtonWrapper onClick={handleClick} text={text} disabled={disabled}>
 				<ButtonText text={text}>{text}</ButtonText>
 			</ButtonWrapper>
 		</>
@@ -36,7 +40,7 @@ BasicInfoButton.propTypes = {
 	text: PropTypes.oneOf(['설정 하러 가기', '설정 완료', '알려주고 싶지 않아요'])
 		.isRequired,
 	path: PropTypes.string,
-	eventName: PropTypes.string,
+	eventName: PropTypes.func,
 };
 
 const ButtonWrapper = styled.button`
@@ -45,7 +49,8 @@ const ButtonWrapper = styled.button`
 	align-items: center;
 	padding: 12px 40px;
 	height: 40px;
-	background-color: ${COLOR.purpleEB};
+	background-color: ${(props) =>
+		props.disabled ? COLOR.grayDE : COLOR.purpleEB};
 	border-radius: 50px;
 	cursor: pointer;
 `;
