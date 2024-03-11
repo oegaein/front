@@ -14,6 +14,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import FONT from '@styles/fonts';
 import SettingHeader from '@common/header/SettingHeader';
+import LifeStyleLanding from './LifeStyleLanding';
 
 const BasicInfoSetting = () => {
 	const [activeButton, setActiveButton] = useState(true);
@@ -22,7 +23,7 @@ const BasicInfoSetting = () => {
 		nickname: '',
 		gender: '',
 		studentId: 0,
-		birth: [''],
+		birth: '',
 		introduce: '',
 		mbti: '',
 		sleephabits: '',
@@ -36,16 +37,17 @@ const BasicInfoSetting = () => {
 	console.log(info);
 
 	const step = [
-		{ id: 1, step: 'nickname', title: '닉네임을 입력해 주세요' },
-		{ id: 2, step: 'profile', title: '프로필을 완성해 주세요' },
-		{ id: 3, step: 'introduce', title: '나를 한 줄로 소개해 주세요' },
-		{ id: 4, step: 'mbti', title: '나의 MBTI를 입력해 주세요' },
-		{ id: 5, step: 'sleephabit', title: '평소 수면 습관을 체크 해주세요' },
-		{ id: 6, step: 'lifepattern', title: '평소 생활 패턴을 알려주세요' },
-		{ id: 7, step: 'smoking', title: '흡연 여부를 선택해 주세요' },
-		{ id: 8, step: 'cleaning', title: '평소 청소 주기를 선택해 주세요' },
-		{ id: 9, step: 'outing', title: '외출을 얼마나 자주 하시나요?' },
-		{ id: 10, step: 'sound', title: '소리에 예민하신 편인가요?' },
+		{ id: 1, btn: '다음', title: '닉네임을 입력해 주세요' },
+		{ id: 2, btn: '다음', title: '프로필을 완성해 주세요' },
+		{ id: 3, btn: '완료', title: '나를 한 줄로 소개해 주세요' },
+		{ id: 4, btn: '시작하기', title: '' },
+		{ id: 5, btn: '다음', title: '나의 MBTI를 입력해 주세요' },
+		{ id: 6, btn: '다음', title: '평소 수면 습관을 체크 해주세요' },
+		{ id: 7, btn: '다음', title: '평소 생활 패턴을 알려주세요' },
+		{ id: 8, btn: '다음', title: '흡연 여부를 선택해 주세요' },
+		{ id: 9, btn: '다음', title: '평소 청소 주기를 선택해 주세요' },
+		{ id: 10, btn: '다음', title: '외출을 얼마나 자주 하시나요?' },
+		{ id: 11, btn: '완료', title: '소리에 예민하신 편인가요?' },
 	];
 
 	const handleBack = () => {
@@ -81,51 +83,70 @@ const BasicInfoSetting = () => {
 		}));
 	};
 
+	const handleMbti = (value) => {
+		setInfo((prevInfo) => ({
+			...prevInfo,
+			mbti: value,
+		}));
+	};
+
 	return (
 		<>
 			<SettingStyle>
-				{count >= 1 && count <= 3 ? (
-					<SettingHeader backPath={false} eventName={handleBack} />
+				{count === 4 ? (
+					<LifeStyleLanding />
 				) : (
-					<SettingHeader
-						backPath={false}
-						eventName={handleBack}
-						rightBtn={handleNext}
-					/>
+					<>
+						{count >= 1 && count <= 3 ? (
+							<SettingHeader backPath={false} eventName={handleBack} />
+						) : (
+							<SettingHeader
+								backPath={false}
+								eventName={handleBack}
+								rightBtn={handleNext}
+							/>
+						)}
+						<section className="flex flex-col items-center mb-6">
+							<div className="countbox">{count}</div>
+							<p className="category">
+								{count >= 1 && count <= 3 ? '기본 정보' : '라이프 스타일'}
+							</p>
+							<p className="direction">{step[count - 1].title}</p>
+						</section>
+						<section className="flex flex-col items-center w-full">
+							{count === 1 && (
+								<Nickname
+									onGetValue={handleNickname}
+									setButton={setActiveButton}
+								/>
+							)}
+							{count === 2 && (
+								<Profile
+									onGetValue={handleProfile}
+									setButton={setActiveButton}
+								/>
+							)}
+							{count === 3 && (
+								<Introduce
+									onGetValue={handleIntroduce}
+									setButton={setActiveButton}
+								/>
+							)}
+							{count === 5 && <Mbti onGetValue={handleMbti} />}
+							{count === 6 && <Sleephabits />}
+							{count === 7 && <Lifepattern />}
+							{count === 8 && <Smoking />}
+							{count === 9 && <Cleaning />}
+							{count === 10 && <Outing />}
+							{count === 11 && <Sound />}
+						</section>
+					</>
 				)}
-				<section className="flex flex-col items-center mb-6">
-					<div className="countbox">{count}</div>
-					<p className="category">
-						{count >= 1 && count <= 3 ? '기본 정보' : '라이프 스타일'}
-					</p>
-					<p className="direction">{step[count - 1].title}</p>
-				</section>
-				<section className="flex flex-col items-center w-full">
-					{count === 1 && (
-						<Nickname onGetValue={handleNickname} setButton={setActiveButton} />
-					)}
-					{count === 2 && (
-						<Profile onGetValue={handleProfile} setButton={setActiveButton} />
-					)}
-					{count === 3 && (
-						<Introduce
-							onGetValue={handleIntroduce}
-							setButton={setActiveButton}
-						/>
-					)}
-					{count === 4 && <Mbti />}
-					{count === 5 && <Sleephabits />}
-					{count === 6 && <Lifepattern />}
-					{count === 7 && <Smoking />}
-					{count === 8 && <Cleaning />}
-					{count === 9 && <Outing />}
-					{count === 10 && <Sound />}
-				</section>
 				<BasicInfoButton
-					text={count >= 1 && count <= 3 ? '다음' : '알려주고 싶지 않아요'}
-					path={count === 10 ? '/home' : ''}
+					text={step[count - 1].btn}
+					path={count === 11 ? '/home' : ''}
 					eventName={handleNext}
-					disabled={activeButton}
+					disabled={count === 4 ? false : activeButton}
 				/>
 			</SettingStyle>
 		</>
