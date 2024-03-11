@@ -10,6 +10,7 @@
     height: 852px;
     margin: 0 auto;
     font-family: 'Pretendard';
+    padding-top: 50px;
 }
 .content {
     min-height: 100vh;

@@ -2,7 +2,6 @@ import React from 'react'
 import './App.css'
 import LandingPage from '@pages/LandingPage/LandingPage';
 import OnboardingPage from '@pages/OnboardingPage/OnboardingPage';
-import BasicInfoLanding from '@pages/basicInfo/BasicInfoLanding';
 import BasicInfoSetting from '@pages/basicInfo/BasicInfoSetting';
 import { BrowserRouter as Router, Routes, Route, Outlet, useLocation } from 'react-router-dom';
 import LoginPage from '@pages/LoginPage/LoginPage';
@@ -25,8 +24,7 @@ function App() {
             <Route path="roommate" element={<RoommatePage />} />
             <Route path="mypage" element={<MyPage />} />
             <Route path="user/:id" element={<UserPage/>} />
-            <Route path="/basicinfo" element={<BasicInfoLanding />} />
-						<Route path="/basicinfo/setting" element={<BasicInfoSetting />} />
+						<Route path="/setting" element={<BasicInfoSetting />} />
           </Route>
         </Routes>
       </Router>
