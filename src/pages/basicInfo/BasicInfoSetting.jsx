@@ -12,7 +12,8 @@ import Sound from '@components/basicInfo/Sound';
 import COLOR from '@styles/color';
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import BackButton from '@common/button/BackButton';
+import FONT from '@styles/fonts';
+import SettingHeader from '@common/header/SettingHeader';
 
 const BasicInfoSetting = () => {
 	const [activeButton, setActiveButton] = useState(true);
@@ -21,9 +22,7 @@ const BasicInfoSetting = () => {
 		nickname: '',
 		gender: '',
 		studentId: 0,
-		major: '',
 		birth: [''],
-		building: '',
 		introduce: '',
 		mbti: '',
 		sleephabits: '',
@@ -69,9 +68,7 @@ const BasicInfoSetting = () => {
 			...prevInfo,
 			gender: value.gender,
 			studentId: value.studentId,
-			major: value.major,
 			birth: value.birth,
-			building: value.building,
 		}));
 		setActiveButton(false);
 	};
@@ -80,22 +77,28 @@ const BasicInfoSetting = () => {
 		<>
 			<SettingStyle>
 				{count >= 1 && count <= 3 ? (
-					<BackButton backPath={false} eventName={handleBack} />
+					<SettingHeader backPath={false} eventName={handleBack} />
 				) : (
-					<div className="w-full h-12"></div>
+					<SettingHeader
+						backPath={false}
+						eventName={handleBack}
+						rightBtn={handleNext}
+					/>
 				)}
 				<section className="flex flex-col items-center mb-6">
 					<div className="countbox">{count}</div>
-					<p className="text-xs mb-9">
+					<p className="category">
 						{count >= 1 && count <= 3 ? '기본 정보' : '라이프 스타일'}
 					</p>
-					<p className="text-base">{step[count - 1].title}</p>
+					<p className="direction">{step[count - 1].title}</p>
 				</section>
 				<section className="flex flex-col items-center w-full">
 					{count === 1 && (
 						<Nickname onGetValue={handleNickname} setButton={setActiveButton} />
 					)}
-					{count === 2 && <Profile onGetValue={handleProfile} />}
+					{count === 2 && (
+						<Profile onGetValue={handleProfile} setButton={setActiveButton} />
+					)}
 					{count === 3 && <Introduce />}
 					{count === 4 && <Mbti />}
 					{count === 5 && <Sleephabits />}
@@ -106,7 +109,7 @@ const BasicInfoSetting = () => {
 					{count === 10 && <Sound />}
 				</section>
 				<BasicInfoButton
-					text={count >= 1 && count <= 3 ? '설정 완료' : '알려주고 싶지 않아요'}
+					text={count >= 1 && count <= 3 ? '다음' : '알려주고 싶지 않아요'}
 					path={count === 10 ? '/home' : ''}
 					eventName={handleNext}
 					disabled={activeButton}
@@ -134,7 +137,16 @@ const SettingStyle = styled.div`
 		width: 24px;
 		height: 24px;
 		border-radius: 50%;
-		background-color: ${COLOR.purpleEB};
+		background-color: ${COLOR.purple2};
 		font-size: 15px;
+	}
+
+	.category {
+		font: ${FONT.caption1SB14};
+		margin-bottom: 32px;
+	}
+
+	.direction {
+		font: ${FONT.body2SB16};
 	}
 `;
