@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { motion } from 'framer-motion';
 import COLOR from '@styles/color';
+import FONT from '@styles/fonts';
 import ArrowDownIcon from '@assets/images/common/ArrowDownIcon.svg';
 import ArrowUpIcon from '@assets/images/common/ArrowUpIcon.svg';
+import Bar from '@assets/images/common/Bar.svg';
 
-const BasicDropdown = ({ label = '미선택', options, setSelected }) => {
+const BasicDropdown = ({ choice, label = '미선택', options, setSelected }) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [selectedOption, setSelectedOption] = useState('');
 
@@ -19,39 +22,54 @@ const BasicDropdown = ({ label = '미선택', options, setSelected }) => {
 
 	return (
 		<>
-			<DropdownWrapper>
+			<DropdownBackground open={isOpen} onClick={() => setIsOpen(false)} />
+			<DropdownWrapper option={selectedOption}>
 				<div className="header" onClick={toggleDropdown}>
 					<span>{selectedOption !== '' ? `${selectedOption}` : label}</span>
 					<img src={isOpen ? ArrowUpIcon : ArrowDownIcon} />
 				</div>
-				{isOpen && (
-					<DropdownList>
-						{options.map((option, index) => (
-							<div
-								key={option}
-								className="item"
-								onClick={() => {
-									handleSelected(option);
-									setIsOpen(false);
-								}}
-							>
-								{option}
-							</div>
-						))}
-					</DropdownList>
-				)}
 			</DropdownWrapper>
+			{isOpen && (
+				<DropdownList initial={{ y: 100 }} animate={{ y: 50 }}>
+					<div className="flex justify-center mb-9 w-full">
+						<img src={Bar} />
+					</div>
+					<p>{choice}</p>
+					{options.map((option, index) => (
+						<div
+							key={option}
+							className="item"
+							onClick={() => {
+								handleSelected(option);
+								setIsOpen(false);
+							}}
+						>
+							{option}
+						</div>
+					))}
+				</DropdownList>
+			)}
 		</>
 	);
 };
 
 export default BasicDropdown;
 
+export const DropdownBackground = styled.div`
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: ${({ open }) => (open ? 'rgba(69, 76, 83, 0.5)' : 'none')};
+	z-index: ${({ open }) => (open ? 9 : -1)};
+`;
+
 export const DropdownWrapper = styled.div`
-	margin-bottom: 28px;
+	margin-bottom: 24px;
 	position: relative;
 	width: 100%;
-	border: 1px solid ${COLOR.grayED};
+	border: 1px solid ${COLOR.gray100};
 	border-radius: 10px;
 
 	.header {
@@ -63,36 +81,47 @@ export const DropdownWrapper = styled.div`
 		cursor: pointer;
 
 		> span {
-			font-size: 15px;
-			color: ${COLOR.gray70};
+			font: ${FONT.body5M15};
+			color: ${({ option }) => (option !== '' ? COLOR.black : COLOR.gray400)};
 		}
 	}
 `;
 
-const DropdownList = styled.div`
+export const DropdownList = styled(motion.div)`
 	position: absolute;
-	top: 102%;
+	bottom: 0;
 	left: 0;
 	width: 100%;
-	max-height: 175px;
-	overflow-y: auto;
-	padding: 5px 0;
-	background-color: white;
-	border: 1px solid ${COLOR.grayED};
+	max-height: 450px;
+	padding: 11px 26px;
+	background-color: ${COLOR.white};
 	border-radius: 10px;
 	list-style: none;
 	z-index: 10;
+	overflow-y: auto;
+
+	::-webkit-scrollbar {
+		width: 0;
+	}
+
+	> p {
+		margin-bottom: 24px;
+		width: 100%;
+		text-align: left;
+		font: ${FONT.title1SB20};
+	}
 
 	.item {
 		display: flex;
 		justify-content: flex-start;
 		width: 100%;
-		padding: 10px 16px 10px 11px;
-		font-size: 15px;
+		padding: 12px 16px 12px 0;
+		font: ${FONT.body5M15};
 		color: ${COLOR.black};
+		overflow-y: auto;
 
 		&:hover {
-			background-color: ${COLOR.purpleF2};
+			background-color: ${COLOR.purple3};
 		}
 	}
 `;
