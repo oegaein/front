@@ -55,9 +55,9 @@ const OnboardingPage = () => {
       <Swiper 
       pagination={{clickable: true}} 
       modules={[Pagination, Autoplay]} 
-      // autoplay={{ delay: 3000, disableOnInteraction: false }}
+      autoplay={{ delay: 3000, disableOnInteraction: false }}
       spaceBetween={0}
-      // loop={false}
+      loop={true}
       className="mySwiper h-[800px]">
         <SwiperSlide>
           <StyledOnboardingMent className={`h-[213px] text-left pt-[65px] px-[35px]`}>
@@ -83,7 +83,7 @@ const OnboardingPage = () => {
               </div>
               <StyledSmallMent>프로필 설정 한 번으로 <span style={{color: COLOR.purple1}}>간단하게</span> 룸메이트 구하기!</StyledSmallMent>
             </div>
-            <Link to='/login' className='flex items-center justify-center rounded-[20px] w-[76px] h-[41px] self-center bg-[#EBDBFF]'>SKIP</Link>
+            <Link to='/login' className='flex items-center justify-center rounded-[20px] w-[76px] h-[41px] self-center' style={{backgroundColor: COLOR.purple2}}>SKIP</Link>
           </div>
         </SwiperSlide>
         <SwiperSlide>
@@ -103,7 +103,7 @@ const OnboardingPage = () => {
                 나랑 <span style={{color: COLOR.purple1}}>찰떡궁합 룸메이트 찾기!</span>
               </StyledSmallMent>
             </div>
-            <Link to='/login' className='flex items-center justify-center rounded-[20px] w-[76px] h-[41px] self-center' style={{backgroundColor: '#EBDBFF'}}>SKIP</Link>
+            <Link to='/login' className='flex items-center justify-center rounded-[20px] w-[76px] h-[41px] self-center' style={{backgroundColor: COLOR.purple2}}>SKIP</Link>
           </div>
         </SwiperSlide>
         <SwiperSlide>
@@ -119,7 +119,7 @@ const OnboardingPage = () => {
               </div>
               <StyledSmallMent>기숙사에서 <span style={{color: COLOR.purple1}}>도움이 필요할 때, 정보를<br></br>얻고 싶을 때 </span>커뮤니티 활용하기!</StyledSmallMent>
             </div>
-            <Link to='/login' className='flex items-center justify-center rounded-[20px] w-[76px] h-[41px] self-center' style={{backgroundColor: '#EBDBFF'}}>SKIP</Link>
+            <Link to='/login' className='flex items-center justify-center rounded-[20px] w-[76px] h-[41px] self-center' style={{backgroundColor: COLOR.purple2}}>SKIP</Link>
           </div>
         </SwiperSlide>
         <SwiperSlide>
@@ -142,7 +142,7 @@ const OnboardingPage = () => {
               </div>
               <StyledSmallMent>공동 배달로 음식도 <span style={{color: COLOR.purple1}}>나누고</span> 배달비도 <span style={{color: COLOR.purple1}}>절약하기</span>!</StyledSmallMent>
             </div>
-            <Link to='/login' className='flex items-center justify-center rounded-[20px] w-[76px] h-[41px] self-center' style={{backgroundColor: '#EBDBFF'}}>SKIP</Link>
+            <Link to='/login' className='flex items-center justify-center rounded-[20px] w-[76px] h-[41px] self-center' style={{backgroundColor: COLOR.purple2}}>SKIP</Link>
           </div>
         </SwiperSlide>
 
@@ -156,7 +156,7 @@ export default OnboardingPage
 const StyledOnboardingMent = styled.div`
   font: ${FONT.largetitleB23}
 `
-const StyledSmallMent = styled.div`
+const StyledSmallMent = styled.p`
   font: ${FONT.body1M17}
 `
 const StyledBubbleText = styled.div`
