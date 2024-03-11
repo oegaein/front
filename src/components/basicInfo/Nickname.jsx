@@ -8,6 +8,7 @@ import FONT from '@styles/fonts';
 const Nickname = ({ onGetValue, setButton }) => {
 	const [input, setInput] = useState('');
 	const [duplicated, setDuplicated] = useState(true);
+	const [alertMsg, setAlertMsg] = useState('');
 
 	useEffect(() => {
 		setDuplicated(true);
@@ -39,14 +40,34 @@ const Nickname = ({ onGetValue, setButton }) => {
 		}
 	};
 
+	const validateNickname = (nickname) => {
+		const speicalCH = /[!@#$%^&*(),.?":{}|<>]/;
+		const isValidLength = nickname.length >= 2 && nickname.length <= 8;
+
+		if (speicalCH.test(nickname)) {
+			setAlertMsg('특수 문자는 사용이 불가합니다.');
+			return false;
+		} else if (!isValidLength) {
+			setAlertMsg('닉네임은 2~6자여야 합니다');
+			return false;
+		} else {
+			setAlertMsg('');
+			return true;
+		}
+	};
+
 	return (
 		<>
 			<Subtitle>닉네임</Subtitle>
 			<div className="flex pb-1 mb-2 w-full">
-				<BasicInput onChangeValue={handleChangeValue} limitNum={8} />
+				<BasicInput onChangeValue={handleChangeValue} limitNum={6} />
 			</div>
 			<div className="flex justify-between w-full items-center">
-				<UnderMsg>2~8자리의 문자와 숫자 / 특수 문자 사용 불가</UnderMsg>
+				{alertMsg == '' ? (
+					<UnderMsg>특수 문자 사용 불가 / 6자 이내</UnderMsg>
+				) : (
+					<UnderMsg style={{ color: `${COLOR.red}` }}>{alertMsg}</UnderMsg>
+				)}
 				<DuplicateButton onClick={handleDuplicate}>중복확인</DuplicateButton>
 			</div>
 			<div className="h-6 mb-[368px]"></div>
@@ -55,16 +76,6 @@ const Nickname = ({ onGetValue, setButton }) => {
 };
 
 export default Nickname;
-
-const validateNickname = (nickname) => {
-	const speicalCH = /[!@#$%^&*(),.?":{}|<>]/;
-	const isValidLength = nickname.length >= 2 && nickname.length <= 8;
-
-	if (speicalCH.test(nickname) || !isValidLength) {
-		return false;
-	}
-	return true;
-};
 
 const DuplicateButton = styled.button`
 	display: flex;
