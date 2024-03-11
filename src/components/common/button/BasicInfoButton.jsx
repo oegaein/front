@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import COLOR from '@styles/color';
+import FONT from '@styles/fonts';
 
 const BasicInfoButton = ({ text, path, eventName, disabled }) => {
 	const navigate = useNavigate();
@@ -27,8 +28,8 @@ const BasicInfoButton = ({ text, path, eventName, disabled }) => {
 
 	return (
 		<>
-			<ButtonWrapper onClick={handleClick} text={text} disabled={disabled}>
-				<ButtonText text={text}>{text}</ButtonText>
+			<ButtonWrapper onClick={handleClick} disabled={disabled}>
+				<ButtonText disabled={disabled}>{text}</ButtonText>
 			</ButtonWrapper>
 		</>
 	);
@@ -37,8 +38,7 @@ const BasicInfoButton = ({ text, path, eventName, disabled }) => {
 export default BasicInfoButton;
 
 BasicInfoButton.propTypes = {
-	text: PropTypes.oneOf(['설정 하러 가기', '설정 완료', '알려주고 싶지 않아요'])
-		.isRequired,
+	text: PropTypes.oneOf(['완료', '시작하기', '다음']).isRequired,
 	path: PropTypes.string,
 	eventName: PropTypes.func,
 };
@@ -47,14 +47,15 @@ const ButtonWrapper = styled.button`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	padding: 12px 40px;
-	height: 40px;
+	width: 100%;
+	height: 52px;
 	background-color: ${(props) =>
-		props.disabled ? COLOR.grayDE : COLOR.purpleEB};
-	border-radius: 50px;
+		props.disabled ? COLOR.purple3 : COLOR.purple1};
+	border-radius: 10px;
 	cursor: pointer;
 `;
 
 const ButtonText = styled.span`
-	font-size: 14px;
+	font: ${FONT.buttonSB15};
+	color: ${(props) => (props.disabled ? COLOR.black : COLOR.white)};
 `;
