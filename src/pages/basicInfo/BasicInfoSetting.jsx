@@ -27,11 +27,13 @@ const BasicInfoSetting = () => {
 		mbti: '',
 		sleephabits: '',
 		lifepattern: '',
-		smoking: false,
+		smoking: null,
 		cleaning: '',
 		outing: '',
 		sound: '',
 	});
+
+	console.log(info);
 
 	const step = [
 		{ id: 1, step: 'nickname', title: '닉네임을 입력해 주세요' },
@@ -70,7 +72,13 @@ const BasicInfoSetting = () => {
 			studentId: value.studentId,
 			birth: value.birth,
 		}));
-		setActiveButton(false);
+	};
+
+	const handleIntroduce = (value) => {
+		setInfo((prevInfo) => ({
+			...prevInfo,
+			introduce: value,
+		}));
 	};
 
 	return (
@@ -99,7 +107,12 @@ const BasicInfoSetting = () => {
 					{count === 2 && (
 						<Profile onGetValue={handleProfile} setButton={setActiveButton} />
 					)}
-					{count === 3 && <Introduce />}
+					{count === 3 && (
+						<Introduce
+							onGetValue={handleIntroduce}
+							setButton={setActiveButton}
+						/>
+					)}
 					{count === 4 && <Mbti />}
 					{count === 5 && <Sleephabits />}
 					{count === 6 && <Lifepattern />}
