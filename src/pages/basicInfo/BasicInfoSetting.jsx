@@ -97,6 +97,13 @@ const BasicInfoSetting = () => {
 		}));
 	};
 
+	const handleLifepattern = (value) => {
+		setInfo((prevInfo) => ({
+			...prevInfo,
+			lifepattern: value,
+		}));
+	};
+
 	return (
 		<>
 			<SettingStyle>
@@ -148,7 +155,12 @@ const BasicInfoSetting = () => {
 									setButton={setActiveButton}
 								/>
 							)}
-							{count === 7 && <Lifepattern />}
+							{count === 7 && (
+								<Lifepattern
+									onGetValue={handleLifepattern}
+									setButton={setActiveButton}
+								/>
+							)}
 							{count === 8 && <Smoking />}
 							{count === 9 && <Cleaning />}
 							{count === 10 && <Outing />}
