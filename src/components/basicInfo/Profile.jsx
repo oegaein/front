@@ -71,7 +71,7 @@ const Profile = ({ onGetValue, setButton }) => {
 									name="gender"
 									value={item}
 								/>
-								<img src={item.img} className="mb-3" />
+								<img src={item.img} alt={`${item}_img`} className="mb-3" />
 								{item.id}
 							</label>
 						</GenderBox>
