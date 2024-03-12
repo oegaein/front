@@ -9,12 +9,15 @@ const Nickname = ({ onGetValue, setButton }) => {
 	const [input, setInput] = useState('');
 	const [duplicated, setDuplicated] = useState(true);
 	const [alertMsg, setAlertMsg] = useState('');
+	console.log(duplicated);
 
 	const handleChangeValue = (nickname) => {
 		setInput(nickname);
-		if (!validateNickname(nickname) || duplicated) {
+		if (!validateNickname(nickname) || !duplicated) {
+			console.log('1');
 			setButton(true);
 		} else {
+			console.log('2');
 			onGetValue(nickname);
 			setButton(false);
 		}
@@ -27,6 +30,7 @@ const Nickname = ({ onGetValue, setButton }) => {
 			if (result) {
 				setDuplicated(false);
 				alert('사용 가능한 닉네임입니다!');
+				onGetValue(input);
 				setButton(false);
 			} else {
 				setDuplicated(true);
