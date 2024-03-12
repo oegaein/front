@@ -132,7 +132,9 @@ const BasicInfoSetting = () => {
 									setButton={setActiveButton}
 								/>
 							)}
-							{count === 5 && <Mbti onGetValue={handleMbti} />}
+							{count === 5 && (
+								<Mbti onGetValue={handleMbti} setButton={setActiveButton} />
+							)}
 							{count === 6 && <Sleephabits />}
 							{count === 7 && <Lifepattern />}
 							{count === 8 && <Smoking />}
