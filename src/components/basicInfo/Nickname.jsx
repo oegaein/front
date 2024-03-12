@@ -2,17 +2,13 @@ import { Subtitle, UnderMsg } from '@styles/basicInfo/Text';
 import { BasicInput } from './BasicSettingInput';
 import COLOR from '@styles/color';
 import styled from 'styled-components';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import FONT from '@styles/fonts';
 
 const Nickname = ({ onGetValue, setButton }) => {
 	const [input, setInput] = useState('');
 	const [duplicated, setDuplicated] = useState(true);
 	const [alertMsg, setAlertMsg] = useState('');
-
-	useEffect(() => {
-		setDuplicated(true);
-	}, [input]);
 
 	const handleChangeValue = (nickname) => {
 		setInput(nickname);
@@ -63,7 +59,7 @@ const Nickname = ({ onGetValue, setButton }) => {
 				<BasicInput onChangeValue={handleChangeValue} limitNum={6} />
 			</div>
 			<div className="flex justify-between w-full items-center">
-				{alertMsg == '' ? (
+				{alertMsg === '' ? (
 					<UnderMsg>특수 문자 사용 불가 / 6자 이내</UnderMsg>
 				) : (
 					<UnderMsg style={{ color: `${COLOR.red}` }}>{alertMsg}</UnderMsg>
