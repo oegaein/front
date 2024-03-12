@@ -20,3 +20,27 @@ export const Input = styled.input`
 		outline: 1px solid ${COLOR.purple1};
 	}
 `;
+
+export const RadioContainerStyle = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-end;
+	width: ${(props) => props.width || 'auto'};
+	height: ${(props) => props.height || 'auto'};
+	padding: 10px;
+	background-color: ${(props) => (props.checked ? COLOR.purple3 : COLOR.white)};
+	border: ${(props) => (props.checked ? 'none' : `1px solid ${COLOR.gray100}`)};
+	border-radius: 10px;
+	cursor: pointer;
+
+	input[type='radio'] {
+		display: none;
+	}
+
+	> label p {
+		font: ${FONT.body5M15};
+		cursor: pointer;
+		color: ${COLOR.blue};
+	}
+`;

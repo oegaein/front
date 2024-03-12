@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { DropdownWrapper } from '@common/dropdown/BasicDropdown';
-import { Input } from '@styles/basicInfo/Input';
+import { Input, RadioContainerStyle } from '@styles/basicInfo/Input';
 
 //
 export const BasicInput = ({ onChangeValue, limitNum }) => {
@@ -72,12 +71,40 @@ export const NumInput = ({ setSelectedBirth }) => {
 };
 
 //
-export const RadioInput = () => {
+export const RadioInput = ({
+	type,
+	checked,
+	width,
+	height,
+	children,
+	onSelect,
+}) => {
+	const handleClick = (value) => {
+		onSelect(value);
+	};
+
 	return (
 		<>
-			<div>RadioInput</div>
+			<RadioContainerStyle
+				onClick={() => handleClick(type)}
+				checked={checked}
+				width={width}
+				height={height}
+			>
+				<label>
+					<input type="radio" value={type} />
+					{children}
+				</label>
+			</RadioContainerStyle>
 		</>
 	);
+};
+
+RadioInput.propTypes = {
+	width: PropTypes.string.isRequired,
+	height: PropTypes.string.isRequired,
+	children: PropTypes.node.isRequired,
+	onSelect: PropTypes.func.isRequired,
 };
 
 //
