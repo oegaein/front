@@ -2,6 +2,9 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import BackIcon from '@assets/images/common/BackIcon.svg';
+import styled from 'styled-components';
+import FONT from '@styles/fonts';
+import COLOR from '@styles/color';
 
 const SettingHeader = ({ backPath, eventName, rightBtn }) => {
 	const navigate = useNavigate();
@@ -27,7 +30,7 @@ const SettingHeader = ({ backPath, eventName, rightBtn }) => {
 				<button onClick={handleBackButton}>
 					<img src={BackIcon} />
 				</button>
-				{rightBtn && <button onClick={handleRightButton}></button>}
+				{rightBtn && <SkipBtn onClick={handleRightButton}>SKIP</SkipBtn>}
 			</div>
 		</>
 	);
@@ -40,3 +43,8 @@ SettingHeader.propTypes = {
 	eventName: PropTypes.func,
 	rightBtn: PropTypes.func,
 };
+
+const SkipBtn = styled.button`
+	font: ${FONT.body5M15};
+	color: ${COLOR.purple1};
+`;
