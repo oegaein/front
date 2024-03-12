@@ -1,3 +1,5 @@
+import Lottie from 'lottie-react';
+import { LifeStyleLandingLottie } from '@assets/index';
 import COLOR from '@styles/color';
 import FONT from '@styles/fonts';
 import React from 'react';
@@ -15,6 +17,8 @@ const LifeStyleLanding = () => {
 					나와 잘 맞는 룸메를 찾을 확률이 올라가요!
 				</p>
 				<img src={LifeStyleLandingImg} />
+				<Lottie animationData={LifeStyleLandingLottie} />
+				<div className="w-full h-[40px]"></div>
 			</Container>
 		</>
 	);
