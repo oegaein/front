@@ -21,7 +21,7 @@ export const Input = styled.input`
 	}
 `;
 
-export const RadioContainerStyle = styled.div`
+export const ContainerStyle = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -35,6 +35,10 @@ export const RadioContainerStyle = styled.div`
 	cursor: pointer;
 
 	input[type='radio'] {
+		display: none;
+	}
+
+	input[type='checkbox'] {
 		display: none;
 	}
 

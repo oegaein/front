@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Input, RadioContainerStyle } from '@styles/basicInfo/Input';
+import { Input, ContainerStyle } from '@styles/basicInfo/Input';
 
 //
 export const BasicInput = ({ onChangeValue, limitNum }) => {
@@ -85,7 +85,7 @@ export const RadioInput = ({
 
 	return (
 		<>
-			<RadioContainerStyle
+			<ContainerStyle
 				onClick={() => handleClick(type)}
 				checked={checked}
 				width={width}
@@ -95,7 +95,7 @@ export const RadioInput = ({
 					<input type="radio" value={type} />
 					{children}
 				</label>
-			</RadioContainerStyle>
+			</ContainerStyle>
 		</>
 	);
 };
@@ -108,10 +108,31 @@ RadioInput.propTypes = {
 };
 
 //
-export const CheckboxInput = () => {
+export const CheckboxInput = ({
+	item,
+	width,
+	height,
+	children,
+	onSelect,
+	checked,
+}) => {
+	const handleClick = (value) => {
+		onSelect(value);
+	};
 	return (
 		<>
-			<div>CheckboxInput</div>
+			<ContainerStyle
+				style={{ justifyContent: 'center' }}
+				onClick={() => handleClick(item)}
+				checked={checked}
+				width={width}
+				height={height}
+			>
+				<label>
+					<input type="checkbox" />
+					{children}
+				</label>
+			</ContainerStyle>
 		</>
 	);
 };

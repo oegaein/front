@@ -90,6 +90,13 @@ const BasicInfoSetting = () => {
 		}));
 	};
 
+	const handleSleephabits = (value) => {
+		setInfo((prevInfo) => ({
+			...prevInfo,
+			sleephabits: value,
+		}));
+	};
+
 	return (
 		<>
 			<SettingStyle>
@@ -135,7 +142,12 @@ const BasicInfoSetting = () => {
 							{count === 5 && (
 								<Mbti onGetValue={handleMbti} setButton={setActiveButton} />
 							)}
-							{count === 6 && <Sleephabits />}
+							{count === 6 && (
+								<Sleephabits
+									onGetValue={handleSleephabits}
+									setButton={setActiveButton}
+								/>
+							)}
 							{count === 7 && <Lifepattern />}
 							{count === 8 && <Smoking />}
 							{count === 9 && <Cleaning />}
