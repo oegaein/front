@@ -42,7 +42,10 @@ const Mbti = ({ onGetValue, setButton }) => {
 	];
 
 	useEffect(() => {
-		onGetValue(convertToMbtiString(mbti));
+		const returnValue = convertToMbtiString(mbti);
+		if (returnValue.length === 4) {
+			onGetValue(returnValue);
+		}
 	}, [mbti]);
 
 	const handleSelect = (category, type) => {
