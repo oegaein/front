@@ -111,6 +111,13 @@ const BasicInfoSetting = () => {
 		}));
 	};
 
+	const handleCleaning = (value) => {
+		setInfo((prevInfo) => ({
+			...prevInfo,
+			cleaning: value,
+		}));
+	};
+
 	return (
 		<>
 			<SettingStyle>
@@ -174,7 +181,12 @@ const BasicInfoSetting = () => {
 									setButton={setActiveButton}
 								/>
 							)}
-							{count === 9 && <Cleaning />}
+							{count === 9 && (
+								<Cleaning
+									onGetValue={handleCleaning}
+									setButton={setActiveButton}
+								/>
+							)}
 							{count === 10 && <Outing />}
 							{count === 11 && <Sound />}
 						</section>
