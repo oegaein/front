@@ -12,7 +12,12 @@ const Nickname = ({ onGetValue, setButton }) => {
 
 	const handleChangeValue = (nickname) => {
 		setInput(nickname);
-		if (!validateNickname(nickname) || !duplicated) {
+		setDuplicated(true);
+		handleButton(nickname);
+	};
+
+	const handleButton = (nickname) => {
+		if (!validateNickname(nickname) || duplicated) {
 			setButton(true);
 		} else {
 			onGetValue(nickname);
@@ -21,7 +26,6 @@ const Nickname = ({ onGetValue, setButton }) => {
 	};
 
 	const handleDuplicate = () => {
-		// 중복 검사해서 중복이면 true, 중복 아니면 false 반환.
 		const result = true;
 		if (validateNickname(input)) {
 			if (result) {
