@@ -118,6 +118,13 @@ const BasicInfoSetting = () => {
 		}));
 	};
 
+	const handleOuting = (value) => {
+		setInfo((prevInfo) => ({
+			...prevInfo,
+			outing: value,
+		}));
+	};
+
 	return (
 		<>
 			<SettingStyle>
@@ -187,7 +194,9 @@ const BasicInfoSetting = () => {
 									setButton={setActiveButton}
 								/>
 							)}
-							{count === 10 && <Outing />}
+							{count === 10 && (
+								<Outing onGetValue={handleOuting} setButton={setActiveButton} />
+							)}
 							{count === 11 && <Sound />}
 						</section>
 					</>
