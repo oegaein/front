@@ -128,10 +128,8 @@ export const CheckboxInput = ({
 				width={width}
 				height={height}
 			>
-				<label>
-					<input type="checkbox" />
-					{children}
-				</label>
+				<input type="checkbox" />
+				{children}
 			</ContainerStyle>
 		</>
 	);
