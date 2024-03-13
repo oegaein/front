@@ -157,7 +157,7 @@ const BasicInfoSetting = () => {
 						{count >= 1 && count <= 3 ? (
 							<Header backPath={false} eventName={handleBack} />
 						) : (
-							<SettingHeader
+							<Header
 								backPath={false}
 								eventName={handleBack}
 								rightBtn={handleSkip}
