@@ -4,6 +4,7 @@
     height: 852px;
     margin: 0 auto;
     font-family: 'Pretendard';
+    position: relative;
 }
 
 @font-face {
