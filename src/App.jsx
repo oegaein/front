@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LandingPage from '@pages/LandingPage';
 import OnboardingPage from '@pages/OnboardingPage';
 import BasicInfoSetting from '@pages/basicInfo/BasicInfoSetting';
+import Post from '@pages/post/Post';
 
 function Router() {
 	return (
@@ -14,6 +15,7 @@ function Router() {
 						<Route path="/" element={<LandingPage />} />
 						<Route path="/onboarding" element={<OnboardingPage />} />
 						<Route path="/setting" element={<BasicInfoSetting />} />
+						<Route path="/post" element={<Post />} />
 					</Routes>
 				</BrowserRouter>
 			</React.StrictMode>
