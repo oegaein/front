@@ -13,7 +13,7 @@ import COLOR from '@styles/color';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import FONT from '@styles/fonts';
-import SettingHeader from '@common/header/SettingHeader';
+import Header from '@common/header/Header';
 import LifeStyleLanding from './LifeStyleLanding';
 
 const BasicInfoSetting = () => {
@@ -155,7 +155,7 @@ const BasicInfoSetting = () => {
 				) : (
 					<>
 						{count >= 1 && count <= 3 ? (
-							<SettingHeader backPath={false} eventName={handleBack} />
+							<Header backPath={false} eventName={handleBack} />
 						) : (
 							<SettingHeader
 								backPath={false}

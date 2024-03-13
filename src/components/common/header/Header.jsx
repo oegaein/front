@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import FONT from '@styles/fonts';
 import COLOR from '@styles/color';
 
-const SettingHeader = ({ backPath, eventName, rightBtn }) => {
+const Header = ({ backPath, eventName, rightBtn }) => {
 	const navigate = useNavigate();
 
 	const handleBackButton = (e) => {
@@ -36,9 +36,9 @@ const SettingHeader = ({ backPath, eventName, rightBtn }) => {
 	);
 };
 
-export default SettingHeader;
+export default Header;
 
-SettingHeader.propTypes = {
+Header.propTypes = {
 	backPath: PropTypes.bool.isRequired,
 	eventName: PropTypes.func,
 	rightBtn: PropTypes.func,
