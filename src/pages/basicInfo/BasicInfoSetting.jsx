@@ -34,8 +34,6 @@ const BasicInfoSetting = () => {
 		sound: '',
 	});
 
-	console.log(info);
-
 	const step = [
 		{ id: 1, btn: '다음', title: '닉네임을 입력해 주세요' },
 		{ id: 2, btn: '다음', title: '프로필을 완성해 주세요' },
@@ -154,16 +152,18 @@ const BasicInfoSetting = () => {
 					<LifeStyleLanding />
 				) : (
 					<>
-						{count >= 1 && count <= 3 ? (
-							<Header backPath={false} eventName={handleBack} />
-						) : (
-							<Header
-								backPath={false}
-								eventName={handleBack}
-								rightBtn={handleSkip}
-							/>
-						)}
-						<section className="flex flex-col items-center mb-6">
+						<div className="w-full mb-5">
+							{count >= 1 && count <= 3 ? (
+								<Header backEvent={handleBack} />
+							) : (
+								<Header
+									backEvent={handleBack}
+									rightContent={'SKIP'}
+									rightEvent={handleSkip}
+								/>
+							)}
+						</div>
+						<section className="flex flex-col items-center mb-8">
 							<div className="countbox">{count}</div>
 							<p className="category">
 								{count >= 1 && count <= 3 ? '기본 정보' : '라이프 스타일'}
@@ -244,7 +244,7 @@ const SettingStyle = styled.div`
 	justify-content: center;
 	align-items: center;
 	width: 100%;
-	padding: 62px 30px 45px 30px;
+	padding: 50px 30px 45px 30px;
 
 	.countbox {
 		margin-bottom: 10px;

@@ -6,31 +6,40 @@ import styled from 'styled-components';
 import FONT from '@styles/fonts';
 import COLOR from '@styles/color';
 
-const Header = ({ backPath, eventName, rightBtn }) => {
+const Header = ({
+	backPath,
+	backEvent,
+	rightContent,
+	rightEvent,
+	children,
+}) => {
 	const navigate = useNavigate();
 
 	const handleBackButton = (e) => {
 		if (backPath) {
 			navigate(-1);
 		} else {
-			if (eventName) {
-				eventName(e);
+			if (backEvent) {
+				backEvent(e);
 			}
 		}
 	};
 
 	const handleRightButton = (e) => {
-		if (eventName) {
-			rightBtn(e);
+		if (rightEvent) {
+			rightEvent(e);
 		}
 	};
 	return (
 		<>
-			<div className="flex justify-between w-full mb-[30px]">
+			<div className="flex justify-between w-full mt-5">
 				<button onClick={handleBackButton}>
 					<img src={BackIcon} />
 				</button>
-				{rightBtn && <SkipBtn onClick={handleRightButton}>SKIP</SkipBtn>}
+				{children && children}
+				{rightEvent && (
+					<SkipBtn onClick={handleRightButton}>{rightContent}</SkipBtn>
+				)}
 			</div>
 		</>
 	);
@@ -39,9 +48,11 @@ const Header = ({ backPath, eventName, rightBtn }) => {
 export default Header;
 
 Header.propTypes = {
-	backPath: PropTypes.bool.isRequired,
-	eventName: PropTypes.func,
-	rightBtn: PropTypes.func,
+	backPath: PropTypes.string,
+	backEvent: PropTypes.func,
+	rightContent: PropTypes.string,
+	rightEvent: PropTypes.func,
+	children: PropTypes.node,
 };
 
 const SkipBtn = styled.button`
