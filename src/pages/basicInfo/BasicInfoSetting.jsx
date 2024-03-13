@@ -60,6 +60,21 @@ const BasicInfoSetting = () => {
 		setActiveButton(true);
 	};
 
+	const handleSkip = () => {
+		setCount((prev) => prev + 1);
+		setActiveButton(true);
+		const currentStep = step.find((item) => item.id === count);
+		if (currentStep) {
+			const { id } = currentStep;
+			if (info.hasOwnProperty(id)) {
+				setInfo((prevInfo) => ({
+					...prevInfo,
+					[id]: '',
+				}));
+			}
+		}
+	};
+
 	const handleNickname = (value) => {
 		setInfo((prevInfo) => ({
 			...prevInfo,
@@ -145,7 +160,7 @@ const BasicInfoSetting = () => {
 							<SettingHeader
 								backPath={false}
 								eventName={handleBack}
-								rightBtn={handleNext}
+								rightBtn={handleSkip}
 							/>
 						)}
 						<section className="flex flex-col items-center mb-6">
