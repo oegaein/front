@@ -97,6 +97,13 @@ const BasicInfoSetting = () => {
 		}));
 	};
 
+	const handleSmoking = (value) => {
+		setInfo((prevInfo) => ({
+			...prevInfo,
+			smoking: value,
+		}));
+	};
+
 	const handleLifepattern = (value) => {
 		setInfo((prevInfo) => ({
 			...prevInfo,
@@ -161,7 +168,12 @@ const BasicInfoSetting = () => {
 									setButton={setActiveButton}
 								/>
 							)}
-							{count === 8 && <Smoking />}
+							{count === 8 && (
+								<Smoking
+									onGetValue={handleSmoking}
+									setButton={setActiveButton}
+								/>
+							)}
 							{count === 9 && <Cleaning />}
 							{count === 10 && <Outing />}
 							{count === 11 && <Sound />}
