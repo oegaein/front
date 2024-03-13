@@ -125,6 +125,13 @@ const BasicInfoSetting = () => {
 		}));
 	};
 
+	const handleSound = (value) => {
+		setInfo((prevInfo) => ({
+			...prevInfo,
+			sound: value,
+		}));
+	};
+
 	return (
 		<>
 			<SettingStyle>
@@ -197,7 +204,9 @@ const BasicInfoSetting = () => {
 							{count === 10 && (
 								<Outing onGetValue={handleOuting} setButton={setActiveButton} />
 							)}
-							{count === 11 && <Sound />}
+							{count === 11 && (
+								<Sound onGetValue={handleSound} setButton={setActiveButton} />
+							)}
 						</section>
 					</>
 				)}
