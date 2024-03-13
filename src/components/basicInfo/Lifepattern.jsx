@@ -72,7 +72,7 @@ const Lifepattern = ({ onGetValue, setButton }) => {
 
 export default Lifepattern;
 
-const Content = styled.div`
+export const Content = styled.div`
 	display: flex;
 	flex-direction: column;
 	padding: 14px;
