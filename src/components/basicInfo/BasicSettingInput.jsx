@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Input, ContainerStyle } from '@styles/basicInfo/Input';
+import Xbutton from '@assets/images/common/Xbutton.svg';
 
 //
 export const BasicInput = ({ onChangeValue, limitNum }) => {
@@ -14,14 +15,26 @@ export const BasicInput = ({ onChangeValue, limitNum }) => {
 		}
 	};
 
+	const handleClear = () => {
+		setValue('');
+		onChangeValue('');
+	};
+
 	return (
 		<>
-			<input
-				className="w-full pl-[15px] pb-[11px] border-b border-solid border-[#DEDEDE] focus:outline-none"
-				type="text"
-				value={value}
-				onChange={handleChange}
-			/>
+			<div className="flex w-full border-b border-solid border-[#DEDEDE]">
+				<input
+					className="w-full pl-[15px] pb-[11px] focus:outline-none"
+					type="text"
+					value={value}
+					onChange={handleChange}
+				/>
+				{value !== '' && (
+					<button onClick={handleClear}>
+						<img src={Xbutton} alt="button" />
+					</button>
+				)}
+			</div>
 		</>
 	);
 };
