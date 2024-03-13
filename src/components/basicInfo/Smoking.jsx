@@ -4,8 +4,6 @@ import { SmokeLottie } from '@assets/index';
 import SmokingImg from '@assets/images/basicInfo/Smoking.svg';
 import NotSmokingImg from '@assets/images/basicInfo/NotSmoking.svg';
 import { RadioInput } from './BasicSettingInput';
-import styled from 'styled-components';
-import FONT from '@styles/fonts';
 import { Content } from './Lifepattern';
 
 const Smoking = ({ onGetValue, setButton }) => {
