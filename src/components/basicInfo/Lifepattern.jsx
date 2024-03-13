@@ -75,6 +75,7 @@ export default Lifepattern;
 export const Content = styled.div`
 	display: flex;
 	flex-direction: column;
+	align-items: center;
 	padding: 14px;
 
 	.title {
@@ -83,5 +84,6 @@ export const Content = styled.div`
 	.desc {
 		font: ${FONT.caption3M12};
 		margin-bottom: 30px;
+		white-space: pre-wrap;
 	}
 `;
