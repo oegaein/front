@@ -75,6 +75,7 @@ export const NumInput = ({ setSelectedBirth }) => {
 		<>
 			<Input
 				type="text"
+				inputmode="numeric"
 				placeholder="YYYY-MM-DD"
 				value={value}
 				onChange={handleInputChange}
