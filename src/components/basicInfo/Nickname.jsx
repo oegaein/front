@@ -9,15 +9,12 @@ const Nickname = ({ onGetValue, setButton }) => {
 	const [input, setInput] = useState('');
 	const [duplicated, setDuplicated] = useState(true);
 	const [alertMsg, setAlertMsg] = useState('');
-	console.log(duplicated);
 
 	const handleChangeValue = (nickname) => {
 		setInput(nickname);
 		if (!validateNickname(nickname) || !duplicated) {
-			console.log('1');
 			setButton(true);
 		} else {
-			console.log('2');
 			onGetValue(nickname);
 			setButton(false);
 		}
