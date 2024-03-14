@@ -44,7 +44,7 @@ BasicInput.propTypes = {
 };
 
 //
-export const NumInput = ({ setSelectedBirth }) => {
+export const NumInput = ({ setSelected }) => {
 	const [value, setValue] = useState('');
 
 	const handleInputChange = (e) => {
@@ -65,9 +65,9 @@ export const NumInput = ({ setSelectedBirth }) => {
 		setValue(val);
 
 		if (regex.test(val)) {
-			setSelectedBirth(val);
+			setSelected(val);
 		} else {
-			setSelectedBirth(null);
+			setSelected(null);
 		}
 	};
 
