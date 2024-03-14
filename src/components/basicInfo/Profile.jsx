@@ -86,7 +86,7 @@ const Profile = ({ onGetValue, setButton }) => {
 				/>
 				<Subtitle>생년월일</Subtitle>
 				{/* <DatePickerFunc setSelectedBirth={setSelectedBirth} /> */}
-				<NumInput setSelectedBirth={setSelectedBirth} />
+				<NumInput setSelected={setSelectedBirth} />
 			</div>
 		</>
 	);
