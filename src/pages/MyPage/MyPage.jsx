@@ -1,8 +1,8 @@
 import React, {useState} from 'react'
-// 컴포넌트
+// components
 import RoommateReviewList from '../../components/UserPage/RoommateReviewList'
 
-// 이미지
+// images
 import Profile from '../../assets/images/profile-image.svg'
 import UserInfoAndLifeStyles from 'components/UserPage/UserInfoAndLifeStyles';
 import ProfileImageContainer from 'components/UserPage/ProfileImageContainer';
@@ -15,7 +15,7 @@ const MyPage = () => {
   return (
     <div className='h-full'>
       <ProfileImageContainer profileImage={profileImage}/>
-      <div className='flex flex-col bg-[#F3F5F7] gap-[10px] border-b border-[#DEDEDE]'>
+      <div className='flex flex-col mt-[121px] bg-[#F3F5F7] gap-[10px] border-b border-[#DEDEDE]'>
         <UserInfoAndLifeStyles type={'mypage'}/>
         <RoommateAndDeliveryStatus/>
         <BookmarkList/>

@@ -13,7 +13,7 @@ const RoommateAndDeliveryStatus = () => {
       <div>
         <div className='border-b border-[#DEDEDE] pt-[30px]'>
           <div className='flex justify-between px-[30px] mb-[18px]'>
-            <h1 className='font-bold text-left'>룸메이트 신청 현황</h1>
+            <h1 className='font-bold text-left'>나에게 온 룸메이트 신청</h1>
             <div className='flex'>
               <button>
                 <img src={Menu} alt='menu-button'/>
