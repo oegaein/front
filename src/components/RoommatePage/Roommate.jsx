@@ -1,38 +1,69 @@
 import React from 'react'
-import Star from '../../assets/images/star.svg'
+import styled from 'styled-components'
+
+//styles
+import FONT from '@styles/fonts'
+import COLOR from '@styles/color'
+
+//images
 import Yoo from '../../assets/images/유재석.svg'
-import DotsPurple from '../../assets/images/dots-purple.svg'
 
 const Roommate = () => {
   return (
-    <div className='bg-white rounded-[20px] p-[18px] pr-[12px] relative'>
-      <div className='flex justify-between text-[12px] mb-[5px]'>
-        <div className='flex items-center'>
-          <span className='text-[#7F6FD8]'>룸메 평점</span>
-          <div className='flex ml-[5px] gap-0.5'>
-            <img src={Star}/>
-            <img src={Star}/>
-            <img src={Star}/>
-            <img src={Star}/>
-            <img src={Star}/>
+    <SettingStyle className={`flex bg-white border border-[${COLOR.gray100}] rounded-[20px] p-[14px]`}>
+      <img className='w-[100px] h-[100px] mr-[12px]' src={Yoo}/>
+      <div className='w-full flex flex-col justify-between'>
+        <div>
+          <div className='flex items-center justify-between'>
+            <div>
+              <span className='room mr-[10px]'>룸메 평점</span>
+              <span className='mates-number'>모집인원 1명</span>
+            </div>
+            <span className='dday'>D-4</span>
+          </div>
+          <div className='text-left mt-[7px]'>
+            <p className='roommate-title'>예민하지 않은 분 찾아요</p>
+            <div>
+              <span className='name mr-[6px]'>허윤진</span>
+              <span className='gender'>여성</span>
+            </div>
           </div>
         </div>
-        <div className='flex'>
-          <span className='text-[#BEBBCF] text-[13px] mr-[9px]'>D-4</span>
-          <img src={DotsPurple} alt='사용자 신고 및 차단'/>
+        <div className='text-right'>
+          <a className='register-btn'>매칭신청</a>
         </div>
       </div>
-      <p className='text-left text-[14px] mb-[7px]'>신긱 룸메 찾습니다.</p>
-      <div className='flex items-center pl-[10px]'>
-        <img className='w-[86px] h-[86px]' src={Yoo}/>
-        <div className='ml-[17px] text-[15px] text-left'>
-          <p className='mb-[8px]'>컴퓨터공학과</p>
-          <p className='text-[13px]'>20학번 유재석</p>
-        </div>
-      </div>
-      <p className='text-right text-[11px] text-[#7F6FD8] absolute bottom-[13px] right-[20px]'>매칭신청</p>
-    </div>
+    </SettingStyle>
   )
 }
 
 export default Roommate
+
+const SettingStyle = styled.div`
+  .room {
+    font-size: ${FONT.caption2M14};
+    color: ${COLOR.purple1};
+  }
+  .mates-number {
+    font-size: ${FONT.caption3M12};
+  }
+  .dday {
+    font-size: ${FONT.caption2M14};
+    color: ${COLOR.gray500};
+  }
+  .roommate-title {
+    font-size: ${FONT.caption1SB14};
+  }
+  .name {
+    font-size: ${FONT.caption2M14};
+  }
+  .gender {
+    font-size: ${FONT.caption3M12};
+    color: ${COLOR.gray500};
+  }
+
+  .register-btn {
+    font-size: ${FONT.caption2M14};
+    color: ${COLOR.purple1};
+  }
+`
