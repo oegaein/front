@@ -15,7 +15,7 @@ import MypageIconClicked from '../../assets/images/user-icon-clicked.svg'
 const Navbar = () => {
   const location = useLocation()
   return (
-    <div className='z-10 flex sticky bottom-0 right-0 left-0 justify-around items-center h-[66px] bg-white text-[#707070] text-[10px] w-full'>
+    <div className='z-10 flex sticky bottom-0 right-0 left-0 justify-around items-center h-[76px] bg-white text-[#707070] text-[10px] w-full'>
           <Link to='#' className='flex flex-col items-center'>
             <div className='h-[27px]'>
               <img src={location.pathname === '/chat' ? ChatIconClicked : ChatIcon} alt='채팅 페이지로 가기'/>
