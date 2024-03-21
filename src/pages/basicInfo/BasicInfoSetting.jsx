@@ -1,4 +1,4 @@
-import BasicInfoButton from '@common/button/BasicInfoButton';
+import BasicButton from '@common/button/BasicButton';
 import Cleaning from '@components/basicInfo/Cleaning';
 import Introduce from '@components/basicInfo/Introduce';
 import Lifepattern from '@components/basicInfo/Lifepattern';
@@ -225,7 +225,7 @@ const BasicInfoSetting = () => {
 						</section>
 					</>
 				)}
-				<BasicInfoButton
+				<BasicButton
 					text={step[count - 1].btn}
 					path={count === 11 ? '/home' : ''}
 					eventName={handleNext}
