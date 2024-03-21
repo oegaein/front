@@ -33,7 +33,7 @@ const Chat = () => {
 				</div>
 				<div className="flex flex-col p-[25px]">
 					{chatList.map((item, index) => (
-						<Link to={'/chat/chatroom'}>
+						<Link key={index} to={'/chat/chatroom'}>
 							<div className="flex h-[65px] mb-[14px]">
 								<div className="mr-[10px] w-[65px] h-[65px] rounded-[50%] bg-gray-100">
 									<img src={item.img} width={'65px'} height={'65px'} />
