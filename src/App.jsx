@@ -5,6 +5,7 @@ import LandingPage from '@pages/LandingPage';
 import OnboardingPage from '@pages/OnboardingPage';
 import BasicInfoSetting from '@pages/basicInfo/BasicInfoSetting';
 import Post from '@pages/post/Post';
+import Chat from '@pages/chat/Chat';
 
 function Router() {
 	return (
@@ -15,7 +16,9 @@ function Router() {
 						<Route path="/" element={<LandingPage />} />
 						<Route path="/onboarding" element={<OnboardingPage />} />
 						<Route path="/setting" element={<BasicInfoSetting />} />
-						<Route path="/post" element={<Post />} />
+						<Route path="/post-roommate" element={<Post />} />
+						<Route path="/chat" element={<Chat />} />
+						<Route path="/chat/chatroom" element={<Chat />} />
 					</Routes>
 				</BrowserRouter>
 			</React.StrictMode>
