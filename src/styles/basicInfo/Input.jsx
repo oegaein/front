@@ -21,6 +21,25 @@ export const Input = styled.input`
 	}
 `;
 
+export const TextArea = styled.textarea`
+	width: 100%;
+	height: 275px;
+	padding: 15px;
+	font: ${FONT.body5M15};
+	color: ${COLOR.black};
+	border-radius: 10px;
+	border: 1px solid ${COLOR.gray100};
+
+	&::placeholder {
+		font: ${FONT.caption2M14};
+		color: ${COLOR.gray400};
+	}
+
+	&:focus {
+		outline: 1px solid ${COLOR.purple1};
+	}
+`;
+
 export const ContainerStyle = styled.div`
 	display: flex;
 	flex-direction: column;
