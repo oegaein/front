@@ -58,7 +58,7 @@ const HomePage = () => {
               <div className='flex justify-between'>
                 <span className='dormitory-purple'>#공지</span>
                 {/* 데이터 필요 */}
-                <span className='dormitory-time'>2024-02-28</span> 
+                <span className='dormitory-time'>2024-02-28</span>
               </div>
               {/* 데이터 필요 */}
               <a href='#' className='dormitory-title text-ellipsis overflow-hidden whitespace-nowrap hover:underline'>[기숙사 시설 이용 안내]</a>
@@ -66,25 +66,25 @@ const HomePage = () => {
           </Swiper>
           <div className='flex justify-between'>
             <div className=''>
-              <div className={`flex justify-center items-center rounded-[15px] bg-[${COLOR.gray50}] w-[77px] h-[70px]`}>
+              <div className={`icon-btn cursor-pointer flex justify-center items-center rounded-[15px] w-[77px] h-[70px]`}>
                 <img src={News} alt="dormiory news icon"/>
               </div>
               <span className='icon-text'>기숙사 소식</span>
             </div>
             <div>
-              <div className={`flex justify-center items-center rounded-[15px] bg-[${COLOR.gray50}] w-[77px] h-[70px]`}>
+              <div className={`icon-btn cursor-pointer flex justify-center items-center rounded-[15px] w-[77px] h-[70px]`}>
                 <img src={StopWatch} alt="deadline imminent icon"/>
               </div>
               <span className='icon-text'>마감임박</span>
             </div>
             <div>
-              <div className={`flex justify-center items-center rounded-[15px] bg-[${COLOR.gray50}] w-[77px] h-[70px]`}>
+              <div className={`icon-btn cursor-pointer flex justify-center items-center rounded-[15px] w-[77px] h-[70px]`}>
                 <img src={BestFriend} alt="best roommate icon"/>
               </div>
               <span className='icon-text'>베스트 룸메</span>
             </div>
             <div>
-              <div className={`flex justify-center items-center rounded-[15px] bg-[${COLOR.gray50}] w-[77px] h-[70px]`}>
+              <div className={`icon-btn cursor-pointer flex justify-center items-center rounded-[15px] w-[77px] h-[70px]`}>
                 <img src={FoodDelivery} alt="popular delivery icon"/>
               </div>
               <span className='icon-text'>인기배달</span>
@@ -121,6 +121,9 @@ const SettingStyle = styled.div`
   }
   .dormitory-title {
     font-size: ${FONT.body4SB15};
+  }
+  .icon-btn {
+    background-color: ${COLOR.gray50};
   }
   .icon-text {
     font-size: ${FONT.caption3M12};

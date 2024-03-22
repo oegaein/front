@@ -22,7 +22,7 @@ const Roommate = () => {
             <span className='dday'>D-4</span>
           </div>
           <div className='text-left mt-[7px]'>
-            <p className='roommate-title'>예민하지 않은 분 찾아요</p>
+            <p className='roommate-title w-[205px] whitespace-nowrap overflow-hidden text-ellipsis'>예민하지 않은 분 찾아요~~~~~~~~~~~~~~</p>
             <div>
               <span className='name mr-[6px]'>허윤진</span>
               <span className='gender'>여성</span>

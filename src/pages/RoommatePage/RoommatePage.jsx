@@ -1,4 +1,7 @@
 import React, {useState} from 'react'
+import axios from 'axios'
+
+//styles
 import styled from 'styled-components'
 import FONT from '@styles/fonts'
 import COLOR from '@styles/color'
@@ -15,8 +18,16 @@ const RoommatePage = () => {
   const handleChange = (e) => {
     setInput(e.target.value)
   }
+  const fetchMatchingPosts = async () => {
+    try {
+      const response = await axios.get('/api/v1/matchingposts')
+      return response.data
+    } catch (err) {
+      throw err;
+    }
+  }
   return (
-    <SettingStyle className='bg-white flex flex-col gap-[10px] pb-[11px] scroll-smooth'>
+    <SettingStyle className='bg-white flex flex-col gap-[10px] scroll-smooth'>
       <div>
         <SearchAndNotice handleChange={handleChange}/>
         <RoommateSwiperList type={'best'}/>
@@ -36,7 +47,7 @@ const RoommatePage = () => {
             </button>
           </div>
         </div>
-        <div className='flex flex-col gap-[10px] px-[24px]'>
+        <div className='flex flex-col gap-[10px] px-[24px] pb-[11px]'>
           <Roommate/>
           <Roommate/>
           <Roommate/>

@@ -1,5 +1,5 @@
 import React from 'react'
-
+import { useLocation } from 'react-router-dom'
 //styles
 import styled from 'styled-components'
 import FONT from '@styles/fonts'
@@ -9,7 +9,8 @@ import COLOR from '@styles/color'
 import LeftQuote from '@assets/images/left-quote.svg'
 import RightQuote from '@assets/images/right-quote-sign.svg'
 
-const ProfileImageContainer = ({profileImage}) => {
+const ProfileImageContainer = ({type, profileImage}) => {
+  const location = useLocation()
   return (
     <>
       <SettingStyle className={`relative h-[230px] px-[30px] bg-[${COLOR.purple1}]`}>
@@ -27,9 +28,9 @@ const ProfileImageContainer = ({profileImage}) => {
         <div className='profile-container flex justify-center items-center bg-white h-[186px] w-[186px]
         z-10 absolute translate-y-[calc(-50%)] left-[40px] top-[100%] rounded-[50%]'>
           <img className='h-[172px] w-[172px] rounded-[50%]' src={profileImage} alt='profile-image'/>
-          <div className={`profile-perfection z-20 absolute left-[150px] bottom-[14px] w-[45px] h-[45px] flex justify-center items-center rounded-[50%]`}>
+          {type === 'mypage' && <div className={`profile-perfection z-20 absolute left-[150px] bottom-[14px] w-[45px] h-[45px] flex justify-center items-center rounded-[50%]`}>
             80%
-          </div>
+          </div>}
         </div>
 
       </SettingStyle>

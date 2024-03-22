@@ -10,14 +10,14 @@ import COLOR from '@styles/color'
 const BestRoommate = () => {
   return (
     <SettingStyle className={`w-[192px] h-[179px] border border-[${COLOR.gray100}] rounded-[20px] bg-white p-[17px] pb-[13px] ml-[12px]`}>
-      <div className='flex items-center justify-between mb-[12px]'>
+      <div className='flex items-center justify-between mb-[10px]'>
         <span className='room'>A동 4인실</span>
         <span className='dday'>D-7</span>
       </div>
-      <p className='title text-left mb-[13px]'>마음 잘 맞는 룸메 구해요!</p>
+      <p className='title text-left mb-[13px] h-[25px] whitespace-nowrap overflow-hidden text-ellipsis'>마음 잘 맞는 룸메 구해요!</p>
       <div className='flex items-center'>
-        <img src={Yoo} alt='profile image'/>
-        <div className='ml-[10px] text-left'>
+        <img className='h-[60px] w-[60px]' src={Yoo} alt='profile image'/>
+        <div className='my-[auto] ml-[10px] text-left'>
           <p>
             <span className='name mr-[6px]'>유재석</span>
             <span className='gender'>남성</span>
