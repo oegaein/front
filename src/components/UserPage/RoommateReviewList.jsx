@@ -1,22 +1,38 @@
 import React from 'react'
-import More from '../../assets/images/more.svg'
+import { Link } from 'react-router-dom'
+import styled from 'styled-components'
+import FONT from '@styles/fonts'
+import COLOR from '@styles/color'
 import RoommateReview from './RoommateReview'
+
+import Next from '@assets/images/next.svg'
 const RoommateReviews = () => {
   return (
 
-    <div className='relative py-[20px] bg-white'>
-      <div className='mb-[10px]'>
-        <h1 className='px-[33px] text-left font-bold'>받은 룸메이트 후기 2</h1>
-        <button className='absolute top-[20px] right-[22px]'>
-          <img src={More}/>
-        </button>
+    <SettingStyle className='relative bg-white px-[24px]'>
+      <div className='pb-[16px] pt-[24px] flex justify-between items-center'>
+        <h1 className='roommate-review-title'>받은 룸메이트 후기 2</h1>
+        <Link to='/roommate' className='more flex'>
+          더보기
+          <img src={Next} alt='see more icon'/>
+        </Link>
       </div>
       <div>
         <RoommateReview/>
         <RoommateReview/>
       </div>
-    </div>
+    </SettingStyle>
   )
 }
 
 export default RoommateReviews
+
+const SettingStyle = styled.div`
+  .roommate-review-title {
+    font-size: ${FONT.title3SB17};
+  }
+  .more {
+    font-size: ${FONT.caption2M14};
+  }
+
+`

@@ -7,13 +7,13 @@
 .App {
     text-align: center;
     width: 393px;
-    height: 852px;
     margin: 0 auto;
     font-family: 'Pretendard';
-    padding-top: 50px;
 }
 .content {
+    padding-top: 50px;
     min-height: 100vh;
+    padding-bottom: 76px;
 }
 @font-face {
 	font-family: 'Pretendard Variable';

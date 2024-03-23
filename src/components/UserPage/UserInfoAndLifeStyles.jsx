@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import { useLocation } from 'react-router-dom'
 
 //styles
 import styled from 'styled-components'
@@ -20,8 +21,11 @@ import MyPageInfo from './MyPageInfo'
 import UserPageInfo from './UserPageInfo'
 
 
-const UserInfoAndLifeStyles = ({type}) => {
+const UserInfoAndLifeStyles = () => {
   const [rating, setRating] = useState(5)
+  const location = useLocation()
+  const path = location.pathname
+  console.log(path)
   const renderStars = () => {
     let stars = []
     for (let i = 0; i < rating; i++) {
@@ -31,7 +35,7 @@ const UserInfoAndLifeStyles = ({type}) => {
   }
   return (
     <SettingStyle>
-      {type === 'mypage' ? <MyPageInfo renderStars={renderStars}/> : <UserPageInfo/>}
+      {path === '/mypage' ? <MyPageInfo renderStars={renderStars}/> : <UserPageInfo/>}
       <div className='p-[25px]'>
         <h1 className='pb-[19px] text-left font-bold'>성향 및 라이프 스타일</h1>
         <div className='flex justify-between mb-[35px]'>

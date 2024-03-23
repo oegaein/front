@@ -14,11 +14,11 @@ import Next from '../../assets/images/next.svg'
 
 const RoommateSwiperList = ({type}) => {
   const location = useLocation();
-  console.log(location.pathname);
+  const path = location.pathname
 
   return (
     <SettingStyle className='bg-white pb-[24px]'>
-      {type === 'best' ? <BestRoommateTitle path={location.pathname}/> : <NewRoommateTitle/>}
+      {type === 'best' ? <BestRoommateTitle path={path}/> : <NewRoommateTitle/>}
       <Swiper
       spaceBetween={12}
       slidesPerView={2}

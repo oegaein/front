@@ -10,6 +10,8 @@ import HomePage from '@pages/HomePage/HomePage';
 import Navbar from '@components/common/Navbar';
 import MyPage from '@pages/MyPage/MyPage';
 import UserPage from '@pages/UserPage/UserPage';
+import SearchAndNotice from '@common/SearchAndNotice';
+import SearchPage from '@pages/SearchPage/SearchPage';
 
 function App() {
   return (
@@ -17,11 +19,12 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<MainLayout />}>
+            <Route path="home" element={<HomePage />} />
+            <Route path="roommate" element={<RoommatePage />} />
+            <Route path="search" element={<SearchPage />} />
             <Route path="landing" element={<LandingPage />} />
             <Route path="onboarding" element={<OnboardingPage />} />
             <Route path="login" element={<LoginPage />} />
-            <Route path="home" element={<HomePage />} />
-            <Route path="roommate" element={<RoommatePage />} />
             <Route path="mypage" element={<MyPage />} />
             <Route path="user/:id" element={<UserPage/>} />
 						<Route path="/setting" element={<BasicInfoSetting />} />
@@ -30,6 +33,14 @@ function App() {
       </Router>
     </div>
   );
+}
+function IncludeSearchBar() {
+  return (
+    <>
+      <SearchAndNotice/>
+      <Outlet/>
+    </>
+  )
 }
 
 function MainLayout() {

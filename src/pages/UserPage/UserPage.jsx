@@ -6,9 +6,9 @@ import React from 'react'
 const UserPage = () => {
   return (
     <>
-      <ProfileImageContainer type={'userpage'}/>
+      <ProfileImageContainer/>
       <div className='flex flex-col bg-[#F3F5F7] gap-[10px] border-b border-[#DEDEDE]'>
-        <UserInfoAndLifeStyles type={'userpage'}/>
+        <UserInfoAndLifeStyles/>
         <RoommateReviewList/>
       </div>
     </>

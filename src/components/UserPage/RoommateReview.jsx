@@ -1,41 +1,54 @@
 import React from 'react'
+//styles
+import styled from 'styled-components'
+import FONT from '@styles/fonts'
+import COLOR from '@styles/color'
 
-import More from '../../assets/images/more.svg'
+//images
 import Yoo from '../../assets/images/유재석.svg'
 import Dots from '../../assets/images/dots.svg'
-import Star from '../../assets/images/star.svg'
 
 const RoommateReview = () => {
   return (
-    <div className='flex px-[33px] py-[14px] h-[140px] border-b border-[#DEDEDE]'>
-      <img src={Yoo} className='w-[58px] h-[58px] mr-[13px]'/>
-      <div className='text-left'>
+    <SettingStyle className='flex pb-[24px]'>
+      <img src={Yoo} className='w-[40px] h-[40px] mr-[13px]' alt='user profile image'/>
+      <div className='text-left w-[calc(100%-53px)]'>
         <div className='flex justify-between mb-[2px]'>
           <div>
-            <span className='mr-[13px] text-[14px]'>유재석</span>
-            <span className='text-[12px]'>컴퓨터공학과 20학번</span>
+            <span className='review-name mr-[13px] text-[14px]'>유재석</span>
+            <span className='review-rate text-[12px]'>최고예요</span>
           </div>
           <button>
             <img src={Dots} className='w-[16px] h-[16px]'/>
           </button>
         </div>
-        <p className='text-[11px] text-[#707070]'>2023년 1학기 B동</p>
-        <div className='flex gap-[2px] text-[12px] items-center mb-[13px]'>
-          <img src={Star}/>
-          <img src={Star}/>
-          <img src={Star}/>
-          <img src={Star}/>
-          <img src={Star}/>
-          <span className='ml-[4px]'>5</span>
-        </div>
-        <div className='h-[68px] text-[11px]'>
+        <p className='review-room mb-[16px]'>2023년 1학기 B동</p>
+        <div className='review-comment overflow-hidden whitespace-nowrap overflow-hidden text-ellipsis'>
           한 학기 동안 문제없이 잘 생활했습니다!
           다음에도 기회 되면 같은 방 하고 싶어요
         </div>
       </div>
 
-    </div>
+    </SettingStyle>
   )
 }
 
 export default RoommateReview
+
+const SettingStyle = styled.div`
+  .review-name {
+    font-size: ${FONT.body4SB15};
+  }
+  .review-rate {
+    font-size: ${FONT.caption2M14};
+    color: ${COLOR.purple1};
+  }
+  .review-room {
+    font-size: ${FONT.caption3M12};
+    color: ${COLOR.gray500};
+  }
+  .review-comment {
+    font-size: ${FONT.caption2M14};
+    color: ${COLOR.gray800};
+  }
+`

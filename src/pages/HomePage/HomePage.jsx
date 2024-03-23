@@ -12,7 +12,6 @@ import "swiper/css";
 //components
 import SearchAndNotice from '@components/common/SearchAndNotice'
 import RoommateSwiperList from '@components/common/RoommateSwiperList'
-
 //images
 import Next from '@assets/images/next.svg'
 import News from '@assets/images/news.svg'
@@ -21,14 +20,12 @@ import BestFriend from '@assets/images/bestfriend.svg'
 import FoodDelivery from '@assets/images/fooddelivery.svg'
 
 const HomePage = () => {
-  const [input, setInput] = useState('')
-  const handleChange = (e) => {
-    setInput(e.target.value)
-  }
+
+
   return (
     <SettingStyle className='flex flex-col gap-[10px] pb-[11px] scroll-smooth'>
       <div>
-        <SearchAndNotice handleChange={handleChange}/>
+        <SearchAndNotice/>
         <div className='bg-white p-[25px]'>
           <div className='flex justify-between items-center mb-[15px]'>
             <div className='flex'>
@@ -93,7 +90,6 @@ const HomePage = () => {
         </div>
       </div>
       <RoommateSwiperList type={'best'}/>
-      
       <RoommateSwiperList type={'new'}/>
       <div>새로 올라온 공동배달</div>
     </SettingStyle>

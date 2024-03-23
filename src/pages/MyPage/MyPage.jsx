@@ -14,9 +14,9 @@ const MyPage = () => {
   console.log(profileImage)
   return (
     <>
-      <ProfileImageContainer type={'mypage'} profileImage={profileImage}/>
+      <ProfileImageContainer profileImage={profileImage}/>
       <div className='flex flex-col mt-[121px] bg-[#F3F5F7] gap-[10px] border-b border-[#DEDEDE]'>
-        <UserInfoAndLifeStyles type={'mypage'}/>
+        <UserInfoAndLifeStyles/>
         <RoommateAndDeliveryStatus/>
         <BookmarkList/>
         <RoommateReviewList/>
