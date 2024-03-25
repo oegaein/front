@@ -13,6 +13,7 @@ import UserPage from '@pages/UserPage/UserPage';
 import SearchAndNotice from '@common/SearchAndNotice';
 import SearchPage from '@pages/SearchPage/SearchPage';
 import NotificationPage from '@pages/NotificationPage/NotificationPage';
+import EndingsoonPage from '@pages/HomePage/EndingsoonPage/EndingsoonPage';
 
 function App() {
   return (
@@ -20,10 +21,11 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<MainLayout />}>
-            <Route path="home" element={<HomePage />} />
-            <Route path="roommate" element={<RoommatePage />} />
-            <Route path="search" element={<SearchPage />} />
+            <Route path="home" element={<HomePage />}/>
+            <Route path="home/ending-soon" element={<EndingsoonPage/>}/>
             <Route path="notification" element={<NotificationPage />} />
+            <Route path="search" element={<SearchPage />} />
+            <Route path="roommate" element={<RoommatePage />} />
             <Route path="landing" element={<LandingPage />} />
             <Route path="onboarding" element={<OnboardingPage />} />
             <Route path="login" element={<LoginPage />} />

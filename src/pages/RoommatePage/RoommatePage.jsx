@@ -11,7 +11,7 @@ import Plus from '@assets/images/plus.svg'
 //components
 import RoommateSwiperList from '@components/common/RoommateSwiperList';
 import SearchAndNotice from '@components/common/SearchAndNotice';
-import FindRoommates from '@common/FindRoommates'
+import RoommateScrollList from '@common/RoommateScrollList'
 const RoommatePage = () => {
   const fetchMatchingPosts = async () => {
     try {
@@ -32,7 +32,7 @@ const RoommatePage = () => {
           <img className='h-[14px] w-[14px]' src={Plus} alt='write icon'/>
           <span className='write-btn-text ml-[6px]'>룸메이트</span>
         </button>
-        <FindRoommates/>
+        <RoommateScrollList type={'find'}/>
 
 
       </div>

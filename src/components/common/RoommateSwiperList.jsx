@@ -9,8 +9,8 @@ import styled from 'styled-components';
 import FONT from '@styles/fonts';
 import COLOR from '@styles/color';
 //images
-import Premium from '../../assets/images/premium-quality.svg'
-import Next from '../../assets/images/next.svg'
+import Premium from '@assets/images/premium-quality.svg'
+import Next from '@assets/images/next.svg'
 
 const RoommateSwiperList = ({type}) => {
   const location = useLocation();

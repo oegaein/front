@@ -14,10 +14,7 @@ import SearchAndNotice from '@components/common/SearchAndNotice'
 import RoommateSwiperList from '@components/common/RoommateSwiperList'
 //images
 import Next from '@assets/images/next.svg'
-import News from '@assets/images/news.svg'
-import StopWatch from '@assets/images/stopwatch.svg'
-import BestFriend from '@assets/images/bestfriend.svg'
-import FoodDelivery from '@assets/images/fooddelivery.svg'
+import Buttons from '@components/HomePage/Buttons';
 
 const HomePage = () => {
 
@@ -61,32 +58,7 @@ const HomePage = () => {
               <a href='#' className='dormitory-title text-ellipsis overflow-hidden whitespace-nowrap hover:underline'>[기숙사 시설 이용 안내]</a>
             </SwiperSlide>
           </Swiper>
-          <div className='flex justify-between'>
-            <div className=''>
-              <div className={`icon-btn cursor-pointer flex justify-center items-center rounded-[15px] w-[77px] h-[70px]`}>
-                <img src={News} alt="dormiory news icon"/>
-              </div>
-              <span className='icon-text'>기숙사 소식</span>
-            </div>
-            <div>
-              <div className={`icon-btn cursor-pointer flex justify-center items-center rounded-[15px] w-[77px] h-[70px]`}>
-                <img src={StopWatch} alt="deadline imminent icon"/>
-              </div>
-              <span className='icon-text'>마감임박</span>
-            </div>
-            <div>
-              <div className={`icon-btn cursor-pointer flex justify-center items-center rounded-[15px] w-[77px] h-[70px]`}>
-                <img src={BestFriend} alt="best roommate icon"/>
-              </div>
-              <span className='icon-text'>베스트 룸메</span>
-            </div>
-            <div>
-              <div className={`icon-btn cursor-pointer flex justify-center items-center rounded-[15px] w-[77px] h-[70px]`}>
-                <img src={FoodDelivery} alt="popular delivery icon"/>
-              </div>
-              <span className='icon-text'>인기배달</span>
-            </div>
-          </div>
+          <Buttons/>
         </div>
       </div>
       <RoommateSwiperList type={'best'}/>
@@ -117,11 +89,5 @@ const SettingStyle = styled.div`
   }
   .dormitory-title {
     font-size: ${FONT.body4SB15};
-  }
-  .icon-btn {
-    background-color: ${COLOR.gray50};
-  }
-  .icon-text {
-    font-size: ${FONT.caption3M12};
   }
 `
