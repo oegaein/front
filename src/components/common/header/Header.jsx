@@ -37,9 +37,16 @@ const Header = ({
 					<img src={BackIcon} />
 				</button>
 				{children && children}
-				{rightEvent && (
-					<SkipBtn onClick={handleRightButton}>{rightContent}</SkipBtn>
-				)}
+				{rightEvent &&
+					(rightContent.length >= 10 ? (
+						<img
+							onClick={handleRightButton}
+							src={rightContent}
+							alt="rightBtn"
+						/>
+					) : (
+						<SkipBtn onClick={handleRightButton}>{rightContent}</SkipBtn>
+					))}
 			</div>
 		</>
 	);
