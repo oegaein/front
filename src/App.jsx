@@ -14,6 +14,7 @@ import SearchAndNotice from '@common/SearchAndNotice';
 import SearchPage from '@pages/SearchPage/SearchPage';
 import NotificationPage from '@pages/NotificationPage/NotificationPage';
 import EndingsoonPage from '@pages/HomePage/EndingsoonPage/EndingsoonPage';
+import BestRoommatesPage from '@pages/HomePage/BestRoommatesPage/BestRoommatesPage';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/" element={<MainLayout />}>
             <Route path="home" element={<HomePage />}/>
             <Route path="home/ending-soon" element={<EndingsoonPage/>}/>
+            <Route path="home/best-roommates" element={<BestRoommatesPage/>}/>
             <Route path="notification" element={<NotificationPage />} />
             <Route path="search" element={<SearchPage />} />
             <Route path="roommate" element={<RoommatePage />} />

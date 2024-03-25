@@ -19,7 +19,7 @@ const RoommateScrollList = () => {
       <div className='flex justify-between items-center px-[24px] py-[23px] pb-[16px]'>
         {(path === '/roommate' || path === '/search') && <FindRoommateTitle path={path}/>}
         {(path === '/home/ending-soon') && <EndingSoonTitle/>}
-        {(path === '/home/best-roommate') && <BestRoommateTitle/>}
+        {(path === '/home/best-roommates') && <BestRoommateTitle/>}
         
       </div>
       <div className='flex flex-col gap-[10px] px-[24px] pb-[11px]'>
@@ -43,7 +43,6 @@ const SettingStyle = styled.div`
     color: ${COLOR.gray500};
     &.selected {
       color: ${COLOR.gray600};
-
     }
   }
   .ending-soon-btn {

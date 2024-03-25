@@ -26,12 +26,12 @@ const Buttons = () => {
         </div>
         <span className='icon-text'>마감임박</span>
       </Link>
-      <div>
+      <Link to='/home/best-roommates'>
         <div className={`icon-btn cursor-pointer flex justify-center items-center rounded-[15px] w-[77px] h-[70px]`}>
           <img src={BestFriend} alt="best roommate icon"/>
         </div>
         <span className='icon-text'>베스트 룸메</span>
-      </div>
+      </Link>
       <div>
         <div className={`icon-btn cursor-pointer flex justify-center items-center rounded-[15px] w-[77px] h-[70px]`}>
           <img src={FoodDelivery} alt="popular delivery icon"/>
