@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Input, ContainerStyle } from '@styles/basicInfo/Input';
 import Xbutton from '@assets/images/common/Xbutton.svg';
+import { DropdownWrapper } from '@common/dropdown/BasicDropdown';
 
 //
 export const BasicInput = ({ onChangeValue, limitNum }) => {
@@ -145,6 +146,51 @@ export const CheckboxInput = ({
 				<input type="checkbox" />
 				{children}
 			</ContainerStyle>
+		</>
+	);
+};
+
+//
+export const CommentInput = ({ setSelected }) => {
+	const [value, setValue] = useState('');
+
+	const handleChange = (e) => {
+		const inputValue = e.target.value;
+		setValue(inputValue);
+		setSelected(inputValue);
+	};
+
+	const handlePost = () => {
+		// value 등록
+	};
+
+	return (
+		<>
+			<DropdownWrapper
+				style={{
+					padding: '20px 15px',
+					display: 'flex',
+					justifyContent: 'space-between',
+				}}
+			>
+				<input
+					type="text"
+					placeholder="댓글을 입력해주세요"
+					value={value}
+					onChange={handleChange}
+					className="cation2"
+					style={{
+						width: '80%',
+						outline: 'none',
+					}}
+				/>
+				<button
+					className={value.length > 1 ? 'color-purple' : 'color-gray'}
+					onClick={handlePost}
+				>
+					등록
+				</button>
+			</DropdownWrapper>
 		</>
 	);
 };
