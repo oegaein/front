@@ -7,10 +7,12 @@ import styled from 'styled-components'
 import FONT from '@styles/fonts'
 import COLOR from '@styles/color'
 import RoommateScrollList from '@common/RoommateScrollList'
+import AddRoommateButton from '@common/button/AddRoommateButton'
 
 const BestRoommatesPage = () => {
   return (
     <SettingStyle className='flex flex-col gap-[10px]'>
+      <AddRoommateButton/>
       <div className='p-[25px] bg-white'>
         <Buttons/>
       </div>
