@@ -1,22 +1,38 @@
-import React from 'react';
-import './App.css';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import LandingPage from '@pages/LandingPage';
-import OnboardingPage from '@pages/OnboardingPage';
+import React from 'react'
+import './App.css'
+import { BrowserRouter as Router, Routes, Route, Outlet, useLocation } from 'react-router-dom';
+
+import LandingPage from '@pages/LandingPage/LandingPage';
+import OnboardingPage from '@pages/OnboardingPage/OnboardingPage';
 import BasicInfoSetting from '@pages/basicInfo/BasicInfoSetting';
+import LoginPage from '@pages/LoginPage/LoginPage';
+import RoommatePage from '@pages/RoommatePage/RoommatePage';
+import HomePage from '@pages/HomePage/HomePage';
+import Navbar from '@components/common/Navbar';
+import MyPage from '@pages/MyPage/MyPage';
+import UserPage from '@pages/UserPage/UserPage';
+import SearchAndNotice from '@common/SearchAndNotice';
+import SearchPage from '@pages/SearchPage/SearchPage';
 import Post from '@pages/post/Post';
 import Chat from '@pages/chat/Chat';
 import ChatRoom from '@pages/chat/ChatRoom';
 import PostDetail from '@pages/post/Post-detail';
 
-function Router() {
-	return (
-		<div className="App">
-			<React.StrictMode>
-				<BrowserRouter>
-					<Routes>
-						<Route path="/" element={<LandingPage />} />
-						<Route path="/onboarding" element={<OnboardingPage />} />
+
+function App() {
+  return (
+    <div className="App">
+      <Router>
+        <Routes>
+          <Route path="/" element={<MainLayout />}>
+            <Route path="home" element={<HomePage />} />
+            <Route path="roommate" element={<RoommatePage />} />
+            <Route path="search" element={<SearchPage />} />
+            <Route path="landing" element={<LandingPage />} />
+            <Route path="onboarding" element={<OnboardingPage />} />
+            <Route path="login" element={<LoginPage />} />
+            <Route path="mypage" element={<MyPage />} />
+            <Route path="user/:id" element={<UserPage/>} />
 						<Route path="/setting" element={<BasicInfoSetting />} />
 						<Route path="/post-roommate" element={<Post />} />
 						<Route path="/post-detail" element={<PostDetail />} />
@@ -28,5 +44,46 @@ function Router() {
 		</div>
 	);
 }
+function IncludeSearchBar() {
+  return (
+    <>
+      <SearchAndNotice/>
+      <Outlet/>
+    </>
+  )
+}
 
-export default Router;
+function MainLayout() {
+  const location = useLocation()
+  return (
+    <div className="main-layout">
+      <div className="content">
+        <Outlet/>
+      </div>
+      {(location.pathname !== '/' && location.pathname !== '/onboarding' && location.pathname !== '/login') && <Navbar />}
+
+    </div>
+  );
+}
+// function App() {
+//   const path = window.location.pathname
+
+//   return (
+//     <div className="App">
+//       <Router>
+//         <Routes>
+//           <Route path="/" element={<LandingPage />} />
+//           <Route path="/onboarding" element={<OnboardingPage />} />
+//           <Route path="/login" element={<LoginPage />} />
+//           <Route path="/home" element={<HomePage />} />
+//           <Route path="/roommate" element={<RoommatePage />} />
+//           <Route path="/mypage" element={<MyPage />} />
+//           <Route path="/user/:id" element={<UserPage/>} />
+//         </Routes>
+//         {(path !== '/' && path !== '/onboarding') && <Navbar />}
+//       </Router>
+//     </div>
+//   );
+// }
+
+export default App;

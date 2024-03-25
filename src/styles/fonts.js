@@ -97,6 +97,14 @@ const FONT = {
       font-weight: 400;
       line-height: auto;
       `,
+      largetitle: `
+      font-family: 'Pretendard';
+      font-size: 23px;
+      font-style: normal;
+      font-weight: semi-bold;
+      `
 };
+
+
 
 export default FONT;
