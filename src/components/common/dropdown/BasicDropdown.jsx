@@ -95,7 +95,7 @@ export const DropdownList = styled(motion.div)`
 	max-height: 450px;
 	padding: 11px 26px;
 	background-color: ${COLOR.white};
-	border-radius: 10px;
+	border-radius: 10px 10px 0px 0px;
 	list-style: none;
 	z-index: 10;
 	overflow-y: auto;

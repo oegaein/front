@@ -3,10 +3,11 @@ import { Subtitle } from '@styles/basicInfo/Text';
 import COLOR from '@styles/color';
 import styled from 'styled-components';
 import BasicDropdown from '@common/dropdown/BasicDropdown';
-import DatePickerFunc from '@utils/DatePickerFunc';
+// import DatePickerFunc from '@utils/DatePickerFunc';
 import FemailImg from '@assets/images/basicInfo/Femail.svg';
 import MailImg from '@assets/images/basicInfo/Male.svg';
 import FONT from '@styles/fonts';
+import { NumInput } from './BasicSettingInput';
 
 const SIoptions = [
 	'24학번',
@@ -45,9 +46,10 @@ const Profile = ({ onGetValue, setButton }) => {
 				studentId: selectedStudentId,
 				birth: selectedBirth,
 			};
-			console.log(values);
 			onGetValue(values);
 			setButton(false);
+		} else {
+			setButton(true);
 		}
 	}, [selectedGender, selectedStudentId, selectedBirth]);
 
@@ -69,7 +71,7 @@ const Profile = ({ onGetValue, setButton }) => {
 									name="gender"
 									value={item}
 								/>
-								<img src={item.img} className="mb-3" />
+								<img src={item.img} alt={`${item}_img`} className="mb-3" />
 								{item.id}
 							</label>
 						</GenderBox>
@@ -83,7 +85,8 @@ const Profile = ({ onGetValue, setButton }) => {
 					setSelected={setSelectedStudentId}
 				/>
 				<Subtitle>생년월일</Subtitle>
-				<DatePickerFunc setSelectedBirth={setSelectedBirth} />
+				{/* <DatePickerFunc setSelectedBirth={setSelectedBirth} /> */}
+				<NumInput setSelected={setSelectedBirth} />
 			</div>
 		</>
 	);

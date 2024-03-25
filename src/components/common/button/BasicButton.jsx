@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import COLOR from '@styles/color';
 import FONT from '@styles/fonts';
 
-const BasicInfoButton = ({ text, path, eventName, disabled }) => {
+const BasicButton = ({ text, path, eventName, disabled }) => {
 	const navigate = useNavigate();
 
 	const handleClick = (e) => {
@@ -35,9 +35,9 @@ const BasicInfoButton = ({ text, path, eventName, disabled }) => {
 	);
 };
 
-export default BasicInfoButton;
+export default BasicButton;
 
-BasicInfoButton.propTypes = {
+BasicButton.propTypes = {
 	text: PropTypes.oneOf(['완료', '시작하기', '다음']).isRequired,
 	path: PropTypes.string,
 	eventName: PropTypes.func,

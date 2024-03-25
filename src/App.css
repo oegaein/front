@@ -9,6 +9,7 @@
     width: 393px;
     margin: 0 auto;
     font-family: 'Pretendard';
+    position: relative;
 }
 .content {
     padding-top: 50px;

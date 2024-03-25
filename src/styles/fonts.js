@@ -52,7 +52,7 @@ const FONT = {
       font-family: 'Pretendard';
       font-size: 15px;
       font-style: normal;
-      font-weight: 600;
+      font-weight: 500;
       line-height: auto;
       `,
 	body5M15: `
