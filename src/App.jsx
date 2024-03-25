@@ -1,6 +1,13 @@
-import React from 'react'
-import './App.css'
-import { BrowserRouter as Router, Routes, Route, Outlet, useLocation } from 'react-router-dom';
+import React from 'react';
+import './App.css';
+import {
+	BrowserRouter as Router,
+	Routes,
+	Route,
+	Outlet,
+	useLocation,
+	BrowserRouter,
+} from 'react-router-dom';
 
 import LandingPage from '@pages/LandingPage/LandingPage';
 import OnboardingPage from '@pages/OnboardingPage/OnboardingPage';
@@ -18,52 +25,55 @@ import Chat from '@pages/chat/Chat';
 import ChatRoom from '@pages/chat/ChatRoom';
 import PostDetail from '@pages/post/Post-detail';
 
-
 function App() {
-  return (
-    <div className="App">
-      <Router>
-        <Routes>
-          <Route path="/" element={<MainLayout />}>
-            <Route path="home" element={<HomePage />} />
-            <Route path="roommate" element={<RoommatePage />} />
-            <Route path="search" element={<SearchPage />} />
-            <Route path="landing" element={<LandingPage />} />
-            <Route path="onboarding" element={<OnboardingPage />} />
-            <Route path="login" element={<LoginPage />} />
-            <Route path="mypage" element={<MyPage />} />
-            <Route path="user/:id" element={<UserPage/>} />
-						<Route path="/setting" element={<BasicInfoSetting />} />
-						<Route path="/post-roommate" element={<Post />} />
-						<Route path="/post-detail" element={<PostDetail />} />
-						<Route path="/chat" element={<Chat />} />
-						<Route path="/chat/chatroom" element={<ChatRoom />} />
-					</Routes>
+	return (
+		<div className="App">
+			<React.StrictMode>
+				<BrowserRouter>
+					<Router>
+						<Routes>
+							<Route path="/" element={<MainLayout />} />
+							<Route path="home" element={<HomePage />} />
+							<Route path="roommate" element={<RoommatePage />} />
+							<Route path="search" element={<SearchPage />} />
+							<Route path="landing" element={<LandingPage />} />
+							<Route path="onboarding" element={<OnboardingPage />} />
+							<Route path="login" element={<LoginPage />} />
+							<Route path="mypage" element={<MyPage />} />
+							<Route path="user/:id" element={<UserPage />} />
+							<Route path="/setting" element={<BasicInfoSetting />} />
+							<Route path="/post-roommate" element={<Post />} />
+							<Route path="/post-detail" element={<PostDetail />} />
+							<Route path="/chat" element={<Chat />} />
+							<Route path="/chat/chatroom" element={<ChatRoom />} />
+						</Routes>
+					</Router>
 				</BrowserRouter>
 			</React.StrictMode>
 		</div>
 	);
 }
 function IncludeSearchBar() {
-  return (
-    <>
-      <SearchAndNotice/>
-      <Outlet/>
-    </>
-  )
+	return (
+		<>
+			<SearchAndNotice />
+			<Outlet />
+		</>
+	);
 }
 
 function MainLayout() {
-  const location = useLocation()
-  return (
-    <div className="main-layout">
-      <div className="content">
-        <Outlet/>
-      </div>
-      {(location.pathname !== '/' && location.pathname !== '/onboarding' && location.pathname !== '/login') && <Navbar />}
-
-    </div>
-  );
+	const location = useLocation();
+	return (
+		<div className="main-layout">
+			<div className="content">
+				<Outlet />
+			</div>
+			{location.pathname !== '/' &&
+				location.pathname !== '/onboarding' &&
+				location.pathname !== '/login' && <Navbar />}
+		</div>
+	);
 }
 // function App() {
 //   const path = window.location.pathname
