@@ -48,7 +48,7 @@ const PostDetail = () => {
 	return (
 		<>
 			<PostDetailStyle>
-				<div className="container justify-between">
+				<div className="container justify-between sticky top-0 bg-white z-20">
 					<Header
 						backPath={'/home'}
 						rightContent={Threedots}
