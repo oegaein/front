@@ -79,17 +79,8 @@ const Comment = () => {
 									height="40px"
 									ver="comment"
 								/>
-								<div className="flex justify-between mt-4 pl-12 w-3/5">
+								<div className="flex justify-between mt-4 pl-12 w-5/12">
 									<span>{item.time}분 전</span>
-									<div className="flex">
-										<span className="mr-[2px]">좋아요</span>
-										<img
-											src={like[index] ? Heart : EmptyHeart}
-											alt="like"
-											className="cursor-pointer"
-											onClick={() => toggleLike(index)}
-										/>
-									</div>
 									<span
 										className="cursor-pointer"
 										onClick={() => handleReply(index)}
@@ -110,17 +101,8 @@ const Comment = () => {
 										ver="comment"
 										target={item.reply.target}
 									/>
-									<div className="flex justify-between mt-4 pl-12 w-3/4">
+									<div className="flex justify-between mt-4 pl-12 w-2/4">
 										<span>{item.time}분 전</span>
-										<div className="flex">
-											<span className="mr-[2px]">좋아요</span>
-											<img
-												src={like[index] ? Heart : EmptyHeart}
-												alt="like"
-												className="cursor-pointer"
-												onClick={() => toggleLike(index)}
-											/>
-										</div>
 										<span
 											className="cursor-pointer"
 											onClick={() => handleReply(index)}
