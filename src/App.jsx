@@ -4,9 +4,8 @@ import {
 	BrowserRouter as Router,
 	Routes,
 	Route,
-	Outlet,
 	useLocation,
-	BrowserRouter,
+	Outlet,
 } from 'react-router-dom';
 
 import LandingPage from '@pages/LandingPage/LandingPage';
@@ -28,31 +27,28 @@ import PostDetail from '@pages/post/Post-detail';
 function App() {
 	return (
 		<div className="App">
-			<React.StrictMode>
-				<BrowserRouter>
-					<Router>
-						<Routes>
-							<Route path="/" element={<MainLayout />} />
-							<Route path="home" element={<HomePage />} />
-							<Route path="roommate" element={<RoommatePage />} />
-							<Route path="search" element={<SearchPage />} />
-							<Route path="landing" element={<LandingPage />} />
-							<Route path="onboarding" element={<OnboardingPage />} />
-							<Route path="login" element={<LoginPage />} />
-							<Route path="mypage" element={<MyPage />} />
-							<Route path="user/:id" element={<UserPage />} />
-							<Route path="/setting" element={<BasicInfoSetting />} />
-							<Route path="/post-roommate" element={<Post />} />
-							<Route path="/post-detail" element={<PostDetail />} />
-							<Route path="/chat" element={<Chat />} />
-							<Route path="/chat/chatroom" element={<ChatRoom />} />
-						</Routes>
-					</Router>
-				</BrowserRouter>
-			</React.StrictMode>
+			<Router>
+				<Routes>
+					<Route path="/" element={<MainLayout />} />
+					<Route path="home" element={<HomePage />} />
+					<Route path="roommate" element={<RoommatePage />} />
+					<Route path="search" element={<SearchPage />} />
+					<Route path="landing" element={<LandingPage />} />
+					<Route path="onboarding" element={<OnboardingPage />} />
+					<Route path="login" element={<LoginPage />} />
+					<Route path="mypage" element={<MyPage />} />
+					<Route path="user/:id" element={<UserPage />} />
+					<Route path="/setting" element={<BasicInfoSetting />} />
+					<Route path="/post-roommate" element={<Post />} />
+					<Route path="/post-detail" element={<PostDetail />} />
+					<Route path="/chat" element={<Chat />} />
+					<Route path="/chat/chatroom" element={<ChatRoom />} />
+				</Routes>
+			</Router>
 		</div>
 	);
 }
+
 function IncludeSearchBar() {
 	return (
 		<>
@@ -75,25 +71,5 @@ function MainLayout() {
 		</div>
 	);
 }
-// function App() {
-//   const path = window.location.pathname
-
-//   return (
-//     <div className="App">
-//       <Router>
-//         <Routes>
-//           <Route path="/" element={<LandingPage />} />
-//           <Route path="/onboarding" element={<OnboardingPage />} />
-//           <Route path="/login" element={<LoginPage />} />
-//           <Route path="/home" element={<HomePage />} />
-//           <Route path="/roommate" element={<RoommatePage />} />
-//           <Route path="/mypage" element={<MyPage />} />
-//           <Route path="/user/:id" element={<UserPage/>} />
-//         </Routes>
-//         {(path !== '/' && path !== '/onboarding') && <Navbar />}
-//       </Router>
-//     </div>
-//   );
-// }
 
 export default App;
