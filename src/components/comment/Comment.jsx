@@ -6,8 +6,6 @@ import { BasicProfile } from '@common/ui/Profile';
 import FONT from '@styles/fonts';
 import COLOR from '@styles/color';
 import Panda from '@assets/images/common/Panda.png';
-import EmptyHeart from '@assets/images/common/EmptyHeart.svg';
-import Heart from '@assets/images/common/Heart.svg';
 import ArrowRightIcon from '@assets/images/common/ArrowRightIcon.svg';
 import { Box } from '@pages/post/Post-detail';
 
@@ -37,20 +35,10 @@ const mocks = {
 
 const Comment = () => {
 	const [value, setValue] = useState('');
-	const [like, setLike] = useState(
-		new Array(mocks.comments.length).fill(false),
-	);
-
-	const toggleLike = (index) => {
-		setLike((prev) => {
-			const newLike = [...prev];
-			newLike[index] = !newLike[index];
-			return newLike;
-		});
-	};
+	const [reply, setReply] = useState(false);
 
 	const handleReply = (index) => {
-		alert(index + '답글');
+		setReply(true);
 	};
 
 	const handleMoreComment = () => {
@@ -59,6 +47,11 @@ const Comment = () => {
 
 	return (
 		<>
+			{reply && (
+				<CommentBox>
+					<CommentInput setSelected={setValue} setReply={setReply} />
+				</CommentBox>
+			)}
 			<CommentStyle>
 				<section className="flex flex-col p-[25px] pb-[0px]">
 					<Subtitle>댓글 {mocks.count}개</Subtitle>
@@ -165,4 +158,17 @@ const CommentStyle = styled.div`
 		align-items: center;
 		padding: 16px 0px;
 	}
+`;
+
+const CommentBox = styled.div`
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	position: fixed;
+	bottom: 0;
+	z-index: 50;
+	padding: 25px 25px 0px 25px;
+	width: 100%;
+	background-color: ${COLOR.white};
+	border: 1px solid ${COLOR.gray100};
 `;
