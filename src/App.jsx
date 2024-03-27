@@ -15,6 +15,7 @@ import SearchPage from '@pages/SearchPage/SearchPage';
 import NotificationPage from '@pages/NotificationPage/NotificationPage';
 import EndingsoonPage from '@pages/HomePage/EndingsoonPage/EndingsoonPage';
 import BestRoommatesPage from '@pages/HomePage/BestRoommatesPage/BestRoommatesPage';
+import RoommateFilterPage from '@pages/RoommatePage/RoommateFilterPage/RoommateFilterPage';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
             <Route path="notification" element={<NotificationPage />} />
             <Route path="search" element={<SearchPage />} />
             <Route path="roommate" element={<RoommatePage />} />
+            <Route path="roommate/filter" element={<RoommateFilterPage />} />
             <Route path="landing" element={<LandingPage />} />
             <Route path="onboarding" element={<OnboardingPage />} />
             <Route path="login" element={<LoginPage />} />

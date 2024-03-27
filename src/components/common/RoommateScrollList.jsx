@@ -1,5 +1,5 @@
 import React from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, Link } from 'react-router-dom'
 //styles
 import FONT from '@styles/fonts'
 import COLOR from '@styles/color'
@@ -70,9 +70,9 @@ const FindRoommateTitle = ({path}) => {
         <button className='filter-btn selected'>최신순</button>
         <button className='filter-btn'>마감순</button>
         {path === '/roommate' &&
-        <button className={`flex justify-center items-center border border-[${COLOR.gray100}] h-[30px] w-[30px] rounded-[50%]`}>
+        <Link to="/roommate/filter" className={`flex justify-center items-center border border-[${COLOR.gray100}] h-[30px] w-[30px] rounded-[50%]`}>
           <img src={Filter} alt='filter icon'/>
-        </button>
+        </Link>
         }
       </div>
     </>
