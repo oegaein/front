@@ -3,24 +3,33 @@ import styled from 'styled-components';
 import FONT from '@styles/fonts';
 import COLOR from '@styles/color';
 
-const DoubleRangeSlider = ({type, setFilters, minValue, maxValue}) => {
+const DoubleRangeSlider = ({type, setFilters, setSelectedFilters, minValue, maxValue}) => {
+
   // 최소값을 업데이트하는 핸들러
   const handleMinValueChange = (e) => {
+    const name = e.target.name
     const value = Math.min(Number(e.target.value), maxValue - 1);
     setFilters(prevFilters => ({
       ...prevFilters,
-      [e.target.name]: value,
+      [name]: value,
     }));
-};
+    setSelectedFilters(prevFilters => (
+      [{name, value}, ...prevFilters.filter(item => item.name !== name)]
+    ))
+  };
 
   // 최대값을 업데이트하는 핸들러
   const handleMaxValueChange = (e) => {
+    const name = e.target.name
     const value = Math.max(Number(e.target.value), minValue + 1);
     setFilters(prevFilters => ({
       ...prevFilters,
-      [e.target.name]: value,
+      [name]: value,
     }));
-};
+    setSelectedFilters(prevFilters => (
+      [{name, value}, ...prevFilters.filter(item => item.name !== name)]
+    ))
+  };
 
   return (
     <SettingStyle minValue={(minValue / 100) * 100} maxValue={(maxValue / 100) * 100}>
