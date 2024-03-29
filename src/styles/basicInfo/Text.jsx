@@ -2,10 +2,10 @@ import COLOR from '@styles/color';
 import FONT from '@styles/fonts';
 import styled from 'styled-components';
 
-export const Subtitle = styled.span`
+export const Subtitle = styled.p`
 	font: ${FONT.body4SB15};
 	text-align: left;
-	margin-bottom: 15px;
+	margin-bottom: 16px;
 	width: 100%;
 `;
 
