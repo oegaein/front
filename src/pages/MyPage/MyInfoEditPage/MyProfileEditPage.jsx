@@ -74,15 +74,35 @@ const MyProfileEditPage = () => {
   } 
   const handleImageChange = (e) => {
     const imageFile = e.target.files[0];
-    if (!imageFile) {
-      return
+    if (imageFile) {
+      validateImage(imageFile)
     }
-    console.log("선택된 파일:", imageFile);
-    const reader = new FileReader()
-    reader.readAsDataURL(imageFile);
+  }
+
+  const validateImage = (imageFile) => {
+    // 파일 타입 검증
+    if (!imageFile.type.match('image.*')) {
+      alert('이미지 파일만 업로드 가능합니다.');
+      return false
+    }
+
+    // 파일 크기 검증 (예: 5MB 이하만 허용)
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    if (imageFile.size > maxSize) {
+        alert('파일 크기는 5MB 이하만 업로드 가능합니다.');
+        return false
+    }
+
+    const reader = new FileReader();
     reader.onload = () => {
-      setImageUrl(reader.result);
-    }
+        setImageUrl(reader.result);
+    };
+    reader.onerror = () => {
+        alert('파일을 읽는 중 오류가 발생했습니다.');
+        return false
+    };
+
+    reader.readAsDataURL(imageFile);
   }
 
   const handleUploadImage = () => {
@@ -90,7 +110,7 @@ const MyProfileEditPage = () => {
   }
 
   const deleteImage = () => {
-
+    setImageUrl(InitialProfile)
   }
   useEffect(()=> {
     console.log(info)
