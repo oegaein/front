@@ -4,11 +4,12 @@ import FONT from '@styles/fonts';
 import COLOR from '@styles/color';
 
 const DoubleRangeSlider = ({type, setFilters, setSelectedFilters, minValue, maxValue}) => {
-
+  const range = type === '나이' ? 15 : 10
+  const leftStartValue = type === '나이' ? 20 : 14
   // 최소값을 업데이트하는 핸들러
   const handleMinValueChange = (e) => {
     const name = e.target.name
-    const value = Math.min(Number(e.target.value), maxValue - 1);
+    const value = Math.min(Number(e.target.value), maxValue);
     setFilters(prevFilters => ({
       ...prevFilters,
       [name]: value,
@@ -21,7 +22,7 @@ const DoubleRangeSlider = ({type, setFilters, setSelectedFilters, minValue, maxV
   // 최대값을 업데이트하는 핸들러
   const handleMaxValueChange = (e) => {
     const name = e.target.name
-    const value = Math.max(Number(e.target.value), minValue + 1);
+    const value = Math.max(Number(e.target.value), minValue);
     setFilters(prevFilters => ({
       ...prevFilters,
       [name]: value,
@@ -32,7 +33,7 @@ const DoubleRangeSlider = ({type, setFilters, setSelectedFilters, minValue, maxV
   };
 
   return (
-    <SettingStyle minValue={(minValue / 100) * 100} maxValue={(maxValue / 100) * 100}>
+    <SettingStyle minValue={((minValue - leftStartValue) / range) * 100} maxValue={((maxValue - leftStartValue) / range) * 100}>
       <div className='flex items-center'>
         <h1 className='filter-title mr-[10px]'>{type}</h1>
         <p className='filter-subtitle'>
@@ -47,8 +48,8 @@ const DoubleRangeSlider = ({type, setFilters, setSelectedFilters, minValue, maxV
         <div className='slider-between'></div>
         <input
           type="range"
-          min="0"
-          max="100"
+          min={type === '나이' ? 20 : 14}
+          max={type === '나이' ? 35 : 24}
           value={minValue}
           onChange={handleMinValueChange}
           className="slider"
@@ -57,8 +58,8 @@ const DoubleRangeSlider = ({type, setFilters, setSelectedFilters, minValue, maxV
         />
         <input
           type="range"
-          min="0"
-          max="100"
+          min={type === '나이' ? 20 : 14}
+          max={type === '나이' ? 35 : 24}
           value={maxValue}
           onChange={handleMaxValueChange}
           className="slider"

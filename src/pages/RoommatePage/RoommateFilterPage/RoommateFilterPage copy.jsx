@@ -7,6 +7,7 @@ import COLOR from '@styles/color'
 import DoubleRangeSlider from '@components/RoommatePage/DoubleRangeSlider';
 import { type } from '@testing-library/user-event/dist/type';
 import Close from '@assets/images/close-white.svg'
+import Header from '@common/header/Header';
 
 
 function RoommateFilterPageCopy() {
@@ -17,8 +18,8 @@ function RoommateFilterPageCopy() {
     dormitory: [], // 'A', 'B', 'C', 'D', 'E' 중복 선택 가능
     roomType: [], // '2인실', '4인실'
     minAge: 20,
-    maxAge: 27,
-    minYear: 17,
+    maxAge: 35,
+    minYear: 14,
     maxYear: 24,
     mbti: [],
     sleepHabit: [],
@@ -129,19 +130,41 @@ function RoommateFilterPageCopy() {
     handleSelectedFilter(name, value, checked)
   }
 
+  const getInitialValueByName = (name) => {
+    switch (name) {
+      case 'minAge':
+        return 20;
+      case 'maxAge':
+        return 35;
+      case 'minYear':
+        return 14;
+      case 'maxYear':
+        return 24;
+      default:
+        return null; // 또는 적합한 기본값
+    }
+  }
 
   const deleteOption = (e) => {
     const { name, value } = e.currentTarget;
     if (name === 'gender') {
       handleChangeGenderValue('')
     }
+    handleSelectedFilter(name, value, false)
+    if (['minAge', 'maxAge', 'minYear', 'maxYear'].includes(name)) {
+      setFilters(prevFilters => ({
+        ...prevFilters,
+        [name] : getInitialValueByName(name)
+      }))
+      return
+    }
+
     setFilters(prevFilters => ({
       ...prevFilters,
       [name]: Array.isArray(prevFilters[name])
       ? prevFilters[name].filter(item => item !== value)
       : ''
     }))
-    handleSelectedFilter(name, value, false)
   }
   
 
@@ -162,11 +185,14 @@ function RoommateFilterPageCopy() {
 
   return (
     <SettingStyle className='flex flex-col'>
+      <div className='px-[28px]'>
+      <Header backPath='/roommate'><span>필터</span></Header>
+      </div>
       <div className='tag-container bg-white flex gap-[10px] sticky z-10 top-0 overflow-x-scroll'>
       {
         selectedFilters.map((item, index) => (
           <button className='selected-tag' onClick={deleteOption} value={item.value} name={item.name} key={index}>
-            {item.value}
+            {item.name} : {item.value}
             <img className='ml-[5px] h-[12px] w-[12px]' src={Close} alt='close button'/>
           </button> 
         ))
