@@ -6,7 +6,7 @@ import COLOR from '@styles/color'
 import SearchBar from '@common/SearchBar'
 
 import BackButton from '@assets/images/BackButton.svg'
-import FindRoommates from '@common/FindRoommates'
+import RoommateScrollList from '@common/RoommateScrollList'
 const SearchPage = () => {
   const navigate = useNavigate()
   const inputRef = useRef(null)
@@ -24,7 +24,7 @@ const SearchPage = () => {
         </button>
         <SearchBar ref={inputRef}/>
       </div>
-      <FindRoommates/>
+      <RoommateScrollList type={'find'}/>
     </SettingStyle>
   )
 }

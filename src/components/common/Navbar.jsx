@@ -30,15 +30,15 @@ const Navbar = () => {
           </Link>
           <Link to='/roommate' className='flex flex-col items-center'>
             <div className='mb-[4.5px]'>
-              <img className='w-[26px] h-[26px]' src={location.pathname === '/roommate' ? RoommateIconClicked : RoommateIcon} alt='룸메이트 페이지로 가기'/>
+              <img className='w-[26px] h-[26px]' src={location.pathname.substring(0, 9) === '/roommate' ? RoommateIconClicked : RoommateIcon} alt='룸메이트 페이지로 가기'/>
             </div>
-            <span className={location.pathname === '/roommate' && 'purple'}>룸메이트</span>
+            <span className={location.pathname.substring(0, 9) === '/roommate' && 'purple'}>룸메이트</span>
           </Link>
           <Link to='/home' className='flex flex-col items-center'>
             <div className='mb-[4.5px]'>
-              <img className='w-[26px] h-[26px]' src={location.pathname === '/home' ? HomeIconClicked : HomeIcon} alt='홈으로 가기'/>
+              <img className='w-[26px] h-[26px]' src={location.pathname.substring(0,5) === '/home' ? HomeIconClicked : HomeIcon} alt='홈으로 가기'/>
             </div>
-            <span className={location.pathname === '/home' && 'purple'}>홈</span>
+            <span className={location.pathname.substring(0,5) === '/home' && 'purple'}>홈</span>
           </Link>
           <Link className='flex flex-col items-center'>
             <div className='mb-[4.5px]'>

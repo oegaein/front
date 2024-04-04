@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import Lottie from 'react-lottie';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 //styles 
 import COLOR from '@styles/color'
 import FONT from '@styles/fonts'
@@ -31,12 +31,11 @@ const SearchAndNotice = ({handleSearchChange, setSearchIsFocused}) => {
         <SearchBar onClick={()=>navigate('/search')} handleChange={handleChange}/>
         <button>
           {/* <img src={Bell}/> */}
-          <div className='h-[37px]'>
+          <Link to='/notification' className='block h-[37px]'>
             <Lottie
             options={defaultOptions}
             />
-
-          </div>
+          </Link>
         </button>
 
       </div>

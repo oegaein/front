@@ -9,8 +9,8 @@ import styled from 'styled-components';
 import FONT from '@styles/fonts';
 import COLOR from '@styles/color';
 //images
-import Premium from '../../assets/images/premium-quality.svg'
-import Next from '../../assets/images/next.svg'
+import Premium from '@assets/images/premium-quality.svg'
+import Next from '@assets/images/next.svg'
 
 const RoommateSwiperList = ({type}) => {
   const location = useLocation();
@@ -56,7 +56,7 @@ const BestRoommateTitle = ({path}) => {
           <h1 className='heading text-left font-bold mr-[3px]'>베스트 룸메이트</h1>
           <img src={Premium} alt='best roommates icon'/>
         </div>
-        <Link to='/roommate' className='more flex'>
+        <Link to='/home/best-roommates' className='more flex'>
           더보기
           <img src={Next} alt='see more icon'/>
         </Link>

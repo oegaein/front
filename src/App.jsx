@@ -19,34 +19,56 @@ import MyPage from '@pages/MyPage/MyPage';
 import UserPage from '@pages/UserPage/UserPage';
 import SearchAndNotice from '@common/SearchAndNotice';
 import SearchPage from '@pages/SearchPage/SearchPage';
+import NotificationPage from '@pages/NotificationPage/NotificationPage';
+import EndingsoonPage from '@pages/HomePage/EndingsoonPage/EndingsoonPage';
+import BestRoommatesPage from '@pages/HomePage/BestRoommatesPage/BestRoommatesPage';
+import RoommateFilterPageCopy from '@pages/RoommatePage/RoommateFilterPage/RoommateFilterPage copy';
 import Post from '@pages/post/Post';
 import Chat from '@pages/chat/Chat';
 import ChatRoom from '@pages/chat/ChatRoom';
 import PostDetail from '@pages/post/Post-detail';
 import CommentDetail from '@pages/comment/Comment-detail';
+import MyProfileEditPage from '@pages/MyPage/MyInfoEditPage/MyProfileEditPage';
 
 function App() {
 	return (
 		<div className="App">
-			<Router>
-				<Routes>
-					<Route path="/" element={<MainLayout />} />
-					<Route path="home" element={<HomePage />} />
-					<Route path="roommate" element={<RoommatePage />} />
-					<Route path="search" element={<SearchPage />} />
-					<Route path="landing" element={<LandingPage />} />
-					<Route path="onboarding" element={<OnboardingPage />} />
-					<Route path="login" element={<LoginPage />} />
-					<Route path="mypage" element={<MyPage />} />
-					<Route path="user/:id" element={<UserPage />} />
-					<Route path="/setting" element={<BasicInfoSetting />} />
-					<Route path="/post-roommate" element={<Post />} />
-					<Route path="/post-detail" element={<PostDetail />} />
-					<Route path="/comment-detail/:postId" element={<CommentDetail />} />
-					<Route path="/chat" element={<Chat />} />
-					<Route path="/chat/chatroom" element={<ChatRoom />} />
-				</Routes>
-			</Router>
+			<React.StrictMode>
+				<Router>
+					<Routes>
+						<Route path="/" element={<MainLayout />}>
+							<Route path="home" element={<HomePage />} />
+							<Route path="home/ending-soon" element={<EndingsoonPage />} />
+							<Route
+								path="home/best-roommates"
+								element={<BestRoommatesPage />}
+							/>
+							<Route path="notification" element={<NotificationPage />} />
+							<Route path="search" element={<SearchPage />} />
+							<Route path="roommate" element={<RoommatePage />} />
+							<Route
+								path="roommate/filter"
+								element={<RoommateFilterPageCopy />}
+							/>
+							<Route path="landing" element={<LandingPage />} />
+							<Route path="onboarding" element={<OnboardingPage />} />
+							<Route path="login" element={<LoginPage />} />
+							<Route path="mypage" element={<MyPage />} />
+							<Route path="my-profile/edit" element={<MyProfileEditPage />} />
+							<Route path="user/:id" element={<UserPage />} />
+							<Route path="/setting" element={<BasicInfoSetting />} />
+							<Route path="/post-roommate" element={<Post />} />
+							<Route path="/post-detail" element={<PostDetail />} />
+							<Route
+								path="/comment-detail/:postId"
+								element={<CommentDetail />}
+							/>
+							<Route path="/chat" element={<Chat />} />
+							<Route path="/chat/chatroom" element={<ChatRoom />} />
+						</Route>
+					</Routes>
+				</Router>
+			</React.StrictMode>
 		</div>
 	);
 }
@@ -67,9 +89,9 @@ function MainLayout() {
 			<div className="content">
 				<Outlet />
 			</div>
-			{location.pathname !== '/' &&
+			{/* {location.pathname !== '/' &&
 				location.pathname !== '/onboarding' &&
-				location.pathname !== '/login' && <Navbar />}
+				location.pathname !== '/login' && <Navbar />} */}
 		</div>
 	);
 }
