@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import COLOR from '@styles/color';
 import FONT from '@styles/fonts';
 import DotIcon from '@assets/images/common/DotIcon.svg';
 import Threedots from '@assets/images/common/Threedots.svg';
+import OptionModal from '@common/modal/OptionModal';
+import ConfirmModal from '@common/modal/ConfirmModal';
 
 export const SimpleProfile = ({ Img, nickname, mr, width, height, weight }) => {
 	return (
@@ -27,11 +29,58 @@ export const BasicProfile = ({
 	ver,
 	target,
 }) => {
-	const handleThreedots = () => {
-		alert('Threedots');
-	};
+	const [threedots, setThreedots] = useState(false);
+	const [option, setOption] = useState('');
+	const [confirm, setConfirm] = useState(false);
+	const [confirmContent, setConfirmContent] = useState({
+		id: -1,
+		msg: '',
+		btn: '',
+	});
+
+	const myOption = ['수정하기', '삭제하기'];
+	const yourOption = ['차단하기'];
+
+	useEffect(() => {
+		if (option === '수정하기') {
+			alert('댓글 수정하기');
+		} else if (option === '삭제하기') {
+			setConfirm(true);
+			setConfirmContent((prev) => ({
+				...prev,
+				msg: '댓글을 삭제할까요?',
+				btn: '삭제',
+				id: 1,
+			}));
+		} else if (option === '차단하기') {
+			setConfirm(true);
+			setConfirmContent((prev) => ({
+				...prev,
+				msg: `'작성자'님을 차단할까요?`, // 작성자 이름
+				btn: '차단',
+				id: 1,
+			}));
+		}
+		setOption('');
+	}, [option]);
+
 	return (
 		<>
+			{threedots && (
+				<OptionModal
+					options={yourOption}
+					isOpen={threedots}
+					setIsOpen={setThreedots}
+					setOption={setOption}
+				/>
+			)}
+			{confirm && (
+				<ConfirmModal
+					content={confirmContent}
+					isOpen={confirm}
+					setIsOpen={setConfirm}
+				/>
+			)}
 			<div className="flex w-full">
 				<ImgWrapper mr={mr} width={width} height={height}>
 					<img src={Img} alt="Profile" width={width} height={height} />
@@ -52,7 +101,7 @@ export const BasicProfile = ({
 								src={Threedots}
 								alt="threedots"
 								className="cursor-pointer"
-								onClick={handleThreedots}
+								onClick={() => setThreedots(true)}
 							/>
 						</div>
 					)}

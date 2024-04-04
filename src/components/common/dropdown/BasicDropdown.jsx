@@ -62,7 +62,7 @@ export const DropdownBackground = styled.div`
 	width: 100%;
 	height: 100%;
 	background-color: ${({ open }) => (open ? 'rgba(69, 76, 83, 0.5)' : 'none')};
-	z-index: ${({ open }) => (open ? 9 : -1)};
+	z-index: ${({ open }) => (open ? 50 : -1)};
 `;
 
 export const DropdownWrapper = styled.div`

@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Header from '@common/header/Header';
 import { Subtitle } from '@styles/basicInfo/Text';
 import { DropdownWrapper } from '@common/dropdown/BasicDropdown';
 import { BasicProfile, SimpleProfile } from '@common/ui/Profile';
+import PreviewComment from '@components/comment/PreviewComment';
+import OptionModal from '@common/modal/OptionModal';
+import ConfirmModal from '@common/modal/ConfirmModal';
+import BasicButton from '@common/button/BasicButton';
 import FONT from '@styles/fonts';
 import COLOR from '@styles/color';
 import Threedots from '@assets/images/common/Threedots.svg';
@@ -13,9 +17,11 @@ import HomeIcon from '@assets/images/common/HomeIcon.svg';
 import ArrowRightIcon from '@assets/images/common/ArrowRightIcon.svg';
 import BasicArrowUpIcon from '@assets/images/common/BasicArrowUpIcon.svg';
 import Checkbox from '@assets/images/common/Checkbox.svg';
-import Comment from '@components/comment/Comment';
+import CommentIcon from '@assets/images/common/comment.svg';
+import ShareIcon from '@assets/images/common/share.svg';
 
 const mocks = {
+	postId: 1,
 	profile: {
 		img: Panda,
 		nickname: 'happy푸바옹',
@@ -38,21 +44,70 @@ const mocks = {
 	},
 };
 
+const postOptions = ['수정하기', '삭제하기'];
+const yourOption = ['차단하기'];
+
 const PostDetail = () => {
 	const navigate = useNavigate();
 	const [moreOpen, setMoreOpen] = useState(false);
-	const handleThreedots = () => {
-		alert('Threedots');
-	};
+	const [threedots, setThreedots] = useState(false);
+	const [option, setOption] = useState('');
+	const [confirm, setConfirm] = useState(false);
+	const [confirmContent, setConfirmContent] = useState({
+		id: -1,
+		msg: '',
+		btn: '',
+	});
+	const [matching, setMatching] = useState(false);
+
+	useEffect(() => {
+		if (option === '수정하기') {
+			navigate('/post-edit'); // postID 넘겨주기
+		} else if (option === '삭제하기') {
+			setConfirm(true);
+			setConfirmContent((prev) => ({
+				...prev,
+				msg: '게시글을 삭제할까요?',
+				btn: '삭제',
+				id: 1,
+			}));
+		} else if (option === '차단하기') {
+			setConfirm(true);
+			setConfirmContent((prev) => ({
+				...prev,
+				msg: `${mocks.profile.nickname}님을 차단할까요?`, // 작성자 이름
+				btn: '차단',
+				id: 1,
+			}));
+		}
+		setOption('');
+	}, [option]);
 
 	return (
 		<>
+			{threedots && (
+				<OptionModal
+					options={postOptions} // 작성자 === 클릭자 ? postOptions : yourOptions
+					isOpen={threedots}
+					setIsOpen={setThreedots}
+					setOption={setOption}
+				/>
+			)}
+			{confirm && (
+				<ConfirmModal
+					content={confirmContent}
+					isOpen={confirm}
+					setIsOpen={setConfirm}
+				/>
+			)}
 			<PostDetailStyle>
-				<div className="container justify-between">
+				<div className="container justify-between sticky top-0 bg-white z-20">
 					<Header
 						backPath={'/home'}
 						rightContent={Threedots}
-						rightEvent={handleThreedots}
+						rightEvent={() => {
+							setThreedots(true);
+						}}
 					>
 						<div className="flex justify-start items-center w-5/6">
 							<Link to="/home">
@@ -174,7 +229,40 @@ const PostDetail = () => {
 					<Box />
 				</section>
 				<section className="comment">
-					<Comment />
+					<PreviewComment />
+				</section>
+				<section className="container items-center justify-between sticky bottom-0 bg-white z-20">
+					<button
+						onClick={() => {
+							navigate(`/comment-detail/${mocks.postId}`, {
+								state: { postId: mocks.postId },
+							});
+						}}
+						style={{ display: 'flex', alignItems: 'center' }}
+					>
+						<img
+							src={CommentIcon}
+							alt="commentIcon"
+							style={{ marginRight: '5px' }}
+						/>
+						<p className="cation2 gray400">댓글</p>
+					</button>
+					<button className="flex items-center" onClick={() => alert('공유')}>
+						<img
+							src={ShareIcon}
+							alt="shareIcon"
+							style={{ marginRight: '5px' }}
+						/>
+					</button>
+					<BasicButton
+						text={matching ? '신청완료' : '매칭신청'}
+						eventName={() => {
+							setMatching(true);
+							alert('매칭 신청 완료');
+						}}
+						disabled={matching}
+						size="65%"
+					/>
 				</section>
 			</PostDetailStyle>
 		</>
@@ -186,7 +274,7 @@ export default PostDetail;
 const PostDetailStyle = styled.div`
 	display: flex;
 	flex-direction: column;
-	padding: 41px 0px;
+	padding: 41px 0px 0px 0px;
 
 	.cation2 {
 		font: ${FONT.caption2M14};

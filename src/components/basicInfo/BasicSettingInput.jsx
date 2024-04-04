@@ -151,7 +151,7 @@ export const CheckboxInput = ({
 };
 
 //
-export const CommentInput = ({ setSelected }) => {
+export const CommentInput = ({ setSelected, setReply }) => {
 	const [value, setValue] = useState('');
 
 	const handleChange = (e) => {
@@ -161,7 +161,7 @@ export const CommentInput = ({ setSelected }) => {
 	};
 
 	const handlePost = () => {
-		// value 등록
+		setReply(false);
 	};
 
 	return (
