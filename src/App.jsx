@@ -23,6 +23,7 @@ import Post from '@pages/post/Post';
 import Chat from '@pages/chat/Chat';
 import ChatRoom from '@pages/chat/ChatRoom';
 import PostDetail from '@pages/post/Post-detail';
+import CommentDetail from '@pages/comment/Comment-detail';
 
 function App() {
 	return (
@@ -41,6 +42,7 @@ function App() {
 					<Route path="/setting" element={<BasicInfoSetting />} />
 					<Route path="/post-roommate" element={<Post />} />
 					<Route path="/post-detail" element={<PostDetail />} />
+					<Route path="/comment-detail/:postId" element={<CommentDetail />} />
 					<Route path="/chat" element={<Chat />} />
 					<Route path="/chat/chatroom" element={<ChatRoom />} />
 				</Routes>

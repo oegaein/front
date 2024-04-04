@@ -5,7 +5,7 @@ import Header from '@common/header/Header';
 import { Subtitle } from '@styles/basicInfo/Text';
 import { DropdownWrapper } from '@common/dropdown/BasicDropdown';
 import { BasicProfile, SimpleProfile } from '@common/ui/Profile';
-import Comment from '@components/comment/Comment';
+import PreviewComment from '@components/comment/PreviewComment';
 import OptionModal from '@common/modal/OptionModal';
 import ConfirmModal from '@common/modal/ConfirmModal';
 import BasicButton from '@common/button/BasicButton';
@@ -19,9 +19,9 @@ import BasicArrowUpIcon from '@assets/images/common/BasicArrowUpIcon.svg';
 import Checkbox from '@assets/images/common/Checkbox.svg';
 import CommentIcon from '@assets/images/common/comment.svg';
 import ShareIcon from '@assets/images/common/share.svg';
-import { CommentInput } from '@components/basicInfo/BasicSettingInput';
 
 const mocks = {
+	postId: 1,
 	profile: {
 		img: Panda,
 		nickname: 'happy푸바옹',
@@ -229,12 +229,14 @@ const PostDetail = () => {
 					<Box />
 				</section>
 				<section className="comment">
-					<Comment />
+					<PreviewComment />
 				</section>
 				<section className="container items-center justify-between sticky bottom-0 bg-white z-20">
 					<button
 						onClick={() => {
-							navigate('/comment-detail');
+							navigate(`/comment-detail/${mocks.postId}`, {
+								state: { postId: mocks.postId },
+							});
 						}}
 						style={{ display: 'flex', alignItems: 'center' }}
 					>

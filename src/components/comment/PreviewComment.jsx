@@ -6,9 +6,12 @@ import { BasicProfile } from '@common/ui/Profile';
 import FONT from '@styles/fonts';
 import COLOR from '@styles/color';
 import Panda from '@assets/images/common/Panda.png';
+import ArrowRightIcon from '@assets/images/common/ArrowRightIcon.svg';
+import { Box } from '@pages/post/Post-detail';
 import { useNavigate } from 'react-router-dom';
 
 const mocks = {
+	postId: 1,
 	count: 22,
 	comments: [
 		{
@@ -32,7 +35,8 @@ const mocks = {
 	],
 };
 
-const Comment = () => {
+const PreviewComment = () => {
+	const navigate = useNavigate();
 	const [value, setValue] = useState('');
 	const [reply, setReply] = useState(false);
 
@@ -40,9 +44,26 @@ const Comment = () => {
 		setReply(true);
 	};
 
+	const handleMoreComment = () => {
+		navigate(`/comment-detail/${mocks.postId}`, {
+			state: { postId: mocks.postId },
+		});
+	};
+
 	return (
 		<>
+			{reply && (
+				<CommentBox>
+					<CommentInput setSelected={setValue} setReply={setReply} />
+				</CommentBox>
+			)}
 			<CommentStyle>
+				<section className="flex flex-col p-[25px] pb-[0px]">
+					<Subtitle>댓글 {mocks.count}개</Subtitle>
+					<div className="w-full">
+						<CommentInput setSelected={setValue} />
+					</div>
+				</section>
 				<section className="commentbox">
 					{mocks.comments.map((item, index) => (
 						<div key={item.id} className="w-full mb-6">
@@ -92,15 +113,17 @@ const Comment = () => {
 						</div>
 					))}
 				</section>
-				<CommentBox>
-					<CommentInput setSelected={setValue} setReply={setReply} />
-				</CommentBox>
+				<section className="commentBtn caption2" onClick={handleMoreComment}>
+					<p className="mr-1">{mocks.count}개 댓글 전체 보기</p>
+					<img src={ArrowRightIcon} alt="arrow" />
+				</section>
+				<Box />
 			</CommentStyle>
 		</>
 	);
 };
 
-export default Comment;
+export default PreviewComment;
 
 const CommentStyle = styled.div`
 	display: flex;
@@ -148,7 +171,7 @@ const CommentBox = styled.div`
 	align-items: center;
 	position: fixed;
 	bottom: 0;
-	z-index: 10;
+	z-index: 50;
 	padding: 25px 25px 0px 25px;
 	width: 100%;
 	background-color: ${COLOR.white};
