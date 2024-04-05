@@ -29,6 +29,7 @@ import Chat from '@pages/chat/Chat';
 import ChatRoom from '@pages/chat/ChatRoom';
 import PostDetail from '@pages/post/Post-detail';
 import MyProfileEditPage from '@pages/MyPage/MyInfoEditPage/MyProfileEditPage';
+import RoommateReviewPage from '@pages/UserPage/RoommateReviewPage/RoommateReviewPage';
 
 function App() {
 	return (
@@ -50,6 +51,7 @@ function App() {
                 <Route path="mypage" element={<MyPage />} />
                 <Route path="my-profile/edit" element={<MyProfileEditPage />} />
                 <Route path="user/:id" element={<UserPage />} />
+                <Route path="user/:id/reviews" element={<RoommateReviewPage />} />
                 <Route path="/setting" element={<BasicInfoSetting />} />
                 <Route path="/post-roommate" element={<Post />} />
                 <Route path="/post-detail" element={<PostDetail />} />
