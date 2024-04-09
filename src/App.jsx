@@ -30,6 +30,7 @@ import ChatRoom from '@pages/chat/ChatRoom';
 import PostDetail from '@pages/post/Post-detail';
 import MyProfileEditPage from '@pages/MyPage/MyInfoEditPage/MyProfileEditPage';
 import RoommateReviewPage from '@pages/UserPage/RoommateReviewPage/RoommateReviewPage';
+import LikePage from '@pages/MyPage/LikePage/LikePage';
 
 function App() {
 	return (
@@ -49,6 +50,7 @@ function App() {
                 <Route path="onboarding" element={<OnboardingPage />} />
                 <Route path="login" element={<LoginPage />} />
                 <Route path="mypage" element={<MyPage />} />
+                <Route path="mypage/like" element={<LikePage />} />
                 <Route path="my-profile/edit" element={<MyProfileEditPage />} />
                 <Route path="user/:id" element={<UserPage />} />
                 <Route path="user/:id/reviews" element={<RoommateReviewPage />} />
@@ -73,9 +75,9 @@ function MainLayout() {
 			<div className="content">
 				<Outlet />
 			</div>
-			{/* {location.pathname !== '/' &&
+			{location.pathname !== '/' &&
 				location.pathname !== '/onboarding' &&
-				location.pathname !== '/login' && <Navbar />} */}
+				location.pathname !== '/login' && <Navbar />}
 		</div>
 	);
 }

@@ -9,8 +9,9 @@ import COLOR from '@styles/color'
 import LeftQuote from '@assets/images/left-quote.svg'
 import RightQuote from '@assets/images/right-quote-sign.svg'
 import Dots from '@assets/images/header-dots.svg'
+import InitialProfile from '@assets/images/initial-profile.svg'
 
-const ProfileImageContainer = ({profileImage}) => {
+const ProfileImageContainer = ({profileImage=InitialProfile}) => {
   const location = useLocation()
   const path = location.pathname
   return (
@@ -25,7 +26,10 @@ const ProfileImageContainer = ({profileImage}) => {
         </div>
         <div className={`profile-container flex justify-center items-center bg-white h-[186px] w-[186px]
         z-10 absolute translate-y-[calc(-50%)] ${path === '/mypage' ? 'left-[40px]' : 'left-[50%] translate-x-[calc(-50%)]'} top-[100%] rounded-[50%]`}>
-          <img className='h-[172px] w-[172px] rounded-[50%]' src={profileImage} alt='profile-image'/>
+          <img onerror={`this.onerror=null; this.src=${InitialProfile};`} 
+          className={`rounded-[50%] ${profileImage === InitialProfile ? 'h-[58px] w-[58px]' : 'h-[172px] w-[172px]'}`} 
+          src={profileImage} 
+          alt='profile-image'/>
           {path === '/mypage' && 
           <div className={`profile-perfection z-20 absolute left-[150px] bottom-[14px] w-[45px] h-[45px] flex justify-center items-center rounded-[50%]`}>
             80%

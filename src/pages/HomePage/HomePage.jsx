@@ -15,6 +15,8 @@ import RoommateSwiperList from '@components/common/RoommateSwiperList'
 //images
 import Next from '@assets/images/next.svg'
 import Buttons from '@components/HomePage/Buttons';
+import Premium from '@assets/images/premium-quality.svg'
+
 
 const HomePage = () => {
 
@@ -61,8 +63,32 @@ const HomePage = () => {
           <Buttons/>
         </div>
       </div>
-      <RoommateSwiperList type={'best'}/>
-      <RoommateSwiperList type={'new'}/>
+      <div className='bg-white'>
+        <div className='px-[25px] pt-[25px]'>
+          <div className='flex justify-between items-center pb-[10px]'>
+            <div className='flex'>
+              <h1 className='heading text-left font-bold mr-[3px]'>베스트 룸메이트</h1>
+              <img src={Premium} alt='best roommates icon'/>
+            </div>
+            <Link to='/home/best-roommates' className='more flex'>
+              더보기
+              <img src={Next} alt='see more icon'/>
+            </Link>
+          </div>
+          <p className='roommateMent pb-[10px]'>이전 룸메이트로부터 좋은 평가를 받았어요</p>
+        </div>
+        <RoommateSwiperList type={'best'}/>
+      </div>
+      <div className='bg-white'>
+        <div className='px-[25px] pt-[25px]'>
+          <div className='flex justify-between items-center pb-[10px]'>
+            <div className='flex'>
+              <h1 className='heading text-left font-bold mr-[3px]'>새로 올라온 룸메이트</h1>
+            </div>
+          </div>
+        </div>
+        <RoommateSwiperList type={'new'}/>
+      </div>
       <div>새로 올라온 공동배달</div>
     </SettingStyle>
   )
@@ -89,5 +115,10 @@ const SettingStyle = styled.div`
   }
   .dormitory-title {
     font-size: ${FONT.body4SB15};
+  }
+  .roommateMent {
+    color: ${COLOR.gray500};
+    font-size: ${FONT.caption2M14};
+    text-align: left;
   }
 `

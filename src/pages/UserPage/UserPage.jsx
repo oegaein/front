@@ -1,6 +1,8 @@
 import ProfileImageContainer from 'components/UserPage/ProfileImageContainer'
 import UserInfoAndLifeStyles from 'components/UserPage/UserInfoAndLifeStyles'
 import RoommateReviewList from 'components/UserPage/RoommateReviewList'
+import InitialProfile from '@assets/images/initial-profile.svg'
+import ProfileImage from '@assets/images/profile-image.svg'
 import React from 'react'
 import Header from '@common/header/Header'
 
