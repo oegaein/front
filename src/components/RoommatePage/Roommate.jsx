@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import styled from 'styled-components'
 
 //styles
@@ -9,6 +9,11 @@ import COLOR from '@styles/color'
 import Yoo from '../../assets/images/유재석.svg'
 
 const Roommate = () => {
+  const [isRegistered, setIsRegistered] = useState(false)
+  const clickRegisterBtn = () => {
+    //api 요청 로직 
+    setIsRegistered(prevState=>!prevState)
+  }
   return (
     <SettingStyle className={`flex bg-white border border-[${COLOR.gray100}] rounded-[20px] p-[14px]`}>
       <img className='w-[100px] h-[100px] mr-[12px]' src={Yoo}/>
@@ -30,7 +35,11 @@ const Roommate = () => {
           </div>
         </div>
         <div className='text-right'>
-          <a className='register-btn'>매칭신청</a>
+          {isRegistered ?
+          <button onClick={clickRegisterBtn} className='register-btn registered'>신청취소</button>
+        :  
+          <button onClick={clickRegisterBtn} className='register-btn'>매칭신청</button>
+        }
         </div>
       </div>
     </SettingStyle>
@@ -65,5 +74,8 @@ const SettingStyle = styled.div`
   .register-btn {
     font-size: ${FONT.caption2M14};
     color: ${COLOR.purple1};
+    &.registered {
+      color: ${COLOR.red}
+    }
   }
 `

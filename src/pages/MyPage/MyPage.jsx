@@ -1,5 +1,8 @@
 import React, {useState} from 'react'
 import { Link } from 'react-router-dom'
+
+//components
+import Header from '@common/header/Header'
 // styles
 import styled from 'styled-components'
 import FONT from '@styles/fonts'
@@ -23,7 +26,12 @@ const MyPage = () => {
   return (
     <SettingStyle className='flex flex-col gap-[10px]'>
       <section className='bg-white px-[25px] py-[24px]'>
-        <div className='flex justify-between'>
+      <div>
+				<Header backPath="/mypage" rightContent=" " rightEvent={() => {}}>
+					<span></span>
+				</Header>
+			</div>
+        <div className='flex justify-between pt-[20px]'>
           <div className='flex text-left gap-[20px]'>
             <div>
               <img className='w-[45px] h-[45px] rounded-[50%]' src={Profile}/>
@@ -34,7 +42,7 @@ const MyPage = () => {
             </div>
           </div>
           <div>
-            <button>프로필 보기</button>
+            <Link to='/user/1' className='color-purple1 font-caption2m14'>프로필 보기</Link>
           </div>
         </div>
         <div className='small-text px-[42px] pt-[48px] flex justify-between'>
@@ -42,7 +50,7 @@ const MyPage = () => {
             <img className='mb-[14px]' src={Notification} alt='알림 페이지로 가기'/>
             <span>알림</span>
           </Link>
-          <Link to='#' className='flex flex-col items-center'>
+          <Link to='/mypage/like' className='flex flex-col items-center'>
             <img className='mb-[14px]' src={Heart} alt='알림 페이지로 가기'/>
             <span>좋아요</span>
           </Link>
@@ -89,11 +97,11 @@ const MyPage = () => {
           </div>
         </div>
       </section>
-      {/* 글 3개까지 보이기 */}
+      {/* 글 2개까지 보이기, 3개 이상부터는 더보기 버튼 */}
       <section className='bg-white py-[24px]'>
         <div className='flex justify-between px-[25px]'>
           <h1 className='heading-text'>내가 올린 글</h1>
-          <Link className='flex items-center justify-between username whitespace-nowrap'>
+          <Link to='/mypage/mypost' className='flex items-center justify-between username whitespace-nowrap'>
             더보기 <img src={Next}/>
           </Link>
         </div>
@@ -115,7 +123,7 @@ const MyPage = () => {
                 </div>
               </div>
 
-              <div className='flex justify-between mt-[32px]'>
+              <div className='flex justify-between mt-[28px]'>
                 <div className='flex justify-between gap-[13px]'>
                   <div>
                     <img src={Profile} className='rounded-[50%] w-[45px] h-[45px]'/>

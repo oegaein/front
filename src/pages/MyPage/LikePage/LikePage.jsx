@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import Header from '@common/header/Header'
 import styled from 'styled-components'
 import FONT from '@styles/fonts'
 import COLOR from '@styles/color'
@@ -12,8 +13,13 @@ const LikePage = () => {
 
   return (
     <SettingStyle>
+      <div className="px-[28px]">
+				<Header backPath="/mypage" rightContent=" " rightEvent={() => {}}>
+					<span>좋아요</span>
+				</Header>
+			</div>
       <div>
-        <div className='flex mt-[24px]'>
+        <div className='flex'>
           <div onClick={()=>handleClickUploadPost('roommate')}className={`notification-title ${uploadPostType === 'roommate' && 'selected-title'}`}>룸메이트</div>
           <div onClick={()=>handleClickUploadPost('delivery')}className={`notification-title ${uploadPostType === 'delivery' && 'selected-title'}`}>공동배달</div>
         </div>
@@ -29,7 +35,7 @@ const LikePage = () => {
 export default LikePage
 
 const SettingStyle = styled.main`
-    .notification-title {
+  .notification-title {
     flex: 1;
     font-size: ${FONT.caption2M14};
     color: ${COLOR.gray500};

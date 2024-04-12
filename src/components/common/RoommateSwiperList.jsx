@@ -17,7 +17,7 @@ const RoommateSwiperList = ({type}) => {
     //type: new/best/mypost
   }
   return (
-    <SettingStyle className='bg-white pb-[24px]'>
+    <SettingStyle className='bg-white'>
       <Swiper
       spaceBetween={12}
       slidesPerView={2}
@@ -33,9 +33,9 @@ const RoommateSwiperList = ({type}) => {
           <BestRoommate/>
         </SwiperSlide>
       </Swiper>
-      {type === 'new' &&
+      {type === 'new' || 'post' &&
       <div className='px-[25px] mt-[16px]'>
-        <Link to='/roommate' className={`more flex justify-center items-center rounded-[10px] border border-[${COLOR.gray200}] h-[40px]`}>
+        <Link to='/mypage/roommate-applylist' className={`more flex justify-center items-center rounded-[10px] border border-[${COLOR.gray200}] h-[40px]`}>
           더보기
           <img src={Next} alt='see more icon'/>
         </Link>

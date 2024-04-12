@@ -31,6 +31,8 @@ import PostDetail from '@pages/post/Post-detail';
 import MyProfileEditPage from '@pages/MyPage/MyInfoEditPage/MyProfileEditPage';
 import RoommateReviewPage from '@pages/UserPage/RoommateReviewPage/RoommateReviewPage';
 import LikePage from '@pages/MyPage/LikePage/LikePage';
+import MyPostPage from '@pages/MyPage/MyPostPage/MyPostPage';
+import RoommateApplyListPage from '@pages/MyPage/RoommateApplyListPage/RoommateApplyListPage';
 
 function App() {
 	return (
@@ -50,7 +52,9 @@ function App() {
                 <Route path="onboarding" element={<OnboardingPage />} />
                 <Route path="login" element={<LoginPage />} />
                 <Route path="mypage" element={<MyPage />} />
+                <Route path="mypage/roommate-applylist" element={<RoommateApplyListPage />} />
                 <Route path="mypage/like" element={<LikePage />} />
+                <Route path="mypage/mypost" element={<MyPostPage />} />
                 <Route path="my-profile/edit" element={<MyProfileEditPage />} />
                 <Route path="user/:id" element={<UserPage />} />
                 <Route path="user/:id/reviews" element={<RoommateReviewPage />} />

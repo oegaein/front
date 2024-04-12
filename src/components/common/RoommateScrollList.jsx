@@ -16,7 +16,7 @@ const RoommateScrollList = () => {
   const path = location.pathname
   return (
     <SettingStyle>
-      <div className='flex justify-between items-center px-[24px] py-[23px] pb-[16px]'>
+      <div className='flex justify-between items-center px-[24px] py-[16px]'>
         {(path === '/roommate' || path === '/search') && <FindRoommateTitle path={path}/>}
         {(path === '/home/ending-soon') && <EndingSoonTitle/>}
         {(path === '/home/best-roommates') && <BestRoommateTitle/>}

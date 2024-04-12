@@ -17,8 +17,8 @@ const ProfileImageContainer = ({profileImage=InitialProfile}) => {
   return (
     <>
       <SettingStyle className={`relative h-[160px] px-[30px] bg-[${COLOR.purple1}]`}>
-        <div className='text-left mt-[22px]'>
-          <div className='mypage-introduce flex mt-[18px]'>
+        <div className='text-left'>
+          <div className='mypage-introduce flex'>
             <img className='w-[12px] h-[12px]' src={LeftQuote} alt='left quotation mark'/>
             <span className='mx-[6px] pt-[7px]'>맛집 투어 좋아해요! ✿˘◡˘✿</span>
             <img className='w-[12px] h-[12px]' src={RightQuote} alt='right quotation mark'/>

@@ -14,7 +14,6 @@ const UserPage = () => {
 					<span>차은우 님의 프로필</span>
 				</Header>
 			</div>
-
       <ProfileImageContainer/>
       <div className='flex flex-col bg-[#F3F5F7] gap-[10px] border-b border-[#DEDEDE]'>
         <UserInfoAndLifeStyles/>
