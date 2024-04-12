@@ -24,6 +24,7 @@ const LikePage = () => {
           <div onClick={()=>handleClickUploadPost('delivery')}className={`notification-title ${uploadPostType === 'delivery' && 'selected-title'}`}>공동배달</div>
         </div>
       </div>
+      <NoResults/>
       <div className='likelist flex flex-col gap-[1px]'>
         <LikeItem profileImage={Profile}/>
         <LikeItem profileImage={Profile}/>
@@ -33,6 +34,12 @@ const LikePage = () => {
 }
 
 export default LikePage
+
+const NoResults = () => {
+  return (
+    <p className='noresults mt-[138px]'>좋아요를 한 글이 없어요.</p>
+  )
+}
 
 const SettingStyle = styled.main`
   .notification-title {
@@ -53,5 +60,9 @@ const SettingStyle = styled.main`
   }
   .likelist {
     background-color: ${COLOR.gray100};
+  }
+  .noresults {
+    font-size: ${FONT.caption2M14};
+    color: ${COLOR.gray500};
   }
 `

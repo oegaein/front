@@ -25,7 +25,7 @@ const MyPage = () => {
   }
   return (
     <SettingStyle className='flex flex-col gap-[10px]'>
-      <section className='bg-white px-[25px] py-[24px]'>
+      <section className='bg-white px-[25px] pb-[24px]'>
       <div>
 				<Header backPath="/mypage" rightContent=" " rightEvent={() => {}}>
 					<span></span>

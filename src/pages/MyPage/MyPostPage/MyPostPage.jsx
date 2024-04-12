@@ -29,6 +29,7 @@ const MyPostPage = () => {
           <div onClick={()=>handleClickUploadPost('roommate')}className={`notification-title ${uploadPostType === 'roommate' && 'selected-title'}`}>룸메이트</div>
           <div onClick={()=>handleClickUploadPost('delivery')}className={`notification-title ${uploadPostType === 'delivery' && 'selected-title'}`}>공동배달</div>
         </div>
+        <NoResults/>
         <div className='px-[25px] mt-[16px]'>
           <div className='mypost px-[15px] py-[20px]'>
             <div className='flex justify-between'>
@@ -64,6 +65,12 @@ const MyPostPage = () => {
 }
 
 export default MyPostPage
+
+const NoResults = () => {
+  return (
+    <p className='noresults mt-[138px]'>내가 올린 글이 없어요.</p>
+  )
+}
 
 const SettingStyle = styled.main`
   .color-purple1 {
