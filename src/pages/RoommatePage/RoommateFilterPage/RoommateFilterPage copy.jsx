@@ -14,9 +14,9 @@ function RoommateFilterPageCopy() {
   const [filters, setFilters] = useState({
     sort: '', // 'latest' or 'deadline'
     peopleCount: [], // '1', '2', '3', '4' 중복 선택 가능
-    gender: '', // 'female', 'male'
-    dormitory: [], // 'A', 'B', 'C', 'D', 'E' 중복 선택 가능
-    roomType: [], // '2인실', '4인실'
+    gender: '', // '여성', '남성'
+    dong: [], // 'A', 'B', 'C', 'D', 'E' 중복 선택 가능
+    roomSize: [], // '2인실', '4인실'
     minAge: 20,
     maxAge: 35,
     minYear: 14,
@@ -38,13 +38,21 @@ function RoommateFilterPageCopy() {
   const handleSelectedFilter = (name, value, checked) => {
     setSelectedFilters(prevFilters => {
       let updatedSelectedFilters = []
-      checked ?
-      name === 'sort'?
-      updatedSelectedFilters = [{name, value}, ...prevFilters.filter(item => item.name !== 'sort')]
-      :
-      updatedSelectedFilters = [{name, value}, ...prevFilters]
-      :
-      updatedSelectedFilters = prevFilters.filter(item => item.value !== value)
+      if (checked) {
+        if (name === 'sort') {
+          updatedSelectedFilters = [{name, value}, ...prevFilters.filter(item => item.name !== 'sort')]
+        } else {
+          updatedSelectedFilters = [{name, value}, ...prevFilters]
+        }
+      } else {
+        if (['minAge', 'maxAge'].includes(name)) {
+          updatedSelectedFilters = prevFilters.filter(item => item.name !== 'minAge' && item.name !== 'maxAge')
+        } else if (['minYear', 'maxYear'].includes(name)) {
+          updatedSelectedFilters = prevFilters.filter(item => item.name !== 'minYear' && item.name !== 'maxYear')
+        } else {
+          updatedSelectedFilters = prevFilters.filter(item => item.value !== value)
+        }
+      }
 
       return updatedSelectedFilters
     })
@@ -53,47 +61,45 @@ function RoommateFilterPageCopy() {
   const handleSelectedGenderValue = (value) => {
     setSelectedFilters(prevFilters => {
       let updatedSelectedFilters = []
-      //남자로 변경하면, 여자동 B, C, D 삭제 & 기존에 있던 gender 값 삭제 & roomType 삭제
-      if (value === 'male') {
-        updatedSelectedFilters = prevFilters.filter(item => (!['B', 'C', 'D'].includes(item.value) && item.name !== 'gender' && item.name !== 'roomType'))
-      } else if (value === 'female') {
-        updatedSelectedFilters = prevFilters.filter(item => (!['A', 'E'].includes(item.value) && item.name !== 'gender' && item.name !== 'roomType'))
+      //남자로 변경하면, 여자동 B, C, D 삭제 & 기존에 있던 gender 값 삭제 & roomSize 삭제
+      if (value === '남성') {
+        updatedSelectedFilters = prevFilters.filter(item => (!['B', 'C', 'D'].includes(item.value) && item.name !== 'gender' && item.name !== 'roomSize'))
+      } else if (value === '여성') {
+        updatedSelectedFilters = prevFilters.filter(item => (!['A', 'E'].includes(item.value) && item.name !== 'gender' && item.name !== 'roomSize'))
       } else if (value === '') {
-        updatedSelectedFilters = prevFilters.filter(item => (!['A', 'B', 'C', 'D' ,'E'].includes(item.value) && item.name !== 'gender' && item.name !== 'roomType'))
+        updatedSelectedFilters = prevFilters.filter(item => (!['A', 'B', 'C', 'D' ,'E'].includes(item.value) && item.name !== 'gender' && item.name !== 'roomSize'))
       }
 
       return updatedSelectedFilters
     })
   }
 
-  const handleChangeGenderValue = (value) => {
+  const handleChangeGenderValue = (e) => {
+    const { name, value, checked } = e.target;
+
     handleSelectedGenderValue(value)
     setFilters(prevFilters => {
-      let updatedDormitory = {}
+      let updateddong = {}
       //값을 남자로 변경하면, 여자동인 B, C, D를 삭제 & 호실 유형도 삭제
-      if (value === 'male') {
-        updatedDormitory = {
+      if (value === '남성') {
+        updateddong = {
           ...prevFilters,
-          dormitory : prevFilters.dormitory.filter(item => !['B', 'C', 'D'].includes(item)),
-          roomType : []
+          dong : prevFilters.dong.filter(item => !['B동', 'C동', 'D동'].includes(item)),
+          roomSize : [],
+          gender : value,
         }
       //값을 여자로 변경하면, 남자동인 A, E를 삭제 & 호실 유형도 삭제
-      } else if (value === 'female') {
-        updatedDormitory = {
+      } else if (value === '여성') {
+        updateddong = {
           ...prevFilters,
-          dormitory : prevFilters.dormitory.filter(item => !['A', 'E'].includes(item)),
-          roomType : []
-        }
-      //값을 아예 삭제하면 빈 리스트로 변경 & 호실 유형도 삭제
-      } else if (value === ''){
-        updatedDormitory ={
-          ...prevFilters,
-          dormitory: [],
-          roomType : []
+          dong : prevFilters.dong.filter(item => !['A동', 'E동'].includes(item)),
+          roomSize : [],
+          gender : value,
         }
       }
-      return updatedDormitory
+      return updateddong
     })
+    handleSelectedFilter(name, value, checked)
   }
 
   //값 변경 
@@ -101,19 +107,8 @@ function RoommateFilterPageCopy() {
   //target이 단일 선택일때(성별만 해당): 값만 변경
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    if (name === 'gender') {
-      handleChangeGenderValue(value)
-    }
-    if ((value === 'D' && filters.gender === 'female') || (value === 'E' && filters.gender === 'male')) {
-      !checked &&
-      setFilters(prevFilters => ({
-        ...prevFilters,
-        roomType : []
-      }))
-      setSelectedFilters(prevFilters => (
-        prevFilters.filter(item => item.name !== 'roomType')
-      ))
-    }
+    
+    //중복 가능 필터일때
     if (type === 'checkbox') {
       setFilters(prevFilters => ({
       ...prevFilters,
@@ -121,6 +116,7 @@ function RoommateFilterPageCopy() {
       ? [...prevFilters[name], value]
       : prevFilters[name].filter(item => item !== value),
       }))
+      //중복 불가능 필터일때
     } else {
       setFilters(prevFilters => ({
       ...prevFilters,
@@ -129,6 +125,30 @@ function RoommateFilterPageCopy() {
     }
     handleSelectedFilter(name, value, checked)
   }
+
+  const handleChangeDong = (e) => {
+    const { name, value, checked } = e.target;    
+    //name이 기숙사 동일때 체크가 해제되어 있다면 호실 유형을 지운다 
+    if ((value === 'D동' && filters.gender === '여성') || (value === 'E동' && filters.gender === '남성')) {
+      !checked &&
+      setFilters(prevFilters => ({
+        ...prevFilters,
+        roomSize : []
+      }))
+      setSelectedFilters(prevFilters => (
+        prevFilters.filter(item => item.name !== 'roomSize')
+      ))
+    }
+    //중복 가능 필터일때
+    setFilters(prevFilters => ({
+    ...prevFilters,
+    [name]: checked
+    ? [...prevFilters[name], value]
+    : prevFilters[name].filter(item => item !== value),
+    }))
+    handleSelectedFilter(name, value, checked)
+  }
+
 
   const getInitialValueByName = (name) => {
     switch (name) {
@@ -148,7 +168,12 @@ function RoommateFilterPageCopy() {
   const deleteOption = (e) => {
     const { name, value } = e.currentTarget;
     if (name === 'gender') {
-      handleChangeGenderValue('')
+      setFilters(prevFilters => ({
+        ...prevFilters,
+        dong: [],
+        roomSize : [],
+        gender : '',
+      }))
     }
     handleSelectedFilter(name, value, false)
     if (['minAge', 'maxAge', 'minYear', 'maxYear'].includes(name)) {
@@ -180,8 +205,8 @@ function RoommateFilterPageCopy() {
   }
 
   useEffect(()=> {
-    console.log(filters)
-  }, [filters])
+    console.log(selectedFilters)
+  }, [selectedFilters])
 
   return (
     <SettingStyle className='flex flex-col'>
@@ -192,41 +217,46 @@ function RoommateFilterPageCopy() {
 			</div>
       <div className='tag-container bg-white flex gap-[10px] sticky z-10 top-0 overflow-x-scroll'>
       {
-        selectedFilters.map((item, index) => (
-          <button className='selected-tag' onClick={deleteOption} value={item.value} name={item.name} key={index}>
-            {item.name} : {item.value}
-            <img className='ml-[5px] h-[12px] w-[12px]' src={Close} alt='close button'/>
-          </button> 
-        ))
-      }
-      {/* {
-        Object.entries(filters).map(([key, value]) => {
-          console.log(`${key} : ${value}, ${typeof(value)}`);
-          // value가 리스트일 때 
-          if (Array.isArray(value)) {
-            if (value.length === 0) return 
-            return (
-              <>
-                {value.map((item, index) => (
-                  <button className='selected-tag' onClick={deleteOption} value={item} name={key} key={index}>
-                    {item}
-                    <img className='ml-[5px] h-[12px] w-[12px]' src={Close} alt='close button'/>
-                  </button> 
-                ))}
-              </>
-            );
-            // value가 리스트가 아닐 때 
-          } else if (value){
-            return (
-              <button className='selected-tag' onClick={deleteOption} value={value} name={key} key={key}>
-                {value}
-                <img className='ml-[5px] h-[12px] w-[12px]' src={Close} alt='close button'/>
-              </button>
-            );
-          }
-        })
-      } */}
+        selectedFilters.map((item, index) => {
+          // Age 또는 Year 필터인지 확인
+          const isAgeFilter = item.name === 'minAge' || item.name === 'maxAge'
+          const isYearFilter = item.name === 'minYear' || item.name === 'maxYear'
 
+          // minAge, maxAge, minYear, maxYear 값을 찾음
+          const minAge = selectedFilters.find(filter => filter.name === 'minAge')?.value ?? getInitialValueByName('minAge')
+          const maxAge = selectedFilters.find(filter => filter.name === 'maxAge')?.value ?? getInitialValueByName('maxAge')
+          const minYear = selectedFilters.find(filter => filter.name === 'minYear')?.value ?? getInitialValueByName('minYear')
+          const maxYear = selectedFilters.find(filter => filter.name === 'maxYear')?.value ?? getInitialValueByName('maxYear')
+
+          return (
+            isAgeFilter ? (
+              <>
+              {item.name === 'maxAge' && (
+              <button className='selected-tag' onClick={deleteOption} value={item.value} name={item.name} key={index}>
+                {minAge}세 ~ {maxAge}세
+                <img className='ml-[5px] h-[12px] w-[12px]' src={Close} alt='close button'/>
+              </button> 
+              )}
+              </>
+            ) :
+            isYearFilter ? (
+              <>
+              {item.name === 'minYear' && (
+              <button className='selected-tag' onClick={deleteOption} value={item.value} name={item.name} key={index}>
+                {minYear}학번 ~ {maxYear}학번
+                <img className='ml-[5px] h-[12px] w-[12px]' src={Close} alt='close button'/>
+              </button> 
+              )}
+              </>
+            ) : (
+            <button className='selected-tag' onClick={deleteOption} value={item.value} name={item.name} key={index}>
+              {item.value}
+              <img className='ml-[5px] h-[12px] w-[12px]' src={Close} alt='close button'/>
+            </button> 
+            )
+          )
+      })
+      }
       </div>
       {/* 정렬 */}
       <div className='filter-section'> 
@@ -243,10 +273,10 @@ function RoommateFilterPageCopy() {
       <div className='filter-section'> 
         <h1 className='filter-title'>모집 인원</h1> 
         <div className='flex'> 
-          {[1, 2, 3, 4].map(number => ( 
+          {['1인', '2인', '3인', '4인'].map(number => ( 
             <label className={`filter-input ${filters.peopleCount.includes(`${number}`) && 'selected'}`} key={number}>
               <input type="checkbox" name="peopleCount" value={number} checked={filters.peopleCount.includes(`${number}`)} onChange={handleChange} hidden/>
-              {number}인
+              {number}
             </label> 
           ))} 
         </div> 
@@ -254,12 +284,11 @@ function RoommateFilterPageCopy() {
       {/* 성별 */} 
       <div className='filter-section'> 
         <h1 className='filter-title'>성별</h1> 
-        <label className={`filter-input ${filters.gender === 'male' && 'selected'}`}>
-          <input type="radio" name="gender" value="male" checked={filters.gender === 'male'} onChange={handleChange} hidden/>남성
+        {['남성', '여성'].map(gender => (
+        <label className={`filter-input ${filters.gender === gender && 'selected'}`}>
+          <input type="radio" name="gender" value={gender} checked={filters.gender === gender} onChange={handleChangeGenderValue} hidden/>{gender}
         </label> 
-        <label className={`filter-input ${filters.gender === 'female' && 'selected'}`}>
-          <input type="radio" name="gender" value="female" checked={filters.gender === 'female'} onChange={handleChange} hidden/>여성
-        </label> 
+        ))}
       </div>
        {/* 기숙사 동 */}
       <div className='filter-section'>
@@ -269,36 +298,36 @@ function RoommateFilterPageCopy() {
         </div>
         <h2 className='filter-subtitle'>남자기숙사</h2>
         <div className='mb-[16px]'>
-          {['A', 'E'].map(dorm => (
-            <label key={dorm} className={`filter-input ${filters.dormitory.includes(dorm) && 'selected'} ${(!filters.gender || filters.gender === 'female') && 'disabled'}`}>
-              <input type="checkbox" name="dormitory" value={dorm} checked={filters.dormitory.includes(dorm)} disabled={!filters.gender || filters.gender === 'female'} onChange={handleChange} hidden/>
-              {dorm}동
-              <div className={`disabled-line ${(!filters.gender || filters.gender === 'female') && 'disabled'}`}></div>
+          {['A동', 'E동'].map(dorm => (
+            <label key={dorm} className={`filter-input ${filters.dong.includes(dorm) && 'selected'} ${(!filters.gender || filters.gender === '여성') && 'disabled'}`}>
+              <input type="checkbox" name="dong" value={dorm} checked={filters.dong.includes(dorm)} disabled={!filters.gender || filters.gender === '여성'} onChange={handleChangeDong} hidden/>
+              {dorm}
+              <div className={`disabled-line ${(!filters.gender || filters.gender === '여성') && 'disabled'}`}></div>
             </label>
           ))}
         </div>
         <h2 className='filter-subtitle'>여자기숙사</h2>
         <div>
-          {['B', 'C', 'D'].map(dorm => (
-            <label key={dorm} className={`filter-input ${filters.dormitory.includes(dorm) && 'selected'} ${(!filters.gender || filters.gender === 'male') && 'disabled'}`}>
-              <input type="checkbox" name="dormitory" value={dorm} checked={filters.dormitory.includes(dorm)} disabled={!filters.gender || filters.gender === 'male'} onChange={handleChange} hidden/>
-              {dorm}동
-              <div className={`disabled-line ${(!filters.gender || filters.gender === 'male') && 'disabled'}`}></div>
+          {['B동', 'C동', 'D동'].map(dorm => (
+            <label key={dorm} className={`filter-input ${filters.dong.includes(dorm) && 'selected'} ${(!filters.gender || filters.gender === '남성') && 'disabled'}`}>
+              <input type="checkbox" name="dong" value={dorm} checked={filters.dong.includes(dorm)} disabled={!filters.gender || filters.gender === '남성'} onChange={handleChangeDong} hidden/>
+              {dorm}
+              <div className={`disabled-line ${(!filters.gender || filters.gender === '남성') && 'disabled'}`}></div>
             </label>
           ))}
         </div>
       </div>
       {/* 호실 유형 */}
-      {/* D,E 중 하나라도 들어있다면 */}
-      {filters.dormitory.some(i => ['D', 'E'].includes(i)) &&
+      {/* D동,E동 중 하나라도 들어있다면 */}
+      {filters.dong.some(i => ['D동', 'E동'].includes(i)) &&
         <div className='filter-section'>
           <h1 className='filter-title'>호실 유형</h1>
           <h2 className='filter-subtitle'>* D동 E동만 해당</h2>
           {
-            ['2인실', '4인실'].map(roomType => (
-            <label className={`filter-input ${filters.roomType.includes(roomType) && 'selected'}`}>
-              <input type="checkbox" name='roomType' value={roomType} checked={filters.roomType.includes(roomType)} onChange={handleChange} hidden/>
-              {roomType}
+            ['2인실', '4인실'].map(roomSize => (
+            <label className={`filter-input ${filters.roomSize.includes(roomSize) && 'selected'}`}>
+              <input type="checkbox" name='roomSize' value={roomSize} checked={filters.roomSize.includes(roomSize)} onChange={handleChange} hidden/>
+              {roomSize}
             </label>
             ))
           }
