@@ -27,7 +27,7 @@ const RoommateApplyListPage = () => {
           <div onClick={()=>handleChangeType('delivery')}className={`notification-title ${uploadPostType === 'delivery' && 'selected-title'}`}>공동배달</div>
         </div>
       </div>
-      <RoommateScrollList/>
+      <RoommateScrollList type='mypost'/>
     </SettingStyle>
   )
 }

@@ -9,7 +9,7 @@ import COLOR from '@styles/color'
 import Yoo from '../../assets/images/유재석.svg'
 import axios from 'axios'
 
-const Roommate = ({post, index}) => {
+const RoommateScrollItem = ({post, index}) => {
   const [isRegistered, setIsRegistered] = useState(false)
   const clickRegisterBtn = () => {
     //api 요청 로직 
@@ -60,7 +60,7 @@ const Roommate = ({post, index}) => {
   )
 }
 
-export default Roommate
+export default RoommateScrollItem
 
 const SettingStyle = styled.div`
   .room {

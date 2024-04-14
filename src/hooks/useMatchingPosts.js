@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
-import axios from "axios"
+import { API } from "@utils/api";
 
 const fetchData = async (type) => {
   let endpoint = '';
@@ -13,7 +13,7 @@ const fetchData = async (type) => {
     endpoint = '/api/v1/deadline-imminent-matchingposts';
   }
   try {
-    const response = await axios.get(`${endpoint}`)
+    const response = await API.get(`${endpoint}`)
     console.log('훅:', response.data.data)
     return response.data.data
   } catch(error) {

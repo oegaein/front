@@ -7,7 +7,7 @@ import Yoo from '../../assets/images/유재석.svg'
 import styled from 'styled-components'
 import FONT from '@styles/fonts'
 import COLOR from '@styles/color'
-const BestRoommate = ({post, index}) => {
+const RoommateSwiperItem = ({post, index}) => {
   console.log(post)
   return (
     <SettingStyle className={`w-[192px] h-[179px] border border-[${COLOR.gray100}] rounded-[20px] bg-white p-[17px] pb-[13px] ml-[12px]`}>
@@ -37,7 +37,7 @@ const BestRoommate = ({post, index}) => {
   )
 }
 
-export default BestRoommate
+export default RoommateSwiperItem
 
 const SettingStyle = styled.button`
   .room {

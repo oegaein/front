@@ -12,7 +12,7 @@ import Hourglass from '@assets/images/hourglass.svg'
 import Premium from '@assets/images/premium-quality.svg'
 
 //components
-import Roommate from '@components/RoommatePage/Roommate'
+import RoommateScrollItem from '@components/RoommatePage/RoommateScrollItem'
 
 const RoommateScrollList = ({type}) => {
   const {data:matchingPosts, isLoading, error} = useMatchingPosts(type)
@@ -31,7 +31,7 @@ const RoommateScrollList = ({type}) => {
       </div>
       <div className='flex flex-col gap-[10px] px-[24px] pb-[11px]'>
         {matchingPosts.map((post, index) => (
-          <Roommate post={post} index={index}/>
+          <RoommateScrollItem post={post} index={index}/>
         ))}
       </div>
     </SettingStyle>

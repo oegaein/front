@@ -42,10 +42,10 @@ const RoommatePage = () => {
               </Link>
             </div>
           </div>
-          <RoommateSwiperList type={'best'}/>
+          <RoommateSwiperList type='best'/>
         </div>
       </div>
-      <RoommateScrollList/>
+      <RoommateScrollList type='new'/>
     </SettingStyle>
   )
 }
