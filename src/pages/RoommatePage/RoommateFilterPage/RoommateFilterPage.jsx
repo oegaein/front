@@ -7,85 +7,189 @@ import COLOR from '@styles/color'
 import DoubleRangeSlider from '@components/RoommatePage/DoubleRangeSlider';
 import { type } from '@testing-library/user-event/dist/type';
 import Close from '@assets/images/close-white.svg'
+import Header from '@common/header/Header';
 
 
 function RoommateFilterPage() {
-  const initialFilters = new Map([
-    ['sort', ''],
-    ['peopleCount', []],
-    ['gender', ''],
-    ['dormitory', []],
-    ['roomType', []],
-    ['minAge', 0],
-    ['maxAge', 0],
-    ['minYear', 0],
-    ['maxYear', 0],
-    ['mbti', []],
-    ['sleepHabit', []],
-    ['lifePattern', []],
-    ['isSmoker', []],
-    ['cleaningCycle', []],
-    ['goOut', []],
-    ['soundSensitivity', []]
-  ]);
-  const [filters, setFilters] = useState(initialFilters);
-  console.log(filters)
+  const [filters, setFilters] = useState({
+    sort: '', // 'latest' or 'deadline'
+    peopleCount: [], // '1', '2', '3', '4' 중복 선택 가능
+    gender: '', // '여성', '남성'
+    dong: [], // 'A', 'B', 'C', 'D', 'E' 중복 선택 가능
+    roomSize: [], // '2인실', '4인실'
+    minAge: 20,
+    maxAge: 35,
+    minYear: 14,
+    maxYear: 24,
+    mbti: [],
+    sleepHabit: [],
+    lifePattern: [],
+    isSmoker: [],
+    cleaningCycle: [],
+    goOut: [],
+    soundSensitivity: []
+  });
+  const [selectedFilters, setSelectedFilters] = useState([])
   const iMbtis = ['ISTJ', 'ISTP', 'INFJ', 'INTJ', 'ISFJ', 'ISFP', 'INFP', 'INTP']
   const eMbtis = ['ESTJ', 'ESFP', 'ENFP', 'ENTP', 'ESFJ', 'ESTP', 'ENFJ', 'ENTJ']
   const [showAllMbtis, setShowAllMbtis] = useState(false)
-  const handleChangeGenderValue = (value) => {
-    setFilters(prevFilters => {
-      const newFilters = new Map(prevFilters);
-      if (value === 'male') {
-        const updatedDormitory = [...newFilters.get('dormitory')].filter(d => !['B', 'C', 'D'].includes(d));
-        newFilters.set('dormitory', updatedDormitory);
-      } else if (value === 'female') {
-        const updatedDormitory = [...newFilters.get('dormitory')].filter(d => !['A', 'E'].includes(d));
-        newFilters.set('dormitory', updatedDormitory);
-      } else if (value === '') {
-        newFilters.set('dormitory', []);
+
+  //selectedFilters 관련 함수
+  const handleSelectedFilter = (name, value, checked) => {
+    setSelectedFilters(prevFilters => {
+      let updatedSelectedFilters = []
+      if (checked) {
+        if (name === 'sort') {
+          updatedSelectedFilters = [{name, value}, ...prevFilters.filter(item => item.name !== 'sort')]
+        } else {
+          updatedSelectedFilters = [{name, value}, ...prevFilters]
+        }
+      } else {
+        if (['minAge', 'maxAge'].includes(name)) {
+          updatedSelectedFilters = prevFilters.filter(item => item.name !== 'minAge' && item.name !== 'maxAge')
+        } else if (['minYear', 'maxYear'].includes(name)) {
+          updatedSelectedFilters = prevFilters.filter(item => item.name !== 'minYear' && item.name !== 'maxYear')
+        } else {
+          updatedSelectedFilters = prevFilters.filter(item => item.value !== value)
+        }
       }
-      return newFilters;
-    });
+
+      return updatedSelectedFilters
+    })
   }
-  
+
+  const handleSelectedGenderValue = (value) => {
+    setSelectedFilters(prevFilters => {
+      let updatedSelectedFilters = []
+      //남자로 변경하면, 여자동 B, C, D 삭제 & 기존에 있던 gender 값 삭제 & roomSize 삭제
+      if (value === '남성') {
+        updatedSelectedFilters = prevFilters.filter(item => (!['B', 'C', 'D'].includes(item.value) && item.name !== 'gender' && item.name !== 'roomSize'))
+      } else if (value === '여성') {
+        updatedSelectedFilters = prevFilters.filter(item => (!['A', 'E'].includes(item.value) && item.name !== 'gender' && item.name !== 'roomSize'))
+      } else if (value === '') {
+        updatedSelectedFilters = prevFilters.filter(item => (!['A', 'B', 'C', 'D' ,'E'].includes(item.value) && item.name !== 'gender' && item.name !== 'roomSize'))
+      }
+
+      return updatedSelectedFilters
+    })
+  }
+
+  const handleChangeGenderValue = (e) => {
+    const { name, value, checked } = e.target;
+
+    handleSelectedGenderValue(value)
+    setFilters(prevFilters => {
+      let updateddong = {}
+      //값을 남자로 변경하면, 여자동인 B, C, D를 삭제 & 호실 유형도 삭제
+      if (value === '남성') {
+        updateddong = {
+          ...prevFilters,
+          dong : prevFilters.dong.filter(item => !['B동', 'C동', 'D동'].includes(item)),
+          roomSize : [],
+          gender : value,
+        }
+      //값을 여자로 변경하면, 남자동인 A, E를 삭제 & 호실 유형도 삭제
+      } else if (value === '여성') {
+        updateddong = {
+          ...prevFilters,
+          dong : prevFilters.dong.filter(item => !['A동', 'E동'].includes(item)),
+          roomSize : [],
+          gender : value,
+        }
+      }
+      return updateddong
+    })
+    handleSelectedFilter(name, value, checked)
+  }
+
+  //값 변경 
+  //target이 중복 선택 가능일때: checked면 삽입, 아니면 삭제
+  //target이 단일 선택일때(성별만 해당): 값만 변경
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    if (name === 'gender') {
-      handleChangeGenderValue(name, value)
+    
+    //중복 가능 필터일때
+    if (type === 'checkbox') {
+      setFilters(prevFilters => ({
+      ...prevFilters,
+      [name]: checked
+      ? [...prevFilters[name], value]
+      : prevFilters[name].filter(item => item !== value),
+      }))
+      //중복 불가능 필터일때
+    } else {
+      setFilters(prevFilters => ({
+      ...prevFilters,
+      [name]: value,
+      }));
     }
-    setFilters(prevFilters => {
-      const newFilters = new Map(prevFilters);
-      if (type === 'checkbox') {
-        const currentValue = newFilters.get(name) || [];
-        newFilters.set(name, checked ? [value, ...currentValue] : currentValue.filter(item => item !== value));
-      } else {
-        newFilters.set(name, value);
-      }
-      // 해당 속성을 가장 앞으로 이동
-      const updatedValue = newFilters.get(name);
-      newFilters.delete(name);
-      return new Map([[name, updatedValue], ...newFilters]);
-    });
-  };
+    handleSelectedFilter(name, value, checked)
+  }
+
+  const handleChangeDong = (e) => {
+    const { name, value, checked } = e.target;    
+    //name이 기숙사 동일때 체크가 해제되어 있다면 호실 유형을 지운다 
+    if ((value === 'D동' && filters.gender === '여성') || (value === 'E동' && filters.gender === '남성')) {
+      !checked &&
+      setFilters(prevFilters => ({
+        ...prevFilters,
+        roomSize : []
+      }))
+      setSelectedFilters(prevFilters => (
+        prevFilters.filter(item => item.name !== 'roomSize')
+      ))
+    }
+    //중복 가능 필터일때
+    setFilters(prevFilters => ({
+    ...prevFilters,
+    [name]: checked
+    ? [...prevFilters[name], value]
+    : prevFilters[name].filter(item => item !== value),
+    }))
+    handleSelectedFilter(name, value, checked)
+  }
+
+
+  const getInitialValueByName = (name) => {
+    switch (name) {
+      case 'minAge':
+        return 20;
+      case 'maxAge':
+        return 35;
+      case 'minYear':
+        return 14;
+      case 'maxYear':
+        return 24;
+      default:
+        return null; // 또는 적합한 기본값
+    }
+  }
 
   const deleteOption = (e) => {
     const { name, value } = e.currentTarget;
-    setFilters(prevFilters => {
-      const newFilters = new Map(prevFilters);
-      if (name === 'gender') {
-        handleChangeGenderValue('');
-      } 
-      const currentValue = newFilters.get(name);
-      if (Array.isArray(currentValue)) {
-        const updatedValue = currentValue.filter(item => item !== value);
-        newFilters.set(name, updatedValue);
-      } else {
-        newFilters.set(name, '');
-      }
-      
-      return newFilters;
-    });
+    if (name === 'gender') {
+      setFilters(prevFilters => ({
+        ...prevFilters,
+        dong: [],
+        roomSize : [],
+        gender : '',
+      }))
+    }
+    handleSelectedFilter(name, value, false)
+    if (['minAge', 'maxAge', 'minYear', 'maxYear'].includes(name)) {
+      setFilters(prevFilters => ({
+        ...prevFilters,
+        [name] : getInitialValueByName(name)
+      }))
+      return
+    }
+
+    setFilters(prevFilters => ({
+      ...prevFilters,
+      [name]: Array.isArray(prevFilters[name])
+      ? prevFilters[name].filter(item => item !== value)
+      : ''
+    }))
   }
   
 
@@ -101,92 +205,90 @@ function RoommateFilterPage() {
   }
 
   useEffect(()=> {
-  }, [filters])
+    console.log(selectedFilters)
+  }, [selectedFilters])
 
   return (
     <SettingStyle className='flex flex-col'>
+      {/* <div className="px-[28px]">
+				<Header backPath="/roommate" rightContent=" " rightEvent={() => {}}>
+					<span>필터</span>
+				</Header>
+			</div> */}
       <div className='tag-container bg-white flex gap-[10px] sticky z-10 top-0 overflow-x-scroll'>
       {
-        Array.from(filters).map(([name, value], index) => {
-          if (Array.isArray(value)) {
-            if (value.length === 0) return 
-            return (
-              <>
-                {value.map((item, index) => (
-                  <button className='selected-tag' onClick={deleteOption} value={item} name={name} key={index}>
-                    {item}
-                    <img className='ml-[5px] h-[12px] w-[12px]' src={Close} alt='close button'/>
-                  </button> // 배열의 각 요소를 div로 감싸서 리턴
-                ))}
-              </>
-            );
-            //value가 리스트가 아닐때 
-          } else if (value){
-            return (
-              <button className='selected-tag' onClick={deleteOption} value={value} name={name} key={index}>
-                {value}
-                <img className='ml-[5px] h-[12px] w-[12px]' src={Close} alt='close button'/>
-              </button>
-            );
-          }
-        })
-        
-      }
-      {/* {
-        Object.entries(selectedFilters).map(([key, value]) => {
-          console.log(`${key}`);
-          //value가 리스트일때 
-          if (Array.isArray(value)) {
-            if (value.length === 0) return 
-            return (
-              <>
-                {value.map((item, index) => (
-                  <button className='selected-tag' onClick={deleteOption} value={item} name={key} key={index}>
-                    {item}
-                    <img className='ml-[5px] h-[12px] w-[12px]' src={Close} alt='close button'/>
-                  </button> // 배열의 각 요소를 div로 감싸서 리턴
-                ))}
-              </>
-            );
-            //value가 리스트가 아닐때 
-          } else if (value){
-            return (
-              <button className='selected-tag' onClick={deleteOption} value={value} name={key} key={key}>
-                {value}
-                <img className='ml-[5px] h-[12px] w-[12px]' src={Close} alt='close button'/>
-              </button>
-            );
-          }
-        })
-      } */}
+        selectedFilters.map((item, index) => {
+          // Age 또는 Year 필터인지 확인
+          const isAgeFilter = item.name === 'minAge' || item.name === 'maxAge'
+          const isYearFilter = item.name === 'minYear' || item.name === 'maxYear'
 
+          // minAge, maxAge, minYear, maxYear 값을 찾음
+          const minAge = selectedFilters.find(filter => filter.name === 'minAge')?.value ?? getInitialValueByName('minAge')
+          const maxAge = selectedFilters.find(filter => filter.name === 'maxAge')?.value ?? getInitialValueByName('maxAge')
+          const minYear = selectedFilters.find(filter => filter.name === 'minYear')?.value ?? getInitialValueByName('minYear')
+          const maxYear = selectedFilters.find(filter => filter.name === 'maxYear')?.value ?? getInitialValueByName('maxYear')
+
+          return (
+            isAgeFilter ? (
+              <>
+              {item.name === 'maxAge' && (
+              <button className='selected-tag' onClick={deleteOption} value={item.value} name={item.name} key={index}>
+                {minAge}세 ~ {maxAge}세
+                <img className='ml-[5px] h-[12px] w-[12px]' src={Close} alt='close button'/>
+              </button> 
+              )}
+              </>
+            ) :
+            isYearFilter ? (
+              <>
+              {item.name === 'minYear' && (
+              <button className='selected-tag' onClick={deleteOption} value={item.value} name={item.name} key={index}>
+                {minYear}학번 ~ {maxYear}학번
+                <img className='ml-[5px] h-[12px] w-[12px]' src={Close} alt='close button'/>
+              </button> 
+              )}
+              </>
+            ) : (
+            <button className='selected-tag' onClick={deleteOption} value={item.value} name={item.name} key={index}>
+              {item.value}
+              <img className='ml-[5px] h-[12px] w-[12px]' src={Close} alt='close button'/>
+            </button> 
+            )
+          )
+      })
+      }
       </div>
       {/* 정렬 */}
-      <div className='filter-section'>
-        <h1 className='filter-title'>정렬</h1>
-        <div className='filter-text flex flex-col gap-[16px]'>
-          <label><input type="radio" name="sort" value="latest" checked={filters.get('sort') === 'latest'} onChange={handleChange}/> 최신순</label>
-          <label><input type="radio" name="sort" value="deadline" checked={filters.get('sort') === 'deadline'} onChange={handleChange} /> 마감순</label>
-        </div>
-      </div>
-      <div className='filter-section'>
-        <h1 className='filter-title'>모집 인원</h1>
-        <div className='flex'>
-        {[1, 2, 3, 4].map(number => (
-          <label className={`filter-input ${filters.get('peopleCount')?.includes(`${number}`) ? 'selected' : ''}`} key={number}>
-            <input type="checkbox" name="peopleCount" value={number} checked={filters.get('peopleCount')?.includes(`${number}`)} onChange={handleChange} hidden/>{number}인
-          </label>
+      <div className='filter-section'> 
+        <h1 className='filter-title'>정렬</h1> 
+        <div className='filter-text flex flex-col gap-[16px]'> 
+        {
+          ['최신순', '마감순'].map((sort, index) => (
+            <label key={index}><input type="radio" name="sort" value={sort} checked={filters.sort === sort} onChange={handleChange}/> {sort}</label> 
+          ))
+        }
+        </div> 
+      </div> 
+      {/* 모집인원 */} 
+      <div className='filter-section'> 
+        <h1 className='filter-title'>모집 인원</h1> 
+        <div className='flex'> 
+          {['1인', '2인', '3인', '4인'].map((number, index) => ( 
+            <label className={`filter-input ${filters.peopleCount.includes(`${number}`) && 'selected'}`} key={index}>
+              <input type="checkbox" name="peopleCount" data-testid={number} value={number} checked={filters.peopleCount.includes(`${number}`)} onChange={handleChange} hidden/>
+              {number}
+            </label> 
+          ))} 
+        </div> 
+      </div> 
+      {/* 성별 */} 
+      <div className='filter-section'> 
+        <h1 className='filter-title'>성별</h1> 
+        {['남성', '여성'].map((gender, index) => (
+        <label className={`filter-input ${filters.gender === gender && 'selected'}`} key={index}>
+          <input type="radio" name="gender" value={gender} checked={filters.gender === gender} onChange={handleChangeGenderValue} hidden/>{gender}
+        </label> 
         ))}
-        </div>
-      </div>
-      <div className='filter-section'>
-        <h1 className='filter-title'>성별</h1>
-        <label className={`filter-input ${filters.get('gender') === 'male' ? 'selected' : ''}`}>
-          <input type="radio" name="gender" value="male" checked={filters.get('gender') === 'male'} onChange={handleChange} hidden/>남성
-        </label>
-        <label className={`filter-input ${filters.get('gender') === 'female' ? 'selected' : ''}`}>
-          <input type="radio" name="gender" value="female" checked={filters.get('gender') === 'female'} onChange={handleChange} hidden/>여성
-        </label>
       </div>
        {/* 기숙사 동 */}
       <div className='filter-section'>
@@ -196,52 +298,53 @@ function RoommateFilterPage() {
         </div>
         <h2 className='filter-subtitle'>남자기숙사</h2>
         <div className='mb-[16px]'>
-          {['A', 'E'].map(dorm => (
-            <label key={dorm} className={`filter-input ${filters.get('dormitory')?.includes(dorm) ? 'selected' : ''} ${!filters.get('gender') || filters.get('gender') === 'female' ? 'disabled' : ''}`}>
-              <input type="checkbox" name="dormitory" value={dorm} checked={filters.get('dormitory')?.includes(dorm)} disabled={!filters.get('gender') || filters.get('gender') === 'female'} onChange={handleChange} hidden/>
-              {dorm}동
-              <div className={`disabled-line ${!filters.get('gender') || filters.get('gender') === 'female' ? 'disabled' : ''}`}></div>
+          {['A동', 'E동'].map((dorm, index) => (
+            <label key={index} className={`filter-input ${filters.dong.includes(dorm) && 'selected'} ${(!filters.gender || filters.gender === '여성') && 'disabled'}`}>
+              <input type="checkbox" name="dong" value={dorm} checked={filters.dong.includes(dorm)} disabled={!filters.gender || filters.gender === '여성'} onChange={handleChangeDong} hidden/>
+              {dorm}
+              <div className={`disabled-line ${(!filters.gender || filters.gender === '여성') && 'disabled'}`}></div>
             </label>
           ))}
         </div>
         <h2 className='filter-subtitle'>여자기숙사</h2>
         <div>
-          {['B', 'C', 'D'].map(dorm => (
-            <label key={dorm} className={`filter-input ${filters.get('dormitory')?.includes(dorm) ? 'selected' : ''} ${!filters.get('gender') || filters.get('gender') === 'male' ? 'disabled' : ''}`}>
-              <input type="checkbox" name="dormitory" value={dorm} checked={filters.get('dormitory')?.includes(dorm)} disabled={!filters.get('gender') || filters.get('gender') === 'male'} onChange={handleChange} hidden/>
-              {dorm}동
-              <div className={`disabled-line ${!filters.get('gender') || filters.get('gender') === 'male' ? 'disabled' : ''}`}></div>
+          {['B동', 'C동', 'D동'].map((dorm, index) => (
+            <label key={index} className={`filter-input ${filters.dong.includes(dorm) && 'selected'} ${(!filters.gender || filters.gender === '남성') && 'disabled'}`}>
+              <input type="checkbox" name="dong" value={dorm} checked={filters.dong.includes(dorm)} disabled={!filters.gender || filters.gender === '남성'} onChange={handleChangeDong} hidden/>
+              {dorm}
+              <div className={`disabled-line ${(!filters.gender || filters.gender === '남성') && 'disabled'}`}></div>
             </label>
           ))}
         </div>
       </div>
       {/* 호실 유형 */}
-      {filters.get('dormitory')?.some(i => ['D', 'E'].includes(i)) &&
+      {/* D동,E동 중 하나라도 들어있다면 */}
+      {filters.dong.some(i => ['D동', 'E동'].includes(i)) &&
         <div className='filter-section'>
           <h1 className='filter-title'>호실 유형</h1>
           <h2 className='filter-subtitle'>* D동 E동만 해당</h2>
-          <label className='filter-input'>
-            <input type="checkbox" name='roomType' value='2인실' onChange={handleChange} hidden/>
-            2인실
-          </label>
-          <label className='filter-input'>
-            <input type="checkbox" name='roomType' value='4인실' onChange={handleChange} hidden/>
-            4인실
-          </label>
+          {
+            ['2인실', '4인실'].map((roomSize, index) => (
+            <label key={index} className={`filter-input ${filters.roomSize.includes(roomSize) && 'selected'}`}>
+              <input type="checkbox" name='roomSize' value={roomSize} checked={filters.roomSize.includes(roomSize)} onChange={handleChange} hidden/>
+              {roomSize}
+            </label>
+            ))
+          }
         </div>
       }
 
       {/* 나이, 학번 */}
-      <DoubleRangeSlider type='나이' setFilters={setFilters} minValue={filters.get('minAge')} maxValue={filters.get('maxAge')}/>
-      <DoubleRangeSlider type='학번' setFilters={setFilters} minValue={filters.get('minYear')} maxValue={filters.get('maxYear')}/>
+      <DoubleRangeSlider type='나이' setFilters={setFilters} setSelectedFilters={setSelectedFilters} minValue={filters.minAge} maxValue={filters.maxAge}/>
+      <DoubleRangeSlider type='학번' setFilters={setFilters} setSelectedFilters={setSelectedFilters} minValue={filters.minYear} maxValue={filters.maxYear}/>
       {/* MBTI */}
       <div className='filter-section'>
         <h1 className='filter-title'>MBTI</h1>
         <h2 className='filter-subtitle'>내향형</h2>
         <div className='flex flex-wrap content-between h-[84px] mb-[24px]'>
           {
-            iMbtis.map(mbti => (
-              <label className={`filter-input w-[73px] ${filters.get('mbti')?.includes(mbti) ? 'selected' : ''}`} key={mbti}><input type="checkbox" name="mbti" value={mbti} checked={filters.get('mbti')?.includes(mbti)} onChange={handleChange} hidden/> {mbti}</label>
+            iMbtis.map((mbti, index) => (
+              <label className={`filter-input w-[73px] ${filters.mbti.includes(mbti) && 'selected'}`} key={index}><input type="checkbox" name="mbti" value={mbti} checked={filters.mbti.includes(mbti)} onChange={handleChange} hidden/> {mbti}</label>
             ))
           }
         </div>
@@ -250,8 +353,8 @@ function RoommateFilterPage() {
           <h2 className='filter-subtitle'>외향형</h2>
           <div className='flex flex-wrap h-[84px] mb-[24px] content-between'>
             {
-              eMbtis.map(mbti => (
-                <label className={`filter-input w-[73px] ${filters.get('mbti')?.includes(mbti) ? 'selected' : ''}`} key={mbti}><input type="checkbox" name="mbti" value={mbti} checked={filters.get('mbti')?.includes(mbti)} onChange={handleChange} hidden/> {mbti}</label>
+              eMbtis.map((mbti, index) => (
+                <label className={`filter-input w-[73px] ${filters.mbti.includes(mbti) && 'selected'}`} key={index}><input type="checkbox" name="mbti" value={mbti} checked={filters.mbti.includes(mbti)} onChange={handleChange} hidden/> {mbti}</label>
               ))
             }
           </div>
@@ -265,9 +368,9 @@ function RoommateFilterPage() {
       <div className='filter-section'>
         <h1 className='filter-title'>수면 습관</h1>
         <div className='flex flex-wrap content-between h-[84px]'>
-          {['코골이형', '이갈이형', '잠꼬대형', '무소음형'].map(sleepHabit => (
-            <label key={sleepHabit} className={`filter-input ${filters.get('sleepHabit')?.includes(sleepHabit) ? 'selected' : ''}`}>
-              <input type="checkbox" name="sleepHabit" value={sleepHabit} checked={filters.get('sleepHabit')?.includes(sleepHabit)} onChange={handleChange} hidden/> 
+          {['코골이형', '이갈이형', '잠꼬대형', '무소음형'].map((sleepHabit, index) => (
+            <label key={index} className={`filter-input ${filters.sleepHabit.includes(sleepHabit) && 'selected'}`}>
+              <input type="checkbox" name="sleepHabit" value={sleepHabit} checked={filters.sleepHabit.includes(sleepHabit)} onChange={handleChange} hidden/> 
               {sleepHabit}
             </label>
           ))}
@@ -276,40 +379,40 @@ function RoommateFilterPage() {
       <div className='filter-section'>
         <h1 className='filter-title'>생활 패턴</h1>
         <div className='flex'>
-          {['아침형', '저녁형'].map(lifePattern => (
-            <label className={`filter-input ${filters.get('lifePattern')?.includes(lifePattern) && 'selected'}`}><input type="checkbox" name="lifePattern" value={lifePattern} checked={filters.get('lifePattern')?.includes(lifePattern)} onChange={handleChange} hidden/>{lifePattern}</label>
+          {['아침형', '저녁형'].map((lifePattern, index) => (
+            <label className={`filter-input ${filters.lifePattern.includes(lifePattern) && 'selected'}`} key={index}><input type="checkbox" name="lifePattern" value={lifePattern} checked={filters.lifePattern.includes(lifePattern)} onChange={handleChange} hidden/>{lifePattern}</label>
           ))}
         </div>
       </div>
       <div className='filter-section'>
         <h1 className='filter-title'>흡연 여부</h1>
         <div className='flex'>
-          {['흡연', '비흡연'].map(isSmoker => (
-            <label className={`filter-input ${filters.get('isSmoker')?.includes(isSmoker) && 'selected'}`}><input type="checkbox" name="isSmoker" value={isSmoker} checked={filters.get('isSmoker')?.includes(isSmoker)} onChange={handleChange} hidden/>{isSmoker}</label>
+          {['흡연', '비흡연'].map((isSmoker, index) => (
+            <label className={`filter-input ${filters.isSmoker.includes(isSmoker) && 'selected'}`} key={index}><input type="checkbox" name="isSmoker" value={isSmoker} checked={filters.isSmoker.includes(isSmoker)} onChange={handleChange} hidden/>{isSmoker}</label>
           ))}
         </div>
       </div>
       <div className='filter-section'>
         <h1 className='filter-title'>청소 주기</h1>
         <div className='flex flex-wrap content-between h-[84px]'>
-          {['매일', '주 1회 이상', '월 1회 이상', '생각날 때 가끔'].map(cleaningCycle => (
-            <label className={`filter-input ${filters.get('cleaningCycle')?.includes(cleaningCycle) && 'selected'}`}><input type="checkbox" name="cleaningCycle" value={cleaningCycle} checked={filters.get('cleaningCycle')?.includes(cleaningCycle)} onChange={handleChange} hidden/>{cleaningCycle}</label>
+          {['매일', '주 1회 이상', '월 1회 이상', '생각날 때 가끔'].map((cleaningCycle, index) => (
+            <label className={`filter-input ${filters.cleaningCycle.includes(cleaningCycle) && 'selected'}`} key={index}><input type="checkbox" name="cleaningCycle" value={cleaningCycle} checked={filters.cleaningCycle.includes(cleaningCycle)} onChange={handleChange} hidden/>{cleaningCycle}</label>
           ))}
         </div>
       </div>
       <div className='filter-section'>
         <h1 className='filter-title'>외출 빈도</h1>
         <div className='flex'>
-          {['집순이', '밖순이'].map(goOut => (
-            <label className={`filter-input ${filters.get('goOut')?.includes(goOut) && 'selected'}`}><input type="checkbox" name="goOut" value={goOut} checked={filters.get('goOut')?.includes(goOut)} onChange={handleChange} hidden/>{goOut}</label>
+          {['집순이', '밖순이'].map((goOut, index) => (
+            <label className={`filter-input ${filters.goOut.includes(goOut) && 'selected'}`} key={index}><input type="checkbox" name="goOut" value={goOut} checked={filters.goOut.includes(goOut)} onChange={handleChange} hidden/>{goOut}</label>
           ))}
         </div>
       </div>
       <div className='filter-section'>
         <h1 className='filter-title'>소리 민감 정도</h1>
         <div className='flex'>
-          {['예민한편', '둔감한편'].map(soundSensitivity => (
-            <label className={`filter-input ${filters.get('soundSensitivity')?.includes(soundSensitivity) && 'selected'}`}><input type="checkbox" name="soundSensitivity" value={soundSensitivity} checked={filters.get('soundSensitivity')?.includes(soundSensitivity)} onChange={handleChange} hidden/>{soundSensitivity}</label>
+          {['예민한편', '둔감한편'].map((soundSensitivity, index) => (
+            <label className={`filter-input ${filters.soundSensitivity.includes(soundSensitivity) && 'selected'}`} key={index}><input type="checkbox" name="soundSensitivity" value={soundSensitivity} checked={filters.soundSensitivity.includes(soundSensitivity)} onChange={handleChange} hidden/>{soundSensitivity}</label>
           ))}
         </div>
       </div>
@@ -335,6 +438,7 @@ const SettingStyle = styled.main`
     color: ${COLOR.gray600};
   }
   .filter-input {
+    background-color: white;
     position: relative;
     text-align: center;
     cursor: pointer;

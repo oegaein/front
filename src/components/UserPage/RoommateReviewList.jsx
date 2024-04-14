@@ -12,12 +12,14 @@ const RoommateReviews = () => {
     <SettingStyle className='relative bg-white px-[24px]'>
       <div className='pb-[16px] pt-[24px] flex justify-between items-center'>
         <h1 className='roommate-review-title'>받은 룸메이트 후기 2</h1>
-        <Link to='/roommate' className='more flex'>
+        <Link to='reviews' className='more flex'>
           더보기
           <img src={Next} alt='see more icon'/>
         </Link>
       </div>
       <div>
+        <p className='nodata-ment mb-[24px]'>받은 룸메이트 후기가 아직 없어요.</p>
+        <RoommateReview/>
         <RoommateReview/>
         <RoommateReview/>
       </div>
@@ -33,6 +35,10 @@ const SettingStyle = styled.div`
   }
   .more {
     font-size: ${FONT.caption2M14};
+  }
+  .nodata-ment {
+    font-size: ${FONT.caption2M14};
+    color: ${COLOR.gray800};
   }
 
 `

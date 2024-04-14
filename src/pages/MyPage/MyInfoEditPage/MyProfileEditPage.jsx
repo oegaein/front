@@ -1,5 +1,6 @@
 import React, {useState, useRef, useEffect} from 'react'
 
+import Header from '@common/header/Header'
 //styles
 import styled from 'styled-components'
 import FONT from '@styles/fonts'
@@ -67,13 +68,14 @@ const MyProfileEditPage = () => {
       return
     }
     try {
-      console.log('gg')
+      console.log(imageUrl)
     } catch (e) {
       console.log(e)
     }
   } 
   const handleImageChange = (e) => {
     const imageFile = e.target.files[0];
+    console.log(imageFile)
     if (imageFile) {
       validateImage(imageFile)
     }
@@ -94,6 +96,7 @@ const MyProfileEditPage = () => {
     }
 
     const reader = new FileReader();
+    console.log(reader)
     reader.onload = () => {
         setImageUrl(reader.result);
     };
@@ -105,7 +108,15 @@ const MyProfileEditPage = () => {
     reader.readAsDataURL(imageFile);
   }
 
-  const handleUploadImage = () => {
+  // 이미지를 서버로 업로드하는 함수 (예시이므로 실제 구현 필요)
+  const uploadImage = () => {
+    const formData = new FormData();
+    formData.append('imageFile', imageUrl);
+
+    console.log('이미지 업로드 로직 구현 필요');
+  };
+
+  const handleClickUploadImage = () => {
     ImageInputRef.current.click()
   }
 
@@ -118,10 +129,17 @@ const MyProfileEditPage = () => {
 
   return (
     <SettingStyle>
-      <div className='pt-[47px] pb-[24px] flex flex-col items-center'>
+      <div className="px-[28px]">
+				<Header backPath="/roommate" rightContent=" " rightEvent={() => {}}>
+					<span>프로필수정</span>
+				</Header>
+			</div>
+
+      <div className='image-section pt-[47px] pb-[24px] flex flex-col items-center'>
         <div className='image-container relative h-[114px] w-[114px] rounded-[50%] flex items-center justify-center'>
-          <img className={`object-cover rounded-[50%] ${imageUrl === InitialProfile ? 'h-[38px] w-[38px]' : 'w-full h-full'}`} src={imageUrl} alt='initial profile'/>
-          <button onClick={handleUploadImage} className='camera absolute h-[26px] w-[26px] left-[89px] bottom-[10px] flex items-center justify-center rounded-[50%]'>
+          {/* 프로필 이미지 */}
+          <img onerror={`this.onerror=null; this.src=${InitialProfile};`} className={`object-cover rounded-[50%] ${imageUrl === InitialProfile ? 'h-[38px] w-[38px]' : 'w-full h-full'}`} src={imageUrl} alt='initial profile'/>
+          <button onClick={handleClickUploadImage} className='camera absolute h-[26px] w-[26px] left-[89px] bottom-[10px] flex items-center justify-center rounded-[50%]'>
             <img src={Camera} alt='camera'/>
             <input
             type="file"
@@ -294,7 +312,9 @@ const MyProfileEditPage = () => {
 export default MyProfileEditPage
 
 const SettingStyle = styled.main`
-  border-top: 1px solid ${COLOR.gray100};
+  .image-section {
+    border-top: 1px solid ${COLOR.gray100};
+  }
   .image-container {
     background-color: ${COLOR.purple3};
   }

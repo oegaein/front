@@ -48,9 +48,9 @@ const Navbar = () => {
           </Link>
           <Link to='/mypage' className='flex flex-col items-center'>
             <div className='mb-[4.5px]'>
-              <img className='w-[26px] h-[26px]' src={location.pathname === '/mypage' ? MypageIconClicked : MypageIcon} alt='마이페이지로 가기'/>
+              <img className='w-[26px] h-[26px]' src={location.pathname.substring(0, 7) === '/mypage' ? MypageIconClicked : MypageIcon} alt='마이페이지로 가기'/>
             </div>
-            <span className={location.pathname === '/mypage' && 'purple'}>마이페이지</span>
+            <span className={location.pathname.substring(0, 7) === '/mypage' && 'purple'}>마이페이지</span>
           </Link>
         </SettingStyle>
   )
