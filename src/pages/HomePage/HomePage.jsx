@@ -1,8 +1,12 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
+import axios from 'axios';
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useLocation } from 'react-router-dom';
 import { Pagination, Autoplay } from 'swiper/modules';
 import { Link } from 'react-router-dom';
+import { useMatchingPosts } from '@hooks/useMatchingPosts';
+
+//styles
 import styled from 'styled-components';
 import COLOR from '@styles/color';
 import FONT from '@styles/fonts';
@@ -19,7 +23,6 @@ import Premium from '@assets/images/premium-quality.svg'
 
 
 const HomePage = () => {
-
 
   return (
     <SettingStyle className='flex flex-col gap-[10px] pb-[11px] scroll-smooth'>
@@ -77,7 +80,7 @@ const HomePage = () => {
           </div>
           <p className='roommateMent pb-[10px]'>이전 룸메이트로부터 좋은 평가를 받았어요</p>
         </div>
-        <RoommateSwiperList type={'best'}/>
+        <RoommateSwiperList type='best'/>
       </div>
       <div className='bg-white'>
         <div className='px-[25px] pt-[25px]'>
@@ -87,7 +90,7 @@ const HomePage = () => {
             </div>
           </div>
         </div>
-        <RoommateSwiperList type={'new'}/>
+        <RoommateSwiperList type='new'/>
       </div>
       <div>새로 올라온 공동배달</div>
     </SettingStyle>

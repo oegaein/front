@@ -14,7 +14,7 @@ const EndingsoonPage = () => {
       <div className='p-[25px] bg-white'>
         <Buttons/>
       </div>
-      <RoommateScrollList type='ending-soon'/>
+      <RoommateScrollList type='imminent'/>
     </SettingStyle>
   )
 }

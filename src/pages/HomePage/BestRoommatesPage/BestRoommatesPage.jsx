@@ -8,7 +8,6 @@ import FONT from '@styles/fonts'
 import COLOR from '@styles/color'
 import RoommateScrollList from '@common/RoommateScrollList'
 import AddRoommateButton from '@common/button/AddRoommateButton'
-
 const BestRoommatesPage = () => {
   return (
     <SettingStyle className='flex flex-col gap-[10px]'>
@@ -16,7 +15,7 @@ const BestRoommatesPage = () => {
       <div className='p-[25px] bg-white'>
         <Buttons/>
       </div>
-      <RoommateScrollList/>
+      <RoommateScrollList type='best'/>
     </SettingStyle>
   )
 }

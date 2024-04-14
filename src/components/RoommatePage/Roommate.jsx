@@ -7,29 +7,43 @@ import COLOR from '@styles/color'
 
 //images
 import Yoo from '../../assets/images/유재석.svg'
+import axios from 'axios'
 
-const Roommate = () => {
+const Roommate = ({post, index}) => {
   const [isRegistered, setIsRegistered] = useState(false)
   const clickRegisterBtn = () => {
     //api 요청 로직 
     setIsRegistered(prevState=>!prevState)
   }
+  const handleClickPost = async () => {
+    try {
+      const response = await axios.get(`/api/v1/matchingposts/${index}`)
+      console.log(response)
+    } catch (err) {
+      console.error(err)
+    }
+  }
   return (
-    <SettingStyle className={`flex bg-white border border-[${COLOR.gray100}] rounded-[20px] p-[14px]`}>
+    <SettingStyle key={index} className={`flex bg-white border border-[${COLOR.gray100}] rounded-[20px] p-[14px]`}>
       <img className='w-[100px] h-[100px] mr-[12px]' src={Yoo}/>
       <div className='w-full flex flex-col justify-between'>
         <div>
           <div className='flex items-center justify-between'>
             <div>
-              <span className='room mr-[10px]'>룸메 평점</span>
+              <span className='room mr-[10px]'>{post.dong} {post.roomSize}</span>
               <span className='mates-number'>모집인원 1명</span>
             </div>
             <span className='dday'>D-4</span>
           </div>
           <div className='text-left mt-[7px]'>
-            <p className='roommate-title max-w-[205px] whitespace-nowrap overflow-hidden text-ellipsis'>예민하지 않은 분 찾아요~~~~~~~~~~~~~~</p>
+            <p className='roommate-title max-w-[205px] 
+            whitespace-nowrap overflow-hidden text-ellipsis'
+            onClick={handleClickPost}
+            >
+              {post.title}
+            </p>
             <div>
-              <span className='name mr-[6px]'>허윤진</span>
+              <span className='name mr-[6px]'>{post.name}</span>
               <span className='gender'>여성</span>
             </div>
           </div>

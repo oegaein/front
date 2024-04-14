@@ -7,19 +7,24 @@ import Yoo from '../../assets/images/유재석.svg'
 import styled from 'styled-components'
 import FONT from '@styles/fonts'
 import COLOR from '@styles/color'
-const BestRoommate = () => {
+const BestRoommate = ({post, index}) => {
+  console.log(post)
   return (
     <SettingStyle className={`w-[192px] h-[179px] border border-[${COLOR.gray100}] rounded-[20px] bg-white p-[17px] pb-[13px] ml-[12px]`}>
       <div className='flex items-center justify-between mb-[10px]'>
-        <span className='room'>A동 4인실</span>
-        <span className='dday'>D-7</span>
+        <span className='room'>{post.dong} {post.roomSize}</span>
+        {/* dday 계산 로직 필요 */}
+        <span className='dday'>D-{post.dDay}</span>
       </div>
-      <p className='title text-left mb-[13px] h-[25px] whitespace-nowrap overflow-hidden text-ellipsis'>마음 잘 맞는 룸메 구해요!</p>
+      <p className='title text-left mb-[13px] h-[25px] 
+      whitespace-nowrap overflow-hidden text-ellipsis'>
+        {post.title}
+      </p>
       <div className='flex items-center'>
         <img className='h-[60px] w-[60px]' src={Yoo} alt='profile image'/>
         <div className='my-[auto] ml-[10px] text-left'>
           <p>
-            <span className='name mr-[6px]'>유재석</span>
+            <span className='name mr-[6px]'>{post.name}</span>
             <span className='gender'>남성</span>
           </p>
           <p className='number'>모집인원 2명</p>

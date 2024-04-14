@@ -90,7 +90,6 @@ const SettingStyle = styled.div`
   background-color: white;
   .user-info {
     border-bottom: 1px solid ${COLOR.gray200};
-
   }
   .rating-title {
     font-size: ${FONT.title3SB17};

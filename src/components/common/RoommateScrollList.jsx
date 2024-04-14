@@ -1,5 +1,7 @@
 import React from 'react'
 import { useLocation, Link } from 'react-router-dom'
+import { useMatchingPosts } from '@hooks/useMatchingPosts'
+
 //styles
 import FONT from '@styles/fonts'
 import COLOR from '@styles/color'
@@ -11,9 +13,14 @@ import Premium from '@assets/images/premium-quality.svg'
 
 //components
 import Roommate from '@components/RoommatePage/Roommate'
-const RoommateScrollList = () => {
+
+const RoommateScrollList = ({type}) => {
+  const {data:matchingPosts, isLoading, error} = useMatchingPosts(type)
   const location = useLocation()
   const path = location.pathname
+
+  if (isLoading) return <div>데이터 로딩중</div>
+  if (error) return <div>{error.message}</div>
   return (
     <SettingStyle>
       <div className='flex justify-between items-center px-[24px] py-[16px]'>
@@ -23,9 +30,9 @@ const RoommateScrollList = () => {
         
       </div>
       <div className='flex flex-col gap-[10px] px-[24px] pb-[11px]'>
-        <Roommate/>
-        <Roommate/>
-        <Roommate/>
+        {matchingPosts.map((post, index) => (
+          <Roommate post={post} index={index}/>
+        ))}
       </div>
     </SettingStyle>
   )
