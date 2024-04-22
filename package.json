@@ -3,12 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@react-oauth/google": "^0.12.1",
     "@tanstack/react-query": "^5.29.2",
-    "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "@vitejs/plugin-react": "^4.2.1",
     "axios": "^1.6.8",
-    "babel-jest": "^29.7.0",
     "date-fns": "^3.3.1",
     "framer-motion": "^11.0.8",
     "lottie-react": "^2.4.0",
@@ -21,13 +21,13 @@
     "react-scripts": "5.0.1",
     "styled-components": "^6.1.8",
     "swiper": "^11.0.6",
-    "undici": "^5.28.4",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "craco start",
     "build": "craco build",
-    "test": "craco test",
+    "test": "vitest",
+    "test:run": "vitest run",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -50,6 +50,7 @@
   },
   "devDependencies": {
     "@craco/craco": "^7.1.0",
+    "@testing-library/jest-dom": "^6.4.2",
     "craco-alias": "^3.0.1",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
@@ -60,7 +61,9 @@
     "msw": "^2.2.13",
     "prettier": "^3.2.5",
     "react-app-alias": "^2.2.2",
-    "tailwindcss": "^3.4.1"
+    "react-testing-library": "^8.0.1",
+    "tailwindcss": "^3.4.1",
+    "vitest": "^1.5.0"
   },
   "jest": {
     "moduleNameMapper": {

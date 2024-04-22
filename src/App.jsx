@@ -5,10 +5,7 @@ import {
 	Routes,
 	Route,
 	useLocation,
-<<<<<<< HEAD
 	Outlet,
-=======
->>>>>>> hyeoxu
 } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
@@ -38,55 +35,19 @@ import RoommateReviewPage from '@pages/UserPage/RoommateReviewPage/RoommateRevie
 import LikePage from '@pages/MyPage/LikePage/LikePage';
 import MyPostPage from '@pages/MyPage/MyPostPage/MyPostPage';
 import RoommateApplyListPage from '@pages/MyPage/RoommateApplyListPage/RoommateApplyListPage';
+import CallBack from '@components/LoginPage/CallBack';
 
 const queryClient = new QueryClient()
 
 function App() {
 	return (
 		<div className="App">
-<<<<<<< HEAD
-			<React.StrictMode>
-				<Router>
-					<Routes>
-						<Route path="/" element={<MainLayout />}>
-							<Route path="home" element={<HomePage />} />
-							<Route path="home/ending-soon" element={<EndingsoonPage />} />
-							<Route
-								path="home/best-roommates"
-								element={<BestRoommatesPage />}
-							/>
-							<Route path="notification" element={<NotificationPage />} />
-							<Route path="search" element={<SearchPage />} />
-							<Route path="roommate" element={<RoommatePage />} />
-							<Route
-								path="roommate/filter"
-								element={<RoommateFilterPageCopy />}
-							/>
-							<Route path="landing" element={<LandingPage />} />
-							<Route path="onboarding" element={<OnboardingPage />} />
-							<Route path="login" element={<LoginPage />} />
-							<Route path="mypage" element={<MyPage />} />
-							<Route path="my-profile/edit" element={<MyProfileEditPage />} />
-							<Route path="user/:id" element={<UserPage />} />
-							<Route path="/setting" element={<BasicInfoSetting />} />
-							<Route path="/post-roommate" element={<Post />} />
-							<Route path="/post-detail" element={<PostDetail />} />
-							<Route
-								path="/comment-detail/:postId"
-								element={<CommentDetail />}
-							/>
-							<Route path="/chat" element={<Chat />} />
-							<Route path="/chat/chatroom" element={<ChatRoom />} />
-						</Route>
-					</Routes>
-				</Router>
-			</React.StrictMode>
-=======
 			<QueryClientProvider client={queryClient}>
 				<React.StrictMode>
 						<Router>
 							<Routes>
 								<Route path="/" element={<MainLayout />}>
+									<Route index element={<CallBack />}/>
 									<Route path="home" element={<HomePage />}/>
 									<Route path="home/ending-soon" element={<EndingsoonPage/>}/>
 									<Route path="home/best-roommates" element={<BestRoommatesPage/>}/>
@@ -109,13 +70,12 @@ function App() {
 									<Route path="/post-detail" element={<PostDetail />} />
 									<Route path="/chat" element={<Chat />} />
 									<Route path="/chat/chatroom" element={<ChatRoom />} />
-									</Route>
+								</Route>
 							</Routes>
 						</Router>
 				</React.StrictMode>
 
 			</QueryClientProvider>
->>>>>>> hyeoxu
 		</div>
 	);
 }

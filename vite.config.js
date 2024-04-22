@@ -1,9 +1,20 @@
+import { defineConfig } from 'vitest/config'
+import react from '@vitejs/plugin-react'
+
 const path = require('path');
 
-module.exports = {
-	webpack: {
-		alias: {
-			'@': path.resolve(__dirname, 'src/'),
+export default defineConfig({
+  plugins: [react({
+    jsxRuntime: 'automatic',
+  })],
+  test: {
+    // ... Specify options here.
+    globals: true,
+    environment: "jsdom",
+  },
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, 'src/'),
 			'@components': path.resolve(__dirname, 'src/components/'),
 			'@common': path.resolve(__dirname, 'src/components/common/'),
 			'@assets': path.resolve(__dirname, 'src/assets/'),
@@ -14,6 +25,6 @@ module.exports = {
 			'@constants': path.resolve(__dirname, 'src/constants/'),
 			'@utils': path.resolve(__dirname, 'src/utils/'),
 			'@hooks': path.resolve(__dirname, 'src/hooks/'),
-		},
-	},
-};
+    }
+  }
+})

@@ -215,49 +215,52 @@ function RoommateFilterPage() {
 					<span>필터</span>
 				</Header>
 			</div> */}
-      <div className='tag-container bg-white flex gap-[10px] sticky z-10 top-0 overflow-x-scroll'>
       {
-        selectedFilters.map((item, index) => {
-          // Age 또는 Year 필터인지 확인
-          const isAgeFilter = item.name === 'minAge' || item.name === 'maxAge'
-          const isYearFilter = item.name === 'minYear' || item.name === 'maxYear'
-
-          // minAge, maxAge, minYear, maxYear 값을 찾음
-          const minAge = selectedFilters.find(filter => filter.name === 'minAge')?.value ?? getInitialValueByName('minAge')
-          const maxAge = selectedFilters.find(filter => filter.name === 'maxAge')?.value ?? getInitialValueByName('maxAge')
-          const minYear = selectedFilters.find(filter => filter.name === 'minYear')?.value ?? getInitialValueByName('minYear')
-          const maxYear = selectedFilters.find(filter => filter.name === 'maxYear')?.value ?? getInitialValueByName('maxYear')
-
-          return (
-            isAgeFilter ? (
-              <>
-              {item.name === 'maxAge' && (
+        selectedFilters.length > 0 &&
+        <div className='tag-container bg-white flex gap-[10px] sticky z-10 top-0 overflow-x-scroll pt-[10px] pb-[25px]'>
+        {
+          selectedFilters.map((item, index) => {
+            // Age 또는 Year 필터인지 확인
+            const isAgeFilter = item.name === 'minAge' || item.name === 'maxAge'
+            const isYearFilter = item.name === 'minYear' || item.name === 'maxYear'
+  
+            // minAge, maxAge, minYear, maxYear 값을 찾음
+            const minAge = selectedFilters.find(filter => filter.name === 'minAge')?.value ?? getInitialValueByName('minAge')
+            const maxAge = selectedFilters.find(filter => filter.name === 'maxAge')?.value ?? getInitialValueByName('maxAge')
+            const minYear = selectedFilters.find(filter => filter.name === 'minYear')?.value ?? getInitialValueByName('minYear')
+            const maxYear = selectedFilters.find(filter => filter.name === 'maxYear')?.value ?? getInitialValueByName('maxYear')
+  
+            return (
+              isAgeFilter ? (
+                <>
+                {item.name === 'maxAge' && (
+                <button className='selected-tag' onClick={deleteOption} value={item.value} name={item.name} key={index}>
+                  {minAge}세 ~ {maxAge}세
+                  <img className='ml-[5px] h-[12px] w-[12px]' src={Close} alt='close button'/>
+                </button> 
+                )}
+                </>
+              ) :
+              isYearFilter ? (
+                <>
+                {item.name === 'minYear' && (
+                <button className='selected-tag' onClick={deleteOption} value={item.value} name={item.name} key={index}>
+                  {minYear}학번 ~ {maxYear}학번
+                  <img className='ml-[5px] h-[12px] w-[12px]' src={Close} alt='close button'/>
+                </button> 
+                )}
+                </>
+              ) : (
               <button className='selected-tag' onClick={deleteOption} value={item.value} name={item.name} key={index}>
-                {minAge}세 ~ {maxAge}세
+                {item.value}
                 <img className='ml-[5px] h-[12px] w-[12px]' src={Close} alt='close button'/>
               </button> 
-              )}
-              </>
-            ) :
-            isYearFilter ? (
-              <>
-              {item.name === 'minYear' && (
-              <button className='selected-tag' onClick={deleteOption} value={item.value} name={item.name} key={index}>
-                {minYear}학번 ~ {maxYear}학번
-                <img className='ml-[5px] h-[12px] w-[12px]' src={Close} alt='close button'/>
-              </button> 
-              )}
-              </>
-            ) : (
-            <button className='selected-tag' onClick={deleteOption} value={item.value} name={item.name} key={index}>
-              {item.value}
-              <img className='ml-[5px] h-[12px] w-[12px]' src={Close} alt='close button'/>
-            </button> 
+              )
             )
-          )
-      })
+          })
+        }
+        </div>
       }
-      </div>
       {/* 정렬 */}
       <div className='filter-section'> 
         <h1 className='filter-title'>정렬</h1> 
@@ -492,14 +495,13 @@ const SettingStyle = styled.main`
     background-color: ${COLOR.gray600};
     color: white;
     padding: 7px 20px;
-    margin-top: 10px;
-    margin-bottom: 25px;
     border-radius: 15px;
     white-space: nowrap;
   }
   .tag-container {
     /* -ms-overflow-style: none;  
   scrollbar-width: none;  Firefox */
+    border-bottom: 1px solid ${COLOR.gray100};
   }
   .tag-container::-webkit-scrollbar {
     display: none;

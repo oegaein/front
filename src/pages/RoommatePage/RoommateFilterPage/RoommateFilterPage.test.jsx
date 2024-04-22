@@ -1,6 +1,8 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom';
 import RoommateFilterPage from './RoommateFilterPage';
+import { expect, test, describe } from "vitest";
+import '@testing-library/jest-dom';
+
 
 describe('YourComponent', () => {
   test('사용자가 인원을 선택할 때 상태가 올바르게 업데이트되어야 한다', () => {

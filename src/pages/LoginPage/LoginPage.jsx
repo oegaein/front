@@ -6,6 +6,8 @@ import styled from 'styled-components'
 import Lottie from 'react-lottie';
 import animationData from '@assets/lottie/로그인/login.json'
 import GoogleIcon from '../../assets/images/google-icon.svg'
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import GoogleLoginButton from '@components/LoginPage/GoogleLoginButton'
 const LoginPage = () => {
   const defaultOptions = {
     loop: true,
@@ -14,8 +16,9 @@ const LoginPage = () => {
     rendererSettings: {
       preserveAspectRatio: "xMidYMid slice"
     }
-
   }
+  const CLIENT_ID = '393836402841-kce6okeggrgkkern512g91o39mbb273a.apps.googleusercontent.com'
+  const REDIRECT_URL = 'http://127.0.0.1:3000'
   return (
     <>
       <div className='px-[35px] mt-[65px] mb-[62px] flex flex-col'>
@@ -33,11 +36,11 @@ const LoginPage = () => {
         <hr className="border-t w-1/3 mx-3" />
       </div>
       <div className='px-[35px]'>
-        <Link to='#' style={{borderColor: COLOR.gray200}} className='border w-full h-[50px] rounded-[5px] flex items-center px-[23px] shadow-[1px_1px_4px_rgba(0,0,0,0.25)] hover:opacity-20'>
+        <Link to={`https://accounts.google.com/o/oauth2/v2/auth?client_id=393836402841-kce6okeggrgkkern512g91o39mbb273a.apps.googleusercontent.com&redirect_uri=http://127.0.0.1:3000&response_type=code&scope=https://www.googleapis.com/auth/userinfo.email`} style={{borderColor: COLOR.gray200}} className='border w-full h-[50px] rounded-[5px] flex items-center px-[23px] shadow-[1px_1px_4px_rgba(0,0,0,0.25)] hover:opacity-20'>
           <img className='mr-[60px]' src={GoogleIcon} alt='구글 로그인 아이콘'/>
           <StyledButtonText>Google로 계속하기</StyledButtonText>
         </Link>
-
+        <GoogleLoginButton/>
       </div>
     </>
   )

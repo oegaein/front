@@ -13,7 +13,14 @@ const fetchData = async (type) => {
     endpoint = '/api/v1/deadline-imminent-matchingposts';
   }
   try {
-    const response = await API.get(`${endpoint}`)
+    const accessToken = localStorage.getItem('token')
+    const response = await API.get(`${endpoint}`, 
+    // {
+    //   headers: {
+    //     'Authorization': 'Bearer ' + accessToken
+    //   }
+    // }
+  )
     console.log('훅:', response.data.data)
     return response.data.data
   } catch(error) {
