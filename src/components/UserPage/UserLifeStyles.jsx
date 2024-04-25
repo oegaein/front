@@ -16,22 +16,15 @@ import House from '@assets/images/house.svg'
 import Ear from '@assets/images/ear.svg'
 
 //components
-import UserPageInfo from './UserPageInfo'
 
 
-const UserInfoAndLifeStyles = () => {
-  const [rating, setRating] = useState(5)
+const UserLifeStyles = () => {
   const location = useLocation()
   const path = location.pathname
   console.log(path)
   return (
     <SettingStyle>
-      <div className='user-info pt-[103px] pb-[24px]'>
-        <h1 className='information-title text-left px-[25px] mb-[16px]'>기본 정보</h1>
-        <UserPageInfo/>
-      </div>
-      <div className='p-[25px]'>
-        <h1 className='pb-[19px] text-left font-bold'>성향 및 라이프 스타일</h1>
+      <div>
         <div className='flex justify-between mb-[35px]'>
           <div className='flex flex-col items-center w-[57px] gap-[9px]'>
             <div className='flex items-center h-[44px]'>
@@ -84,29 +77,7 @@ const UserInfoAndLifeStyles = () => {
   )
 }
 
-export default UserInfoAndLifeStyles
+export default UserLifeStyles
 
 const SettingStyle = styled.div`
-  background-color: white;
-  .user-info {
-    border-bottom: 1px solid ${COLOR.gray200};
-  }
-  .rating-title {
-    font-size: ${FONT.title3SB17};
-  }
-  .rating-number {
-    font-size: ${FONT.body1M17};
-  }
-  .information-title {
-    font-size: ${FONT.title3SB17};
-  }
-  .information-container {
-    border-bottom: 1px solid ${COLOR.gray200};
-  }
-  .information-label {
-    font-size: ${FONT.body2SB16};
-  }
-  .information-value {
-    font-size: ${FONT.body5M15};
-  }
 `
