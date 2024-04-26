@@ -32,7 +32,7 @@ const Header = ({
 	};
 	return (
 		<>
-			<div className="flex justify-between w-full mt-5">
+			<div className="bg-white flex justify-between w-full h-[50px] items-center">
 				<button onClick={handleBackButton}>
 					<img src={BackIcon} />
 				</button>

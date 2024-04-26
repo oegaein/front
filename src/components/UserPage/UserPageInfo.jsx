@@ -7,8 +7,7 @@ import COLOR from '@styles/color'
 
 const UserPageInfo = () => {
   return (
-    <SettingStyle className='flex flex-col gap-[16px] px-[25px] pt-[103px] pb-[24px]'>
-      <h1 className='information-title  text-left'>기본 정보</h1>
+    <SettingStyle className='flex flex-col gap-[16px]'>
         <div className='flex'>
           <div className='flex mr-[20px]'>
             <span className='info-label'>성별</span>
@@ -36,10 +35,6 @@ const UserPageInfo = () => {
 export default UserPageInfo
 
 const SettingStyle = styled.div`
-  border-bottom: 1px solid ${COLOR.gray200};
-    .information-title {
-    font-size: ${FONT.title3SB17};
-  }
   .info-label {
     font-size: ${FONT.caption2M14};
     margin-right: 8px;

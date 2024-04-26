@@ -1,4 +1,4 @@
-import React, {useRef, useEffect} from 'react'
+import React, {useRef, useEffect, useState} from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import FONT from '@styles/fonts'
@@ -10,7 +10,15 @@ import RoommateScrollList from '@common/RoommateScrollList'
 const SearchPage = () => {
   const navigate = useNavigate()
   const inputRef = useRef(null)
-
+  const [searchTerm, setSearchTerm] = useState('')
+  const handleClickSearchBtn = (searchTerm) => {
+    setSearchTerm(searchTerm)
+  }
+  const handleKeyPress = (e, searchTerm) => {
+    if (e.key === 'Enter') {
+      handleClickSearchBtn(searchTerm);
+    }
+  }
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
@@ -22,9 +30,10 @@ const SearchPage = () => {
         <button onClick={()=>navigate(-1)}>
           <img src={BackButton} className='w-[10px] h-[16px]' alt='back button icon' />
         </button>
-        <SearchBar ref={inputRef}/>
+        <SearchBar ref={inputRef} handleClickSearchBtn={handleClickSearchBtn}
+        handleKeyPress={handleKeyPress}/>
       </div>
-      <RoommateScrollList type={'find'}/>
+      <RoommateScrollList type={'search'} searchTerm={searchTerm}/>
     </SettingStyle>
   )
 }

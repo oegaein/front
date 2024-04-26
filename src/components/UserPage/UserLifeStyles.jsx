@@ -7,7 +7,6 @@ import FONT from '@styles/fonts'
 import COLOR from '@styles/color'
 
 //images
-import BigStar from '@assets/images/star-big.svg'
 import Mbti from '@assets/images/mbti.svg'
 import SpeechBubble from '@assets/images/speech-bubble.svg'
 import Morning from '@assets/images/morning.svg'
@@ -17,27 +16,15 @@ import House from '@assets/images/house.svg'
 import Ear from '@assets/images/ear.svg'
 
 //components
-import MyPageInfo from './MyPageInfo'
-import UserPageInfo from './UserPageInfo'
 
 
-const UserInfoAndLifeStyles = () => {
-  const [rating, setRating] = useState(5)
+const UserLifeStyles = () => {
   const location = useLocation()
   const path = location.pathname
   console.log(path)
-  const renderStars = () => {
-    let stars = []
-    for (let i = 0; i < rating; i++) {
-      stars.push(<img className='h-[16px] w-[16px]' src={BigStar}/>);
-    }
-    return stars;
-  }
   return (
     <SettingStyle>
-      {path === '/mypage' ? <MyPageInfo renderStars={renderStars}/> : <UserPageInfo/>}
-      <div className='p-[25px]'>
-        <h1 className='pb-[19px] text-left font-bold'>성향 및 라이프 스타일</h1>
+      <div>
         <div className='flex justify-between mb-[35px]'>
           <div className='flex flex-col items-center w-[57px] gap-[9px]'>
             <div className='flex items-center h-[44px]'>
@@ -90,26 +77,7 @@ const UserInfoAndLifeStyles = () => {
   )
 }
 
-export default UserInfoAndLifeStyles
+export default UserLifeStyles
 
 const SettingStyle = styled.div`
-  background-color: white;
-  .rating-title {
-    font-size: ${FONT.title3SB17};
-  }
-  .rating-number {
-    font-size: ${FONT.body1M17};
-  }
-  .information-title {
-    font-size: ${FONT.title3SB17};
-  }
-  .information-container {
-    border-bottom: 1px solid ${COLOR.gray200};
-  }
-  .information-label {
-    font-size: ${FONT.body2SB16};
-  }
-  .information-value {
-    font-size: ${FONT.body5M15};
-  }
 `

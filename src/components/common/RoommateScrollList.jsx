@@ -1,5 +1,7 @@
 import React from 'react'
 import { useLocation, Link } from 'react-router-dom'
+import { useMatchingPosts } from '@hooks/useMatchingPosts'
+
 //styles
 import FONT from '@styles/fonts'
 import COLOR from '@styles/color'
@@ -10,22 +12,49 @@ import Hourglass from '@assets/images/hourglass.svg'
 import Premium from '@assets/images/premium-quality.svg'
 
 //components
-import Roommate from '@components/RoommatePage/Roommate'
-const RoommateScrollList = () => {
+import RoommateScrollItem from '@components/RoommatePage/RoommateScrollItem'
+import { useQuery } from '@tanstack/react-query'
+import { API } from '@utils/api'
+
+const RoommateScrollList = ({type, searchTerm}) => {
+  const {data:matchingPosts, isLoading, error} = useMatchingPosts(type)
+  const {data:searchResults} = useQuery({
+    queryKey: ['searchResults', searchTerm],
+    queryFn: () => fetchData(searchTerm),
+    staleTime: 0,
+    gcTime: 5 * 60 * 1000,
+    enabled: !!searchTerm
+  })
+  const fetchData = async (searchTerm) => {
+    try {
+      const response = await API.get(`/api/v1/search?q=${searchTerm}`)
+      return response.data
+    } catch(err) {
+      console.log(err)
+    }
+  }
   const location = useLocation()
   const path = location.pathname
+
+  if (isLoading) return <div>데이터 로딩중</div>
+  if (error) return <div>{error.message}</div>
   return (
     <SettingStyle>
-      <div className='flex justify-between items-center px-[24px] py-[23px] pb-[16px]'>
+      <div className='flex justify-between items-center px-[24px] py-[16px]'>
         {(path === '/roommate' || path === '/search') && <FindRoommateTitle path={path}/>}
         {(path === '/home/ending-soon') && <EndingSoonTitle/>}
         {(path === '/home/best-roommates') && <BestRoommateTitle/>}
         
       </div>
       <div className='flex flex-col gap-[10px] px-[24px] pb-[11px]'>
-        <Roommate/>
-        <Roommate/>
-        <Roommate/>
+        {type === 'search' ?
+        searchResults ? searchResults.matchingPostsData.map((post) => (
+          <RoommateScrollItem post={post}/>
+        )) : <div>검색 결과가 없습니다.</div>
+        :
+        matchingPosts.data.map((post, index) => (
+          <RoommateScrollItem post={post} index={index}/>
+        ))}
       </div>
     </SettingStyle>
   )
