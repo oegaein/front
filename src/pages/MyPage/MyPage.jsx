@@ -25,8 +25,12 @@ const MyPage = () => {
   console.log(myMatchingRequests)
   const [profileImage, setProfileImage] = useState(Profile)
   const [uploadPostType, setUploadPostType] = useState('roommate')
+  const [likeType, setLikeType] = useState('roommate')
   const handleClickUploadPost = (type) => {
     setUploadPostType(type)
+  }
+  const handleClickLikeType = (type) => {
+    setLikeType(type)
   }
 
   
@@ -117,8 +121,8 @@ const MyPage = () => {
         </div>
         <div>
           <div className='flex mt-[24px]'>
-            <div onClick={()=>handleClickUploadPost('roommate')}className={`notification-title ${uploadPostType === 'roommate' && 'selected-title'}`}>룸메이트</div>
-            <div onClick={()=>handleClickUploadPost('delivery')}className={`notification-title ${uploadPostType === 'delivery' && 'selected-title'}`}>공동배달</div>
+            <div onClick={()=>handleClickLikeType('roommate')}className={`notification-title ${likeType === 'roommate' && 'selected-title'}`}>룸메이트</div>
+            <div onClick={()=>handleClickLikeType('delivery')}className={`notification-title ${likeType === 'delivery' && 'selected-title'}`}>공동배달</div>
           </div>
         </div>
         <div className='likelist flex flex-col gap-[1px]'>
