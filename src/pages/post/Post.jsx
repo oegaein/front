@@ -37,7 +37,6 @@ const PostStyle = styled.div`
 	flex-direction: column;
 	align-items: center;
 	width: 100%;
-	padding: 50px 0px;
 
 	.currentP {
 		font: ${FONT.title3SB17};
