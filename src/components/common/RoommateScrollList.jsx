@@ -92,12 +92,19 @@ const SettingStyle = styled.div`
 `
 
 const FindRoommateTitle = ({path}) => {
+  const handleClickNewestBtn = () => {
+
+  }
+  const handleClickOldestBtn = () => {
+
+  }
+
   return (
     <>
       <h1 className='title'>룸메이트 찾기</h1>
       <div className='flex justify-between gap-[7px]'>
-        <button className='filter-btn selected'>최신순</button>
-        <button className='filter-btn'>마감순</button>
+        <button onClick={handleClickNewestBtn} className='filter-btn selected'>최신순</button>
+        <button onClick={handleClickOldestBtn} className='filter-btn'>마감순</button>
         {path === '/roommate' &&
         <Link to="/roommate/filter" className={`flex justify-center items-center border border-[${COLOR.gray100}] h-[30px] w-[30px] rounded-[50%]`}>
           <img src={Filter} alt='filter icon'/>

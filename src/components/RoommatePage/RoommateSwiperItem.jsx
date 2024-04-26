@@ -1,5 +1,6 @@
 import React from 'react'
-
+import { useNavigate } from 'react-router-dom'
+import { API } from '@utils/api'
 //images
 import Yoo from '../../assets/images/유재석.svg'
 
@@ -7,13 +8,35 @@ import Yoo from '../../assets/images/유재석.svg'
 import styled from 'styled-components'
 import FONT from '@styles/fonts'
 import COLOR from '@styles/color'
-const RoommateSwiperItem = ({post, index}) => {
+const RoommateSwiperItem = ({post}) => {
   console.log(post)
+  const navigate = useNavigate()
+
+  const handleClickRegisterBtn = async (matchingPostId) => {
+    try {
+      const response = await API.post('/api/v1/matchingrequests', {
+        matchingPostId,
+      })
+      // 매칭신청이 완료되었다는 모달 필요
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  const handleClickCancelBtn = async (matchingPostId) => {
+    try {
+      const response = await API.delete(`/api/v1/matchingrequests/${matchingPostId}`)
+      // 매칭취소가 완료되었다는 모달 필요
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  const handleClickPost = (matchingPostId) => {
+    navigate(`/post-detail/${matchingPostId}`)
+  }
   return (
-    <SettingStyle key={index} className={`w-[192px] h-[179px] border border-[${COLOR.gray100}] rounded-[20px] bg-white p-[17px] pb-[13px] ml-[12px]`}>
+    <SettingStyle onClick={()=>handleClickPost(post.matchingPostId)} key={post.matchingPostId} className={`w-[192px] h-[179px] border border-[${COLOR.gray100}] rounded-[20px] bg-white p-[17px] pb-[13px] ml-[12px]`}>
       <div className='flex items-center justify-between mb-[10px]'>
         <span className='room'>{post.dong} {post.roomSize}</span>
-        {/* dday 계산 로직 필요 */}
         <span className='dday'>D-{post.dday}</span>
       </div>
       <p className='title text-left mb-[13px] h-[25px] 
@@ -31,7 +54,15 @@ const RoommateSwiperItem = ({post, index}) => {
         </div>
       </div>
       <div className='text-right'>
-      <button className='register text-right'>매칭신청</button>
+      {
+        post.matchingStatus === '매칭 대기' ?
+        <button onClick={()=>handleClickRegisterBtn(post.matchingPostId)} className='register text-right'>매칭신청</button>
+        :
+        post.matchingStatus === '매칭 완료' ?
+        <button onClick={()=>handleClickCancelBtn(post.matchingPostId)} className='register text-right'>매칭완료</button>
+        :
+        <div className='register text-right'>매칭마감</div>
+      }
       </div>
     </SettingStyle>
   )

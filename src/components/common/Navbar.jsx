@@ -21,7 +21,7 @@ const Navbar = () => {
   const location = useLocation()
   return (
     <SettingStyle className='flex fixed z-50 bottom-0 max-w-[393px] justify-around items-center h-[76px] bg-white w-full'>
-          <Link to='#' className='flex flex-col items-center'>
+          <Link to='/chat' className='flex flex-col items-center'>
             <div className='mb-[4.5px] relative'>
               <img className='w-[26px] h-[26px]' src={location.pathname === '/chat' ? ChatIconClicked : ChatIcon} alt='채팅 페이지로 가기'/>
               <div className='chatting-counts absolute top-[-3px] left-[17px] rounded-[10px] px-[5px]'>15</div>

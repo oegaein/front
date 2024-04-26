@@ -104,7 +104,8 @@ function MainLayout() {
 			</div>
 			{location.pathname !== '/' &&
 				location.pathname !== '/onboarding' &&
-				location.pathname !== '/login' && <Navbar />}
+				location.pathname !== '/login' &&
+				location.pathname !== '/post-detail' && <Navbar />}
 		</div>
 	);
 }

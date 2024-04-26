@@ -39,6 +39,9 @@ const HomePage = () => {
     staleTime: 0,
     gcTime: 5 * 60 * 1000,
   })
+  if (isLoading) {
+    return <div>로딩</div>
+  }
   return (
     <SettingStyle className='flex flex-col gap-[10px] pb-[11px] scroll-smooth'>
       <div>
