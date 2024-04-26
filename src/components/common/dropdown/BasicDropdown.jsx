@@ -30,23 +30,27 @@ const BasicDropdown = ({ choice, label = '미선택', options, setSelected }) =>
 				</div>
 			</DropdownWrapper>
 			{isOpen && (
-				<DropdownList initial={{ y: 100 }} animate={{ y: 50 }}>
-					<div className="flex justify-center mb-9 w-full">
-						<img src={Bar} />
-					</div>
-					<p>{choice}</p>
-					{options.map((option, index) => (
-						<div
-							key={option}
-							className="item"
-							onClick={() => {
-								handleSelected(option);
-								setIsOpen(false);
-							}}
-						>
-							{option}
+				<DropdownList initial={{ y: 100 }} animate={{ y: 0 }}>
+					<div className="flex flex-col w-full sticky top-0 bg-white">
+						<div className="flex justify-center mb-9 w-full">
+							<img src={Bar} />
 						</div>
-					))}
+						<p>{choice}</p>
+					</div>
+					<div className="w-full h-[233px] overflow-auto">
+						{options.map((option, index) => (
+							<span
+								key={option}
+								className="item"
+								onClick={() => {
+									handleSelected(option);
+									setIsOpen(false);
+								}}
+							>
+								{option}
+							</span>
+						))}
+					</div>
 				</DropdownList>
 			)}
 		</>
@@ -97,14 +101,14 @@ export const DropdownList = styled(motion.div)`
 	background-color: ${COLOR.white};
 	border-radius: 10px 10px 0px 0px;
 	list-style: none;
-	z-index: 10;
+	z-index: 60;
 	overflow-y: auto;
 
 	::-webkit-scrollbar {
 		width: 0;
 	}
 
-	> p {
+	p {
 		margin-bottom: 24px;
 		width: 100%;
 		text-align: left;

@@ -31,6 +31,7 @@ import ChatRoom from '@pages/chat/ChatRoom';
 import PostDetail from '@pages/post/Post-detail';
 import CommentDetail from '@pages/comment/Comment-detail';
 import MyProfileEditPage from '@pages/MyPage/MyInfoEditPage/MyProfileEditPage';
+import Alarm from '@pages/alarm/Alarm';
 import RoommateReviewPage from '@pages/UserPage/RoommateReviewPage/RoommateReviewPage';
 import LikePage from '@pages/MyPage/LikePage/LikePage';
 import MyPostPage from '@pages/MyPage/MyPostPage/MyPostPage';
@@ -68,8 +69,13 @@ function App() {
 									<Route path="/setting" element={<BasicInfoSetting />} />
 									<Route path="/post-roommate" element={<Post />} />
 									<Route path="/post-detail" element={<PostDetail />} />
+                  <Route
+                    path="/comment-detail/:postId"
+                    element={<CommentDetail />}
+                  />
 									<Route path="/chat" element={<Chat />} />
 									<Route path="/chat/chatroom" element={<ChatRoom />} />
+                    <Route path="/alarm" element={<Alarm />} />
 								</Route>
 							</Routes>
 						</Router>

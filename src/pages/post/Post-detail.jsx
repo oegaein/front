@@ -19,6 +19,9 @@ import BasicArrowUpIcon from '@assets/images/common/BasicArrowUpIcon.svg';
 import Checkbox from '@assets/images/common/Checkbox.svg';
 import CommentIcon from '@assets/images/common/comment.svg';
 import ShareIcon from '@assets/images/common/share.svg';
+import { getMatchingPostAPI } from 'services/api/MatchingPostAPI';
+import UserInfoAndLifeStyles from '@components/UserPage/UserInfoAndLifeStyles';
+import { postMatchingRequestAPI } from 'services/api/MatchingRequestAPI';
 
 const mocks = {
 	postId: 1,
@@ -59,6 +62,10 @@ const PostDetail = () => {
 		btn: '',
 	});
 	const [matching, setMatching] = useState(false);
+
+	// useEffect(() => {
+	// 	getMatchingPostAPI(1);
+	// }, []);
 
 	useEffect(() => {
 		if (option === '수정하기') {
@@ -146,7 +153,7 @@ const PostDetail = () => {
 								<span className="cation2 color-purple">프로필 보기</span>
 							</Link>
 						</div>
-						<div className="w-full">성별 어쩌구 들어올 곳</div>
+						<UserInfoAndLifeStyles />
 					</div>
 					{moreOpen && (
 						<div className="bg-gray-50">
@@ -203,7 +210,7 @@ const PostDetail = () => {
 								<img src={Checkbox} className="mr-1" />
 								<Subtitle style={{ margin: '0px' }}>모집 인원</Subtitle>
 							</div>
-							<PurpleBox>{mocks.recruitNum}명</PurpleBox>
+							<PurpleBox className="w-16">{mocks.recruitNum}명</PurpleBox>
 						</div>
 						<div className="flex flex-col">
 							<div className="flex justify-center items-center mb-4">
@@ -258,6 +265,7 @@ const PostDetail = () => {
 						text={matching ? '신청완료' : '매칭신청'}
 						eventName={() => {
 							setMatching(true);
+							postMatchingRequestAPI(1);
 							alert('매칭 신청 완료');
 						}}
 						disabled={matching}
@@ -274,7 +282,6 @@ export default PostDetail;
 const PostDetailStyle = styled.div`
 	display: flex;
 	flex-direction: column;
-	padding: 41px 0px 0px 0px;
 
 	.cation2 {
 		font: ${FONT.caption2M14};
