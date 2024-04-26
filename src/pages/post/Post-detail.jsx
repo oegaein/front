@@ -20,8 +20,9 @@ import Checkbox from '@assets/images/common/Checkbox.svg';
 import CommentIcon from '@assets/images/common/comment.svg';
 import ShareIcon from '@assets/images/common/share.svg';
 import { getMatchingPostAPI } from 'services/api/MatchingPostAPI';
-import UserInfoAndLifeStyles from '@components/UserPage/UserInfoAndLifeStyles';
 import { postMatchingRequestAPI } from 'services/api/MatchingRequestAPI';
+import UserPageInfo from '@components/UserPage/UserPageInfo';
+import UserLifeStyles from '@components/UserPage/UserLifeStyles';
 
 const mocks = {
 	postId: 1,
@@ -153,11 +154,11 @@ const PostDetail = () => {
 								<span className="cation2 color-purple">프로필 보기</span>
 							</Link>
 						</div>
-						<UserInfoAndLifeStyles />
+						<UserPageInfo />
 					</div>
 					{moreOpen && (
 						<div className="bg-gray-50">
-							<p>성향 및 라이프 스타일</p>
+							<UserLifeStyles />
 						</div>
 					)}
 					<div
