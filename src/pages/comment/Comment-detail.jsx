@@ -35,7 +35,6 @@ const CommentDetailStyle = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	padding: 41px 0px 0px 0px;
 	width: 100%;
 
 	.container {

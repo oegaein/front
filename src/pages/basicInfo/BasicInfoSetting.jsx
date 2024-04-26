@@ -1,3 +1,8 @@
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import FONT from '@styles/fonts';
+import Header from '@common/header/Header';
+import LifeStyleLanding from './LifeStyleLanding';
 import BasicButton from '@common/button/BasicButton';
 import Cleaning from '@components/basicInfo/Cleaning';
 import Introduce from '@components/basicInfo/Introduce';
@@ -10,11 +15,6 @@ import Sleephabits from '@components/basicInfo/Sleephabits';
 import Smoking from '@components/basicInfo/Smoking';
 import Sound from '@components/basicInfo/Sound';
 import COLOR from '@styles/color';
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import FONT from '@styles/fonts';
-import Header from '@common/header/Header';
-import LifeStyleLanding from './LifeStyleLanding';
 
 const BasicInfoSetting = () => {
 	const [activeButton, setActiveButton] = useState(true);
@@ -47,6 +47,10 @@ const BasicInfoSetting = () => {
 		{ id: 10, btn: '다음', title: '외출을 얼마나 자주 하시나요?' },
 		{ id: 11, btn: '완료', title: '소리에 예민하신 편인가요?' },
 	];
+
+	useEffect(() => {
+		window.scrollTo(0, 0);
+	}, [count]);
 
 	const handleBack = () => {
 		setCount((prev) => prev - 1);
@@ -244,7 +248,7 @@ const SettingStyle = styled.div`
 	justify-content: center;
 	align-items: center;
 	width: 100%;
-	padding: 50px 30px 45px 30px;
+	padding: 0px 30px 45px 30px;
 
 	.countbox {
 		margin-bottom: 10px;
