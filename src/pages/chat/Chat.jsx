@@ -3,9 +3,12 @@ import FONT from '@styles/fonts';
 import styled from 'styled-components';
 import Alarm from '@assets/images/common/alarm.svg';
 import COLOR from '@styles/color';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import Header from '@common/header/Header';
 
 const Chat = () => {
+	const navigate = useNavigate();
+
 	const chatList = [
 		{
 			id: 1,
@@ -28,8 +31,15 @@ const Chat = () => {
 		<>
 			<ChatStyle>
 				<div className="flex justify-between p-[25px] w-full border-b border-solid border-[#E8EBED]">
-					<p className="title">채팅</p>
-					<img src={Alarm} alt="alarm" />
+					<Header
+						backPath={'/home'}
+						rightContent={Alarm}
+						rightEvent={() => {
+							navigate('/alarm');
+						}}
+					>
+						<p className="title">채팅</p>
+					</Header>
 				</div>
 				<div className="flex flex-col p-[25px]">
 					{chatList.map((item, index) => (
@@ -62,8 +72,6 @@ const Chat = () => {
 export default Chat;
 
 const ChatStyle = styled.div`
-	padding: 41px 0px;
-
 	.title {
 		font: ${FONT.title2B19};
 	}
