@@ -13,9 +13,26 @@ import Premium from '@assets/images/premium-quality.svg'
 
 //components
 import RoommateScrollItem from '@components/RoommatePage/RoommateScrollItem'
+import { useQuery } from '@tanstack/react-query'
+import { API } from '@utils/api'
 
-const RoommateScrollList = ({type}) => {
+const RoommateScrollList = ({type, searchTerm}) => {
   const {data:matchingPosts, isLoading, error} = useMatchingPosts(type)
+  const {data:searchResults} = useQuery({
+    queryKey: ['searchResults', searchTerm],
+    queryFn: () => fetchData(searchTerm),
+    staleTime: 0,
+    gcTime: 5 * 60 * 1000,
+    enabled: !!searchTerm
+  })
+  const fetchData = async (searchTerm) => {
+    try {
+      const response = await API.get(`/api/v1/search?q=${searchTerm}`)
+      return response.data
+    } catch(err) {
+      console.log(err)
+    }
+  }
   const location = useLocation()
   const path = location.pathname
 
@@ -30,7 +47,12 @@ const RoommateScrollList = ({type}) => {
         
       </div>
       <div className='flex flex-col gap-[10px] px-[24px] pb-[11px]'>
-        {matchingPosts.data.map((post, index) => (
+        {type === 'search' ?
+        searchResults ? searchResults.matchingPostsData.map((post) => (
+          <RoommateScrollItem post={post}/>
+        )) : <div>검색 결과가 없습니다.</div>
+        :
+        matchingPosts.data.map((post, index) => (
           <RoommateScrollItem post={post} index={index}/>
         ))}
       </div>
