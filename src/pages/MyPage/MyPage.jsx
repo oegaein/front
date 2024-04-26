@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import { Link } from 'react-router-dom'
-
+import { useMatchingPosts } from '@hooks/useMatchingPosts'
+import { API } from '@utils/api'
 //components
 import Header from '@common/header/Header'
 // styles
@@ -18,11 +19,17 @@ import Dots from '@assets/images/dots-black.svg'
 import RoommateSwiperList from '@common/RoommateSwiperList'
 import LikeItem from '@components/LikePage/LikeItem'
 const MyPage = () => {
+  const {data:comeMatchingRequests, isLoading: isLoadingCome, error: isErrorCome } = useMatchingPosts('come-matchingrequests')
+  const {data:myMatchingRequests, isLoading: isLoadingMy, error: isErrorMy } = useMatchingPosts('my-matchingrequests')
+  console.log(comeMatchingRequests)
+  console.log(myMatchingRequests)
   const [profileImage, setProfileImage] = useState(Profile)
   const [uploadPostType, setUploadPostType] = useState('roommate')
   const handleClickUploadPost = (type) => {
     setUploadPostType(type)
   }
+
+  
   return (
     <SettingStyle className='flex flex-col gap-[10px]'>
       <section className='bg-white px-[25px] pb-[24px]'>
@@ -64,37 +71,15 @@ const MyPage = () => {
       <section className='bg-white px-[25px] py-[24px] text-left'>
         <h1 className='heading-text'>룸메이트 신청 요청</h1>
         <div className='pt-[16px] flex flex-col gap-[16px]'>
-          <div className='flex justify-between'>
-            <div className='flex gap-[20px]'>
-              <div>
-                <img src={Profile} className='rounded-[50%] w-[45px] h-[45px]'/>
-              </div>
-              <div>
-                <Link to='/user/1' className='username flex'>룸메찾기힘들다 <img src={Next}/></Link>
-                <p className='small-text'>운동하는거 좋아함</p>
-              </div>
-            </div>
-            <div className='flex gap-[5px]'>
-              <button className='button allowed'>수락</button>
-              <button className='button declined'>거절</button>
-            </div>
-          </div>
+        {comeMatchingRequests ? comeMatchingRequests.data.map((post, index)=>(
+          <ComeMatchingRequest post={post} index={index}
+          />
+        ))
+        :
+       <div className='text-center'>나에게 온 신청 요청이 없습니다.</div>
+      }
+          {/* <ComeMatchingRequest/> */}
           
-          <div className='flex justify-between'>
-            <div className='flex gap-[20px]'>
-              <div>
-                <img src={Profile} className='rounded-[50%] w-[45px] h-[45px]'/>
-              </div>
-              <div>
-                <Link className='username flex'>룸메찾기힘들다 <img src={Next}/></Link>
-                <p className='small-text'>운동하는거 좋아함</p>
-              </div>
-            </div>
-            <div className='flex gap-[5px]'>
-              <button className='button allowed'>수락</button>
-              <button className='button declined'>거절</button>
-            </div>
-          </div>
         </div>
       </section>
       {/* 글 2개까지 보이기, 3개 이상부터는 더보기 버튼 */}
@@ -111,33 +96,11 @@ const MyPage = () => {
             <div onClick={()=>handleClickUploadPost('delivery')}className={`notification-title ${uploadPostType === 'delivery' && 'selected-title'}`}>공동배달</div>
           </div>
           <div className='px-[25px] mt-[16px]'>
-            <div className='mypost px-[15px] py-[20px]'>
-              <div className='flex justify-between'>
-                <div className='flex items-center justify-between gap-[10px]'>
-                  <span className='color-purple1 font-caption2m14'>A동 4인실</span>
-                  <span className='font-caption3m12'>모집인원 2명</span>
-                </div>
-                <div className='flex gap-[14px]'>
-                  <div className='font-caption2m14 color-gray500'>11분전</div>
-                  <button><img src={Dots}/></button>
-                </div>
-              </div>
-
-              <div className='flex justify-between mt-[28px]'>
-                <div className='flex justify-between gap-[13px]'>
-                  <div>
-                    <img src={Profile} className='rounded-[50%] w-[45px] h-[45px]'/>
-                  </div>
-                  <div className='text-left overflow-hidden'>
-                    <p className='font-caption1sb14 whitespace-nowrap overflow-hidden text-ellipsis'>룸메찾기힘들다ddddddddddddddddd</p>
-                    <p className='font-caption2m14'>happy푸바옹 <span className='font-caption3m12 color-gray400'>남성</span></p>
-                  </div>
-                </div>
-                <div className='self-end whitespace-nowrap'>
-                  <button className='color-purple1 font-caption2m14'>매칭확정</button>
-                </div>
-              </div>
-            </div>
+          {myMatchingRequests ? 
+            myMatchingRequests.data.map((post, index)=>(<MyMatchingRequest post={post} index={index}/>))
+            : <div>내가 올린 글이 존재하지 않습니다.</div>
+          }
+          <MyMatchingRequest/>
           </div>
         </div>
       </section>
@@ -168,6 +131,77 @@ const MyPage = () => {
 }
 
 export default MyPage
+
+const ComeMatchingRequest = ({post, index}) => {
+  const [matchingRequestId, setMatchingRequestId] = useState()
+  const handleClickAcceptBtn = async (id) => {
+    try {
+      const response = await API.patch(`/api/v1/matchingrequests/${id}/accept`)
+      const matchingRequestId = response.data.matchingRequestId
+      setMatchingRequestId(matchingRequestId)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+  const handleClickRejectBtn = async (id) => {
+    try {
+      const response = await API.patch(`/api/v1/matchingrequests/${id}/reject`)
+      const matchingRequestId = response.data.matchingRequestId
+      setMatchingRequestId(matchingRequestId)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+  return (
+    <div className='flex justify-between'>
+      <div className='flex gap-[20px]'>
+        <div>
+          <img src={post.photoUrl} className='rounded-[50%] w-[45px] h-[45px]'/>
+        </div>
+        <div>
+          <Link to='/user/1' className='username flex'>{post.name} <img src={Next}/></Link>
+          <p className='small-text'>{post.introduction}</p>
+        </div>
+      </div>
+      <div className='flex gap-[5px]'>
+        <button onClick={()=>handleClickAcceptBtn(post.matchingPostId)} className='button allowed'>수락</button>
+        <button onClick={()=>handleClickRejectBtn(post.matchingPostId)} className='button declined'>거절</button>
+      </div>
+    </div>
+  )
+}
+
+const MyMatchingRequest = ({post, index}) => {
+  return (
+    <div className='mypost px-[15px] py-[20px]'>
+      <div className='flex justify-between'>
+        <div className='flex items-center justify-between gap-[10px]'>
+          <span className='color-purple1 font-caption2m14'>A동 4인실</span>
+          <span className='font-caption3m12'>모집인원 2명</span>
+        </div>
+        <div className='flex gap-[14px]'>
+          <div className='font-caption2m14 color-gray500'>11분전</div>
+          <button><img src={Dots}/></button>
+        </div>
+      </div>
+
+      <div className='flex justify-between mt-[28px]'>
+        <div className='flex justify-between gap-[13px]'>
+          <div>
+            <img src={Profile} className='rounded-[50%] w-[45px] h-[45px]'/>
+          </div>
+          <div className='text-left overflow-hidden'>
+            <p className='font-caption1sb14 whitespace-nowrap overflow-hidden text-ellipsis'>룸메찾기힘들다ddddddddddddddddd</p>
+            <p className='font-caption2m14'>happy푸바옹 <span className='font-caption3m12 color-gray400'>남성</span></p>
+          </div>
+        </div>
+        <div className='self-end whitespace-nowrap'>
+          <button className='color-purple1 font-caption2m14'>매칭확정</button>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 
 const SettingStyle = styled.main`

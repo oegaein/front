@@ -10,11 +10,11 @@ import COLOR from '@styles/color'
 const RoommateSwiperItem = ({post, index}) => {
   console.log(post)
   return (
-    <SettingStyle className={`w-[192px] h-[179px] border border-[${COLOR.gray100}] rounded-[20px] bg-white p-[17px] pb-[13px] ml-[12px]`}>
+    <SettingStyle key={index} className={`w-[192px] h-[179px] border border-[${COLOR.gray100}] rounded-[20px] bg-white p-[17px] pb-[13px] ml-[12px]`}>
       <div className='flex items-center justify-between mb-[10px]'>
         <span className='room'>{post.dong} {post.roomSize}</span>
         {/* dday 계산 로직 필요 */}
-        <span className='dday'>D{post.dday}</span>
+        <span className='dday'>D-{post.dday}</span>
       </div>
       <p className='title text-left mb-[13px] h-[25px] 
       whitespace-nowrap overflow-hidden text-ellipsis'>

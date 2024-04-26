@@ -11,6 +11,10 @@ const fetchData = async (type) => {
     endpoint = '/api/v1/my-matchingposts';
   } else if (type === 'imminent') {
     endpoint = '/api/v1/deadline-imminent-matchingposts';
+  } else if (type === 'come-matchingrequests') {
+    endpoint = '/api/v1/come-matchingrequests';
+  } else if (type === 'my-matchingrequests') {
+    endpoint = '/api/v1/my-matchingrequests';
   }
   try {
     const accessToken = localStorage.getItem('token')
@@ -20,9 +24,9 @@ const fetchData = async (type) => {
     //     'Authorization': 'Bearer ' + accessToken
     //   }
     // }
-  )
-    console.log('훅:', response.data.data)
-    return response.data.data
+    )
+    console.log('훅:', response.data)
+    return response.data
   } catch(error) {
     console.error(error)
   }

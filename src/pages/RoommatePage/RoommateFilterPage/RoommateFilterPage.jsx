@@ -210,11 +210,11 @@ function RoommateFilterPage() {
 
   return (
     <SettingStyle className='flex flex-col'>
-      {/* <div className="px-[28px]">
+      <div className="px-[28px]">
 				<Header backPath="/roommate" rightContent=" " rightEvent={() => {}}>
 					<span>필터</span>
 				</Header>
-			</div> */}
+			</div>
       {
         selectedFilters.length > 0 &&
         <div className='tag-container bg-white flex gap-[10px] sticky z-10 top-0 overflow-x-scroll pt-[10px] pb-[25px]'>

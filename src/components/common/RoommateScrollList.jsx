@@ -30,7 +30,7 @@ const RoommateScrollList = ({type}) => {
         
       </div>
       <div className='flex flex-col gap-[10px] px-[24px] pb-[11px]'>
-        {matchingPosts.map((post, index) => (
+        {matchingPosts.data.map((post, index) => (
           <RoommateScrollItem post={post} index={index}/>
         ))}
       </div>

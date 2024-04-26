@@ -24,7 +24,7 @@ const RoommateSwiperList = ({type}) => {
       loop={true}
       className="mySwiper pt-[5px]">
         {/* 데이터 20개까지 보여주기 */}
-        {data && data.map((post, index)=>(
+        {data.data && data.data.map((post, index)=>(
         <SwiperSlide>
           <RoommateSwiperItem post={post} index={index}/>
         </SwiperSlide>
