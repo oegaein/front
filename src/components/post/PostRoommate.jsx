@@ -6,6 +6,7 @@ import { Content } from '@components/basicInfo/Lifepattern';
 import { Input, TextArea } from '@styles/basicInfo/Input';
 import { Subtitle } from '@styles/basicInfo/Text';
 import React, { useEffect, useState } from 'react';
+import { postMatchingPostAPI } from 'services/api/MatchingPostAPI';
 
 const PostRoommate = () => {
 	const [postContent, setPostContent] = useState({
@@ -26,6 +27,9 @@ const PostRoommate = () => {
 	useEffect(() => {
 		if (postContent.building !== 'D동' && postContent.building !== 'E동') {
 			setPostContent({ ...postContent, type: '2인실' });
+			setPostContent({ ...postContent, people: '1명' });
+		} else {
+			setPostContent({ ...postContent, type: '4인실' });
 		}
 	}, [postContent.building]);
 
@@ -43,8 +47,15 @@ const PostRoommate = () => {
 	};
 
 	const handleSubmit = () => {
-		// submit
-		alert('작성 완료, 홈으로');
+		const SubmitData = {
+			title: postContent.title,
+			content: postContent.detail,
+			deadline: postContent.date + postContent.time,
+			targetNumberOfPeople: postContent.people,
+			dongType: postContent.building,
+			roomSizeType: postContent.type,
+		};
+		postMatchingPostAPI(SubmitData);
 	};
 
 	const isFormValid = () => {
@@ -126,14 +137,22 @@ const PostRoommate = () => {
 				</div>
 				<div className="flex flex-col justify-start w-full">
 					<Subtitle>모집 인원</Subtitle>
-					<BasicDropdown
-						choice="모집 인원"
-						label="모집 인원을 선택해주세요"
-						options={people}
-						setSelected={(value) =>
-							setPostContent({ ...postContent, people: value })
-						}
-					/>
+					{postContent.type !== '' && postContent.type === '2인실' ? (
+						<DropdownWrapper options={'1명'}>
+							<div className="header">
+								<span>1명</span>
+							</div>
+						</DropdownWrapper>
+					) : (
+						<BasicDropdown
+							choice="모집 인원"
+							label="모집 인원을 선택해주세요"
+							options={people}
+							setSelected={(value) =>
+								setPostContent({ ...postContent, people: value })
+							}
+						/>
+					)}
 				</div>
 				<div className="flex flex-col justify-start w-full mb-6">
 					<Subtitle>마감 기한</Subtitle>
@@ -151,7 +170,7 @@ const PostRoommate = () => {
 						label="시간 선택"
 						options={time}
 						setSelected={(value) =>
-							setPostContent({ ...postContent, people: value })
+							setPostContent({ ...postContent, time: value })
 						}
 					></OpenDropdown>
 				</div>
@@ -159,7 +178,7 @@ const PostRoommate = () => {
 					text={'완료'}
 					path={'/home'}
 					eventName={handleSubmit}
-					disabled={button}
+					disabled={!button}
 				/>
 			</div>
 		</>
