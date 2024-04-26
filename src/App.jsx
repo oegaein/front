@@ -29,6 +29,7 @@ import ChatRoom from '@pages/chat/ChatRoom';
 import PostDetail from '@pages/post/Post-detail';
 import CommentDetail from '@pages/comment/Comment-detail';
 import MyProfileEditPage from '@pages/MyPage/MyInfoEditPage/MyProfileEditPage';
+import Alarm from '@pages/alarm/Alarm';
 
 function App() {
 	return (
@@ -65,6 +66,7 @@ function App() {
 							/>
 							<Route path="/chat" element={<Chat />} />
 							<Route path="/chat/chatroom" element={<ChatRoom />} />
+							<Route path="/alarm" element={<Alarm />} />
 						</Route>
 					</Routes>
 				</Router>
