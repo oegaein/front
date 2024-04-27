@@ -157,7 +157,8 @@ const PostDetail = () => {
 						<UserPageInfo />
 					</div>
 					{moreOpen && (
-						<div className="bg-gray-50">
+						<div className="flexx flex-col items-start w-full bg-gray-50">
+							<p className="body2 w-full">성향 및 라이프스타일</p>
 							<UserLifeStyles />
 						</div>
 					)}
@@ -266,7 +267,7 @@ const PostDetail = () => {
 						text={matching ? '신청완료' : '매칭신청'}
 						eventName={() => {
 							setMatching(true);
-							postMatchingRequestAPI(1);
+							// postMatchingRequestAPI(1);
 							alert('매칭 신청 완료');
 						}}
 						disabled={matching}
@@ -286,6 +287,10 @@ const PostDetailStyle = styled.div`
 
 	.cation2 {
 		font: ${FONT.caption2M14};
+	}
+
+	.body2 {
+		font: ${FONT.body2SB16};
 	}
 
 	.body5 {
