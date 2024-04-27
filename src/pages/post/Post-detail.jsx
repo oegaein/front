@@ -157,8 +157,10 @@ const PostDetail = () => {
 						<UserPageInfo />
 					</div>
 					{moreOpen && (
-						<div className="flexx flex-col items-start w-full bg-gray-50">
-							<p className="body2 w-full">성향 및 라이프스타일</p>
+						<div className="container flex flex-col w-full bg-gray-50">
+							<p className="body2 w-full mb-4 text-start">
+								성향 및 라이프스타일
+							</p>
 							<UserLifeStyles />
 						</div>
 					)}
