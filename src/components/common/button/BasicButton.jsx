@@ -1,7 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
 import COLOR from '@styles/color';
 import FONT from '@styles/fonts';
 
