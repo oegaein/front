@@ -27,7 +27,6 @@ export const BasicProfile = ({
 	width,
 	height,
 	ver,
-	target,
 }) => {
 	const [threedots, setThreedots] = useState(false);
 	const [option, setOption] = useState('');
@@ -96,7 +95,9 @@ export const BasicProfile = ({
 						</div>
 					) : (
 						<div className="flex justify-between items-center p-[2px]">
-							<Nickname weight="caption">{nickname}</Nickname>
+							<Nickname weight="caption" className="mr-3">
+								{nickname}
+							</Nickname>
 							<img
 								src={Threedots}
 								alt="threedots"
@@ -106,7 +107,6 @@ export const BasicProfile = ({
 						</div>
 					)}
 					<div className="flex">
-						{target && <p className="target">@{target}</p>}
 						<p className="cation2 color-gray800 text-start">{content}</p>
 					</div>
 				</div>
