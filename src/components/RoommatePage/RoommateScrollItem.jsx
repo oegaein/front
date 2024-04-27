@@ -1,30 +1,39 @@
 import React, {useState} from 'react'
-import styled from 'styled-components'
-
+import { useNavigate } from 'react-router-dom'
 //styles
+import styled from 'styled-components'
 import FONT from '@styles/fonts'
 import COLOR from '@styles/color'
 
 //images
 import Yoo from '../../assets/images/유재석.svg'
-import axios from 'axios'
+import { API } from '@utils/api'
 
-const RoommateScrollItem = ({post, index}) => {
-  const [isRegistered, setIsRegistered] = useState(false)
-  const clickRegisterBtn = () => {
-    //api 요청 로직 
-    setIsRegistered(prevState=>!prevState)
-  }
-  const handleClickPost = async () => {
+const RoommateScrollItem = ({post}) => {
+  const navigate = useNavigate()
+  const handleClickRegisterBtn = async (matchingPostId) => {
     try {
-      const response = await axios.get(`/api/v1/matchingposts/${index}`)
-      console.log(response)
-    } catch (err) {
-      console.error(err)
+      const response = await API.post('/api/v1/matchingrequests', {
+        matchingPostId,
+      })
+      // 매칭신청이 완료되었다는 모달 필요
+    } catch (error) {
+      console.log(error)
     }
   }
+  const handleClickCancelBtn = async (matchingPostId) => {
+    try {
+      const response = await API.delete(`/api/v1/matchingrequests/${matchingPostId}`)
+      // 매칭취소가 완료되었다는 모달 필요
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  const handleClickPost = (matchingPostId) => {
+    navigate(`/post-detail/${matchingPostId}`)
+  }
   return (
-    <SettingStyle key={index} className={`flex bg-white border border-[${COLOR.gray100}] rounded-[20px] p-[14px]`}>
+    <SettingStyle onClick={()=>handleClickPost(post.matchingPostId)} key={post.matchingPostId} className={`flex bg-white border border-[${COLOR.gray100}] rounded-[20px] p-[14px]`}>
       <img className='w-[100px] h-[100px] mr-[12px]' src={Yoo}/>
       <div className='w-full flex flex-col justify-between'>
         <div>
@@ -44,16 +53,20 @@ const RoommateScrollItem = ({post, index}) => {
             </p>
             <div>
               <span className='name mr-[6px]'>{post.name}</span>
-              <span className='gender'>여성</span>
+              <span className='gender'>{post.gender}</span>
             </div>
           </div>
         </div>
         <div className='text-right'>
-          {isRegistered ?
-          <button onClick={clickRegisterBtn} className='register-btn registered'>신청취소</button>
-        :  
-          <button onClick={clickRegisterBtn} className='register-btn'>매칭신청</button>
-        }
+          {/* 매칭 대기, 매칭 완료, 매칭 마감 */}
+          {post.matchingStatus === '매칭 대기' ?
+          <button onClick={()=>handleClickRegisterBtn(post.matchingPostId)} className='register-btn registered'>매칭신청</button>
+          : 
+          post.matchingStatus === '매칭 완료' ?
+          <button onClick={()=>handleClickCancelBtn(post.matchingPostId)} className='register-btn registered'>매칭완료</button>
+          :
+          <div className='register-btn'>매칭마감</div>
+          }
         </div>
       </div>
     </SettingStyle>
