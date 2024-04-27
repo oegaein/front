@@ -9,7 +9,7 @@ import Panda from '@assets/images/common/Panda.png';
 import ArrowRightIcon from '@assets/images/common/ArrowRightIcon.svg';
 import { Box } from '@pages/post/Post-detail';
 import { useNavigate } from 'react-router-dom';
-import { postCommentsAPI } from 'services/api/CommentsAPI';
+import { postCommentsAPI } from '@services/api/CommentsAPI';
 
 const mocks = {
 	postId: 1,
@@ -41,9 +41,9 @@ const PreviewComment = () => {
 	const [value, setValue] = useState('');
 	const [reply, setReply] = useState(false);
 
-	useEffect(() => {
-		// postCommentsAPI(1, value);
-	}, [value]);
+	// useEffect(() => {
+	// 	postCommentsAPI(1, value);
+	// }, [value]);
 
 	const handleReply = (index) => {
 		setReply(true);
