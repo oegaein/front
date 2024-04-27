@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import COLOR from '@styles/color';
@@ -6,10 +6,24 @@ import FONT from '@styles/fonts';
 import ArrowDownIcon from '@assets/images/common/ArrowDownIcon.svg';
 import ArrowUpIcon from '@assets/images/common/ArrowUpIcon.svg';
 import Bar from '@assets/images/common/Bar.svg';
+import { useLocation } from 'react-router-dom';
 
 const BasicDropdown = ({ choice, label = '미선택', options, setSelected }) => {
+	const location = useLocation();
 	const [isOpen, setIsOpen] = useState(false);
 	const [selectedOption, setSelectedOption] = useState('');
+	const dropdownRef = useRef(null);
+
+	useEffect(() => {
+		if (isOpen) {
+			document.body.style.overflow = 'hidden';
+		} else {
+			document.body.style.overflow = 'auto';
+		}
+		return () => {
+			document.body.style.overflow = 'auto';
+		};
+	}, [isOpen]);
 
 	const toggleDropdown = () => {
 		setIsOpen(!isOpen);
@@ -37,20 +51,37 @@ const BasicDropdown = ({ choice, label = '미선택', options, setSelected }) =>
 						</div>
 						<p>{choice}</p>
 					</div>
-					<div className="w-full h-[233px] overflow-auto">
-						{options.map((option, index) => (
-							<span
-								key={option}
-								className="item"
-								onClick={() => {
-									handleSelected(option);
-									setIsOpen(false);
-								}}
-							>
-								{option}
-							</span>
-						))}
-					</div>
+					{location.pathname === 'setting' ? (
+						<div className="w-full h-[233px] overflow-auto">
+							{options.map((option, index) => (
+								<span
+									key={option}
+									className="item"
+									onClick={() => {
+										handleSelected(option);
+										setIsOpen(false);
+									}}
+								>
+									{option}
+								</span>
+							))}
+						</div>
+					) : (
+						<ListLayout>
+							{options.map((option, index) => (
+								<span
+									key={option}
+									className="item"
+									onClick={() => {
+										handleSelected(option);
+										setIsOpen(false);
+									}}
+								>
+									{option}
+								</span>
+							))}
+						</ListLayout>
+					)}
 				</DropdownList>
 			)}
 		</>
@@ -58,6 +89,19 @@ const BasicDropdown = ({ choice, label = '미선택', options, setSelected }) =>
 };
 
 export default BasicDropdown;
+
+function ListLayout({ children }) {
+	const location = useLocation();
+	return (
+		<>
+			{location.pathname === '/setting' ? (
+				<div className="w-full h-[233px] overflow-auto">{children}</div>
+			) : (
+				<div className="w-full overflow-auto">{children}</div>
+			)}
+		</>
+	);
+}
 
 export const DropdownBackground = styled.div`
 	position: fixed;
@@ -92,10 +136,14 @@ export const DropdownWrapper = styled.div`
 `;
 
 export const DropdownList = styled(motion.div)`
-	position: absolute;
+	position: fixed;
+	width: 393px;
+	bottom: 0px;
+	left: calc(50% - 197px);
+	/* position: absolute;
 	bottom: 0;
 	left: 0;
-	width: 100%;
+	width: 100%; */
 	max-height: 450px;
 	padding: 11px 26px;
 	background-color: ${COLOR.white};

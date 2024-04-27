@@ -17,23 +17,27 @@ const ConfirmModal = ({ content, isOpen, setIsOpen }) => {
 		};
 	}, [isOpen]);
 
+	const closeModal = () => {
+		setIsOpen(false);
+	};
+
 	return (
 		<>
-			<DropdownBackground open={isOpen} onClick={() => setIsOpen(false)} />
+			<DropdownBackground open={isOpen} onClick={closeModal} />
 			<ModalWrapper>
 				<p>{content.msg}</p>
 				<div className="flex justify-between w-full">
 					<BasicButton
 						text="취소"
-						eventName={() => setIsOpen(false)}
+						eventName={closeModal}
 						color="gray"
 						size="48%"
 					/>
 					<BasicButton
 						text={content.btn}
 						eventName={() => {
-							setIsOpen(false);
-							alert('야호');
+							closeModal();
+							content.func();
 						}}
 						size="48%"
 					/>

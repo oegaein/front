@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Panda from '@assets/images/common/Panda.png';
 import COLOR from '@styles/color';
+import Close from '@assets/images/close.svg';
 
 const AlarmList = [
 	{
@@ -49,25 +50,10 @@ const Alarm = () => {
 					</Header>
 				</div>
 				<SelectMenuBar
-					menuList={[
-						{
-							id: 'roommate',
-							title: '룸메이트',
-							onClick: (menuObj) => {
-								setMenu(menuObj.id);
-							},
-						},
-						{
-							id: 'delivery',
-							title: '공동배달',
-							onClick: (menuObj) => {
-								setMenu(menuObj.id);
-							},
-						},
-					]}
-					pickedMenuId={menu}
+					menuList={['룸메이트', '공동배달', '기숙사소식']}
+					pickedMenuId={setMenu}
 				/>
-				{menu === 'roommate' ? (
+				{menu === '룸메이트' ? (
 					AlarmList.map((alarm, index) => (
 						<div className="flex w-full justify-between px-6 py-4">
 							<div className="flex">
@@ -89,11 +75,11 @@ const Alarm = () => {
 								}}
 								className="flex items-center mb-5"
 							>
-								x
+								<img src={Close} alt="close button" />
 							</button>
 						</div>
 					))
-				) : menu === 'delivery' ? (
+				) : menu === '공동배달' ? (
 					AlarmList.map((alarm, index) => (
 						<div className="flex w-full justify-between px-6 py-4">
 							<div className="flex">
@@ -112,7 +98,7 @@ const Alarm = () => {
 							<button className="flex items-center mb-5">x</button>
 						</div>
 					))
-				) : menu === 'dormitory' ? (
+				) : menu === '기숙사소식' ? (
 					AlarmList.map((alarm, index) => (
 						<div className="flex w-full justify-between px-6 py-4">
 							<div className="flex">

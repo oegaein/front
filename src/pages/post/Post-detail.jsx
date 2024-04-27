@@ -19,9 +19,10 @@ import BasicArrowUpIcon from '@assets/images/common/BasicArrowUpIcon.svg';
 import Checkbox from '@assets/images/common/Checkbox.svg';
 import CommentIcon from '@assets/images/common/comment.svg';
 import ShareIcon from '@assets/images/common/share.svg';
-import { getMatchingPostAPI } from '@services/api/MatchingPostAPI';
-// import UserInfoAndLifeStyles from '@components/UserPage/UserInfoAndLifeStyles';
-import { postMatchingRequestAPI } from '@services/api/MatchingRequestAPI';
+import { getMatchingPostAPI } from 'services/api/MatchingPostAPI';
+import { postMatchingRequestAPI } from 'services/api/MatchingRequestAPI';
+import UserPageInfo from '@components/UserPage/UserPageInfo';
+import UserLifeStyles from '@components/UserPage/UserLifeStyles';
 
 const mocks = {
 	postId: 1,
@@ -47,19 +48,16 @@ const mocks = {
 	},
 };
 
-const postOptions = ['수정하기', '삭제하기'];
-const yourOption = ['차단하기'];
-
 const PostDetail = () => {
 	const navigate = useNavigate();
 	const [moreOpen, setMoreOpen] = useState(false);
 	const [threedots, setThreedots] = useState(false);
-	const [option, setOption] = useState('');
 	const [confirm, setConfirm] = useState(false);
 	const [confirmContent, setConfirmContent] = useState({
 		id: -1,
 		msg: '',
 		btn: '',
+		func: () => {},
 	});
 	const [matching, setMatching] = useState(false);
 
@@ -67,28 +65,52 @@ const PostDetail = () => {
 	// 	getMatchingPostAPI(1);
 	// }, []);
 
-	useEffect(() => {
-		if (option === '수정하기') {
-			navigate('/post-edit'); // postID 넘겨주기
-		} else if (option === '삭제하기') {
-			setConfirm(true);
-			setConfirmContent((prev) => ({
-				...prev,
-				msg: '게시글을 삭제할까요?',
-				btn: '삭제',
-				id: 1,
-			}));
-		} else if (option === '차단하기') {
-			setConfirm(true);
-			setConfirmContent((prev) => ({
-				...prev,
-				msg: `${mocks.profile.nickname}님을 차단할까요?`, // 작성자 이름
-				btn: '차단',
-				id: 1,
-			}));
-		}
-		setOption('');
-	}, [option]);
+	const EditFunc = () => {
+		navigate('/post-edit');
+	};
+
+	const DeleteFunc = () => {
+		setConfirm(true);
+		setConfirmContent((prev) => ({
+			...prev,
+			msg: '게시글을 삭제할까요?',
+			btn: '삭제',
+			id: 1,
+			func: () => {
+				alert('삭제 API');
+			},
+		}));
+	};
+
+	const BlockFunc = () => {
+		setConfirm(true);
+		setConfirmContent((prev) => ({
+			...prev,
+			msg: `${mocks.profile.nickname}님을 차단할까요?`, // 작성자 이름
+			btn: '차단',
+			id: 1,
+			func: () => {
+				alert('차단 API');
+			},
+		}));
+	};
+
+	const postOptions = [
+		{
+			content: '수정하기',
+			func: EditFunc,
+		},
+		{
+			content: '삭제하기',
+			func: DeleteFunc,
+		},
+	];
+	const yourOption = [
+		{
+			content: '차단하기',
+			func: BlockFunc,
+		},
+	];
 
 	return (
 		<>
@@ -97,7 +119,6 @@ const PostDetail = () => {
 					options={postOptions} // 작성자 === 클릭자 ? postOptions : yourOptions
 					isOpen={threedots}
 					setIsOpen={setThreedots}
-					setOption={setOption}
 				/>
 			)}
 			{confirm && (
@@ -153,11 +174,14 @@ const PostDetail = () => {
 								<span className="cation2 color-purple">프로필 보기</span>
 							</Link>
 						</div>
-						{/* <UserInfoAndLifeStyles /> */}
+						<UserPageInfo />
 					</div>
 					{moreOpen && (
-						<div className="bg-gray-50">
-							<p>성향 및 라이프 스타일</p>
+						<div className="container flex flex-col w-full bg-gray-50">
+							<p className="body2 w-full mb-4 text-start">
+								성향 및 라이프스타일
+							</p>
+							<UserLifeStyles />
 						</div>
 					)}
 					<div
@@ -265,7 +289,7 @@ const PostDetail = () => {
 						text={matching ? '신청완료' : '매칭신청'}
 						eventName={() => {
 							setMatching(true);
-							postMatchingRequestAPI(1);
+							// postMatchingRequestAPI(1);
 							alert('매칭 신청 완료');
 						}}
 						disabled={matching}
@@ -285,6 +309,10 @@ const PostDetailStyle = styled.div`
 
 	.cation2 {
 		font: ${FONT.caption2M14};
+	}
+
+	.body2 {
+		font: ${FONT.body2SB16};
 	}
 
 	.body5 {

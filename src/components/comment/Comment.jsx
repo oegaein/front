@@ -17,7 +17,6 @@ const mocks = {
 			time: 20,
 			profile: { img: Panda, nickname: '구구국' },
 			reply: {
-				target: '구구국',
 				content: '가능합니다',
 				time: 20,
 				profile: { img: Panda, nickname: 'happy푸바웅' },
@@ -80,12 +79,6 @@ const Comment = () => {
 									/>
 									<div className="flex justify-between mt-4 pl-12 w-2/4">
 										<span>{item.time}분 전</span>
-										<span
-											className="cursor-pointer"
-											onClick={() => handleReply(index)}
-										>
-											답글 달기
-										</span>
 									</div>
 								</div>
 							)}

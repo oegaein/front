@@ -77,6 +77,7 @@ export const Content = styled.div`
 	flex-direction: column;
 	align-items: center;
 	padding: 14px;
+	cursor: pointer;
 
 	.title {
 		font: ${FONT.body5M15};

@@ -14,6 +14,7 @@ const Nickname = ({ onGetValue, setButton }) => {
 		setInput(nickname);
 		setDuplicated(true);
 		handleButton(nickname);
+		setButton(true);
 	};
 
 	const handleButton = (nickname) => {
