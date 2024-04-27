@@ -2,25 +2,26 @@
 
 import COLOR from '@styles/color';
 import FONT from '@styles/fonts';
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 const SelectMenuBar = ({ menuList, pickedMenuId }) => {
+	const [selectedMenu, setSelectedMenu] = useState(0);
 	return (
 		<section className="w-full flex">
-			{menuList.map((menu) => (
+			{menuList.map((menu, index) => (
 				<SelectMenuStyle
-					key={menu.id}
+					key={menu}
 					role="presentation"
-					className={`${pickedMenuId === menu.id ? 'selected' : 'none'}`}
 					style={{ width: `${100 / menuList.length}%` }}
+					className=""
 					onClick={() => {
-						if (menu.onClick !== undefined) {
-							menu.onClick(menu);
-						}
+						pickedMenuId(menu);
+						setSelectedMenu(index);
 					}}
+					selected={selectedMenu === index}
 				>
-					{menu.title}
+					{menu}
 				</SelectMenuStyle>
 			))}
 		</section>
@@ -39,13 +40,14 @@ const SelectMenuStyle = styled.div`
 	font: ${FONT.caption2M14};
 	color: ${COLOR.gray500};
 
-	.selected {
+	${(props) =>
+		props.selected &&
+		`
 		border-bottom: 2px solid ${COLOR.purple1};
 		color: ${COLOR.black};
-	}
+	`}
 
-	.none {
-		font: ${FONT.caption2M14};
-		color: ${COLOR.gray500};
+	&:hover {
+		color: ${COLOR.black};
 	}
 `;
