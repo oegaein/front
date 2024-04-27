@@ -29,39 +29,60 @@ export const BasicProfile = ({
 	ver,
 }) => {
 	const [threedots, setThreedots] = useState(false);
-	const [option, setOption] = useState('');
 	const [confirm, setConfirm] = useState(false);
 	const [confirmContent, setConfirmContent] = useState({
 		id: -1,
 		msg: '',
 		btn: '',
+		func: () => {},
 	});
 
-	const myOption = ['수정하기', '삭제하기'];
-	const yourOption = ['차단하기'];
+	const EditFunc = () => {
+		alert('댓글 수정!');
+	};
 
-	useEffect(() => {
-		if (option === '수정하기') {
-			alert('댓글 수정하기');
-		} else if (option === '삭제하기') {
-			setConfirm(true);
-			setConfirmContent((prev) => ({
-				...prev,
-				msg: '댓글을 삭제할까요?',
-				btn: '삭제',
-				id: 1,
-			}));
-		} else if (option === '차단하기') {
-			setConfirm(true);
-			setConfirmContent((prev) => ({
-				...prev,
-				msg: `'작성자'님을 차단할까요?`, // 작성자 이름
-				btn: '차단',
-				id: 1,
-			}));
-		}
-		setOption('');
-	}, [option]);
+	const DeleteFunc = () => {
+		setConfirm(true);
+		setConfirmContent((prev) => ({
+			...prev,
+			msg: '댓글을 삭제할까요?',
+			btn: '삭제',
+			id: 1,
+			func: () => {
+				alert('삭제 API');
+			},
+		}));
+	};
+
+	const BlockFunc = () => {
+		setConfirm(true);
+		setConfirmContent((prev) => ({
+			...prev,
+			msg: `${nickname}님을 차단할까요?`, // 작성자 이름
+			btn: '차단',
+			id: 1,
+			func: () => {
+				alert('차단 API');
+			},
+		}));
+	};
+
+	const myOption = [
+		{
+			content: '수정하기',
+			func: EditFunc,
+		},
+		{
+			content: '삭제하기',
+			func: DeleteFunc,
+		},
+	];
+	const yourOption = [
+		{
+			content: '차단하기',
+			func: BlockFunc,
+		},
+	];
 
 	return (
 		<>
@@ -70,7 +91,6 @@ export const BasicProfile = ({
 					options={yourOption}
 					isOpen={threedots}
 					setIsOpen={setThreedots}
-					setOption={setOption}
 				/>
 			)}
 			{confirm && (

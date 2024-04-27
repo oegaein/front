@@ -48,19 +48,16 @@ const mocks = {
 	},
 };
 
-const postOptions = ['수정하기', '삭제하기'];
-const yourOption = ['차단하기'];
-
 const PostDetail = () => {
 	const navigate = useNavigate();
 	const [moreOpen, setMoreOpen] = useState(false);
 	const [threedots, setThreedots] = useState(false);
-	const [option, setOption] = useState('');
 	const [confirm, setConfirm] = useState(false);
 	const [confirmContent, setConfirmContent] = useState({
 		id: -1,
 		msg: '',
 		btn: '',
+		func: () => {},
 	});
 	const [matching, setMatching] = useState(false);
 
@@ -68,28 +65,52 @@ const PostDetail = () => {
 	// 	getMatchingPostAPI(1);
 	// }, []);
 
-	useEffect(() => {
-		if (option === '수정하기') {
-			navigate('/post-edit'); // postID 넘겨주기
-		} else if (option === '삭제하기') {
-			setConfirm(true);
-			setConfirmContent((prev) => ({
-				...prev,
-				msg: '게시글을 삭제할까요?',
-				btn: '삭제',
-				id: 1,
-			}));
-		} else if (option === '차단하기') {
-			setConfirm(true);
-			setConfirmContent((prev) => ({
-				...prev,
-				msg: `${mocks.profile.nickname}님을 차단할까요?`, // 작성자 이름
-				btn: '차단',
-				id: 1,
-			}));
-		}
-		setOption('');
-	}, [option]);
+	const EditFunc = () => {
+		navigate('/post-edit');
+	};
+
+	const DeleteFunc = () => {
+		setConfirm(true);
+		setConfirmContent((prev) => ({
+			...prev,
+			msg: '게시글을 삭제할까요?',
+			btn: '삭제',
+			id: 1,
+			func: () => {
+				alert('삭제 API');
+			},
+		}));
+	};
+
+	const BlockFunc = () => {
+		setConfirm(true);
+		setConfirmContent((prev) => ({
+			...prev,
+			msg: `${mocks.profile.nickname}님을 차단할까요?`, // 작성자 이름
+			btn: '차단',
+			id: 1,
+			func: () => {
+				alert('차단 API');
+			},
+		}));
+	};
+
+	const postOptions = [
+		{
+			content: '수정하기',
+			func: EditFunc,
+		},
+		{
+			content: '삭제하기',
+			func: DeleteFunc,
+		},
+	];
+	const yourOption = [
+		{
+			content: '차단하기',
+			func: BlockFunc,
+		},
+	];
 
 	return (
 		<>
@@ -98,7 +119,6 @@ const PostDetail = () => {
 					options={postOptions} // 작성자 === 클릭자 ? postOptions : yourOptions
 					isOpen={threedots}
 					setIsOpen={setThreedots}
-					setOption={setOption}
 				/>
 			)}
 			{confirm && (
