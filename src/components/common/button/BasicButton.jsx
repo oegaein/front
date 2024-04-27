@@ -44,12 +44,6 @@ const BasicButton = ({ text, path, eventName, disabled, color, size }) => {
 
 export default BasicButton;
 
-// BasicButton.propTypes = {
-// 	text: PropTypes.oneOf(['완료', '시작하기', '다음']).isRequired,
-// 	path: PropTypes.string,
-// 	eventName: PropTypes.func,
-// };
-
 const ButtonWrapper = styled.button`
 	display: flex;
 	justify-content: center;
@@ -66,7 +60,7 @@ const ButtonWrapper = styled.button`
 	cursor: pointer;
 `;
 
-const ButtonText = styled.span`
+const ButtonText = styled.p`
 	font: ${FONT.buttonSB15};
 	color: ${(props) =>
 		props.disabled
