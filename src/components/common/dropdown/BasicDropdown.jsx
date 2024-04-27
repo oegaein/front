@@ -6,8 +6,10 @@ import FONT from '@styles/fonts';
 import ArrowDownIcon from '@assets/images/common/ArrowDownIcon.svg';
 import ArrowUpIcon from '@assets/images/common/ArrowUpIcon.svg';
 import Bar from '@assets/images/common/Bar.svg';
+import { useLocation } from 'react-router-dom';
 
 const BasicDropdown = ({ choice, label = '미선택', options, setSelected }) => {
+	const location = useLocation();
 	const [isOpen, setIsOpen] = useState(false);
 	const [selectedOption, setSelectedOption] = useState('');
 
@@ -37,20 +39,37 @@ const BasicDropdown = ({ choice, label = '미선택', options, setSelected }) =>
 						</div>
 						<p>{choice}</p>
 					</div>
-					<div className="w-full h-[233px] overflow-auto">
-						{options.map((option, index) => (
-							<span
-								key={option}
-								className="item"
-								onClick={() => {
-									handleSelected(option);
-									setIsOpen(false);
-								}}
-							>
-								{option}
-							</span>
-						))}
-					</div>
+					{location.pathname === 'setting' ? (
+						<div className="w-full h-[233px] overflow-auto">
+							{options.map((option, index) => (
+								<span
+									key={option}
+									className="item"
+									onClick={() => {
+										handleSelected(option);
+										setIsOpen(false);
+									}}
+								>
+									{option}
+								</span>
+							))}
+						</div>
+					) : (
+						<ListLayout>
+							{options.map((option, index) => (
+								<span
+									key={option}
+									className="item"
+									onClick={() => {
+										handleSelected(option);
+										setIsOpen(false);
+									}}
+								>
+									{option}
+								</span>
+							))}
+						</ListLayout>
+					)}
 				</DropdownList>
 			)}
 		</>
@@ -58,6 +77,19 @@ const BasicDropdown = ({ choice, label = '미선택', options, setSelected }) =>
 };
 
 export default BasicDropdown;
+
+function ListLayout({ children }) {
+	const location = useLocation();
+	return (
+		<>
+			{location.pathname === '/setting' ? (
+				<div className="w-full h-[233px] overflow-auto">{children}</div>
+			) : (
+				<div className="w-full overflow-auto">{children}</div>
+			)}
+		</>
+	);
+}
 
 export const DropdownBackground = styled.div`
 	position: fixed;
