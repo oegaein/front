@@ -21,7 +21,6 @@ const mocks = {
 			time: 20,
 			profile: { img: Panda, nickname: '구구국' },
 			reply: {
-				target: '구구국',
 				content: '가능합니다',
 				time: 20,
 				profile: { img: Panda, nickname: 'happy푸바웅' },
@@ -40,6 +39,7 @@ const PreviewComment = () => {
 	const navigate = useNavigate();
 	const [value, setValue] = useState('');
 	const [reply, setReply] = useState(false);
+	const [owner, setOwner] = useState('');
 
 	// useEffect(() => {
 	// 	postCommentsAPI(1, value);
@@ -47,6 +47,7 @@ const PreviewComment = () => {
 
 	const handleReply = (index) => {
 		setReply(true);
+		setOwner(mocks.comments[index].profile.nickname);
 	};
 
 	const handleMoreComment = () => {
@@ -59,7 +60,15 @@ const PreviewComment = () => {
 		<>
 			{reply && (
 				<CommentBox>
-					<CommentInput setSelected={setValue} setReply={setReply} />
+					<div className="ing">
+						<p className="ingText">{owner} 님에게 답글 남기는 중</p>
+						<p className="ingText" onClick={() => setReply(false)}>
+							취소
+						</p>
+					</div>
+					<div className="inputContainer">
+						<CommentInput setSelected={setValue} setReply={setReply} />
+					</div>
 				</CommentBox>
 			)}
 			<CommentStyle>
@@ -72,25 +81,23 @@ const PreviewComment = () => {
 				<section className="commentbox">
 					{mocks.comments.map((item, index) => (
 						<div key={item.id} className="w-full mb-6">
-							<div>
-								<BasicProfile
-									Img={item.profile.img}
-									nickname={item.profile.nickname}
-									content={item.content}
-									mr="13px"
-									width="40px"
-									height="40px"
-									ver="comment"
-								/>
-								<div className="flex justify-between mt-4 pl-12 w-5/12">
-									<span>{item.time}분 전</span>
-									<span
-										className="cursor-pointer"
-										onClick={() => handleReply(index)}
-									>
-										답글 달기
-									</span>
-								</div>
+							<BasicProfile
+								Img={item.profile.img}
+								nickname={item.profile.nickname}
+								content={item.content}
+								mr="13px"
+								width="40px"
+								height="40px"
+								ver="comment"
+							/>
+							<div className="flex justify-between mt-4 pl-12 w-[45%]">
+								<span>{item.time}분 전</span>
+								<span
+									className="cursor-pointer"
+									onClick={() => handleReply(index)}
+								>
+									답글달기
+								</span>
 							</div>
 							{item.reply && (
 								<div className="replybox">
@@ -102,16 +109,9 @@ const PreviewComment = () => {
 										width="40px"
 										height="40px"
 										ver="comment"
-										target={item.reply.target}
 									/>
 									<div className="flex justify-between mt-4 pl-12 w-2/4">
 										<span>{item.time}분 전</span>
-										<span
-											className="cursor-pointer"
-											onClick={() => handleReply(index)}
-										>
-											답글 달기
-										</span>
 									</div>
 								</div>
 							)}
@@ -172,13 +172,34 @@ const CommentStyle = styled.div`
 
 const CommentBox = styled.div`
 	display: flex;
-	justify-content: space-between;
-	align-items: center;
+	flex-direction: column;
+	width: 100%;
 	position: fixed;
 	bottom: 0;
 	z-index: 50;
-	padding: 25px 25px 0px 25px;
-	width: 100%;
-	background-color: ${COLOR.white};
-	border: 1px solid ${COLOR.gray100};
+
+	.ing {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 11px 25px;
+		width: 100%;
+		background-color: ${COLOR.gray50};
+	}
+
+	.ingText {
+		font: ${FONT.caption3M12};
+		color: ${COLOR.gray500};
+	}
+
+	.inputContainer {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		align-items: center;
+		padding: 25px 25px 0px 25px;
+		width: 100%;
+		background-color: ${COLOR.white};
+		border: 1px solid ${COLOR.gray100};
+	}
 `;
