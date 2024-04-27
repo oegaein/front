@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import COLOR from '@styles/color';
 import FONT from '@styles/fonts';
 
-const OptionModal = ({ options, isOpen, setIsOpen, setOption }) => {
+const OptionModal = ({ options, isOpen, setIsOpen }) => {
 	useEffect(() => {
 		if (isOpen) {
 			document.body.style.overflow = 'hidden';
@@ -17,9 +17,13 @@ const OptionModal = ({ options, isOpen, setIsOpen, setOption }) => {
 		};
 	}, [isOpen]);
 
+	const closeModal = () => {
+		setIsOpen(false);
+	};
+
 	return (
 		<>
-			<DropdownBackground open={isOpen} onClick={() => setIsOpen(false)} />
+			<DropdownBackground open={isOpen} onClick={closeModal} />
 			<Motion initial={{ y: 100 }} animate={{ y: 0 }}>
 				<ModalWrapper style={{ marginBottom: '10px' }}>
 					{options.map((option, index) => (
@@ -27,18 +31,18 @@ const OptionModal = ({ options, isOpen, setIsOpen, setOption }) => {
 							<List
 								key={index}
 								onClick={() => {
-									setOption(option);
-									setIsOpen(false);
+									option.func();
+									closeModal();
 								}}
-								color={option}
+								color={option.content}
 							>
-								<p>{option}</p>
+								<p>{option.content}</p>
 							</List>
 						</>
 					))}
 				</ModalWrapper>
 				<ModalWrapper>
-					<List>취소하기</List>
+					<List onClick={closeModal}>취소하기</List>
 				</ModalWrapper>
 			</Motion>
 		</>
