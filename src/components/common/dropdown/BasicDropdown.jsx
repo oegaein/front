@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import COLOR from '@styles/color';
@@ -12,6 +12,18 @@ const BasicDropdown = ({ choice, label = '미선택', options, setSelected }) =>
 	const location = useLocation();
 	const [isOpen, setIsOpen] = useState(false);
 	const [selectedOption, setSelectedOption] = useState('');
+	const dropdownRef = useRef(null);
+
+	useEffect(() => {
+		if (isOpen) {
+			document.body.style.overflow = 'hidden';
+		} else {
+			document.body.style.overflow = 'auto';
+		}
+		return () => {
+			document.body.style.overflow = 'auto';
+		};
+	}, [isOpen]);
 
 	const toggleDropdown = () => {
 		setIsOpen(!isOpen);
@@ -124,10 +136,14 @@ export const DropdownWrapper = styled.div`
 `;
 
 export const DropdownList = styled(motion.div)`
-	position: absolute;
+	position: fixed;
+	width: 393px;
+	bottom: 0px;
+	left: calc(50% - 197px);
+	/* position: absolute;
 	bottom: 0;
 	left: 0;
-	width: 100%;
+	width: 100%; */
 	max-height: 450px;
 	padding: 11px 26px;
 	background-color: ${COLOR.white};
