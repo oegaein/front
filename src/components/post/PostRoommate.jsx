@@ -21,17 +21,7 @@ const PostRoommate = () => {
 	const buildings = ['A동', 'B동', 'C동', 'D동', 'E동'];
 	const type = ['2인실', '4인실'];
 	const people = ['1명', '2명', '3명'];
-	const time = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 	const [button, setButton] = useState(false);
-
-	useEffect(() => {
-		if (postContent.building !== 'D동' && postContent.building !== 'E동') {
-			setPostContent({ ...postContent, type: '2인실' });
-			setPostContent({ ...postContent, people: '1명' });
-		} else {
-			setPostContent({ ...postContent, type: '4인실' });
-		}
-	}, [postContent.building]);
 
 	useEffect(() => {
 		setButton(isFormValid());
@@ -43,7 +33,15 @@ const PostRoommate = () => {
 	};
 
 	const handleSelect = (value) => {
-		setPostContent({ ...postContent, building: value });
+		setPostContent((prevState) => ({
+			...prevState,
+			building: value,
+			type:
+				value === 'A동' || value === 'B동' || value === 'C동'
+					? '2인실'
+					: '4인실',
+			people: value === 'A동' || value === 'B동' || value === 'C동' ? 1 : 0,
+		}));
 	};
 
 	const handleSubmit = () => {
@@ -55,19 +53,19 @@ const PostRoommate = () => {
 			dongType: postContent.building,
 			roomSizeType: postContent.type,
 		};
+		console.log(SubmitData);
 		postMatchingPostAPI(SubmitData);
 	};
 
 	const isFormValid = () => {
-		const { title, detail, building, type, people, date, time } = postContent;
+		const { title, detail, building, type, people, date } = postContent;
 		return (
 			title !== '' &&
 			detail !== '' &&
 			building !== '' &&
 			type !== '' &&
 			people !== 0 &&
-			date !== '' &&
-			time !== ''
+			date !== ''
 		);
 	};
 
@@ -130,14 +128,18 @@ const PostRoommate = () => {
 							label="호실 유형을 선택해주세요"
 							options={type}
 							setSelected={(value) =>
-								setPostContent({ ...postContent, type: value })
+								setPostContent((prevState) => ({
+									...prevState,
+									type: value,
+									people: value === '2인실' ? 1 : 0,
+								}))
 							}
 						/>
 					)}
 				</div>
 				<div className="flex flex-col justify-start w-full">
 					<Subtitle>모집 인원</Subtitle>
-					{postContent.type !== '' && postContent.type === '2인실' ? (
+					{postContent.type === '2인실' ? (
 						<DropdownWrapper options={'1명'}>
 							<div className="header">
 								<span>1명</span>
@@ -149,30 +151,18 @@ const PostRoommate = () => {
 							label="모집 인원을 선택해주세요"
 							options={people}
 							setSelected={(value) =>
-								setPostContent({ ...postContent, people: value })
+								setPostContent({ ...postContent, people: parseInt(value[0]) })
 							}
 						/>
 					)}
 				</div>
-				<div className="flex flex-col justify-start w-full mb-6">
+				<div className="flex flex-col justify-start w-full mb-10">
 					<Subtitle>마감 기한</Subtitle>
 					<NumInput
 						setSelected={(value) =>
 							setPostContent({ ...postContent, date: value })
 						}
 					/>
-				</div>
-				<div className="flex flex-col justify-start w-full mb-6">
-					<Subtitle>시간 선택</Subtitle>
-					<OpenDropdown
-						choiceOne="오전"
-						choiceTwo="오후"
-						label="시간 선택"
-						options={time}
-						setSelected={(value) =>
-							setPostContent({ ...postContent, time: value })
-						}
-					></OpenDropdown>
 				</div>
 				<BasicButton
 					text={'완료'}
