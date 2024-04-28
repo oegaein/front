@@ -105,7 +105,9 @@ function MainLayout() {
 			{location.pathname !== '/' &&
 				location.pathname !== '/onboarding' &&
 				location.pathname !== '/login' &&
-				location.pathname !== '/post-detail' && <Navbar />}
+				location.pathname !== '/post-detail' && 
+				location.pathname !== '/setting' && 
+				<Navbar />}
 		</div>
 	);
 }

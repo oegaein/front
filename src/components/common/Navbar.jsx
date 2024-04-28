@@ -26,31 +26,31 @@ const Navbar = () => {
               <img className='w-[26px] h-[26px]' src={location.pathname === '/chat' ? ChatIconClicked : ChatIcon} alt='채팅 페이지로 가기'/>
               <div className='chatting-counts absolute top-[-3px] left-[17px] rounded-[10px] px-[5px]'>15</div>
             </div>
-            <span className={location.pathname === '/chat' && 'purple'}>채팅</span>
+            <span className={location.pathname === '/chat' ? 'purple' : undefined}>채팅</span>
           </Link>
           <Link to='/roommate' className='flex flex-col items-center'>
             <div className='mb-[4.5px]'>
               <img className='w-[26px] h-[26px]' src={location.pathname.substring(0, 9) === '/roommate' ? RoommateIconClicked : RoommateIcon} alt='룸메이트 페이지로 가기'/>
             </div>
-            <span className={location.pathname.substring(0, 9) === '/roommate' && 'purple'}>룸메이트</span>
+            <span className={location.pathname.substring(0, 9) === '/roommate' ?  'purple' : undefined}>룸메이트</span>
           </Link>
           <Link to='/home' className='flex flex-col items-center'>
             <div className='mb-[4.5px]'>
               <img className='w-[26px] h-[26px]' src={location.pathname.substring(0,5) === '/home' ? HomeIconClicked : HomeIcon} alt='홈으로 가기'/>
             </div>
-            <span className={location.pathname.substring(0,5) === '/home' && 'purple'}>홈</span>
+            <span className={location.pathname.substring(0,5) === '/home' ? 'purple' : undefined}>홈</span>
           </Link>
           <Link className='flex flex-col items-center'>
             <div className='mb-[4.5px]'>
               <img className='w-[26px] h-[26px]' src={location.pathname === '/delivery' ? DeliveryIconClicked : DeliveryIcon} alt='공동배달 페이지로 가기'/>
             </div>
-            <span className={location.pathname === '/delivery' && 'purple'}>공동배달</span>
+            <span className={location.pathname === '/delivery' ? 'purple' : undefined}>공동배달</span>
           </Link>
           <Link to='/mypage' className='flex flex-col items-center'>
             <div className='mb-[4.5px]'>
               <img className='w-[26px] h-[26px]' src={location.pathname.substring(0, 7) === '/mypage' ? MypageIconClicked : MypageIcon} alt='마이페이지로 가기'/>
             </div>
-            <span className={location.pathname.substring(0, 7) === '/mypage' && 'purple'}>마이페이지</span>
+            <span className={location.pathname.substring(0, 7) === '/mypage' ? 'purple' : undefined}>마이페이지</span>
           </Link>
         </SettingStyle>
   )
