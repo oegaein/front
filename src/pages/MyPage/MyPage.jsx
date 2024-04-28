@@ -18,6 +18,7 @@ import Next from '@assets/images/next.svg';
 import Dots from '@assets/images/dots-black.svg';
 import RoommateSwiperList from '@common/RoommateSwiperList';
 import LikeItem from '@components/LikePage/LikeItem';
+import SelectMenuBar from '@common/menu/SelectMenuBar';
 const MyPage = () => {
 	const {
 		data: comeMatchingRequests,
@@ -34,12 +35,6 @@ const MyPage = () => {
 	const [profileImage, setProfileImage] = useState(Profile);
 	const [uploadPostType, setUploadPostType] = useState('roommate');
 	const [likeType, setLikeType] = useState('roommate');
-	const handleClickUploadPost = (type) => {
-		setUploadPostType(type);
-	};
-	const handleClickLikeType = (type) => {
-		setLikeType(type);
-	};
 
 	return (
 		<SettingStyle className="flex flex-col gap-[10px]">
@@ -112,21 +107,11 @@ const MyPage = () => {
 						더보기 <img src={Next} />
 					</Link>
 				</div>
-				<div>
-					<div className="flex mt-[24px]">
-						<div
-							onClick={() => handleClickUploadPost('roommate')}
-							className={`notification-title ${uploadPostType === 'roommate' && 'selected-title'}`}
-						>
-							룸메이트
-						</div>
-						<div
-							onClick={() => handleClickUploadPost('delivery')}
-							className={`notification-title ${uploadPostType === 'delivery' && 'selected-title'}`}
-						>
-							공동배달
-						</div>
-					</div>
+				<div className='pt-[24px]'>
+					<SelectMenuBar
+					menuList={['룸메이트', '공동배달']}
+					pickedMenuId={setUploadPostType}
+					/>
 					<div className="px-[25px] mt-[16px]">
 						{myMatchingRequests ? (
 							myMatchingRequests.data.map((post, index) => (
@@ -155,25 +140,15 @@ const MyPage = () => {
 						더보기 <img src={Next} />
 					</Link>
 				</div>
-				<div>
-					<div className="flex mt-[24px]">
-						<div
-							onClick={() => handleClickLikeType('roommate')}
-							className={`notification-title ${likeType === 'roommate' && 'selected-title'}`}
-						>
-							룸메이트
-						</div>
-						<div
-							onClick={() => handleClickLikeType('delivery')}
-							className={`notification-title ${likeType === 'delivery' && 'selected-title'}`}
-						>
-							공동배달
-						</div>
+				<div className='pt-[24px]'>
+					<SelectMenuBar
+					menuList={['룸메이트', '공동배달']}
+					pickedMenuId={setLikeType}
+					/>
+					<div className="likelist flex flex-col gap-[1px]">
+						<LikeItem profileImage={Profile} />
+						<LikeItem profileImage={Profile} />
 					</div>
-				</div>
-				<div className="likelist flex flex-col gap-[1px]">
-					<LikeItem profileImage={Profile} />
-					<LikeItem profileImage={Profile} />
 				</div>
 			</section>
 		</SettingStyle>
