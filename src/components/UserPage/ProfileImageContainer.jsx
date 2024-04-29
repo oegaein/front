@@ -11,7 +11,7 @@ import RightQuote from '@assets/images/right-quote-sign.svg'
 import Dots from '@assets/images/header-dots.svg'
 import InitialProfile from '@assets/images/initial-profile.svg'
 
-const ProfileImageContainer = ({profileImage=InitialProfile}) => {
+const ProfileImageContainer = ({introduction, profileImage=InitialProfile}) => {
   const location = useLocation()
   const path = location.pathname
   return (
@@ -20,7 +20,7 @@ const ProfileImageContainer = ({profileImage=InitialProfile}) => {
         <div className='text-left'>
           <div className='mypage-introduce flex'>
             <img className='w-[12px] h-[12px]' src={LeftQuote} alt='left quotation mark'/>
-            <span className='mx-[6px] pt-[7px]'>맛집 투어 좋아해요! ✿˘◡˘✿</span>
+            <span className='mx-[6px] pt-[7px]'>{introduction}</span>
             <img className='w-[12px] h-[12px]' src={RightQuote} alt='right quotation mark'/>
           </div>
         </div>

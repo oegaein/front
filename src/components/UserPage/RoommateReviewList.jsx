@@ -14,7 +14,7 @@ const RoommateReviewList = ({memberId, isInReviewPage}) => {
       console.log(response.data.data)
       setReviews(response.data.data)
     }
-    // fetchReviewData()
+    fetchReviewData()
   }, [])
   return (
     <SettingStyle className='relative bg-white px-[24px]'>

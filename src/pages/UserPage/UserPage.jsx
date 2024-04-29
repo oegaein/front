@@ -18,15 +18,15 @@ const UserPage = () => {
   const [userInfo, setUserInfo] = useState({})
   let {memberId} = useParams()
   console.log(memberId)
-  const fetchUserInfoData = async () => {
-    try {
-      const response = await API.get(`/api/v1/member/profile/${memberId}`)
-      setUserInfo(response.data)
-    } catch (error) {
-      console.error(error)
-    }
-	}
   useEffect(()=>{
+    const fetchUserInfoData = async () => {
+      try {
+        const response = await API.get(`/api/v1/member/profile/${memberId}`)
+        setUserInfo(response.data)
+      } catch (error) {
+        console.error(error)
+      }
+    }
     fetchUserInfoData()
   }, [])
 
@@ -34,19 +34,19 @@ const UserPage = () => {
     <SettingStyle>
       <div className="px-[28px]">
 				<Header backPath="/roommate" rightContent=" " rightEvent={() => {}}>
-					<span>차은우 님의 프로필</span>
+					<span>{userInfo.name} 님의 프로필</span>
 				</Header>
 			</div>
-      <ProfileImageContainer/>
+      <ProfileImageContainer introduction={userInfo.introduction}/>
       <div className='userinfolifestyles flex flex-col gap-[10px] border-b border-[#DEDEDE]'>
         <div className='bg-white'>
           <div className='user-info pt-[103px] pb-[24px]  px-[25px]'>
             <h1 className='information-title text-left mb-[16px]'>기본 정보</h1>
-            <UserPageInfo/>
+            <UserPageInfo userInfo={userInfo}/>
           </div>
           <div className='px-[25px] py-[24px]'>
             <h1 className='pb-[19px] text-left font-bold'>성향 및 라이프 스타일</h1>
-            <UserLifeStyles/>
+            <UserLifeStyles userInfo={userInfo}/>
           </div>
         </div>
         <div>
@@ -58,7 +58,7 @@ const UserPage = () => {
             </Link>
           </div>
           <div className='bg-white py-[16px]'>
-            <RoommateReviewList/>
+            <RoommateReviewList memberId={memberId}/>
           </div>
         </div>
       </div>
