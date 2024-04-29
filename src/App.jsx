@@ -121,6 +121,7 @@ function MainLayout() {
 				location.pathname !== '/post-detail' && 
 				location.pathname !== '/setting' && 
 				location.pathname !== '/roommate/filter' && 
+				location.pathname.substring(0,5) !== '/user' && 
 				<Navbar />}
 		</div>
 	);

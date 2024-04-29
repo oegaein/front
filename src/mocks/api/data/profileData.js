@@ -3,7 +3,7 @@ export const profileData = {
   introduction: "안녕하세요~~",
   gender: "남성",
   student_no: 19,
-  major: null,
+  major: '정보통신공학과',
   birthdate: "1999-08-20T00:00:00.000+00:00",
   mbti: "ISFP",
   sleeping_habit: [

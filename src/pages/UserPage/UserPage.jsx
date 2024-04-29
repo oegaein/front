@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import { API } from '@utils/api'
 
 import Next from '@assets/images/next.svg'
+import Dots from '@assets/images/header-dots.svg'
 //styles
 import styled from 'styled-components'
 import FONT from '@styles/fonts'
@@ -14,26 +15,43 @@ import ProfileImageContainer from '@components/UserPage/ProfileImageContainer'
 import RoommateReviewList from '@components/UserPage/RoommateReviewList'
 import UserPageInfo from '@components/UserPage/UserPageInfo'
 import UserLifeStyles from '@components/UserPage/UserLifeStyles'
+import { profileData } from 'mocks/api/data/profileData'
+import OptionModal from '@common/modal/OptionModal'
+
 const UserPage = () => {
-  const [userInfo, setUserInfo] = useState({})
+  const [userInfo, setUserInfo] = useState(profileData)
+  const [isModalOpen, setIsModalOpen] = useState(false)
   let {memberId} = useParams()
-  console.log(memberId)
-  useEffect(()=>{
-    const fetchUserInfoData = async () => {
-      try {
-        const response = await API.get(`/api/v1/member/profile/${memberId}`)
-        setUserInfo(response.data)
-      } catch (error) {
-        console.error(error)
-      }
+  const fetchUserInfoData = async () => {
+    try {
+      const response = await API.get(`/api/v1/member/profile/${memberId}`)
+      setUserInfo(response.data)
+      console.log(response.data)
+    } catch (error) {
+      console.error(error)
     }
-    fetchUserInfoData()
+  }
+  const handleClickDotsBtn = () => {
+    setIsModalOpen(true)
+  }
+  const blockUser = () => {
+    alert('유저를 차단하였습니다.')
+  }
+  useEffect(()=>{
+    // fetchUserInfoData()
   }, [])
 
   return (
     <SettingStyle>
+      {isModalOpen &&
+      <OptionModal
+        options={[{content: '차단하기', func: blockUser}]}
+        isOpen={isModalOpen}
+        setIsOpen={setIsModalOpen}
+      />
+      }
       <div className="px-[28px]">
-				<Header backPath="/roommate" rightContent=" " rightEvent={() => {}}>
+				<Header backPath="/roommate" rightContent={Dots} rightEvent={handleClickDotsBtn}>
 					<span>{userInfo.name} 님의 프로필</span>
 				</Header>
 			</div>
