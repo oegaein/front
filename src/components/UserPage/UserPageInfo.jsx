@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import FONT from '@styles/fonts'
 import COLOR from '@styles/color'
 
-const UserPageInfo = () => {
+const UserPageInfo = ({userInfo}) => {
   return (
     <SettingStyle className='flex flex-col gap-[16px]'>
         <div className='flex'>

@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { throttle } from 'lodash';
+import { useNavigate } from 'react-router-dom';
 
 //styles
 import styled from 'styled-components'
@@ -11,6 +13,7 @@ import Header from '@common/header/Header';
 
 
 function RoommateFilterPage() {
+  const navigate = useNavigate()
   const [filters, setFilters] = useState({
     sort: '', // 'latest' or 'deadline'
     peopleCount: [], // '1', '2', '3', '4' 중복 선택 가능
@@ -22,18 +25,37 @@ function RoommateFilterPage() {
     minYear: 14,
     maxYear: 24,
     mbti: [],
-    sleepHabit: [],
+    sleepingHabit: [],
     lifePattern: [],
-    isSmoker: [],
+    smoking: [],
     cleaningCycle: [],
-    goOut: [],
-    soundSensitivity: []
+    outing: [],
+    sensitivity: []
   });
   const [selectedFilters, setSelectedFilters] = useState([])
   const iMbtis = ['ISTJ', 'ISTP', 'INFJ', 'INTJ', 'ISFJ', 'ISFP', 'INFP', 'INTP']
   const eMbtis = ['ESTJ', 'ESFP', 'ENFP', 'ENTP', 'ESFJ', 'ESTP', 'ENFJ', 'ENTJ']
   const [showAllMbtis, setShowAllMbtis] = useState(false)
+  const [isLowerBarVisible, setIsLowerBarVisible] = useState(true)
+  const [prevScrollPos, setPrevScrollPos] = useState(window.scrollY)
+  const handleScroll = throttle(() => {
+    const currentScrollPos = window.scrollY
+    const maxScroll = document.documentElement.scrollHeight - document.documentElement.clientHeight
+    //페이지 총 높이
+    //맨 밑으로 이동되었는지 확인하는 변수 
+    let isBottom = currentScrollPos >= maxScroll-1
+    console.log(currentScrollPos, maxScroll, isBottom)
 
+    setIsLowerBarVisible(prevScrollPos > currentScrollPos || currentScrollPos < 10 || isBottom)
+    setPrevScrollPos(currentScrollPos)
+  }, 200)
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll)
+    return ()=> {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [prevScrollPos, isLowerBarVisible, handleScroll])
   //selectedFilters 관련 함수
   const handleSelectedFilter = (name, value, checked) => {
     setSelectedFilters(prevFilters => {
@@ -198,9 +220,28 @@ function RoommateFilterPage() {
   }
 
   const handleClickResetBtn = () => {
-
+    setFilters({
+      sort: '', // 'latest' or 'deadline'
+      peopleCount: [], // '1', '2', '3', '4' 중복 선택 가능
+      gender: '', // '여성', '남성'
+      dong: [], // 'A', 'B', 'C', 'D', 'E' 중복 선택 가능
+      roomSize: [], // '2인실', '4인실'
+      minAge: 20,
+      maxAge: 35,
+      minYear: 14,
+      maxYear: 24,
+      mbti: [],
+      sleepingHabit: [],
+      lifePattern: [],
+      smoking: [],
+      cleaningCycle: [],
+      outing: [],
+      sensitivity: []
+    })
+    setSelectedFilters([])
   }
   const handleClickFilterBtn = () => {
+    navigate('/roommate', {state: filters})
     console.log(filters)
   }
 
@@ -217,7 +258,7 @@ function RoommateFilterPage() {
 			</div>
       {
         selectedFilters.length > 0 &&
-        <div className='tag-container bg-white flex gap-[10px] sticky z-10 top-0 overflow-x-scroll pt-[10px] pb-[25px]'>
+        <div className='tag-container bg-white flex gap-[10px] sticky z-10 top-0 overflow-x-scroll pt-[10px] pb-[25px] pl-[25px]'>
         {
           selectedFilters.map((item, index) => {
             // Age 또는 Year 필터인지 확인
@@ -371,10 +412,10 @@ function RoommateFilterPage() {
       <div className='filter-section'>
         <h1 className='filter-title'>수면 습관</h1>
         <div className='flex flex-wrap content-between h-[84px]'>
-          {['코골이형', '이갈이형', '잠꼬대형', '무소음형'].map((sleepHabit, index) => (
-            <label key={index} className={`filter-input ${filters.sleepHabit.includes(sleepHabit) && 'selected'}`}>
-              <input type="checkbox" name="sleepHabit" value={sleepHabit} checked={filters.sleepHabit.includes(sleepHabit)} onChange={handleChange} hidden/> 
-              {sleepHabit}
+          {['코골이형', '이갈이형', '잠꼬대형', '무소음형'].map((sleepingHabit, index) => (
+            <label key={index} className={`filter-input ${filters.sleepingHabit.includes(sleepingHabit) && 'selected'}`}>
+              <input type="checkbox" name="sleepingHabit" value={sleepingHabit} checked={filters.sleepingHabit.includes(sleepingHabit)} onChange={handleChange} hidden/> 
+              {sleepingHabit}
             </label>
           ))}
         </div>
@@ -390,8 +431,8 @@ function RoommateFilterPage() {
       <div className='filter-section'>
         <h1 className='filter-title'>흡연 여부</h1>
         <div className='flex'>
-          {['흡연', '비흡연'].map((isSmoker, index) => (
-            <label className={`filter-input ${filters.isSmoker.includes(isSmoker) && 'selected'}`} key={index}><input type="checkbox" name="isSmoker" value={isSmoker} checked={filters.isSmoker.includes(isSmoker)} onChange={handleChange} hidden/>{isSmoker}</label>
+          {['흡연', '비흡연'].map((smoking, index) => (
+            <label className={`filter-input ${filters.smoking.includes(smoking) && 'selected'}`} key={index}><input type="checkbox" name="smoking" value={smoking} checked={filters.smoking.includes(smoking)} onChange={handleChange} hidden/>{smoking}</label>
           ))}
         </div>
       </div>
@@ -406,20 +447,21 @@ function RoommateFilterPage() {
       <div className='filter-section'>
         <h1 className='filter-title'>외출 빈도</h1>
         <div className='flex'>
-          {['집순이', '밖순이'].map((goOut, index) => (
-            <label className={`filter-input ${filters.goOut.includes(goOut) && 'selected'}`} key={index}><input type="checkbox" name="goOut" value={goOut} checked={filters.goOut.includes(goOut)} onChange={handleChange} hidden/>{goOut}</label>
+          {['집순이', '밖순이'].map((outing, index) => (
+            <label className={`filter-input ${filters.outing.includes(outing) && 'selected'}`} key={index}><input type="checkbox" name="outing" value={outing} checked={filters.outing.includes(outing)} onChange={handleChange} hidden/>{outing}</label>
           ))}
         </div>
       </div>
       <div className='filter-section'>
         <h1 className='filter-title'>소리 민감 정도</h1>
         <div className='flex'>
-          {['예민한편', '둔감한편'].map((soundSensitivity, index) => (
-            <label className={`filter-input ${filters.soundSensitivity.includes(soundSensitivity) && 'selected'}`} key={index}><input type="checkbox" name="soundSensitivity" value={soundSensitivity} checked={filters.soundSensitivity.includes(soundSensitivity)} onChange={handleChange} hidden/>{soundSensitivity}</label>
+          {['예민한편', '둔감한편'].map((sensitivity, index) => (
+            <label className={`filter-input ${filters.sensitivity.includes(sensitivity) && 'selected'}`} key={index}><input type="checkbox" name="sensitivity" value={sensitivity} checked={filters.sensitivity.includes(sensitivity)} onChange={handleChange} hidden/>{sensitivity}</label>
           ))}
         </div>
       </div>
-      <div className='flex items-center justify-between h-[91px] px-[25px]'>
+      <div className={`filter-section bg-white z-50 fixed bottom-0 flex items-center justify-between gap-[10px] h-[91px]
+      transition-transform duration-300 ${isLowerBarVisible ? 'translate-y-0' : 'translate-y-full'}`}>
         <button onClick={handleClickResetBtn} className='reset-btn'>초기화</button>
         <button onClick={handleClickFilterBtn} className='filter-btn'>350개 글보기</button>
       </div>
@@ -434,7 +476,7 @@ const SettingStyle = styled.main`
   text-align: left;
   .filter-section {
     padding: 25px;
-    border-bottom: 1px solid ${COLOR.gray100};
+    border-top: 1px solid ${COLOR.gray100};
   }
   .filter-text {
     font-size: ${FONT.body5M15};
@@ -512,6 +554,9 @@ const SettingStyle = styled.main`
     padding: 0 22px;
     border: 1px solid ${COLOR.gray200};
     border-radius: 10px;
+    &:hover {
+      opacity: 0.5;
+    }
   }
   .filter-btn {
     font-size: ${FONT.buttonSB15};
@@ -520,5 +565,8 @@ const SettingStyle = styled.main`
     padding: 0 83px;
     height: 52px;
     border-radius: 10px;
+    &:hover {
+      opacity: 0.5;
+    }
   }
 `

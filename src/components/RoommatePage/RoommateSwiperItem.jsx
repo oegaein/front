@@ -9,7 +9,6 @@ import styled from 'styled-components'
 import FONT from '@styles/fonts'
 import COLOR from '@styles/color'
 const RoommateSwiperItem = ({post}) => {
-  console.log(post)
   const navigate = useNavigate()
 
   const handleClickRegisterBtn = async (matchingPostId) => {

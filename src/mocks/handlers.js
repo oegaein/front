@@ -3,6 +3,9 @@ import { matchingPostsData } from './api/data/matchingPostsData'
 import { bestRoommateMatchingPostsData } from './api/data/bestRoommateMatchingPostsData'
 import { myMatchingPostsData } from './api/data/myMatchingPostsData'
 import {matchingPostData} from './api/data/matcingPostData'
+import { newsData } from './api/data/newsData'
+import { reviewsData } from './api/data/reviewsData'
+
 export const handlers = [
   // By calling "http.get()" we're instructing MSW
   // to capture all outgoing "GET /posts" requests
@@ -17,7 +20,7 @@ export const handlers = [
   }),
   //베스트 룸메이트 조회
   http.get('/api/v1/best-roommate-matchingposts', () => {
-    return HttpResponse.json(bestRoommateMatchingPostsData)
+    return HttpResponse.json(matchingPostsData)
   }),
   //내가 올린 매칭글 조회
   http.get('/api/v1/my-matchingposts', () => {
@@ -31,4 +34,11 @@ export const handlers = [
   http.get('/api/v1/matchingposts/:matchingpostid', () => {
     return HttpResponse.json(bestRoommateMatchingPostsData)
   }),
+  http.get('/api/v1/news', () => {
+    return HttpResponse.json(newsData)
+  }),
+  http.get('/api/v1/:memberId/reviews', () => {
+    return HttpResponse.json(reviewsData)
+  }),
+  
 ]

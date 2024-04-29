@@ -18,7 +18,7 @@ import Ear from '@assets/images/ear.svg'
 //components
 
 
-const UserLifeStyles = () => {
+const UserLifeStyles = ({userInfo}) => {
   const location = useLocation()
   const path = location.pathname
   console.log(path)

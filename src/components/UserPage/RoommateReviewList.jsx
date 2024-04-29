@@ -1,38 +1,36 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import FONT from '@styles/fonts'
 import COLOR from '@styles/color'
 import RoommateReview from './RoommateReview'
+import { API } from '@utils/api'
 
-import Next from '@assets/images/next.svg'
-const RoommateReviews = () => {
+const RoommateReviewList = ({memberId, isInReviewPage}) => {
+  const [reviews, setReviews] = useState([])
+  useEffect(()=>{
+    const fetchReviewData = async () => {
+      const response = await API.get(`/api/v1/${memberId}/reviews`)
+      console.log(response.data.data)
+      setReviews(response.data.data)
+    }
+    // fetchReviewData()
+  }, [])
   return (
-
     <SettingStyle className='relative bg-white px-[24px]'>
-      <div className='pb-[16px] pt-[24px] flex justify-between items-center'>
-        <h1 className='roommate-review-title'>받은 룸메이트 후기 2</h1>
-        <Link to='reviews' className='more flex'>
-          더보기
-          <img src={Next} alt='see more icon'/>
-        </Link>
-      </div>
-      <div>
-        <p className='nodata-ment mb-[24px]'>받은 룸메이트 후기가 아직 없어요.</p>
-        <RoommateReview/>
-        <RoommateReview/>
-        <RoommateReview/>
-      </div>
+      {reviews.length > 0 ?
+      reviews.map((review, index)=><RoommateReview review={review} index={index}/>)
+      :
+      <p className={`nodata-ment ${isInReviewPage ? 'mt-[170px]' : null}`}>받은 룸메이트 후기가 아직 없어요.</p>
+      }
     </SettingStyle>
   )
 }
 
-export default RoommateReviews
+export default RoommateReviewList
 
 const SettingStyle = styled.div`
-  .roommate-review-title {
-    font-size: ${FONT.title3SB17};
-  }
+  
   .more {
     font-size: ${FONT.caption2M14};
   }

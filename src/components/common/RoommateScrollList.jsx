@@ -16,7 +16,7 @@ import RoommateScrollItem from '@components/RoommatePage/RoommateScrollItem';
 import { useQuery } from '@tanstack/react-query';
 import { API } from '@utils/api';
 
-const RoommateScrollList = ({ type, searchTerm }) => {
+const RoommateScrollList = ({ type, searchTerm, filters }) => {
 	const { data: matchingPosts, isLoading, error } = useMatchingPosts(type);
 	const { data: searchResults } = useQuery({
 		queryKey: ['searchResults', searchTerm],
@@ -25,6 +25,19 @@ const RoommateScrollList = ({ type, searchTerm }) => {
 		gcTime: 5 * 60 * 1000,
 		enabled: !!searchTerm,
 	});
+	const filteredPosts = (matchingPosts && filters) && 
+	matchingPosts.filter(post => {
+		return (filters.peopleCount.length === 0 || filters.peopleCount.includes(post.peopleCount)) &&
+					 (filters.gender === '' || filters.gender === post.gender) &&
+					 (filters.dong.length === 0 || filters.dong.includes(post.dong)) &&
+					 (filters.roomSize.length === 0 || filters.roomSize.includes(post.roomSize)) &&
+					 (post.age >= filters.minAge && post.age <= filters.maxAge) &&
+					 (post.year >= filters.minYear && post.year <= filters.maxYear) &&
+					 (filters.mbti.length === 0 || filters.mbti.includes(post.mbti));
+					 // 여기에 다른 필터 조건들을 추가하십시오.
+	});
+	console.log(filteredPosts);
+	
 	const fetchData = async (searchTerm) => {
 		try {
 			const response = await API.get(`/api/v1/search?q=${searchTerm}`);

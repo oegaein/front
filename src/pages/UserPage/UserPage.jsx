@@ -1,8 +1,8 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
+import { useParams, Link } from 'react-router-dom'
+import { API } from '@utils/api'
 
-import InitialProfile from '@assets/images/initial-profile.svg'
-import ProfileImage from '@assets/images/profile-image.svg'
-
+import Next from '@assets/images/next.svg'
 //styles
 import styled from 'styled-components'
 import FONT from '@styles/fonts'
@@ -15,6 +15,21 @@ import RoommateReviewList from '@components/UserPage/RoommateReviewList'
 import UserPageInfo from '@components/UserPage/UserPageInfo'
 import UserLifeStyles from '@components/UserPage/UserLifeStyles'
 const UserPage = () => {
+  const [userInfo, setUserInfo] = useState({})
+  let {memberId} = useParams()
+  console.log(memberId)
+  const fetchUserInfoData = async () => {
+    try {
+      const response = await API.get(`/api/v1/member/profile/${memberId}`)
+      setUserInfo(response.data)
+    } catch (error) {
+      console.error(error)
+    }
+	}
+  useEffect(()=>{
+    fetchUserInfoData()
+  }, [])
+
   return (
     <SettingStyle>
       <div className="px-[28px]">
@@ -34,7 +49,18 @@ const UserPage = () => {
             <UserLifeStyles/>
           </div>
         </div>
-        <RoommateReviewList/>
+        <div>
+          <div className='bg-white pt-[24px] px-[24px] flex justify-between items-center'>
+            <h1 className='roommate-review-title'>받은 룸메이트 후기 2</h1>
+            <Link to='reviews' className='more flex'>
+              더보기
+              <img src={Next} alt='see more icon'/>
+            </Link>
+          </div>
+          <div className='bg-white py-[16px]'>
+            <RoommateReviewList/>
+          </div>
+        </div>
       </div>
     </SettingStyle>
   )
@@ -50,8 +76,10 @@ const SettingStyle = styled.div`
   .user-info {
     border-bottom: 1px solid ${COLOR.gray200};
   }
-
   .information-title {
+    font-size: ${FONT.title3SB17};
+  }
+  .roommate-review-title {
     font-size: ${FONT.title3SB17};
   }
 
