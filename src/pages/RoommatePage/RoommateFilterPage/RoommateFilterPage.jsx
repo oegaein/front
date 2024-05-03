@@ -10,13 +10,20 @@ import DoubleRangeSlider from '@components/RoommatePage/DoubleRangeSlider';
 import { type } from '@testing-library/user-event/dist/type';
 import Close from '@assets/images/close-white.svg'
 import Header from '@common/header/Header';
-
-
+import RoommateScrollList from '@common/RoommateScrollList';
+import { useMatchingPosts } from '@hooks/useMatchingPosts';
+import { matchingPostsData } from 'mocks/api/data/matchingPostsData';
 function RoommateFilterPage() {
   const navigate = useNavigate()
+  const [screenType, setScreenType] = useState('filters')  //filters||results
+	const { data: matchingPosts, isLoading, error } = useMatchingPosts('new');
+  const [filteredPosts, setFilteredPosts] = useState([])
+  useEffect(() => {
+    console.log(filteredPosts); // 여기서는 업데이트된 상태를 볼 수 있음
+  }, [filteredPosts]); // myState가 변경될 때마다 실행
   const [filters, setFilters] = useState({
     sort: '', // 'latest' or 'deadline'
-    peopleCount: [], // '1', '2', '3', '4' 중복 선택 가능
+    targetNumberOfPeople: [], // '1인', '2인', '3인', '4인' 중복 선택 가능
     gender: '', // '여성', '남성'
     dong: [], // 'A', 'B', 'C', 'D', 'E' 중복 선택 가능
     roomSize: [], // '2인실', '4인실'
@@ -25,7 +32,7 @@ function RoommateFilterPage() {
     minYear: 14,
     maxYear: 24,
     mbti: [],
-    sleepingHabit: [],
+    sleepingHabits: [],
     lifePattern: [],
     smoking: [],
     cleaningCycle: [],
@@ -38,13 +45,13 @@ function RoommateFilterPage() {
   const [showAllMbtis, setShowAllMbtis] = useState(false)
   const [isLowerBarVisible, setIsLowerBarVisible] = useState(true)
   const [prevScrollPos, setPrevScrollPos] = useState(window.scrollY)
+
   const handleScroll = throttle(() => {
     const currentScrollPos = window.scrollY
     const maxScroll = document.documentElement.scrollHeight - document.documentElement.clientHeight
     //페이지 총 높이
     //맨 밑으로 이동되었는지 확인하는 변수 
     let isBottom = currentScrollPos >= maxScroll-1
-    console.log(currentScrollPos, maxScroll, isBottom)
 
     setIsLowerBarVisible(prevScrollPos > currentScrollPos || currentScrollPos < 10 || isBottom)
     setPrevScrollPos(currentScrollPos)
@@ -222,7 +229,7 @@ function RoommateFilterPage() {
   const handleClickResetBtn = () => {
     setFilters({
       sort: '', // 'latest' or 'deadline'
-      peopleCount: [], // '1', '2', '3', '4' 중복 선택 가능
+      targetNumberOfPeople: [], // '1', '2', '3', '4' 중복 선택 가능
       gender: '', // '여성', '남성'
       dong: [], // 'A', 'B', 'C', 'D', 'E' 중복 선택 가능
       roomSize: [], // '2인실', '4인실'
@@ -231,7 +238,7 @@ function RoommateFilterPage() {
       minYear: 14,
       maxYear: 24,
       mbti: [],
-      sleepingHabit: [],
+      sleepingHabits: [],
       lifePattern: [],
       smoking: [],
       cleaningCycle: [],
@@ -240,14 +247,58 @@ function RoommateFilterPage() {
     })
     setSelectedFilters([])
   }
+  
   const handleClickFilterBtn = () => {
-    navigate('/roommate', {state: filters})
-    console.log(filters)
+    setScreenType('results')
+    // console.log(filters)
   }
 
-  useEffect(()=> {
-    console.log(selectedFilters)
-  }, [selectedFilters])
+
+  useEffect(() => {
+    // matchingPosts.data가 존재하고, 길이가 0보다 클 때만 필터링 로직 실행
+    if (matchingPosts?.data?.length > 0) {
+        const filtered = matchingPosts.data.filter(post => {
+          const now = new Date()
+          const age = now.getFullYear() - Number(post.birthdate.substring(0,4)) + 1
+  
+          return (filters.targetNumberOfPeople.length === 0 || filters.targetNumberOfPeople.includes(`${post.targetNumberOfPeople}인`)) &&
+                (filters.gender === '' || filters.gender === post.gender) &&
+                (filters.dong.length === 0 || filters.dong.includes(post.dong)) &&
+                (filters.roomSize.length === 0 || filters.roomSize.includes(post.roomSize)) &&
+                (filters.mbti.length === 0 || filters.mbti.includes(post.mbti)) &&
+                (filters.sleepingHabits.length === 0 || filters.sleepingHabits.some(habit => post.SleepingHabits.includes(habit))) &&
+                (filters.lifePattern.length === 0 || filters.lifePattern.includes(post.lifePattern)) &&
+                (filters.smoking.length === 0 || filters.smoking.includes(post.smoking)) &&
+                (filters.cleaningCycle.length === 0 || filters.cleaningCycle.includes(post.cleaningCycle)) &&
+                (filters.outing.length === 0 || filters.outing.includes(post.outing)) &&
+                (filters.sensitivity.length === 0 || filters.sensitivity.includes(post.sensitivity)) &&
+                ((age >= filters.minAge) && (age <= filters.maxAge)) &&
+                ((Number(post.studentNo) >= filters.minYear) && (Number(post.studentNo) <= filters.maxYear))
+        });
+        if (filters.sort === '최신순') {
+          const sorted = filtered.sort((a, b) => {
+            const dateA = new Date(a.createdAt)
+            const dateB = new Date(b.createdAt)
+            return dateB - dateA
+          })
+          setFilteredPosts(sorted)
+          
+        } else if (filters.sort === '마감순') {
+          const sorted = filtered.sort((a, b) => {
+            const dateA = new Date(a.createdAt)
+            const dateB = new Date(b.createdAt)
+            return dateA - dateB 
+          })
+          setFilteredPosts(sorted);
+        } else {
+          setFilteredPosts(filtered);
+        }
+    } else {
+        // matchingPosts.data가 없는 경우, filteredPosts를 빈 배열로 설정
+        setFilteredPosts([]);
+    }
+}, [filters, matchingPosts]);
+  useEffect(()=>{console.log(filters)}, [filters])
 
   return (
     <SettingStyle className='flex flex-col'>
@@ -256,215 +307,217 @@ function RoommateFilterPage() {
 					<span>필터</span>
 				</Header>
 			</div>
-      {
-        selectedFilters.length > 0 &&
-        <div className='tag-container bg-white flex gap-[10px] sticky z-10 top-0 overflow-x-scroll pt-[10px] pb-[25px] pl-[25px]'>
-        {
-          selectedFilters.map((item, index) => {
-            // Age 또는 Year 필터인지 확인
-            const isAgeFilter = item.name === 'minAge' || item.name === 'maxAge'
-            const isYearFilter = item.name === 'minYear' || item.name === 'maxYear'
-  
-            // minAge, maxAge, minYear, maxYear 값을 찾음
-            const minAge = selectedFilters.find(filter => filter.name === 'minAge')?.value ?? getInitialValueByName('minAge')
-            const maxAge = selectedFilters.find(filter => filter.name === 'maxAge')?.value ?? getInitialValueByName('maxAge')
-            const minYear = selectedFilters.find(filter => filter.name === 'minYear')?.value ?? getInitialValueByName('minYear')
-            const maxYear = selectedFilters.find(filter => filter.name === 'maxYear')?.value ?? getInitialValueByName('maxYear')
-  
-            return (
-              isAgeFilter ? (
-                <>
-                {item.name === 'maxAge' && (
-                <button className='selected-tag' onClick={deleteOption} value={item.value} name={item.name} key={index}>
-                  {minAge}세 ~ {maxAge}세
-                  <img className='ml-[5px] h-[12px] w-[12px]' src={Close} alt='close button'/>
-                </button> 
-                )}
-                </>
-              ) :
-              isYearFilter ? (
-                <>
-                {item.name === 'minYear' && (
-                <button className='selected-tag' onClick={deleteOption} value={item.value} name={item.name} key={index}>
-                  {minYear}학번 ~ {maxYear}학번
-                  <img className='ml-[5px] h-[12px] w-[12px]' src={Close} alt='close button'/>
-                </button> 
-                )}
-                </>
-              ) : (
-              <button className='selected-tag' onClick={deleteOption} value={item.value} name={item.name} key={index}>
-                {item.value}
-                <img className='ml-[5px] h-[12px] w-[12px]' src={Close} alt='close button'/>
-              </button> 
-              )
-            )
-          })
-        }
-        </div>
-      }
-      {/* 정렬 */}
-      <div className='filter-section'> 
-        <h1 className='filter-title'>정렬</h1> 
-        <div className='filter-text flex flex-col gap-[16px]'> 
-        {
-          ['최신순', '마감순'].map((sort, index) => (
-            <label key={index}><input type="radio" name="sort" value={sort} checked={filters.sort === sort} onChange={handleChange}/> {sort}</label> 
-          ))
-        }
-        </div> 
-      </div> 
-      {/* 모집인원 */} 
-      <div className='filter-section'> 
-        <h1 className='filter-title'>모집 인원</h1> 
-        <div className='flex'> 
-          {['1인', '2인', '3인', '4인'].map((number, index) => ( 
-            <label className={`filter-input ${filters.peopleCount.includes(`${number}`) && 'selected'}`} key={index}>
-              <input type="checkbox" name="peopleCount" data-testid={number} value={number} checked={filters.peopleCount.includes(`${number}`)} onChange={handleChange} hidden/>
-              {number}
-            </label> 
-          ))} 
-        </div> 
-      </div> 
-      {/* 성별 */} 
-      <div className='filter-section'> 
-        <h1 className='filter-title'>성별</h1> 
-        {['남성', '여성'].map((gender, index) => (
-        <label className={`filter-input ${filters.gender === gender && 'selected'}`} key={index}>
-          <input type="radio" name="gender" value={gender} checked={filters.gender === gender} onChange={handleChangeGenderValue} hidden/>{gender}
-        </label> 
-        ))}
-      </div>
-       {/* 기숙사 동 */}
-      <div className='filter-section'>
-        <div className='flex items-center'>
-          <h1 className='filter-title mr-[10px]'>기숙사 동</h1>
-          <h2 className='filter-subtitle'>* 성별 지정 후, 선택해주세요</h2>
-        </div>
-        <h2 className='filter-subtitle'>남자기숙사</h2>
-        <div className='mb-[16px]'>
-          {['A동', 'E동'].map((dorm, index) => (
-            <label key={index} className={`filter-input ${filters.dong.includes(dorm) && 'selected'} ${(!filters.gender || filters.gender === '여성') && 'disabled'}`}>
-              <input type="checkbox" name="dong" value={dorm} checked={filters.dong.includes(dorm)} disabled={!filters.gender || filters.gender === '여성'} onChange={handleChangeDong} hidden/>
-              {dorm}
-              <div className={`disabled-line ${(!filters.gender || filters.gender === '여성') && 'disabled'}`}></div>
-            </label>
-          ))}
-        </div>
-        <h2 className='filter-subtitle'>여자기숙사</h2>
-        <div>
-          {['B동', 'C동', 'D동'].map((dorm, index) => (
-            <label key={index} className={`filter-input ${filters.dong.includes(dorm) && 'selected'} ${(!filters.gender || filters.gender === '남성') && 'disabled'}`}>
-              <input type="checkbox" name="dong" value={dorm} checked={filters.dong.includes(dorm)} disabled={!filters.gender || filters.gender === '남성'} onChange={handleChangeDong} hidden/>
-              {dorm}
-              <div className={`disabled-line ${(!filters.gender || filters.gender === '남성') && 'disabled'}`}></div>
-            </label>
-          ))}
-        </div>
-      </div>
-      {/* 호실 유형 */}
-      {/* D동,E동 중 하나라도 들어있다면 */}
-      {filters.dong.some(i => ['D동', 'E동'].includes(i)) &&
-        <div className='filter-section'>
-          <h1 className='filter-title'>호실 유형</h1>
-          <h2 className='filter-subtitle'>* D동 E동만 해당</h2>
-          {
-            ['2인실', '4인실'].map((roomSize, index) => (
-            <label key={index} className={`filter-input ${filters.roomSize.includes(roomSize) && 'selected'}`}>
-              <input type="checkbox" name='roomSize' value={roomSize} checked={filters.roomSize.includes(roomSize)} onChange={handleChange} hidden/>
-              {roomSize}
-            </label>
-            ))
-          }
-        </div>
-      }
+      {screenType==='results' ? <RoommateScrollList type='filters' filteredPosts={filteredPosts} setScreenType={setScreenType}/> :
+      <section>
 
-      {/* 나이, 학번 */}
-      <DoubleRangeSlider type='나이' setFilters={setFilters} setSelectedFilters={setSelectedFilters} minValue={filters.minAge} maxValue={filters.maxAge}/>
-      <DoubleRangeSlider type='학번' setFilters={setFilters} setSelectedFilters={setSelectedFilters} minValue={filters.minYear} maxValue={filters.maxYear}/>
-      {/* MBTI */}
-      <div className='filter-section'>
-        <h1 className='filter-title'>MBTI</h1>
-        <h2 className='filter-subtitle'>내향형</h2>
-        <div className='flex flex-wrap content-between h-[84px] mb-[24px]'>
+        {selectedFilters.length > 0 &&
+          <div className='tag-container bg-white flex gap-[10px] sticky z-10 top-0 overflow-x-scroll pt-[10px] pb-[25px] pl-[25px]'>
+            {selectedFilters.map((item, index) => {
+              // Age 또는 Year 필터인지 확인
+              const isAgeFilter = item.name === 'minAge' || item.name === 'maxAge'
+              const isYearFilter = item.name === 'minYear' || item.name === 'maxYear'
+
+              // minAge, maxAge, minYear, maxYear 값을 찾음
+              const minAge = selectedFilters.find(filter => filter.name === 'minAge')?.value ?? getInitialValueByName('minAge')
+              const maxAge = selectedFilters.find(filter => filter.name === 'maxAge')?.value ?? getInitialValueByName('maxAge')
+              const minYear = selectedFilters.find(filter => filter.name === 'minYear')?.value ?? getInitialValueByName('minYear')
+              const maxYear = selectedFilters.find(filter => filter.name === 'maxYear')?.value ?? getInitialValueByName('maxYear')
+
+              return (
+                isAgeFilter ? (
+                  <>
+                  {item.name === 'maxAge' && (
+                  <button className='selected-tag' onClick={deleteOption} value={item.value} name={item.name} key={index}>
+                    {minAge}세 ~ {maxAge}세
+                    <img className='ml-[5px] h-[12px] w-[12px]' src={Close} alt='close button'/>
+                  </button> 
+                  )}
+                  </>
+                ) :
+                isYearFilter ? (
+                  <>
+                  {item.name === 'minYear' && (
+                  <button className='selected-tag' onClick={deleteOption} value={item.value} name={item.name} key={index}>
+                    {minYear}학번 ~ {maxYear}학번
+                    <img className='ml-[5px] h-[12px] w-[12px]' src={Close} alt='close button'/>
+                  </button> 
+                  )}
+                  </>
+                ) : (
+                <button className='selected-tag' onClick={deleteOption} value={item.value} name={item.name} key={index}>
+                  {item.value}
+                  <img className='ml-[5px] h-[12px] w-[12px]' src={Close} alt='close button'/>
+                </button> 
+                )
+              )
+            })}
+          </div> 
+        }
+        {/* 정렬 */}
+        <div className='filter-section'> 
+          <h1 className='filter-title'>정렬</h1> 
+          <div className='filter-text flex flex-col gap-[16px]'> 
           {
-            iMbtis.map((mbti, index) => (
-              <label className={`filter-input w-[73px] ${filters.mbti.includes(mbti) && 'selected'}`} key={index}><input type="checkbox" name="mbti" value={mbti} checked={filters.mbti.includes(mbti)} onChange={handleChange} hidden/> {mbti}</label>
+            ['최신순', '마감순'].map((sort, index) => (
+              <label key={index}><input type="radio" name="sort" value={sort} checked={filters.sort === sort} onChange={handleChange}/> {sort}</label> 
             ))
           }
+          </div> 
+        </div> 
+        {/* 모집인원 */} 
+        <div className='filter-section'> 
+          <h1 className='filter-title'>모집 인원</h1> 
+          <div className='flex'> 
+            {['1인', '2인', '3인', '4인'].map((number, index) => ( 
+              <label className={`filter-input ${filters.targetNumberOfPeople.includes(`${number}`) && 'selected'}`} key={index}>
+                <input type="checkbox" name="targetNumberOfPeople" data-testid={number} value={number} checked={filters.targetNumberOfPeople.includes(`${number}`)} onChange={handleChange} hidden/>
+                {number}
+              </label> 
+            ))} 
+          </div> 
+        </div> 
+        {/* 성별 */} 
+        <div className='filter-section'> 
+          <h1 className='filter-title'>성별</h1> 
+          {['남성', '여성'].map((gender, index) => (
+          <label className={`filter-input ${filters.gender === gender && 'selected'}`} key={index}>
+            <input type="radio" name="gender" value={gender} checked={filters.gender === gender} onChange={handleChangeGenderValue} hidden/>{gender}
+          </label> 
+          ))}
         </div>
-        {showAllMbtis ?
-        <>
-          <h2 className='filter-subtitle'>외향형</h2>
-          <div className='flex flex-wrap h-[84px] mb-[24px] content-between'>
+        {/* 기숙사 동 */}
+        <div className='filter-section'>
+          <div className='flex items-center'>
+            <h1 className='filter-title mr-[10px]'>기숙사 동</h1>
+            <h2 className='filter-subtitle'>* 성별 지정 후, 선택해주세요</h2>
+          </div>
+          <h2 className='filter-subtitle'>남자기숙사</h2>
+          <div className='mb-[16px]'>
+            {['A동', 'E동'].map((dorm, index) => (
+              <label key={index} className={`filter-input ${filters.dong.includes(dorm) && 'selected'} ${(!filters.gender || filters.gender === '여성') && 'disabled'}`}>
+                <input type="checkbox" name="dong" value={dorm} checked={filters.dong.includes(dorm)} disabled={!filters.gender || filters.gender === '여성'} onChange={handleChangeDong} hidden/>
+                {dorm}
+                <div className={`disabled-line ${(!filters.gender || filters.gender === '여성') && 'disabled'}`}></div>
+              </label>
+            ))}
+          </div>
+          <h2 className='filter-subtitle'>여자기숙사</h2>
+          <div>
+            {['B동', 'C동', 'D동'].map((dorm, index) => (
+              <label key={index} className={`filter-input ${filters.dong.includes(dorm) && 'selected'} ${(!filters.gender || filters.gender === '남성') && 'disabled'}`}>
+                <input type="checkbox" name="dong" value={dorm} checked={filters.dong.includes(dorm)} disabled={!filters.gender || filters.gender === '남성'} onChange={handleChangeDong} hidden/>
+                {dorm}
+                <div className={`disabled-line ${(!filters.gender || filters.gender === '남성') && 'disabled'}`}></div>
+              </label>
+            ))}
+          </div>
+        </div>
+        {/* 호실 유형 */}
+        {/* D동,E동 중 하나라도 들어있다면 */}
+        {filters.dong.some(i => ['D동', 'E동'].includes(i)) &&
+          <div className='filter-section'>
+            <h1 className='filter-title'>호실 유형</h1>
+            <h2 className='filter-subtitle'>* D동 E동만 해당</h2>
             {
-              eMbtis.map((mbti, index) => (
+              ['2인실', '4인실'].map((roomSize, index) => (
+              <label key={index} className={`filter-input ${filters.roomSize.includes(roomSize) && 'selected'}`}>
+                <input type="checkbox" name='roomSize' value={roomSize} checked={filters.roomSize.includes(roomSize)} onChange={handleChange} hidden/>
+                {roomSize}
+              </label>
+              ))
+            }
+          </div>
+        }
+
+        {/* 나이, 학번 */}
+        <DoubleRangeSlider type='나이' setFilters={setFilters} setSelectedFilters={setSelectedFilters} minValue={filters.minAge} maxValue={filters.maxAge}/>
+        <DoubleRangeSlider type='학번' setFilters={setFilters} setSelectedFilters={setSelectedFilters} minValue={filters.minYear} maxValue={filters.maxYear}/>
+        {/* MBTI */}
+        <div className='filter-section'>
+          <h1 className='filter-title'>MBTI</h1>
+          <h2 className='filter-subtitle'>내향형</h2>
+          <div className='flex flex-wrap content-between h-[84px] mb-[24px]'>
+            {
+              iMbtis.map((mbti, index) => (
                 <label className={`filter-input w-[73px] ${filters.mbti.includes(mbti) && 'selected'}`} key={index}><input type="checkbox" name="mbti" value={mbti} checked={filters.mbti.includes(mbti)} onChange={handleChange} hidden/> {mbti}</label>
               ))
             }
           </div>
-          <button className='purple-btn' onClick={handleShowAllMbtis}>닫기</button>
-        </>
-        :
-          <button className='purple-btn mt-[8px]' onClick={handleShowAllMbtis}>필터 더보기</button>
-        }
-      </div>
+          {showAllMbtis ?
+          <>
+            <h2 className='filter-subtitle'>외향형</h2>
+            <div className='flex flex-wrap h-[84px] mb-[24px] content-between'>
+              {
+                eMbtis.map((mbti, index) => (
+                  <label className={`filter-input w-[73px] ${filters.mbti.includes(mbti) && 'selected'}`} key={index}><input type="checkbox" name="mbti" value={mbti} checked={filters.mbti.includes(mbti)} onChange={handleChange} hidden/> {mbti}</label>
+                ))
+              }
+            </div>
+            <button className='purple-btn' onClick={handleShowAllMbtis}>닫기</button>
+          </>
+          :
+            <button className='purple-btn mt-[8px]' onClick={handleShowAllMbtis}>필터 더보기</button>
+          }
+        </div>
 
-      <div className='filter-section'>
-        <h1 className='filter-title'>수면 습관</h1>
-        <div className='flex flex-wrap content-between h-[84px]'>
-          {['코골이형', '이갈이형', '잠꼬대형', '무소음형'].map((sleepingHabit, index) => (
-            <label key={index} className={`filter-input ${filters.sleepingHabit.includes(sleepingHabit) && 'selected'}`}>
-              <input type="checkbox" name="sleepingHabit" value={sleepingHabit} checked={filters.sleepingHabit.includes(sleepingHabit)} onChange={handleChange} hidden/> 
-              {sleepingHabit}
-            </label>
-          ))}
+        <div className='filter-section'>
+          <h1 className='filter-title'>수면 습관</h1>
+          <div className='flex flex-wrap content-between h-[84px]'>
+            {['코골이형', '이갈이형', '잠꼬대형', '무소음형'].map((sleepingHabits, index) => (
+              <label key={index} className={`filter-input ${filters.sleepingHabits.includes(sleepingHabits) && 'selected'}`}>
+                <input type="checkbox" name="sleepingHabits" value={sleepingHabits} checked={filters.sleepingHabits.includes(sleepingHabits)} onChange={handleChange} hidden/> 
+                {sleepingHabits}
+              </label>
+            ))}
+          </div>
         </div>
-      </div>
-      <div className='filter-section'>
-        <h1 className='filter-title'>생활 패턴</h1>
-        <div className='flex'>
-          {['아침형', '저녁형'].map((lifePattern, index) => (
-            <label className={`filter-input ${filters.lifePattern.includes(lifePattern) && 'selected'}`} key={index}><input type="checkbox" name="lifePattern" value={lifePattern} checked={filters.lifePattern.includes(lifePattern)} onChange={handleChange} hidden/>{lifePattern}</label>
-          ))}
+        <div className='filter-section'>
+          <h1 className='filter-title'>생활 패턴</h1>
+          <div className='flex'>
+            {['아침형', '저녁형'].map((lifePattern, index) => (
+              <label className={`filter-input ${filters.lifePattern.includes(lifePattern) && 'selected'}`} key={index}><input type="checkbox" name="lifePattern" value={lifePattern} checked={filters.lifePattern.includes(lifePattern)} onChange={handleChange} hidden/>{lifePattern}</label>
+            ))}
+          </div>
         </div>
-      </div>
-      <div className='filter-section'>
-        <h1 className='filter-title'>흡연 여부</h1>
-        <div className='flex'>
-          {['흡연', '비흡연'].map((smoking, index) => (
-            <label className={`filter-input ${filters.smoking.includes(smoking) && 'selected'}`} key={index}><input type="checkbox" name="smoking" value={smoking} checked={filters.smoking.includes(smoking)} onChange={handleChange} hidden/>{smoking}</label>
-          ))}
+        <div className='filter-section'>
+          <h1 className='filter-title'>흡연 여부</h1>
+          <div className='flex'>
+            {['흡연', '비흡연'].map((smoking, index) => (
+              <label className={`filter-input ${filters.smoking.includes(smoking) && 'selected'}`} key={index}><input type="checkbox" name="smoking" value={smoking} checked={filters.smoking.includes(smoking)} onChange={handleChange} hidden/>{smoking}</label>
+            ))}
+          </div>
         </div>
-      </div>
-      <div className='filter-section'>
-        <h1 className='filter-title'>청소 주기</h1>
-        <div className='flex flex-wrap content-between h-[84px]'>
-          {['매일', '주 1회 이상', '월 1회 이상', '생각날 때 가끔'].map((cleaningCycle, index) => (
-            <label className={`filter-input ${filters.cleaningCycle.includes(cleaningCycle) && 'selected'}`} key={index}><input type="checkbox" name="cleaningCycle" value={cleaningCycle} checked={filters.cleaningCycle.includes(cleaningCycle)} onChange={handleChange} hidden/>{cleaningCycle}</label>
-          ))}
+        <div className='filter-section'>
+          <h1 className='filter-title'>청소 주기</h1>
+          <div className='flex flex-wrap content-between h-[84px]'>
+            {['매일', '주 1회 이상', '월 1회 이상', '생각날 때 가끔'].map((cleaningCycle, index) => (
+              <label className={`filter-input ${filters.cleaningCycle.includes(cleaningCycle) && 'selected'}`} key={index}><input type="checkbox" name="cleaningCycle" value={cleaningCycle} checked={filters.cleaningCycle.includes(cleaningCycle)} onChange={handleChange} hidden/>{cleaningCycle}</label>
+            ))}
+          </div>
         </div>
-      </div>
-      <div className='filter-section'>
-        <h1 className='filter-title'>외출 빈도</h1>
-        <div className='flex'>
-          {['집순이', '밖순이'].map((outing, index) => (
-            <label className={`filter-input ${filters.outing.includes(outing) && 'selected'}`} key={index}><input type="checkbox" name="outing" value={outing} checked={filters.outing.includes(outing)} onChange={handleChange} hidden/>{outing}</label>
-          ))}
+        <div className='filter-section'>
+          <h1 className='filter-title'>외출 빈도</h1>
+          <div className='flex'>
+            {['집순이', '밖순이'].map((outing, index) => (
+              <label className={`filter-input ${filters.outing.includes(outing) && 'selected'}`} key={index}><input type="checkbox" name="outing" value={outing} checked={filters.outing.includes(outing)} onChange={handleChange} hidden/>{outing}</label>
+            ))}
+          </div>
         </div>
-      </div>
-      <div className='filter-section'>
-        <h1 className='filter-title'>소리 민감 정도</h1>
-        <div className='flex'>
-          {['예민한편', '둔감한편'].map((sensitivity, index) => (
-            <label className={`filter-input ${filters.sensitivity.includes(sensitivity) && 'selected'}`} key={index}><input type="checkbox" name="sensitivity" value={sensitivity} checked={filters.sensitivity.includes(sensitivity)} onChange={handleChange} hidden/>{sensitivity}</label>
-          ))}
+        <div className='filter-section'>
+          <h1 className='filter-title'>소리 민감 정도</h1>
+          <div className='flex'>
+            {['예민한편', '둔감한편'].map((sensitivity, index) => (
+              <label className={`filter-input ${filters.sensitivity.includes(sensitivity) && 'selected'}`} key={index}><input type="checkbox" name="sensitivity" value={sensitivity} checked={filters.sensitivity.includes(sensitivity)} onChange={handleChange} hidden/>{sensitivity}</label>
+            ))}
+          </div>
         </div>
-      </div>
-      <div className={`filter-section bg-white z-50 fixed bottom-0 flex items-center justify-between gap-[10px] h-[91px]
-      transition-transform duration-300 ${isLowerBarVisible ? 'translate-y-0' : 'translate-y-full'}`}>
-        <button onClick={handleClickResetBtn} className='reset-btn'>초기화</button>
-        <button onClick={handleClickFilterBtn} className='filter-btn'>350개 글보기</button>
-      </div>
+        <div className={`filter-section bg-white z-50 fixed bottom-0 flex items-center justify-between gap-[10px] h-[91px]
+        transition-transform duration-300 ${isLowerBarVisible ? 'translate-y-0' : 'translate-y-full'}`}>
+          <button onClick={handleClickResetBtn} className='reset-btn whitespace-nowrap'>초기화</button>
+          <button onClick={handleClickFilterBtn} className='filter-btn whitespace-nowrap'>{filteredPosts.length}개 글보기</button>
+        </div>
+      </section>
+      }
     </SettingStyle>
   );
 }
@@ -477,6 +530,7 @@ const SettingStyle = styled.main`
   .filter-section {
     padding: 25px;
     border-top: 1px solid ${COLOR.gray100};
+    width: 393px;
   }
   .filter-text {
     font-size: ${FONT.body5M15};
@@ -562,8 +616,8 @@ const SettingStyle = styled.main`
     font-size: ${FONT.buttonSB15};
     color: white;
     background-color: ${COLOR.purple1};
-    padding: 0 83px;
     height: 52px;
+    flex: 1;
     border-radius: 10px;
     &:hover {
       opacity: 0.5;

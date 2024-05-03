@@ -16,7 +16,7 @@ import RoommateScrollItem from '@components/RoommatePage/RoommateScrollItem';
 import { useQuery } from '@tanstack/react-query';
 import { API } from '@utils/api';
 
-const RoommateScrollList = ({ type, searchTerm, filters }) => {
+const RoommateScrollList = ({ type, searchTerm, filteredPosts, setScreenType }) => {
 	const { data: matchingPosts, isLoading, error } = useMatchingPosts(type);
 	const { data: searchResults } = useQuery({
 		queryKey: ['searchResults', searchTerm],
@@ -25,18 +25,6 @@ const RoommateScrollList = ({ type, searchTerm, filters }) => {
 		gcTime: 5 * 60 * 1000,
 		enabled: !!searchTerm,
 	});
-	const filteredPosts = (matchingPosts && filters) && 
-	matchingPosts.filter(post => {
-		return (filters.peopleCount.length === 0 || filters.peopleCount.includes(post.peopleCount)) &&
-					 (filters.gender === '' || filters.gender === post.gender) &&
-					 (filters.dong.length === 0 || filters.dong.includes(post.dong)) &&
-					 (filters.roomSize.length === 0 || filters.roomSize.includes(post.roomSize)) &&
-					 (post.age >= filters.minAge && post.age <= filters.maxAge) &&
-					 (post.year >= filters.minYear && post.year <= filters.maxYear) &&
-					 (filters.mbti.length === 0 || filters.mbti.includes(post.mbti));
-					 // 여기에 다른 필터 조건들을 추가하십시오.
-	});
-	console.log(filteredPosts);
 	
 	const fetchData = async (searchTerm) => {
 		try {
@@ -59,22 +47,38 @@ const RoommateScrollList = ({ type, searchTerm, filters }) => {
 				)}
 				{path === '/home/ending-soon' && <EndingSoonTitle />}
 				{path === '/home/best-roommates' && <BestRoommateTitle />}
+				{path === '/roommate/filter' && <FilterRoommateTitle setScreenType={setScreenType}/>}
 			</div>
 			<div className="flex flex-col gap-[10px] px-[24px] pb-[11px]">
-				{type === 'search' ? (
-					searchResults ? (
-						searchResults.matchingPostsData.map((post) => (
-							<RoommateScrollItem post={post} />
-						))
-					) : (
-						<div>검색 결과가 없습니다.</div>
-					)
-				) : (
-					matchingPosts.data.map((post, index) => (
-						<RoommateScrollItem post={post} index={index} />
-					))
-				)}
-			</div>
+			{(() => {
+				let content; // 렌더링할 내용을 담을 변수 선언
+
+				if (type === 'search') {
+					if (searchResults) {
+						content = searchResults.matchingPostsData.map((post) => (
+							<RoommateScrollItem key={post.id} post={post} />
+						));
+					} else {
+						content = <div>검색 결과가 없습니다.</div>;
+					}
+				} else if (type === 'filters') {
+					// 'filters' 조건일 때, filteredPosts 배열을 매핑하여 컴포넌트를 리턴
+					if (filteredPosts) {
+						console.log(filteredPosts)
+						content = filteredPosts.map((post) => (
+							<RoommateScrollItem key={post.id} post={post} />
+						));
+					}
+				} else {
+					// 기본 조건일 때, matchingPosts.data 배열을 매핑하여 컴포넌트를 리턴
+					content = matchingPosts.data.map((post, index) => (
+						<RoommateScrollItem key={post.id} post={post} index={index} />
+					));
+				}
+				return content; // 조건에 따라 결정된 내용을 리턴
+			})()}
+</div>
+
 		</SettingStyle>
 	);
 };
@@ -86,7 +90,7 @@ const SettingStyle = styled.div`
 	.title {
 		font-size: ${FONT.title3SB17};
 	}
-	.filter-btn {
+	.sort-btn {
 		font-size: ${FONT.caption2M14};
 		color: ${COLOR.gray500};
 		&.selected {
@@ -122,8 +126,8 @@ const FindRoommateTitle = ({path}) => {
     <>
       <h1 className='title'>룸메이트 찾기</h1>
       <div className='flex justify-between gap-[7px]'>
-        <button onClick={handleClickNewestBtn} className='filter-btn selected'>최신순</button>
-        <button onClick={handleClickOldestBtn} className='filter-btn'>마감순</button>
+        <button onClick={handleClickNewestBtn} className='sort-btn selected'>최신순</button>
+        <button onClick={handleClickOldestBtn} className='sort-btn'>마감순</button>
         {path === '/roommate' &&
         <Link
 						to="/roommate/filter"
@@ -161,9 +165,27 @@ const BestRoommateTitle = () => {
 				<img className="ml-[3px]" src={Premium} alt="premium icon" />
 			</h1>
 			<div className="flex justify-between gap-[7px]">
-				<button className="filter-btn selected">최신순</button>
-				<button className="filter-btn">마감순</button>
+				<button className="sort-btn selected">최신순</button>
+				<button className="sort-btn">마감순</button>
 			</div>
 		</>
 	);
 };
+const FilterRoommateTitle = ({setScreenType}) => {
+	const handleClickSortBtn = () => {
+		setScreenType('filters')
+	}
+
+  return (
+    <>
+      <h1 className='title'>필터링 결과</h1>
+      <div className='flex justify-between gap-[7px]'>
+			<button onClick={handleClickSortBtn}
+					className={`flex justify-center items-center border border-[${COLOR.gray100}] h-[30px] w-[30px] rounded-[50%]`}
+				>
+				<img src={Filter} alt='filter icon'/>
+			</button>
+      </div>
+    </>
+  )
+}

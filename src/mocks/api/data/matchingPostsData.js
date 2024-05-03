@@ -18,15 +18,43 @@ export const matchingPostsData = {
 			roomSize: "2인실",
       matchingStatus: "매칭 대기",
       createdAt: "2024-04-29T00:32:58.060431",
-      dday: 0
+      dday: 0,
+      birthdate: "1999-04-01T15:00:00.000+00:00",
+      targetNumberOfPeople: 1,
+      photoUrl: "https://lh3.googleusercontent.com/a-/ALV-UjWX4UNs37PJmJbCleL5m9p16yBTZOAcer_4YC4KhVlxj_MNNA=s96-c"
 
 		},
 		{
 			major: "컴퓨터전자시스템공학부",
-			studentNo: "19",
-			name: "설희관",
-			gender: "남성",
+			studentNo: "22",
+			name: "김예은",
+			gender: "여성",
 			mbti: "ESTP",
+			SleepingHabits: [],
+			lifePattern: "새벽형",
+      smoking: "비흡연자",
+      cleaningCycle: "주 1회 이상",
+      outing: "집돌이",
+      sensitivity: "예민한 편",
+      matchingPostId: 1,
+      title: "신긱 룸메이트 구해요.",
+      dong: "D동",
+      roomSize: "4인실",
+      matchingStatus: "매칭 대기",
+      createdAt: "2024-04-30T00:32:58.060431",
+      dday: 0,
+      birthdate: "2002-06-24T15:00:00.000+00:00",
+      targetNumberOfPeople: 3,
+      photoUrl: "https://lh3.googleusercontent.com/a-/ALV-UjWX4UNs37PJmJbCleL5m9p16yBTZOAcer_4YC4KhVlxj_MNNA=s96-c"
+
+
+		},
+		{
+			major: "컴퓨터전자시스템공학부",
+			studentNo: "17",
+			name: "김혁수",
+			gender: "남성",
+			mbti: "ENFJ",
 			SleepingHabits: [],
 			lifePattern: "새벽형",
       smoking: "흡연자",
@@ -34,19 +62,23 @@ export const matchingPostsData = {
       outing: "집돌이",
       sensitivity: "예민한 편",
       matchingPostId: 1,
-      title: "신긱 룸메이트 구해요.",
-      dong: "A동",
+			title: "룸메 구해요",
+      dong: "E동",
       roomSize: "4인실",
       matchingStatus: "매칭 대기",
-      createdAt: "2024-04-29T00:32:58.060431",
-      dday: 0
+      createdAt: "2024-04-12T00:32:58.060431",
+      dday: 0,
+      birthdate: "1998-03-05T15:00:00.000+00:00",
+      targetNumberOfPeople: 2,
+      photoUrl: "https://lh3.googleusercontent.com/a-/ALV-UjWX4UNs37PJmJbCleL5m9p16yBTZOAcer_4YC4KhVlxj_MNNA=s96-c"
+
 
 		},
 		{
 			major: "컴퓨터전자시스템공학부",
-			studentNo: "19",
-			name: "설희관",
-			gender: "남성",
+			studentNo: "18",
+			name: "이아영",
+			gender: "여성",
 			mbti: "ESTP",
 			SleepingHabits: [],
 			lifePattern: "새벽형",
@@ -56,11 +88,40 @@ export const matchingPostsData = {
       sensitivity: "예민한 편",
       matchingPostId: 1,
 			title: "룸메 구해요",
-      dong: "A동",
-      roomSize: "4인실",
+      dong: "B동",
+      roomSize: "2인실",
       matchingStatus: "매칭 대기",
-      createdAt: "2024-04-29T00:32:58.060431",
-      dday: 0
+      createdAt: "2024-04-03T00:32:58.060431",
+      dday: 0,
+      birthdate: "1999-01-01T15:00:00.000+00:00",
+      targetNumberOfPeople: 1,
+      photoUrl: "https://lh3.googleusercontent.com/a-/ALV-UjWX4UNs37PJmJbCleL5m9p16yBTZOAcer_4YC4KhVlxj_MNNA=s96-c"
+
+
+		},
+		{
+			major: "컴퓨터전자시스템공학부",
+			studentNo: "24",
+			name: "정재웅",
+			gender: "남성",
+			mbti: "ISFP",
+			SleepingHabits: [],
+			lifePattern: "새벽형",
+      smoking: "흡연자",
+      cleaningCycle: "주 1회 이상",
+      outing: "집돌이",
+      sensitivity: "예민한 편",
+      matchingPostId: 1,
+			title: "룸메 구해요",
+      dong: "E동",
+      roomSize: "2인실",
+      matchingStatus: "매칭 대기",
+      createdAt: "2024-05-03T00:32:58.060431",
+      dday: 0,
+      birthdate: "2005-01-01T15:00:00.000+00:00",
+      targetNumberOfPeople: 1,
+      photoUrl: "https://lh3.googleusercontent.com/a-/ALV-UjWX4UNs37PJmJbCleL5m9p16yBTZOAcer_4YC4KhVlxj_MNNA=s96-c"
+
 
 		},
 

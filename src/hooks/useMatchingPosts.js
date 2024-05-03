@@ -38,6 +38,6 @@ export const useMatchingPosts = (type) => {
     queryFn: () => fetchData(type),
     staleTime: 0,
     gcTime: 5 * 60 * 1000,
-    enabled: type !== 'search',
+    enabled: (type !== 'search' && type !== 'filters'), //type이 search거나 filters일때 쿼리 X
   })
 }

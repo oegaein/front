@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { API } from '@utils/api'
 //styles
 import styled from 'styled-components'
 import FONT from '@styles/fonts'
@@ -11,11 +12,15 @@ import OptionModal from '@common/modal/OptionModal'
 
 const RoommateReview = ({review}) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const blockUser = () => {
-    alert('차단하였습니다.')
+  const blockUser = async (blocked_id) => {
+    const response = await API.post('/api/v1/member/block', {
+      blocked_id,
+    })
+    //완료되었는지 확인하는 로직 필요 
+    alert('유저를 차단하였습니다.')
   }
   const modalOptions = [
-    {content: '차단하기', func: blockUser},
+    {content: '차단하기', func: ()=>blockUser()},
   ]
 
   const handleClickMenuBtn = () => {
