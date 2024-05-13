@@ -3,8 +3,8 @@ import { API } from "@utils/api";
 
 const fetchData = async () => {
   try {
-    const response = await API.get(`	
-    /api/v1/news`)
+    const response = await API.get(`/api/v1/news`)
+    console.log(response)
     return response.data.data
   } catch(error) {
     console.error(error)

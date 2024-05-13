@@ -5,7 +5,8 @@ import { useLocation } from 'react-router-dom';
 import { Pagination, Autoplay } from 'swiper/modules';
 import { Link } from 'react-router-dom';
 import { useDormNews } from '@hooks/useDormNews';
-
+import { API } from '@utils/api';
+import useAuthStore from '@store/authStore';
 //styles
 import styled from 'styled-components';
 import COLOR from '@styles/color';
@@ -24,8 +25,23 @@ import DormNews from '@components/HomePage/DormNews';
 
 
 const HomePage = () => {
+  const accessToken = useAuthStore.getState().accessToken
+  console.log(accessToken)
   const {data:dormNews, isLoading, error} = useDormNews()
-  
+  // const [dormNews, setDormNews] = useState([])
+  // const fetchData = async () => {
+  //   try {
+  //     const response = await API.get(`/api/v1/news`)
+  //     console.log(response.data.data)
+  //     setDormNews(response.data.data) 
+  //   } catch(error) {
+  //     console.error(error)
+  //   }
+  // }
+
+  // useEffect(()=>{
+  //   fetchData()
+  // },[])
   return (
     <SettingStyle className='flex flex-col gap-[10px] pb-[11px] scroll-smooth'>
       <div>

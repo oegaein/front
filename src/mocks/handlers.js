@@ -6,6 +6,7 @@ import {matchingPostData} from './api/data/matcingPostData'
 import { newsData } from './api/data/newsData'
 import { reviewsData } from './api/data/reviewsData'
 import { profileData } from './api/data/profileData'
+import { likeData } from './api/data/likeData'
 
 export const handlers = [
   // By calling "http.get()" we're instructing MSW
@@ -46,6 +47,10 @@ export const handlers = [
   //유저 프로필 조회
   http.get('/api/v1/member/profile/:memberId', () => {
     return HttpResponse.json(profileData)
+  }),
+  //유저가 좋아요한 목록 조회
+  http.get('/api/v1/member/like', () => {
+    return HttpResponse.json(likeData)
   }),
   
 ]

@@ -52,7 +52,7 @@ const RoommateScrollList = ({ type, searchTerm, filteredPosts, setScreenType }) 
 			<div className="flex flex-col gap-[10px] px-[24px] pb-[11px]">
 			{(() => {
 				let content; // 렌더링할 내용을 담을 변수 선언
-
+				// search일 때
 				if (type === 'search') {
 					if (searchResults) {
 						content = searchResults.matchingPostsData.map((post) => (
@@ -62,17 +62,18 @@ const RoommateScrollList = ({ type, searchTerm, filteredPosts, setScreenType }) 
 						content = <div>검색 결과가 없습니다.</div>;
 					}
 				} else if (type === 'filters') {
-					// 'filters' 조건일 때, filteredPosts 배열을 매핑하여 컴포넌트를 리턴
+					// filters일 때
 					if (filteredPosts) {
 						console.log(filteredPosts)
 						content = filteredPosts.map((post) => (
 							<RoommateScrollItem key={post.id} post={post} />
 						));
 					}
+					//그 외 new, best 등...
 				} else {
 					// 기본 조건일 때, matchingPosts.data 배열을 매핑하여 컴포넌트를 리턴
 					content = matchingPosts.data.map((post, index) => (
-						<RoommateScrollItem key={post.id} post={post} index={index} />
+						<RoommateScrollItem key={post.id} post={post} />
 					));
 				}
 				return content; // 조건에 따라 결정된 내용을 리턴

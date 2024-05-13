@@ -1,6 +1,7 @@
 import axios from "axios";
 
+axios.defaults.withCredentials = true
 export const API = axios.create({
-  // baseURL: 'http://34.64.153.69:8080',
-  baseURL: '',
+  baseURL: 'https://api.oegaein.com:8080',
+  // baseURL: '',
 })

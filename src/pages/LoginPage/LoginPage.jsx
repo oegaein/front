@@ -40,7 +40,7 @@ const LoginPage = () => {
           <img className='mr-[60px]' src={GoogleIcon} alt='구글 로그인 아이콘'/>
           <StyledButtonText>Google로 계속하기</StyledButtonText>
         </Link>
-        <GoogleLoginButton/>
+        {/* <GoogleLoginButton/> */}
       </div>
     </>
   )

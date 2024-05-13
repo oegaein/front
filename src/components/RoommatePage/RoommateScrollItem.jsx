@@ -17,6 +17,7 @@ const RoommateScrollItem = ({post}) => {
         matchingPostId,
       })
       // 매칭신청이 완료되었다는 모달 필요
+      
     } catch (error) {
       console.log(error)
     }
@@ -34,7 +35,7 @@ const RoommateScrollItem = ({post}) => {
   }
   return (
     <SettingStyle onClick={()=>handleClickPost(post.matchingPostId)} key={post.matchingPostId} className={`flex bg-white border border-[${COLOR.gray100}] rounded-[20px] p-[14px]`}>
-      <img className='w-[100px] h-[100px] mr-[12px]' src={Yoo}/>
+      <img className='w-[100px] h-[100px] mr-[12px] rounded-[50%]' src={post.photoUrl}/>
       <div className='w-full flex flex-col justify-between'>
         <div>
           <div className='flex items-center justify-between'>

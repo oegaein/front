@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { API } from '@utils/api'
+import useAuthStore from '@store/authStore'
 
 import Next from '@assets/images/next.svg'
 import Dots from '@assets/images/header-dots.svg'
@@ -19,12 +20,22 @@ import { profileData } from 'mocks/api/data/profileData'
 import OptionModal from '@common/modal/OptionModal'
 
 const UserPage = () => {
+  const accessToken = useAuthStore.getState().accessToken
   const [userInfo, setUserInfo] = useState(profileData)
   const [isModalOpen, setIsModalOpen] = useState(false)
   let {memberId} = useParams()
   const fetchUserInfoData = async () => {
     try {
-      const response = await API.get(`/api/v1/member/profile/${memberId}`)
+      const response = await API.get(`/api/v1/member/profile/2`)
+      setUserInfo(response.data)
+      console.log(response.data)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+  const fetchMyInfoData = async () => {
+    try {
+      const response = await API.get(`/api/v1/member/my-profile`)
       setUserInfo(response.data)
       console.log(response.data)
     } catch (error) {
@@ -42,7 +53,7 @@ const UserPage = () => {
     alert('유저를 차단하였습니다.')
   }
   useEffect(()=>{
-    // fetchUserInfoData()
+    fetchMyInfoData()
   }, [])
 
   return (

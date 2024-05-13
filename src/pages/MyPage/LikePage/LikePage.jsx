@@ -1,4 +1,5 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
+import { API } from '@utils/api'
 import Header from '@common/header/Header'
 import styled from 'styled-components'
 import FONT from '@styles/fonts'
@@ -6,10 +7,23 @@ import COLOR from '@styles/color'
 import Profile from '@assets/images/profile-image.svg'
 import LikeItem from '@components/LikePage/LikeItem'
 const LikePage = () => {
+  const [likeData, setLikeData] = useState([])
   const [uploadPostType, setUploadPostType] = useState('roommate')
   const handleClickUploadPost = (type) => {
     setUploadPostType(type)
   }
+
+  useEffect(()=>{
+		const fetchLikeData = async () => {
+			try {
+				const response = await API.get('/api/v1/member/like')
+				setLikeData(response.data.data)
+			} catch(error) {
+				console.error(error);
+			}
+		}
+		fetchLikeData()
+	}, [])
 
   return (
     <SettingStyle>
@@ -24,10 +38,11 @@ const LikePage = () => {
           <div onClick={()=>handleClickUploadPost('delivery')}className={`notification-title ${uploadPostType === 'delivery' && 'selected-title'}`}>공동배달</div>
         </div>
       </div>
-      <NoResults/>
       <div className='likelist flex flex-col gap-[1px]'>
-        <LikeItem profileImage={Profile}/>
-        <LikeItem profileImage={Profile}/>
+      {likeData.length > 0 ?
+      likeData.map((like)=> <LikeItem profileImage={Profile} like={like} />)
+      : <NoResults/>
+    }
       </div>
     </SettingStyle>
   )
@@ -37,7 +52,7 @@ export default LikePage
 
 const NoResults = () => {
   return (
-    <p className='noresults mt-[138px]'>좋아요를 한 글이 없어요.</p>
+    <p className='noresults bg-white pt-[138px]'>좋아요를 한 글이 없어요.</p>
   )
 }
 
