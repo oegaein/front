@@ -1,6 +1,6 @@
 import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import RoommateSwiperItem from '../RoommatePage/RoommateSwiperItem';
 import { useMatchingPosts } from 'hooks/useMatchingPosts';
 
