@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Link, useNavigate } from 'react-router-dom'
 import { API } from '@utils/api'
 import useAuthStore from '@store/authStore'
 
@@ -20,6 +20,8 @@ import { profileData } from 'mocks/api/data/profileData'
 import OptionModal from '@common/modal/OptionModal'
 
 const UserPage = () => {
+  const navigate = useNavigate()
+  const setAccessToken = useAuthStore(state => state.setAccessToken)
   const accessToken = useAuthStore.getState().accessToken
   const [userInfo, setUserInfo] = useState(profileData)
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -40,6 +42,29 @@ const UserPage = () => {
       console.log(response.data)
     } catch (error) {
       console.error(error)
+      if (error.response && error.response.status === 403) {
+        try {
+          const refreshResponse = await API.get(`/api/v1/member/refresh`)
+          console.log(refreshResponse)
+          setAccessToken(refreshResponse.data.accessToken)
+          const accessToken = useAuthStore.getState().accessToken
+          console.log(accessToken)
+          try {
+            const response = await API.get(`/api/v1/member/my-profile`, {
+              headers: { 'Authorization': `Bearer ${accessToken}`}
+            })
+            setUserInfo(response.data)
+            console.log(response.data)
+          } catch (error) {
+            console.log('error')
+            console.error(error)
+          }
+
+        } catch (error) {
+          console.error(error)
+          navigate('/login')
+        }
+      }
     }
   }
   const handleClickDotsBtn = () => {
