@@ -10,6 +10,7 @@
     margin: 0 auto;
     font-family: 'Pretendard';
     position: relative;
+    box-sizing: border-box;
 }
 .content {
     padding-top: 50px;

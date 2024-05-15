@@ -9,7 +9,6 @@ import styled from 'styled-components'
 import FONT from '@styles/fonts'
 import COLOR from '@styles/color'
 const RoommateSwiperItem = ({post}) => {
-  console.log(post)
   const navigate = useNavigate()
 
   const handleClickRegisterBtn = async (matchingPostId) => {
@@ -44,7 +43,7 @@ const RoommateSwiperItem = ({post}) => {
         {post.title}
       </p>
       <div className='flex items-center'>
-        <img className='h-[60px] w-[60px]' src={Yoo} alt='profile image'/>
+        <img className='h-[60px] w-[60px] rounded-[50%]' src={post.photoUrl} alt='profile image'/>
         <div className='my-[auto] ml-[10px] text-left'>
           <p>
             <span className='name mr-[6px]'>{post.name}</span>

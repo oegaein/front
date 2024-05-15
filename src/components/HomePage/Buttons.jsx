@@ -14,12 +14,12 @@ import { Link } from 'react-router-dom'
 const Buttons = () => {
   return (
     <SettingStyle className='flex justify-between'>
-      <div>
+      <Link to='/home/dormnews'>
         <div className={`icon-btn cursor-pointer flex justify-center items-center rounded-[15px] w-[77px] h-[70px]`}>
           <img src={News} alt="dormiory news icon"/>
         </div>
         <span className='icon-text'>기숙사 소식</span>
-      </div>
+      </Link>
       <Link to='/home/ending-soon'>
         <div className={`icon-btn cursor-pointer flex justify-center items-center rounded-[15px] w-[77px] h-[70px]`}>
           <img src={StopWatch} alt="ending soon icon"/>

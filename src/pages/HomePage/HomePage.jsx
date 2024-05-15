@@ -4,9 +4,9 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { useLocation } from 'react-router-dom';
 import { Pagination, Autoplay } from 'swiper/modules';
 import { Link } from 'react-router-dom';
-import { useQuery } from "@tanstack/react-query"
-import { API } from "@utils/api";
-
+import { useDormNews } from '@hooks/useDormNews';
+import { API } from '@utils/api';
+import useAuthStore from '@store/authStore';
 //styles
 import styled from 'styled-components';
 import COLOR from '@styles/color';
@@ -21,25 +21,27 @@ import RoommateSwiperList from '@components/common/RoommateSwiperList'
 import Next from '@assets/images/next.svg'
 import Buttons from '@components/HomePage/Buttons';
 import Premium from '@assets/images/premium-quality.svg'
+import DormNews from '@components/HomePage/DormNews';
 
 
 const HomePage = () => {
-  const fetchData = async () => {
-    try {
-      const response = await API.get('/api/v1/news')
-      return response.data
-      console.log('기숙사소식:', response.data)
-    } catch(error) {
-      console.error(error)
-    }
-  }
-  const {data:dormNews, isLoading, error} = useQuery({
-    queryKey: ['dormNews'],
-    queryFn: fetchData,
-    staleTime: 0,
-    gcTime: 5 * 60 * 1000,
-  })
-  
+  const accessToken = useAuthStore.getState().accessToken
+  console.log(accessToken)
+  const {data:dormNews, isLoading, error} = useDormNews()
+  // const [dormNews, setDormNews] = useState([])
+  // const fetchData = async () => {
+  //   try {
+  //     const response = await API.get(`/api/v1/news`)
+  //     console.log(response.data.data)
+  //     setDormNews(response.data.data) 
+  //   } catch(error) {
+  //     console.error(error)
+  //   }
+  // }
+
+  // useEffect(()=>{
+  //   fetchData()
+  // },[])
   return (
     <SettingStyle className='flex flex-col gap-[10px] pb-[11px] scroll-smooth'>
       <div>
@@ -61,13 +63,9 @@ const HomePage = () => {
           autoplay={{ delay: 5000, disableOnInteraction: false }}
           loop={true}
           className={`mySwiper mb-[16px] h-[73px] border border-[${COLOR.gray100}] rounded-[15px]`}>
-            {dormNews.data.map((news)=>(
-            <SwiperSlide key={news.id} className={`flex flex-col justify-between px-[15px] pt-[11px] pb-[18px] text-left`}>
-              <div className='flex justify-between'>
-                <span className='dormitory-purple'>#공지</span>
-                <span className='dormitory-time'>{news.createdAt}</span> 
-              </div>
-              <Link href={news.url} className='dormitory-title text-ellipsis overflow-hidden whitespace-nowrap hover:underline'>{news.title}</Link>
+            {dormNews.map((news)=>(
+            <SwiperSlide>
+              <DormNews news={news}/>
             </SwiperSlide>
             ))
             }
@@ -120,17 +118,6 @@ const SettingStyle = styled.div`
   }
   .more {
     font-size: ${FONT.caption2M14};
-  }
-  .dormitory-purple {
-    font-size: ${FONT.caption3M12};
-    color: ${COLOR.purple1};
-  }
-  .dormitory-time {
-    font-size: ${FONT.caption3M12};
-    color: ${COLOR.gray500};
-  }
-  .dormitory-title {
-    font-size: ${FONT.body4SB15};
   }
   .roommateMent {
     color: ${COLOR.gray500};

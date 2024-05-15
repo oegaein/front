@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import axios from 'axios'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 //styles
 import styled from 'styled-components'
 import FONT from '@styles/fonts'
@@ -16,14 +16,10 @@ import SearchAndNotice from '@components/common/SearchAndNotice';
 import RoommateScrollList from '@common/RoommateScrollList'
 import AddRoommateButton from '@common/button/AddRoommateButton'
 const RoommatePage = () => {
-  const fetchMatchingPosts = async () => {
-    try {
-      const response = await axios.get('/api/v1/matchingposts')
-      return response.data
-    } catch (err) {
-      throw err;
-    }
-  }
+  const location = useLocation()
+  const filters = location.state
+  console.log('필터:', filters)
+  
   return (
     <SettingStyle className='bg-white flex flex-col gap-[10px] scroll-smooth'>
       <AddRoommateButton/>
@@ -45,7 +41,7 @@ const RoommatePage = () => {
           <RoommateSwiperList type='best'/>
         </div>
       </div>
-      <RoommateScrollList type='new'/>
+      <RoommateScrollList type='new' filters={filters}/>
     </SettingStyle>
   )
 }

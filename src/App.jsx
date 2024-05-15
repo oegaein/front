@@ -37,6 +37,7 @@ import LikePage from '@pages/MyPage/LikePage/LikePage';
 import MyPostPage from '@pages/MyPage/MyPostPage/MyPostPage';
 import RoommateApplyListPage from '@pages/MyPage/RoommateApplyListPage/RoommateApplyListPage';
 import CallBack from '@components/LoginPage/CallBack';
+import DormNewsPage from '@pages/HomePage/DormNewsPage/DormNewsPage';
 
 const queryClient = new QueryClient();
 
@@ -50,6 +51,7 @@ function App() {
 							<Route path="/" element={<MainLayout />}>
 								<Route index element={<CallBack />} />
 								<Route path="home" element={<HomePage />} />
+								<Route path="home/dormnews" element={<DormNewsPage />} />
 								<Route path="home/ending-soon" element={<EndingsoonPage />} />
 								<Route
 									path="home/best-roommates"
@@ -73,9 +75,9 @@ function App() {
 								<Route path="mypage/like" element={<LikePage />} />
 								<Route path="mypage/mypost" element={<MyPostPage />} />
 								<Route path="my-profile/edit" element={<MyProfileEditPage />} />
-								<Route path="user/:id" element={<UserPage />} />
+								<Route path="user/:memberId" element={<UserPage />} />
 								<Route
-									path="user/:id/reviews"
+									path="user/:memberId/reviews"
 									element={<RoommateReviewPage />}
 								/>
 								<Route path="/setting" element={<BasicInfoSetting />} />
@@ -118,6 +120,8 @@ function MainLayout() {
 				location.pathname !== '/login' &&
 				location.pathname !== '/post-detail' && 
 				location.pathname !== '/setting' && 
+				location.pathname !== '/roommate/filter' && 
+				location.pathname.substring(0,5) !== '/user' && 
 				<Navbar />}
 		</div>
 	);

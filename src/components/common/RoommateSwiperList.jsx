@@ -14,7 +14,6 @@ import Next from '@assets/images/next.svg';
 const RoommateSwiperList = ({ type }) => {
 	//type: new/best/mypost
 	const { data, isLoading, error } = useMatchingPosts(type);
-	console.log(data);
 	if (isLoading) return <div>데이터 로딩중</div>;
 	if (error) return <div>에러 발생 {error.message}</div>;
 	return (

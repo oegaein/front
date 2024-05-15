@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useMatchingPosts } from 'hooks/useMatchingPosts';
 import { API } from '@utils/api';
+import useAuthStore from '@store/authStore';
 //components
 import Header from '@common/header/Header';
 // styles
@@ -18,12 +19,16 @@ import Next from '@assets/images/next.svg';
 import Dots from '@assets/images/dots-black.svg';
 import RoommateSwiperList from '@common/RoommateSwiperList';
 import LikeItem from '@components/LikePage/LikeItem';
+import SelectMenuBar from '@common/menu/SelectMenuBar';
 const MyPage = () => {
+	const accessToken = useAuthStore.getState().accessToken
+  console.log(accessToken)
 	const {
 		data: comeMatchingRequests,
 		isLoading: isLoadingCome,
 		error: isErrorCome,
 	} = useMatchingPosts('come-matchingrequests');
+
 	const {
 		data: myMatchingRequests,
 		isLoading: isLoadingMy,
@@ -31,15 +36,22 @@ const MyPage = () => {
 	} = useMatchingPosts('my-matchingrequests');
 	console.log(comeMatchingRequests);
 	console.log(myMatchingRequests);
+	const [likeData, setLikeData] = useState([])
 	const [profileImage, setProfileImage] = useState(Profile);
 	const [uploadPostType, setUploadPostType] = useState('roommate');
 	const [likeType, setLikeType] = useState('roommate');
-	const handleClickUploadPost = (type) => {
-		setUploadPostType(type);
-	};
-	const handleClickLikeType = (type) => {
-		setLikeType(type);
-	};
+
+	useEffect(()=>{
+		const fetchLikeData = async () => {
+			try {
+				const response = await API.get('/api/v1/member/like')
+				setLikeData(response.data.data)
+			} catch(error) {
+				console.error(error);
+			}
+		}
+		fetchLikeData()
+	}, [])
 
 	return (
 		<SettingStyle className="flex flex-col gap-[10px]">
@@ -60,7 +72,7 @@ const MyPage = () => {
 						</div>
 					</div>
 					<div>
-						<Link to="/user/1" className="color-purple1 font-caption2m14">
+						<Link to="/user/2" className="color-purple1 font-caption2m14">
 							프로필 보기
 						</Link>
 					</div>
@@ -112,21 +124,11 @@ const MyPage = () => {
 						더보기 <img src={Next} />
 					</Link>
 				</div>
-				<div>
-					<div className="flex mt-[24px]">
-						<div
-							onClick={() => handleClickUploadPost('roommate')}
-							className={`notification-title ${uploadPostType === 'roommate' && 'selected-title'}`}
-						>
-							룸메이트
-						</div>
-						<div
-							onClick={() => handleClickUploadPost('delivery')}
-							className={`notification-title ${uploadPostType === 'delivery' && 'selected-title'}`}
-						>
-							공동배달
-						</div>
-					</div>
+				<div className='pt-[24px]'>
+					<SelectMenuBar
+					menuList={['룸메이트', '공동배달']}
+					pickedMenuId={setUploadPostType}
+					/>
 					<div className="px-[25px] mt-[16px]">
 						{myMatchingRequests ? (
 							myMatchingRequests.data.map((post, index) => (
@@ -155,25 +157,15 @@ const MyPage = () => {
 						더보기 <img src={Next} />
 					</Link>
 				</div>
-				<div>
-					<div className="flex mt-[24px]">
-						<div
-							onClick={() => handleClickLikeType('roommate')}
-							className={`notification-title ${likeType === 'roommate' && 'selected-title'}`}
-						>
-							룸메이트
-						</div>
-						<div
-							onClick={() => handleClickLikeType('delivery')}
-							className={`notification-title ${likeType === 'delivery' && 'selected-title'}`}
-						>
-							공동배달
-						</div>
+				<div className='pt-[24px]'>
+					<SelectMenuBar
+					menuList={['룸메이트', '공동배달']}
+					pickedMenuId={setLikeType}
+					/>
+					<div className="likelist flex flex-col gap-[1px]">
+						{likeData.map((like)=> <LikeItem profileImage={Profile} like={like} />)}
+						
 					</div>
-				</div>
-				<div className="likelist flex flex-col gap-[1px]">
-					<LikeItem profileImage={Profile} />
-					<LikeItem profileImage={Profile} />
 				</div>
 			</section>
 		</SettingStyle>
