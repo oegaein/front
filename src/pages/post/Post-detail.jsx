@@ -26,7 +26,7 @@ import UserLifeStyles from '@components/UserPage/UserLifeStyles';
 
 const mocks = {
 	postId: 1,
-	profile: {
+	authorProfile: {
 		img: Panda,
 		nickname: 'happy푸바옹',
 		gender: '남',
@@ -50,6 +50,7 @@ const mocks = {
 
 const PostDetail = () => {
 	const navigate = useNavigate();
+	const [data, setDate] = useState();
 	const [moreOpen, setMoreOpen] = useState(false);
 	const [threedots, setThreedots] = useState(false);
 	const [confirm, setConfirm] = useState(false);
@@ -61,9 +62,11 @@ const PostDetail = () => {
 	});
 	const [matching, setMatching] = useState(false);
 
-	// useEffect(() => {
-	// 	getMatchingPostAPI(1);
-	// }, []);
+	useEffect(() => {
+		getMatchingPostAPI(1);
+		// console.log(result);
+		// setDate(result);
+	}, []);
 
 	const EditFunc = () => {
 		navigate('/post-edit');
@@ -86,7 +89,7 @@ const PostDetail = () => {
 		setConfirm(true);
 		setConfirmContent((prev) => ({
 			...prev,
-			msg: `${mocks.profile.nickname}님을 차단할까요?`, // 작성자 이름
+			msg: `${mocks.authorProfile.nickname}님을 차단할까요?`, // 작성자 이름
 			btn: '차단',
 			id: 1,
 			func: () => {
@@ -142,8 +145,8 @@ const PostDetail = () => {
 								<img src={HomeIcon} alt="home" className="mr-[60px]" />
 							</Link>
 							<SimpleProfile
-								Img={mocks.profile.img}
-								nickname={mocks.profile.nickname}
+								Img={mocks.authorProfile.img}
+								nickname={mocks.authorProfile.nickname}
 								mr={'6px'}
 								width="25px"
 								height="25px"
@@ -162,8 +165,8 @@ const PostDetail = () => {
 						<div className="flex justify-between w-full mb-4">
 							<div className="flex">
 								<SimpleProfile
-									Img={mocks.profile.img}
-									nickname={mocks.profile.nickname}
+									Img={mocks.authorProfile.img}
+									nickname={mocks.authorProfile.nickname}
 									mr="6px"
 									width="25px"
 									height="25px"
@@ -248,9 +251,9 @@ const PostDetail = () => {
 					</div>
 					<div className="container">
 						<BasicProfile
-							Img={mocks.profile.img}
-							nickname={mocks.profile.nickname}
-							content={mocks.profile.introduce}
+							Img={mocks.authorProfile.img}
+							nickname={mocks.authorProfile.nickname}
+							content={mocks.authorProfile.introduce}
 							mr="20px"
 							width="45px"
 							height="45px"

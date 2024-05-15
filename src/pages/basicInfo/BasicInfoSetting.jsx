@@ -15,24 +15,37 @@ import Sleephabits from '@components/basicInfo/Sleephabits';
 import Smoking from '@components/basicInfo/Smoking';
 import Sound from '@components/basicInfo/Sound';
 import COLOR from '@styles/color';
+import { postProfileAPI } from 'services/api/ProfileAPI';
+import { getMatchingListAPI } from 'services/api/MatchingPostAPI';
 
 const BasicInfoSetting = () => {
 	const [activeButton, setActiveButton] = useState(true);
 	const [count, setCount] = useState(1);
 	const [info, setInfo] = useState({
-		nickname: '',
+		name: '',
 		gender: '',
-		studentId: 0,
-		birth: '',
-		introduce: '',
+		student_no: 0,
+		birthdate: '',
+		major: 'GBT',
+		introduction: '',
 		mbti: '',
-		sleephabits: '',
-		lifepattern: '',
+		sleeping_habit: [],
+		life_pattern: '',
 		smoking: null,
-		cleaning: '',
+		cleaning_cycle: '',
 		outing: '',
-		sound: '',
+		sound_sensitivity: '',
 	});
+
+	console.log(info);
+
+	try {
+		getMatchingListAPI().then((res) => {
+			console.log(res);
+		});
+	} catch (error) {
+		console.log(error);
+	}
 
 	const step = [
 		{ id: 1, btn: '다음', title: '닉네임을 입력해 주세요' },
@@ -57,12 +70,21 @@ const BasicInfoSetting = () => {
 		setActiveButton(true);
 	};
 
-	const handleNext = () => {
+	const handleNext = async () => {
 		setCount((prev) => prev + 1);
 		setActiveButton(true);
+
+		if (count === 11) {
+			try {
+				const response = await postProfileAPI(info);
+				console.log(response);
+			} catch (error) {
+				console.error(error);
+			}
+		}
 	};
 
-	const handleSkip = () => {
+	const handleSkip = async () => {
 		setCount((prev) => prev + 1);
 		setActiveButton(true);
 		const currentStep = step.find((item) => item.id === count);
@@ -75,12 +97,21 @@ const BasicInfoSetting = () => {
 				}));
 			}
 		}
+
+		if (count === 11) {
+			try {
+				const response = await postProfileAPI(info);
+				console.log(response);
+			} catch (error) {
+				console.error(error);
+			}
+		}
 	};
 
-	const handleNickname = (value) => {
+	const handleName = (value) => {
 		setInfo((prevInfo) => ({
 			...prevInfo,
-			nickname: value,
+			name: value,
 		}));
 	};
 
@@ -88,15 +119,15 @@ const BasicInfoSetting = () => {
 		setInfo((prevInfo) => ({
 			...prevInfo,
 			gender: value.gender,
-			studentId: value.studentId,
-			birth: value.birth,
+			student_no: value.studentId,
+			birthdate: value.birth,
 		}));
 	};
 
 	const handleIntroduce = (value) => {
 		setInfo((prevInfo) => ({
 			...prevInfo,
-			introduce: value,
+			introduction: value,
 		}));
 	};
 
@@ -110,7 +141,7 @@ const BasicInfoSetting = () => {
 	const handleSleephabits = (value) => {
 		setInfo((prevInfo) => ({
 			...prevInfo,
-			sleephabits: value,
+			sleeping_habit: value,
 		}));
 	};
 
@@ -124,14 +155,14 @@ const BasicInfoSetting = () => {
 	const handleLifepattern = (value) => {
 		setInfo((prevInfo) => ({
 			...prevInfo,
-			lifepattern: value,
+			life_pattern: value,
 		}));
 	};
 
 	const handleCleaning = (value) => {
 		setInfo((prevInfo) => ({
 			...prevInfo,
-			cleaning: value,
+			cleaning_cycle: value,
 		}));
 	};
 
@@ -145,7 +176,7 @@ const BasicInfoSetting = () => {
 	const handleSound = (value) => {
 		setInfo((prevInfo) => ({
 			...prevInfo,
-			sound: value,
+			sound_sensitivity: value,
 		}));
 	};
 
@@ -176,10 +207,7 @@ const BasicInfoSetting = () => {
 						</section>
 						<section className="flex flex-col items-center w-full">
 							{count === 1 && (
-								<Nickname
-									onGetValue={handleNickname}
-									setButton={setActiveButton}
-								/>
+								<Nickname onGetValue={handleName} setButton={setActiveButton} />
 							)}
 							{count === 2 && (
 								<Profile

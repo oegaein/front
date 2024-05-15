@@ -24,8 +24,8 @@ const SIoptions = [
 
 const Profile = ({ onGetValue, setButton }) => {
 	const gender = [
-		{ id: '여자', img: FemailImg },
-		{ id: '남자', img: MailImg },
+		{ id: '여성', img: FemailImg },
+		{ id: '남성', img: MailImg },
 	];
 	const [selectedGender, setSelectedGender] = useState(null);
 	const [selectedStudentId, setSelectedStudentId] = useState(null);
@@ -52,6 +52,11 @@ const Profile = ({ onGetValue, setButton }) => {
 			setButton(true);
 		}
 	}, [selectedGender, selectedStudentId, selectedBirth]);
+
+	const handleSelectedSI = (value) => {
+		const numOnly = parseInt(value.match(/\d+/)[0]);
+		setSelectedStudentId(numOnly);
+	};
 
 	return (
 		<>
@@ -82,7 +87,7 @@ const Profile = ({ onGetValue, setButton }) => {
 					choice="학번"
 					label="학번을 선택해주세요."
 					options={SIoptions}
-					setSelected={setSelectedStudentId}
+					setSelected={handleSelectedSI}
 				/>
 				<Subtitle>생년월일</Subtitle>
 				{/* <DatePickerFunc setSelectedBirth={setSelectedBirth} /> */}

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const postCommentsAPI = async (id, content) => {
 	const { data } = await axios.post(
-		`http://34.64.159.144:8080/api/v1/comments`,
+		`http://34.64.153.69:8080/api/v1/comments`,
 		{
 			matchingPostId: id,
 			content: content,
@@ -13,7 +13,7 @@ export const postCommentsAPI = async (id, content) => {
 
 export const putCommentsAPI = async (commentID) => {
 	const { data } = await axios.put(
-		`http://34.64.159.144:8080/api/v1/comments/${commentID}`,
+		`http://34.64.153.69:8080/api/v1/comments/${commentID}`,
 	);
 	return data;
 };
