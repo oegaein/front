@@ -1,8 +1,9 @@
+import { API } from '@utils/api';
 import axios from 'axios';
 
 export const postCommentsAPI = async (id, content) => {
-	const { data } = await axios.post(
-		`http://34.64.153.69:8080/api/v1/comments`,
+	const { data } = await API.post(
+		`https://api.oegaein.com:8080/api/v1/comments`,
 		{
 			matchingPostId: id,
 			content: content,
@@ -13,14 +14,14 @@ export const postCommentsAPI = async (id, content) => {
 
 export const putCommentsAPI = async (commentID) => {
 	const { data } = await axios.put(
-		`http://34.64.153.69:8080/api/v1/comments/${commentID}`,
+		`https://api.oegaein.com:8080/api/v1/comments/${commentID}`,
 	);
 	return data;
 };
 
 export const deleteCommentsAPI = async (commentID) => {
 	const { data } = await axios.delete(
-		`http://34.64.159.144:8080/api/v1/comments/${commentID}`,
+		`https://api.oegaein.com:8080/api/v1/comments/${commentID}`,
 	);
 	return data;
 };

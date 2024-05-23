@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Input, ContainerStyle } from '@styles/basicInfo/Input';
 import Xbutton from '@assets/images/common/Xbutton.svg';
 import { DropdownWrapper } from '@common/dropdown/BasicDropdown';
+import { postCommentsAPI } from 'services/api/CommentsAPI';
 
 //
 export const BasicInput = ({ onChangeValue, limitNum }) => {
@@ -151,7 +152,8 @@ export const CheckboxInput = ({
 };
 
 //
-export const CommentInput = ({ setSelected, setReply }) => {
+export const CommentInput = ({ setSelected, setReply, postId }) => {
+	console.log('postID: ' + postId);
 	const [value, setValue] = useState('');
 
 	const handleChange = (e) => {
@@ -162,6 +164,7 @@ export const CommentInput = ({ setSelected, setReply }) => {
 
 	const handlePost = () => {
 		setReply(false);
+		postCommentsAPI(postId, value);
 	};
 
 	return (

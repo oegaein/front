@@ -4,6 +4,7 @@ import COLOR from '@styles/color';
 import styled from 'styled-components';
 import { useState } from 'react';
 import FONT from '@styles/fonts';
+import { GetDuplicate } from 'services/api/ProfileAPI';
 
 const Nickname = ({ onGetValue, setButton }) => {
 	const [input, setInput] = useState('');
@@ -27,7 +28,7 @@ const Nickname = ({ onGetValue, setButton }) => {
 	};
 
 	const handleDuplicate = () => {
-		const result = true;
+		const result = GetDuplicate(input);
 		if (validateNickname(input)) {
 			if (result) {
 				setDuplicated(false);

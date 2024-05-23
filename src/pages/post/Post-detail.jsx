@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Header from '@common/header/Header';
 import { Subtitle } from '@styles/basicInfo/Text';
@@ -23,34 +23,14 @@ import { getMatchingPostAPI } from 'services/api/MatchingPostAPI';
 import { postMatchingRequestAPI } from 'services/api/MatchingRequestAPI';
 import UserPageInfo from '@components/UserPage/UserPageInfo';
 import UserLifeStyles from '@components/UserPage/UserLifeStyles';
-
-const mocks = {
-	postId: 1,
-	authorProfile: {
-		img: Panda,
-		nickname: 'happy푸바옹',
-		gender: '남',
-		birth: '1999.05.25',
-		studentId: '18학번',
-		major: '폴란드어과',
-		introduce: '맛집 투어 좋아해요!',
-	},
-	title: '신긱 룸메 찾습니다.',
-	upload: 2,
-	detail:
-		'1. 저랑 나이대가 비슷하면 좋겠습니다\n2. 취침 시간: 12시-1시 사이에 보통 잠을 잡니다.\n3.제일 중요: 비흡연자를 찾습니다. \n\n 4인실이라 세 분 구하고 있습니다. 괜찮으시면 매칭 신청해주세요.',
-	building: 'E동',
-	room: '4인실',
-	recruitNum: 3,
-	deadline: {
-		date: '2024년 7월 5일',
-		time: '오후 1시 30분',
-	},
-};
+import { timeAgo } from '@utils/TimeAgo';
+import useAuthStore from '@store/authStore';
 
 const PostDetail = () => {
+	const setAccessToken = useAuthStore((state) => state.setAccessToken);
+	const { postId } = useParams();
 	const navigate = useNavigate();
-	const [data, setDate] = useState();
+	const [data, setData] = useState(null);
 	const [moreOpen, setMoreOpen] = useState(false);
 	const [threedots, setThreedots] = useState(false);
 	const [confirm, setConfirm] = useState(false);
@@ -63,10 +43,16 @@ const PostDetail = () => {
 	const [matching, setMatching] = useState(false);
 
 	useEffect(() => {
-		getMatchingPostAPI(1);
-		// console.log(result);
-		// setDate(result);
-	}, []);
+		const fetchData = async () => {
+			const result = await getMatchingPostAPI(postId, setAccessToken);
+			setData(result);
+		};
+		fetchData();
+	}, [postId]);
+
+	if (!data) {
+		return <div>로딩 중...</div>;
+	}
 
 	const EditFunc = () => {
 		navigate('/post-edit');
@@ -89,7 +75,7 @@ const PostDetail = () => {
 		setConfirm(true);
 		setConfirmContent((prev) => ({
 			...prev,
-			msg: `${mocks.authorProfile.nickname}님을 차단할까요?`, // 작성자 이름
+			msg: `${data.author_name}님을 차단할까요?`, // 작성자 이름
 			btn: '차단',
 			id: 1,
 			func: () => {
@@ -145,8 +131,8 @@ const PostDetail = () => {
 								<img src={HomeIcon} alt="home" className="mr-[60px]" />
 							</Link>
 							<SimpleProfile
-								Img={mocks.authorProfile.img}
-								nickname={mocks.authorProfile.nickname}
+								Img={data.author_profile?.photoUrl}
+								nickname={data.author_name}
 								mr={'6px'}
 								width="25px"
 								height="25px"
@@ -157,16 +143,18 @@ const PostDetail = () => {
 				</div>
 				<section className="post">
 					<div className="container justify-between items-center">
-						<p>{mocks.title}</p>
-						<span className="cation2 color-gray">{mocks.upload}분 전</span>
+						<p>{data.title}</p>
+						<span className="cation2 color-gray">
+							{timeAgo(data.created_at)}
+						</span>
 					</div>
 					<Box />
 					<div className="container flex-col">
 						<div className="flex justify-between w-full mb-4">
 							<div className="flex">
 								<SimpleProfile
-									Img={mocks.authorProfile.img}
-									nickname={mocks.authorProfile.nickname}
+									Img={data.author_profile?.photoUrl}
+									nickname={data.author_name}
 									mr="6px"
 									width="25px"
 									height="25px"
@@ -215,7 +203,7 @@ const PostDetail = () => {
 								whiteSpace: 'pre-wrap',
 							}}
 						>
-							<p className="caption2 text-left">{mocks.detail}</p>
+							<p className="caption2 text-left">{data.content}</p>
 						</DropdownWrapper>
 					</div>
 					<Box />
@@ -228,8 +216,8 @@ const PostDetail = () => {
 								</Subtitle>
 							</div>
 							<div className="flex">
-								<PurpleBox>{mocks.building}</PurpleBox>
-								<PurpleBox>{mocks.room}</PurpleBox>
+								<PurpleBox>{data.dong}</PurpleBox>
+								<PurpleBox>{data.room_size}</PurpleBox>
 							</div>
 						</div>
 						<div className="flex flex-col mb-4">
@@ -237,23 +225,23 @@ const PostDetail = () => {
 								<img src={Checkbox} className="mr-1" />
 								<Subtitle style={{ margin: '0px' }}>모집 인원</Subtitle>
 							</div>
-							<PurpleBox className="w-16">{mocks.recruitNum}명</PurpleBox>
+							<PurpleBox className="w-16">
+								{data.target_number_of_people}명
+							</PurpleBox>
 						</div>
 						<div className="flex flex-col">
 							<div className="flex justify-center items-center mb-4">
 								<img src={Checkbox} className="mr-1" />
 								<Subtitle style={{ margin: '0px' }}>마감 기한</Subtitle>
 							</div>
-							<p className="body5 text-left">
-								{mocks.deadline.date} / {mocks.deadline.time}
-							</p>
+							<p className="body5 text-left">{data.deadline}</p>
 						</div>
 					</div>
 					<div className="container">
 						<BasicProfile
-							Img={mocks.authorProfile.img}
-							nickname={mocks.authorProfile.nickname}
-							content={mocks.authorProfile.introduce}
+							Img={data.author_profile?.photoUrl}
+							nickname={data.author_name}
+							content={data.author_profile.gender}
 							mr="20px"
 							width="45px"
 							height="45px"
@@ -263,13 +251,13 @@ const PostDetail = () => {
 					<Box />
 				</section>
 				<section className="comment">
-					<PreviewComment />
+					<PreviewComment postId={data.id} comments={data.comments} />
 				</section>
 				<section className="container items-center justify-between sticky bottom-0 bg-white z-20">
 					<button
 						onClick={() => {
-							navigate(`/comment-detail/${mocks.postId}`, {
-								state: { postId: mocks.postId },
+							navigate(`/comment-detail/${data.id}`, {
+								state: { postId: data.id },
 							});
 						}}
 						style={{ display: 'flex', alignItems: 'center' }}
