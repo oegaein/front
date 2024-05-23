@@ -5,54 +5,26 @@ import { Subtitle } from '@styles/basicInfo/Text';
 import { BasicProfile } from '@common/ui/Profile';
 import FONT from '@styles/fonts';
 import COLOR from '@styles/color';
-import Panda from '@assets/images/common/Panda.png';
 import ArrowRightIcon from '@assets/images/common/ArrowRightIcon.svg';
 import { Box } from '@pages/post/Post-detail';
 import { useNavigate } from 'react-router-dom';
-import { postCommentsAPI } from '@services/api/CommentsAPI';
+import { timeAgo } from '@utils/TimeAgo';
 
-const mocks = {
-	postId: 1,
-	count: 22,
-	comments: [
-		{
-			id: 1,
-			content: '제 친구랑 같이 신청해도 될까요?',
-			time: 20,
-			profile: { img: Panda, nickname: '구구국' },
-			reply: {
-				content: '가능합니다',
-				time: 20,
-				profile: { img: Panda, nickname: 'happy푸바웅' },
-			},
-		},
-		{
-			id: 2,
-			content: '늦게 자는 편인데 괜찮을까요?',
-			time: 20,
-			profile: { img: Panda, nickname: '블루베리' },
-		},
-	],
-};
-
-const PreviewComment = () => {
+const PreviewComment = ({ postId, comments }) => {
+	const id = postId;
 	const navigate = useNavigate();
 	const [value, setValue] = useState('');
 	const [reply, setReply] = useState(false);
 	const [owner, setOwner] = useState('');
 
-	// useEffect(() => {
-	// 	postCommentsAPI(1, value);
-	// }, [value]);
-
 	const handleReply = (index) => {
 		setReply(true);
-		setOwner(mocks.comments[index].profile.nickname);
+		setOwner(comments[index].author_name);
 	};
 
 	const handleMoreComment = () => {
-		navigate(`/comment-detail/${mocks.postId}`, {
-			state: { postId: mocks.postId },
+		navigate(`/comment-detail/${postId}`, {
+			state: { all: comments },
 		});
 	};
 
@@ -67,61 +39,77 @@ const PreviewComment = () => {
 						</p>
 					</div>
 					<div className="inputContainer">
-						<CommentInput setSelected={setValue} setReply={setReply} />
+						<CommentInput
+							postId={id}
+							setSelected={setValue}
+							setReply={setReply}
+						/>
 					</div>
 				</CommentBox>
 			)}
 			<CommentStyle>
 				<section className="flex flex-col p-[25px] pb-[0px]">
-					<Subtitle>댓글 {mocks.count}개</Subtitle>
+					<Subtitle>댓글 {comments.length}개</Subtitle>
 					<div className="w-full">
-						<CommentInput setSelected={setValue} />
+						<CommentInput postId={id} setSelected={setValue} />
 					</div>
 				</section>
-				<section className="commentbox">
-					{mocks.comments.map((item, index) => (
-						<div key={item.id} className="w-full mb-6">
-							<BasicProfile
-								Img={item.profile.img}
-								nickname={item.profile.nickname}
-								content={item.content}
-								mr="13px"
-								width="40px"
-								height="40px"
-								ver="comment"
-							/>
-							<div className="flex justify-between mt-4 pl-12 w-[45%]">
-								<span>{item.time}분 전</span>
-								<span
-									className="cursor-pointer"
-									onClick={() => handleReply(index)}
-								>
-									답글달기
-								</span>
-							</div>
-							{item.reply && (
-								<div className="replybox">
+				{comments.length === 0 ? (
+					<div className="flex justify-center items-center p-4 mb-3">
+						<p className="text-gray-400">아직 작성된 댓글이 없습니다.</p>
+					</div>
+				) : (
+					<>
+						<section className="commentbox">
+							{comments.map((item, index) => (
+								<div key={item.id} className="w-full mb-6">
 									<BasicProfile
-										Img={item.reply.profile.img}
-										nickname={item.reply.profile.nickname}
-										content={item.reply.content}
+										Img={item.photo_url}
+										nickname={item.author_name}
+										content={item.content}
 										mr="13px"
 										width="40px"
 										height="40px"
 										ver="comment"
 									/>
-									<div className="flex justify-between mt-4 pl-12 w-2/4">
-										<span>{item.time}분 전</span>
+									<div className="flex justify-between mt-4 pl-12 w-[45%]">
+										<span>{timeAgo(item.created_at)}</span>
+										<span
+											className="cursor-pointer"
+											onClick={() => handleReply(index)}
+										>
+											답글달기
+										</span>
 									</div>
+									{item.replies &&
+										item.replies.map((reply, index) => (
+											<div className="replybox">
+												<BasicProfile
+													Img={reply.photo_url}
+													nickname={reply.author_name}
+													content={reply.content}
+													mr="13px"
+													width="40px"
+													height="40px"
+													ver="comment"
+												/>
+												<div className="flex justify-between mt-4 pl-12 w-2/4">
+													<span>{timeAgo(reply.created_at)}</span>
+												</div>
+											</div>
+										))}
 								</div>
-							)}
-						</div>
-					))}
-				</section>
-				<section className="commentBtn caption2" onClick={handleMoreComment}>
-					<p className="mr-1">{mocks.count}개 댓글 전체 보기</p>
-					<img src={ArrowRightIcon} alt="arrow" />
-				</section>
+							))}
+						</section>
+						<section
+							className="commentBtn caption2"
+							onClick={handleMoreComment}
+						>
+							<p className="mr-1">{comments.length}개 댓글 전체 보기</p>
+							<img src={ArrowRightIcon} alt="arrow" />
+						</section>
+					</>
+				)}
 				<Box />
 			</CommentStyle>
 		</>
