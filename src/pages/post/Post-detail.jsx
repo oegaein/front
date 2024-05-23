@@ -45,6 +45,7 @@ const PostDetail = () => {
 	useEffect(() => {
 		const fetchData = async () => {
 			const result = await getMatchingPostAPI(postId, setAccessToken);
+			console.log(result);
 			setData(result);
 		};
 		fetchData();
@@ -251,7 +252,11 @@ const PostDetail = () => {
 					<Box />
 				</section>
 				<section className="comment">
-					<PreviewComment postId={data.id} comments={data.comments} />
+					<PreviewComment
+						postId={data.id}
+						comments={data.comments}
+						count={data.comments_count}
+					/>
 				</section>
 				<section className="container items-center justify-between sticky bottom-0 bg-white z-20">
 					<button
