@@ -82,7 +82,7 @@ function App() {
 								/>
 								<Route path="/setting" element={<BasicInfoSetting />} />
 								<Route path="/post-roommate" element={<Post />} />
-								<Route path="/post-detail" element={<PostDetail />} />
+								<Route path="/post-detail/:postId" element={<PostDetail />} />
 								<Route
 									path="/comment-detail/:postId"
 									element={<CommentDetail />}
@@ -118,11 +118,10 @@ function MainLayout() {
 			{location.pathname !== '/' &&
 				location.pathname !== '/onboarding' &&
 				location.pathname !== '/login' &&
-				location.pathname !== '/post-detail' && 
-				location.pathname !== '/setting' && 
-				location.pathname !== '/roommate/filter' && 
-				location.pathname.substring(0,5) !== '/user' && 
-				<Navbar />}
+				location.pathname !== '/post-detail' &&
+				location.pathname !== '/setting' &&
+				location.pathname !== '/roommate/filter' &&
+				location.pathname.substring(0, 5) !== '/user' && <Navbar />}
 		</div>
 	);
 }
