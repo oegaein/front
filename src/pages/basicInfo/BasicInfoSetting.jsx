@@ -15,10 +15,11 @@ import Sleephabits from '@components/basicInfo/Sleephabits';
 import Smoking from '@components/basicInfo/Smoking';
 import Sound from '@components/basicInfo/Sound';
 import COLOR from '@styles/color';
-import { postProfileAPI } from 'services/api/ProfileAPI';
-import { getMatchingListAPI } from 'services/api/MatchingPostAPI';
+import { PostProfileAPI } from 'services/api/ProfileAPI';
+import useAuthStore from '@store/authStore';
 
 const BasicInfoSetting = () => {
+	const setAccessToken = useAuthStore((state) => state.setAccessToken);
 	const [activeButton, setActiveButton] = useState(true);
 	const [count, setCount] = useState(1);
 	const [info, setInfo] = useState({
@@ -28,24 +29,16 @@ const BasicInfoSetting = () => {
 		birthdate: '',
 		major: 'GBT',
 		introduction: '',
-		mbti: '',
-		sleeping_habit: [],
-		life_pattern: '',
+		mbti: null,
+		sleeping_habit: null,
+		life_pattern: null,
 		smoking: null,
-		cleaning_cycle: '',
-		outing: '',
-		sound_sensitivity: '',
+		cleaning_cycle: null,
+		outing: null,
+		sound_sensitivity: null,
 	});
 
 	console.log(info);
-
-	try {
-		getMatchingListAPI().then((res) => {
-			console.log(res);
-		});
-	} catch (error) {
-		console.log(error);
-	}
 
 	const step = [
 		{ id: 1, btn: '다음', title: '닉네임을 입력해 주세요' },
@@ -76,7 +69,7 @@ const BasicInfoSetting = () => {
 
 		if (count === 11) {
 			try {
-				const response = await postProfileAPI(info);
+				const response = await PostProfileAPI(info, setAccessToken);
 				console.log(response);
 			} catch (error) {
 				console.error(error);
@@ -100,7 +93,7 @@ const BasicInfoSetting = () => {
 
 		if (count === 11) {
 			try {
-				const response = await postProfileAPI(info);
+				const response = await PostProfileAPI(info, setAccessToken);
 				console.log(response);
 			} catch (error) {
 				console.error(error);
