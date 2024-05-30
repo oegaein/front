@@ -285,8 +285,7 @@ const PostDetail = () => {
 						text={matching ? '신청완료' : '매칭신청'}
 						eventName={() => {
 							setMatching(true);
-							// postMatchingRequestAPI(1);
-							alert('매칭 신청 완료');
+							postMatchingRequestAPI(postId, setAccessToken);
 						}}
 						disabled={matching}
 						size="65%"
