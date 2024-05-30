@@ -3,12 +3,14 @@ import BasicDropdown, { DropdownWrapper } from '@common/dropdown/BasicDropdown';
 import OpenDropdown from '@common/dropdown/OpenDropdown';
 import { NumInput, RadioInput } from '@components/basicInfo/BasicSettingInput';
 import { Content } from '@components/basicInfo/Lifepattern';
+import useAuthStore from '@store/authStore';
 import { Input, TextArea } from '@styles/basicInfo/Input';
 import { Subtitle } from '@styles/basicInfo/Text';
 import React, { useEffect, useState } from 'react';
 import { postMatchingPostAPI } from 'services/api/MatchingPostAPI';
 
 const PostRoommate = () => {
+	const setAccessToken = useAuthStore((state) => state.setAccessToken);
 	const [postContent, setPostContent] = useState({
 		title: '',
 		detail: '',
@@ -54,7 +56,7 @@ const PostRoommate = () => {
 			roomSizeType: postContent.type,
 		};
 		console.log(SubmitData);
-		postMatchingPostAPI(SubmitData);
+		postMatchingPostAPI(SubmitData, setAccessToken);
 	};
 
 	const isFormValid = () => {
