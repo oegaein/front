@@ -20,11 +20,13 @@ import Dots from '@assets/images/dots-black.svg';
 import RoommateSwiperList from '@common/RoommateSwiperList';
 import LikeItem from '@components/LikePage/LikeItem';
 import SelectMenuBar from '@common/menu/SelectMenuBar';
+import { useQuery } from '@tanstack/react-query';
 const MyPage = () => {
 	const accessToken = useAuthStore.getState().accessToken
   console.log(accessToken)
 	const {
 		data: comeMatchingRequests,
+		refetch: reFetchComeMatchingRequests,
 		isLoading: isLoadingCome,
 		error: isErrorCome,
 	} = useMatchingPosts('come-matchingrequests');
@@ -105,7 +107,7 @@ const MyPage = () => {
 				<div className="pt-[16px] flex flex-col gap-[16px]">
 					{comeMatchingRequests ? (
 						comeMatchingRequests.data.map((post, index) => (
-							<ComeMatchingRequest post={post} index={index} />
+							<ComeMatchingRequest post={post} index={index} reFetchComeMatchingRequests={reFetchComeMatchingRequests}/>
 						))
 					) : (
 						<div className="text-center">나에게 온 신청 요청이 없습니다.</div>
@@ -174,13 +176,15 @@ const MyPage = () => {
 
 export default MyPage;
 
-const ComeMatchingRequest = ({ post, index }) => {
+const ComeMatchingRequest = ({ post, index, reFetchComeMatchingRequests }) => {
 	const [matchingRequestId, setMatchingRequestId] = useState();
 	const handleClickAcceptBtn = async (id) => {
 		try {
 			const response = await API.patch(`/api/v1/matchingrequests/${id}/accept`);
 			const matchingRequestId = response.data.matchingRequestId;
 			setMatchingRequestId(matchingRequestId);
+			reFetchComeMatchingRequests()
+			console.log('수락', response.data)
 		} catch (err) {
 			console.log(err);
 		}
@@ -190,6 +194,9 @@ const ComeMatchingRequest = ({ post, index }) => {
 			const response = await API.patch(`/api/v1/matchingrequests/${id}/reject`);
 			const matchingRequestId = response.data.matchingRequestId;
 			setMatchingRequestId(matchingRequestId);
+			reFetchComeMatchingRequests()
+			console.log('거절', response.data)
+
 		} catch (err) {
 			console.log(err);
 		}
@@ -212,13 +219,13 @@ const ComeMatchingRequest = ({ post, index }) => {
 			</div>
 			<div className="flex gap-[5px]">
 				<button
-					onClick={() => handleClickAcceptBtn(post.matchingPostId)}
+					onClick={() => handleClickAcceptBtn(post.matchingRequestId)}
 					className="button allowed"
 				>
 					수락
 				</button>
 				<button
-					onClick={() => handleClickRejectBtn(post.matchingPostId)}
+					onClick={() => handleClickRejectBtn(post.matchingRequestId)}
 					className="button declined"
 				>
 					거절

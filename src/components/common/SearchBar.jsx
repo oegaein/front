@@ -3,16 +3,30 @@ import FONT from '@styles/fonts';
 import COLOR from '@styles/color';
 import SearchIcon from '@assets/images/search-icon.svg';
 import useDebounce from 'hooks/useDebounce';
+import { API } from '@utils/api';
 
 const SearchBar = forwardRef(function SearchBar(props, ref) {
 	const [searchTerm, setSearchTerm] = useState('');
+	const [searchResults, setSearchResults] = useState({}); 
 	const { handleClickSearchBtn, onClick, handleKeyPress } = props;
 	const debouncedSearchTerm = useDebounce(searchTerm, 500);
 	const handleChange = (e) => {
 		setSearchTerm(e.target.value);
 	};
+	const fetchData = async () => {
+		try {
+			const response = await API.get(`/api/v1/search?q=${debouncedSearchTerm}`)
+			setSearchResults(response.data.matching_posts_data);
+			console.log(response.data)
+		} catch (err) {
+			console.error(err);
+		}
+	}
 	useEffect(() => {
 		console.log(debouncedSearchTerm);
+		// fetchData()
+
+		
 	}, [debouncedSearchTerm]);
 	return (
 		<div

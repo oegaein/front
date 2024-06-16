@@ -26,7 +26,9 @@ const RoommateSwiperList = ({ type }) => {
 			>
 				{/* 데이터 20개까지 보여주기 */}
 				{data.data &&
-					data.data.map((post, index) => (
+					data.data
+					.filter(post => post.matchingStatus === '매칭대기') // '매칭대기'인 post만 필터링
+					.map((post, index) => (
 						<SwiperSlide key={post.matchingPostId}>
 							<RoommateSwiperItem post={post} index={index} />
 						</SwiperSlide>

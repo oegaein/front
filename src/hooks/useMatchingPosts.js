@@ -25,7 +25,7 @@ const fetchData = async (type) => {
     //   }
     // }
     )
-    console.log('훅:', response.data)
+    console.log(`${type}훅:`, response.data)
     return response.data
   } catch(error) {
     console.error(error)
