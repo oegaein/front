@@ -41,9 +41,10 @@ const RoommateScrollItem = ({post}) => {
           <div className='flex items-center justify-between'>
             <div>
               <span className='room mr-[10px]'>{post.dong} {post.roomSize}</span>
+              {/* 데이터 바인딩 필요 */}
               <span className='mates-number'>모집인원 1명</span>
             </div>
-            <span className='dday'>D-4</span>
+            <span className='dday'>D-{post.dday}</span>
           </div>
           <div className='text-left mt-[7px]'>
             <p className='roommate-title max-w-[205px] 

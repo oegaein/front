@@ -10,18 +10,16 @@ import COLOR from '@styles/color'
 import Mbti from '@assets/images/mbti.svg'
 import SpeechBubble from '@assets/images/speech-bubble.svg'
 import Morning from '@assets/images/morning.svg'
-import Nosmoking from '@assets/images/stop-smoking.svg'
 import Clean from '@assets/images/household.svg'
 import House from '@assets/images/house.svg'
 import Ear from '@assets/images/ear.svg'
-
+import NotSmoking from '@assets/images/basicInfo/NotSmoking.svg'
 //components
 
 
 const UserLifeStyles = ({userInfo}) => {
   const location = useLocation()
   const path = location.pathname
-  console.log(path)
   return (
     <SettingStyle>
       <div>
@@ -46,7 +44,7 @@ const UserLifeStyles = ({userInfo}) => {
           </div>
           <div className='flex flex-col items-center w-[57px] gap-[9px]'>
             <div className='flex items-center h-[44px]'>
-              <img src={Nosmoking}/>
+              <img src={NotSmoking}/>
             </div>
             <span className='text-[13px]'>{userInfo.smoking}</span>
           </div>

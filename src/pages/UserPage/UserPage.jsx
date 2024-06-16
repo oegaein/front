@@ -22,7 +22,7 @@ import OptionModal from '@common/modal/OptionModal'
 const UserPage = () => {
   const navigate = useNavigate()
   const setAccessToken = useAuthStore(state => state.setAccessToken)
-  const accessToken = useAuthStore.getState().accessToken
+  // const accessToken = useAuthStore.getState().accessToken
   const [userInfo, setUserInfo] = useState(profileData)
   const [isModalOpen, setIsModalOpen] = useState(false)
   let {memberId} = useParams()
