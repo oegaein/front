@@ -27,6 +27,13 @@ const FONT = {
       font-weight: 600;
       line-height: 25px;
       `,
+	title4SB17: `
+      font-family: 'Pretendard';
+      font-size: 17px;
+      font-style: bold;
+      font-weight: 600;
+      line-height: 25px;
+      `,
 	body1M17: `
       font-family: 'Pretendard';
       font-size: 17px;
@@ -97,14 +104,12 @@ const FONT = {
       font-weight: 400;
       line-height: auto;
       `,
-      largetitle: `
+	largetitle: `
       font-family: 'Pretendard';
       font-size: 23px;
       font-style: normal;
       font-weight: semi-bold;
-      `
+      `,
 };
-
-
 
 export default FONT;
