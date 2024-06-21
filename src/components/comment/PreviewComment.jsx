@@ -16,10 +16,12 @@ const PreviewComment = ({ postId, comments, count }) => {
 	const [value, setValue] = useState('');
 	const [reply, setReply] = useState(false);
 	const [owner, setOwner] = useState('');
+	const [commentID, setCommentID] = useState(-1);
 
 	const handleReply = (index) => {
 		setReply(true);
 		setOwner(comments[index].author_name);
+		setCommentID(comments[index].id);
 	};
 
 	const handleMoreComment = () => {
@@ -40,7 +42,7 @@ const PreviewComment = ({ postId, comments, count }) => {
 					</div>
 					<div className="inputContainer">
 						<CommentInput
-							postId={id}
+							postId={commentID}
 							setSelected={setValue}
 							setReply={setReply}
 						/>
