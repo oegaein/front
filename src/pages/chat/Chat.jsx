@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import FONT from '@styles/fonts';
 import styled from 'styled-components';
 import Alarm from '@assets/images/common/alarm.svg';
@@ -9,30 +9,22 @@ import useAuthStore from '@store/authStore';
 import SelectMenuBar from '@common/menu/SelectMenuBar';
 import { timeAgo } from '@utils/TimeAgo';
 import { ImgWrapper } from '@common/ui/Profile';
+import { getChatListAPI } from 'services/api/ChatAPI';
 
 const Chat = () => {
 	const setAccessToken = useAuthStore((state) => state.setAccessToken);
 	const navigate = useNavigate();
 	const [menu, setMenu] = useState('룸메이트');
+	const [chatList, setChatList] = useState([{}]);
 
-	const chatList = [
-		{
-			id: 1,
-			img: Alarm,
-			name: '차은우',
-			content: '괜찮으시면 저랑 룸메해요!',
-			time: '21:05',
-			culMsg: 2,
-		},
-		{
-			id: 2,
-			img: Alarm,
-			name: '김예은',
-			content: '괜찮으시면 저랑 어찌구!',
-			time: '20:05',
-			culMsg: 1,
-		},
-	];
+	useEffect(() => {
+		const fetchData = async () => {
+			const result = await getChatListAPI(setAccessToken);
+			setChatList(result);
+		};
+		fetchData();
+	}, []);
+
 	return (
 		<>
 			<ChatStyle>
@@ -57,24 +49,36 @@ const Chat = () => {
 							<p className="mt-10">새로운 채팅이 없습니다.</p>
 						) : (
 							chatList?.map((chat, index) => (
-								<Link key={index} to={'/chat/chatroom'}>
+								<Link
+									key={chat.id}
+									to={`/chat/chatroom/${chat.room_id}`}
+									state={{ subscribeID: chat.room_id }}
+								>
 									<ChatList>
 										<div className="w-[65px] h-[65px] mr-[11px]">
 											<ImgWrapper mr={'11px'} width={'65px'} height={'65px'}>
-												<img src={chat.img} alt="profile" className="img" />
+												<img
+													src={chat.photo_url}
+													alt="profile"
+													className="img"
+												/>
 											</ImgWrapper>
 										</div>
 										<div className="info_wrapper">
 											<div className="flex justify-between items-center mb-1">
 												<div className="flex items-center">
-													<p className="title">{chat.name}</p>
-													<p className="time">{chat.culMsg}</p>
+													<p className="title">{chat.room_name}</p>
+													<p className="time">{chat.member_count}</p>
 												</div>
-												<p className="time">{timeAgo(chat.time)}</p>
+												<p className="time">
+													{timeAgo(chat.last_message_date)}
+												</p>
 											</div>
 											<div className="flex justify-between items-center">
-												<p className="msg">{chat.content}</p>
-												<div className="culBox">{chat.culMsg}</div>
+												<p className="msg">{chat.last_message_content}</p>
+												<div className="culBox">
+													{chat.un_read_message_count}
+												</div>
 											</div>
 										</div>
 									</ChatList>
