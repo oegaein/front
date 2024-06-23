@@ -74,7 +74,7 @@ const MyPage = () => {
 						</div>
 					</div>
 					<div>
-						<Link to="/user/2" className="color-purple1 font-caption2m14">
+						<Link to="/user/my-profile" className="color-purple1 font-caption2m14">
 							프로필 보기
 						</Link>
 					</div>

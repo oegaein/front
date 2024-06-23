@@ -10,7 +10,7 @@ const CallBack = () => {
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search)
     const code = queryParams.get('code')
-    console.log(code)
+    // console.log(code)
     const fetchData = async () => {
       try {
         const response = await API.get(`/api/v1/member/auth/google/callback?code=${code}`)
@@ -18,6 +18,7 @@ const CallBack = () => {
         const refreshToken = response.data.refreshToken
         console.log('token:', accessToken)
         setAccessToken(accessToken)
+        console.log('authstore',useAuthStore.getState().accessToken)
         API.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
         // API.defaults.withCredentials = true
         navigate('/home')

@@ -9,12 +9,23 @@ import { API } from '@utils/api'
 const RoommateReviewList = ({memberId, isInReviewPage}) => {
   const [reviews, setReviews] = useState([])
   useEffect(()=>{
-    const fetchReviewData = async () => {
-      const response = await API.get(`/api/v1/${memberId}/reviews`)
-      console.log(response.data.data)
-      setReviews(response.data.data)
+    
+    let path = ""
+    if (memberId === 'my-profile') {
+      path = "/api/v1/reviews/my-review"
+    } else {
+      path = `/api/v1/reviews/${memberId}`
     }
-    fetchReviewData()
+    const fetchReviewData = async (path) => {
+      try {
+        const response = await API.get(path)
+        console.log(response.data.data)
+        setReviews(response.data.data)
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    fetchReviewData(path)
   }, [])
   return (
     <SettingStyle className='relative bg-white px-[24px]'>
