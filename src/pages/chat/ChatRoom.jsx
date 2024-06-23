@@ -26,7 +26,7 @@ const Chatroom = () => {
 	const { subscribeID } = useParams();
 	const navigate = useNavigate();
 
-	const [chat, setChat] = useState([]);
+	const [chats, setChat] = useState([]);
 	const [message, setMessage] = useState('');
 
 	const connectClient = () => {
@@ -46,7 +46,6 @@ const Chatroom = () => {
 			heartbeatOutgoing: 300000,
 
 			onConnect: (frame) => {
-				console.log('Connected: ' + frame);
 				clientRef.current.subscribe(`/topic/${subscribeID}`, (message) => {
 					setChat((prevChat) => [...prevChat, JSON.parse(message.body)]);
 				});
@@ -83,7 +82,8 @@ const Chatroom = () => {
 		if (messageEndRef.current) {
 			messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
 		}
-	}, [chat]);
+		console.log(chats);
+	}, [chats]);
 
 	const inputMessage = (e) => {
 		setMessage(e.target.value);
@@ -119,6 +119,14 @@ const Chatroom = () => {
 		return name === myInfo.username;
 	};
 
+	const prevSender = (current, prev) => {
+		return current === prev;
+	};
+
+	const nextSender = (current, next) => {
+		return current === next;
+	};
+
 	return (
 		<ChatContainer>
 			<section className="pb-3 fixed top-0 z-10 bg-white border-b-black container">
@@ -136,27 +144,39 @@ const Chatroom = () => {
 				</Header>
 			</section>
 			<section className="chatRoom">
-				{chat.map((chat, index) => (
+				{chats.map((chat, index) => (
 					<ChattingStyle key={index} isMyChat={isMyChat(chat.senderName)}>
-						<div
-							className={
-								chat.senderName === myInfo.username ? 'noneDisplay' : ''
+						<ImgVisible
+							className={isMyChat(chat.senderName) ? 'noneDisplay' : ''}
+							visible={
+								index > 0 &&
+								prevSender(chat.senderName, chats[index - 1].senderName)
 							}
 						>
 							<ImgWrapper mr={'10px'} width={'50px'} height={'50px'}>
 								<img src={chat.photoUrl} alt="profile" className="img" />
 							</ImgWrapper>
-						</div>
+						</ImgVisible>
 						<div className="flex flex-col">
 							<div
-								className={isMyChat(chat.senderName) ? 'noneDisplay' : 'name'}
+								className={
+									isMyChat(chat.senderName) ||
+									prevSender(chat.senderName, chats[index - 1].senderName)
+										? 'noneDisplay '
+										: 'name'
+								}
 							>
 								{chat.senderName}
 							</div>
 							<div
-								className={
-									isMyChat(chat.senderName) ? 'chat myChat' : 'chat yourChat'
-								}
+								className={`chat ${isMyChat(chat.senderName) ? 'myChat' : 'yourChat'} ${
+									index > 0 &&
+									prevSender(chat.senderName, chats[index - 1].senderName)
+										? nextSender(chat.senderName, chats[index + 1]?.senderName)
+											? 'middleMsg'
+											: 'endMsg'
+										: ''
+								}`}
 							>
 								{chat.message}
 							</div>
@@ -207,6 +227,8 @@ const ChatContainer = styled.div`
 	align-items: center;
 	width: 100%;
 	height: 100vh;
+	overflow: hidden;
+	touch-action: none;
 
 	.container {
 		display: flex;
@@ -224,7 +246,7 @@ const ChatContainer = styled.div`
 	}
 	.chatRoom {
 		width: 100%;
-		padding: 0px 25px;
+		padding: 50px 25px 0px 25px;
 		overflow-y: auto;
 	}
 	.noneDisplay {
@@ -236,6 +258,7 @@ const ChattingStyle = styled.div`
 	display: flex;
 	width: 100%;
 	margin-bottom: 4px;
+	flex-direction: 'row-reverse';
 	flex-direction: ${({ isMyChat }) => (isMyChat ? 'row-reverse' : 'row')};
 
 	.name {
@@ -262,6 +285,16 @@ const ChattingStyle = styled.div`
 	.yourChat {
 		background-color: ${COLOR.purple3};
 		border-radius: 20px 20px 20px 3px;
+	}
+
+	.middleMsg {
+		border-radius: ${({ isMyChat }) =>
+			isMyChat ? '20px 3px 3px 20px' : '3px 20px 20px 3px'};
+	}
+
+	.endMsg {
+		border-radius: ${({ isMyChat }) =>
+			isMyChat ? '20px 3px 20px 20px' : '3px 20px 20px 20px'};
 	}
 `;
 
@@ -304,4 +337,11 @@ const InputStyle = styled.div`
 	.input:focus {
 		outline: none;
 	}
+`;
+
+const ImgVisible = styled.div`
+	width: 50px;
+	height: 50px;
+	margin-right: 10px;
+	opacity: ${({ visible }) => (visible ? 0 : 1)};
 `;
