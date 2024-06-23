@@ -127,6 +127,12 @@ const Chatroom = () => {
 		return current === next;
 	};
 
+	const getDate = (current, prev) => {
+		// "2024-06-24T00:24:13.27823219"
+		const visible = current.slice(0, 9) !== prev.slice(0, 9);
+		console.log(visible);
+	};
+
 	return (
 		<ChatContainer>
 			<section className="pb-3 fixed top-0 z-10 bg-white border-b-black container">
@@ -181,9 +187,9 @@ const Chatroom = () => {
 								{chat.message}
 							</div>
 						</div>
-						<div ref={messageEndRef}></div>
 					</ChattingStyle>
 				))}
+				<div ref={messageEndRef}></div>
 			</section>
 			<InputStyle>
 				<div className="input_box">
@@ -226,7 +232,6 @@ const ChatContainer = styled.div`
 	flex-direction: column;
 	align-items: center;
 	width: 100%;
-	height: 100vh;
 	overflow: hidden;
 	touch-action: none;
 
@@ -316,7 +321,7 @@ const InputStyle = styled.div`
 
 	padding: 25px 25px;
 	position: fixed;
-	bottom: 8%;
+	bottom: 0;
 	width: 100%;
 
 	.input_box {
