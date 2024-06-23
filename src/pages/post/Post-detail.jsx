@@ -166,14 +166,14 @@ const PostDetail = () => {
 								<span className="cation2 color-purple">프로필 보기</span>
 							</Link>
 						</div>
-						<UserPageInfo />
+						<UserPageInfo userInfo={data.author_profile} />
 					</div>
 					{moreOpen && (
 						<div className="container flex flex-col w-full bg-gray-50">
 							<p className="body2 w-full mb-4 text-start">
 								성향 및 라이프스타일
 							</p>
-							<UserLifeStyles />
+							<UserLifeStyles userInfo={data.author_profile} />
 						</div>
 					)}
 					<div

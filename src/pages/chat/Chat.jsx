@@ -45,7 +45,7 @@ const Chat = () => {
 				/>
 				{menu === '룸메이트' ? (
 					<div className="container flex flex-col">
-						{chatList.length === 0 ? (
+						{chatList === 'undefined' ? (
 							<p className="mt-10">새로운 채팅이 없습니다.</p>
 						) : (
 							chatList?.map((chat, index) => (
