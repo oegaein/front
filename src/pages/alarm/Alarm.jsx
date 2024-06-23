@@ -1,40 +1,49 @@
 import Header from '@common/header/Header';
 import SelectMenuBar from '@common/menu/SelectMenuBar';
 import FONT from '@styles/fonts';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import Panda from '@assets/images/common/Panda.png';
 import COLOR from '@styles/color';
 import Close from '@assets/images/close.svg';
-
-const AlarmList = [
-	{
-		id: 1,
-		img: Panda,
-		title: '차은우 님이 신청을 보냈어요',
-		time: '30분 전',
-		sub: '',
-	},
-	{
-		id: 2,
-		img: Panda,
-		title: '고윤정 님이 신청을 보냈어요',
-		time: '32분 전',
-		sub: '',
-	},
-	{
-		id: 3,
-		img: Panda,
-		title: '이 룸메이트 신청이 곧 마감돼요!',
-		time: '33분 전',
-		sub: '신긱 룸메 찾습니다!',
-	},
-];
+import {
+	deleteAlarmAPI,
+	deleteAllAlarmAPI,
+	getAlarmAPI,
+} from 'services/api/AlarmAPI';
+import useAuthStore from '@store/authStore';
+import { timeAgo } from '@utils/TimeAgo';
 
 const Alarm = () => {
-	const [menu, setMenu] = useState('roommate');
+	const setAccessToken = useAuthStore((state) => state.setAccessToken);
+	const [menu, setMenu] = useState('룸메이트');
+	const [data, setData] = useState();
 
-	console.log('매뉴' + menu);
+	useEffect(() => {
+		const fetchData = async () => {
+			const result = await getAlarmAPI(setAccessToken);
+			setData(result.data);
+		};
+		fetchData();
+	}, []);
+
+	const DeleteAllAlarm = () => {
+		const fetchData = async () => {
+			const result = await deleteAllAlarmAPI(setAccessToken);
+			console.log(result);
+			setData(result);
+		};
+		fetchData();
+	};
+
+	const DeleteAlarm = (id) => {
+		const fetchData = async () => {
+			const result = await deleteAlarmAPI(id, setAccessToken);
+			console.log(result);
+			setData(result);
+		};
+		fetchData();
+	};
+
 	return (
 		<>
 			<AlarmContainer>
@@ -43,82 +52,84 @@ const Alarm = () => {
 						backPath="/home"
 						rightContent="전부삭제"
 						rightEvent={() => {
-							alert('전부 삭제');
+							DeleteAllAlarm();
 						}}
 					>
 						<p>알림</p>
 					</Header>
 				</div>
 				<SelectMenuBar
-					menuList={['룸메이트', '공동배달', '기숙사소식']}
+					menuList={['룸메이트', '공동배달']}
 					pickedMenuId={setMenu}
 				/>
 				{menu === '룸메이트' ? (
-					AlarmList.map((alarm, index) => (
-						<div className="flex w-full justify-between px-6 py-4">
-							<div className="flex">
-								<div className="mr-[10px]">
-									<img
-										src={alarm.img}
-										style={{ width: '65px', height: '65px' }}
-									/>
+					<div>
+						{data.length === 0 ? (
+							<p className="mt-10">새로운 알림이 없습니다.</p>
+						) : (
+							data?.map((alarm, index) => (
+								<div className="flex w-full justify-between px-6 py-4">
+									<div className="flex">
+										<div className="mr-[10px]">
+											<img
+												src={alarm.photo_url}
+												style={{ width: '65px', height: '65px' }}
+											/>
+										</div>
+										<div className="flex flex-col justify-center items-start">
+											<p className="title">
+												{alarm.name}님이 룸메이트 신청을 보냈습니다.
+											</p>
+											{alarm.sub !== '' && <p className="sub">{alarm.sub}</p>}
+											<p className="time mt-1">{timeAgo(alarm.created_at)}</p>
+										</div>
+									</div>
+									<button
+										onClick={() => {
+											DeleteAlarm(alarm.matching_post_id);
+										}}
+										className="flex items-center mb-5"
+									>
+										<img src={Close} alt="close button" />
+									</button>
 								</div>
-								<div className="flex flex-col justify-center items-start">
-									<p className="title">{alarm.title}</p>
-									{alarm.sub !== '' && <p className="sub">{alarm.sub}</p>}
-									<p className="time">{alarm.time}</p>
-								</div>
-							</div>
-							<button
-								onClick={() => {
-									alert('삭제!');
-								}}
-								className="flex items-center mb-5"
-							>
-								<img src={Close} alt="close button" />
-							</button>
-						</div>
-					))
-				) : menu === '공동배달' ? (
-					AlarmList.map((alarm, index) => (
-						<div className="flex w-full justify-between px-6 py-4">
-							<div className="flex">
-								<div className="mr-[10px]">
-									<img
-										src={alarm.img}
-										style={{ width: '65px', height: '65px' }}
-									/>
-								</div>
-								<div className="flex flex-col justify-center items-start">
-									<p className="title">{alarm.title}</p>
-									{alarm.sub !== '' && <p className="sub">{alarm.sub}</p>}
-									<p className="time">{alarm.time}</p>
-								</div>
-							</div>
-							<button className="flex items-center mb-5">x</button>
-						</div>
-					))
-				) : menu === '기숙사소식' ? (
-					AlarmList.map((alarm, index) => (
-						<div className="flex w-full justify-between px-6 py-4">
-							<div className="flex">
-								<div className="mr-[10px]">
-									<img
-										src={alarm.img}
-										style={{ width: '65px', height: '65px' }}
-									/>
-								</div>
-								<div className="flex flex-col justify-center items-start">
-									<p className="title">{alarm.title}</p>
-									{alarm.sub !== '' && <p className="sub">{alarm.sub}</p>}
-									<p className="time">{alarm.time}</p>
-								</div>
-							</div>
-							<button className="flex items-center mb-5">x</button>
-						</div>
-					))
+							))
+						)}
+					</div>
 				) : (
-					<div></div>
+					<div>
+						{data.length === 0 ? (
+							<p className="mt-10">새로운 알림이 없습니다.</p>
+						) : (
+							data?.map((alarm, index) => (
+								<div className="flex w-full justify-between px-6 py-4">
+									<div className="flex">
+										<div className="mr-[10px]">
+											<img
+												src={alarm.photo_url}
+												style={{ width: '65px', height: '65px' }}
+											/>
+										</div>
+										<div className="flex flex-col justify-center items-start">
+											<p className="title">
+												{alarm.name}님이 룸메이트 신청을 보냈습니다.
+											</p>
+											{alarm.sub !== '' && <p className="sub">{alarm.sub}</p>}
+											<p className="time mt-1">{timeAgo(alarm.created_at)}</p>
+										</div>
+									</div>
+									<button
+										onClick={() => {
+											DeleteAlarm(alarm.matching_post_id);
+										}}
+										className="flex items-center mb-5"
+									>
+										<img src={Close} alt="close button" />
+									</button>
+								</div>
+							))
+						)}
+					</div>
 				)}
 			</AlarmContainer>
 		</>

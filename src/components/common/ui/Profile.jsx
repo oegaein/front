@@ -12,7 +12,7 @@ export const SimpleProfile = ({ Img, nickname, mr, width, height, weight }) => {
 	return (
 		<>
 			<ImgWrapper mr={mr} width={width} height={height}>
-				<img src={Img} alt="Profile" width={width} height={height} />
+				<img src={Img} alt="Profile" className="img" />
 			</ImgWrapper>
 			<Nickname weight={weight}>{nickname}</Nickname>
 		</>
@@ -102,7 +102,7 @@ export const BasicProfile = ({
 			)}
 			<div className="flex w-full">
 				<ImgWrapper mr={mr} width={width} height={height}>
-					<img src={Img} alt="Profile" width={width} height={height} />
+					<img src={Img} className="img" alt="Profile" />
 				</ImgWrapper>
 				<div className="flex flex-col w-full">
 					{ver === 'profile' ? (
@@ -135,8 +135,7 @@ export const BasicProfile = ({
 	);
 };
 
-const ImgWrapper = styled.div`
-	margin-top: 2px;
+export const ImgWrapper = styled.div`
 	margin-right: ${({ mr }) => mr || '20px'};
 	width: ${({ width }) => width};
 	height: ${({ height }) => height};
@@ -144,6 +143,12 @@ const ImgWrapper = styled.div`
 	background-color: ${COLOR.gray100};
 	display: inline-flex;
 	align-items: center;
+
+	.img {
+		border-radius: 50%;
+		width: ${({ width }) => width};
+		height: ${({ height }) => height};
+	}
 `;
 
 const Nickname = styled.p`

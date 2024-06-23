@@ -1,36 +1,34 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import FONT from '@styles/fonts';
 import styled from 'styled-components';
 import Alarm from '@assets/images/common/alarm.svg';
 import COLOR from '@styles/color';
 import { Link, useNavigate } from 'react-router-dom';
 import Header from '@common/header/Header';
+import useAuthStore from '@store/authStore';
+import SelectMenuBar from '@common/menu/SelectMenuBar';
+import { timeAgo } from '@utils/TimeAgo';
+import { ImgWrapper } from '@common/ui/Profile';
+import { getChatListAPI } from 'services/api/ChatAPI';
 
 const Chat = () => {
+	const setAccessToken = useAuthStore((state) => state.setAccessToken);
 	const navigate = useNavigate();
+	const [menu, setMenu] = useState('룸메이트');
+	const [chatList, setChatList] = useState([{}]);
 
-	const chatList = [
-		{
-			id: 1,
-			img: Alarm,
-			name: '차은우',
-			content: '괜찮으시면 저랑 룸메해요!',
-			time: '21:05',
-			culMsg: 2,
-		},
-		{
-			id: 2,
-			img: Alarm,
-			name: '김예은',
-			content: '괜찮으시면 저랑 어찌구!',
-			time: '20:05',
-			culMsg: 1,
-		},
-	];
+	useEffect(() => {
+		const fetchData = async () => {
+			const result = await getChatListAPI(setAccessToken);
+			setChatList(result);
+		};
+		fetchData();
+	}, []);
+
 	return (
 		<>
 			<ChatStyle>
-				<div className="flex justify-between p-[25px] w-full border-b border-solid border-[#E8EBED]">
+				<div className="container">
 					<Header
 						backPath={'/home'}
 						rightContent={Alarm}
@@ -38,32 +36,59 @@ const Chat = () => {
 							navigate('/alarm');
 						}}
 					>
-						<p className="title">채팅</p>
+						<p className="header">채팅</p>
 					</Header>
 				</div>
-				<div className="flex flex-col p-[25px]">
-					{chatList.map((item, index) => (
-						<Link key={index} to={'/chat/chatroom'}>
-							<div className="flex h-[65px] mb-[14px]">
-								<div className="mr-[10px] w-[65px] h-[65px] rounded-[50%] bg-gray-100">
-									<img src={item.img} width={'65px'} height={'65px'} />
-								</div>
-								<div className="flex flex-col justify-center w-4/5">
-									<div className="flex justify-between">
-										<p className="name">{item.name}</p>
-										<p className="time">{item.time}</p>
-									</div>
-									<div className="flex justify-between">
-										<p className="content">{item.content}</p>
-										<div className="w-[15px] h-[15px] rounded-[50%] bg-[#8A7FF9]">
-											<p className="culMsg">{item.culMsg}</p>
+				<SelectMenuBar
+					menuList={['룸메이트', '공동배달']}
+					pickedMenuId={setMenu}
+				/>
+				{menu === '룸메이트' ? (
+					<div className="container flex flex-col">
+						{chatList.length === 0 ? (
+							<p className="mt-10">새로운 채팅이 없습니다.</p>
+						) : (
+							chatList?.map((chat, index) => (
+								<Link
+									key={chat.id}
+									to={`/chat/chatroom/${chat.room_id}`}
+									state={{ subscribeID: chat.room_id }}
+								>
+									<ChatList>
+										<div className="w-[65px] h-[65px] mr-[11px]">
+											<ImgWrapper mr={'11px'} width={'65px'} height={'65px'}>
+												<img
+													src={chat.photo_url}
+													alt="profile"
+													className="img"
+												/>
+											</ImgWrapper>
 										</div>
-									</div>
-								</div>
-							</div>
-						</Link>
-					))}
-				</div>
+										<div className="info_wrapper">
+											<div className="flex justify-between items-center mb-1">
+												<div className="flex items-center">
+													<p className="title">{chat.room_name}</p>
+													<p className="time">{chat.member_count}</p>
+												</div>
+												<p className="time">
+													{timeAgo(chat.last_message_date)}
+												</p>
+											</div>
+											<div className="flex justify-between items-center">
+												<p className="msg">{chat.last_message_content}</p>
+												<div className="culBox">
+													{chat.un_read_message_count}
+												</div>
+											</div>
+										</div>
+									</ChatList>
+								</Link>
+							))
+						)}
+					</div>
+				) : (
+					<div></div>
+				)}
 			</ChatStyle>
 		</>
 	);
@@ -72,12 +97,38 @@ const Chat = () => {
 export default Chat;
 
 const ChatStyle = styled.div`
-	.title {
-		font: ${FONT.title2B19};
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+
+	.container {
+		display: flex;
+		padding: 25px;
+		width: 100%;
 	}
 
-	.name {
-		font: ${FONT.body4SB15};
+	.header {
+		font: ${FONT.title3SB17};
+	}
+`;
+
+const ChatList = styled.div`
+	display: flex;
+	width: 100%;
+	justify-content: start;
+	margin-bottom: 16px;
+
+	.info_wrapper {
+		display: flex;
+		flex-direction: column;
+		padding-top: 7px;
+		width: 90%;
+	}
+
+	.title {
+		font: ${FONT.title3SB17};
+		margin-right: 7px;
 	}
 
 	.time {
@@ -85,12 +136,16 @@ const ChatStyle = styled.div`
 		color: ${COLOR.gray500};
 	}
 
-	.content {
+	.msg {
 		font: ${FONT.caption2M14};
 		color: ${COLOR.gray500};
 	}
 
-	.culMsg {
+	.culBox {
+		width: 16px;
+		height: 16px;
+		border-radius: 50%;
+		background-color: ${COLOR.purple1};
 		font: ${FONT.caption4M12};
 		color: ${COLOR.white};
 	}

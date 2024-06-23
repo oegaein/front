@@ -88,7 +88,10 @@ function App() {
 									element={<CommentDetail />}
 								/>
 								<Route path="/chat" element={<Chat />} />
-								<Route path="/chat/chatroom" element={<ChatRoom />} />
+								<Route
+									path="/chat/chatroom/:subscribeID"
+									element={<ChatRoom />}
+								/>
 								<Route path="/alarm" element={<Alarm />} />
 							</Route>
 						</Routes>

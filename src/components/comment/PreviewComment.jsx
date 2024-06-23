@@ -10,16 +10,18 @@ import { Box } from '@pages/post/Post-detail';
 import { useNavigate } from 'react-router-dom';
 import { timeAgo } from '@utils/TimeAgo';
 
-const PreviewComment = ({ postId, comments }) => {
+const PreviewComment = ({ postId, comments, count }) => {
 	const id = postId;
 	const navigate = useNavigate();
 	const [value, setValue] = useState('');
 	const [reply, setReply] = useState(false);
 	const [owner, setOwner] = useState('');
+	const [commentID, setCommentID] = useState(-1);
 
 	const handleReply = (index) => {
 		setReply(true);
 		setOwner(comments[index].author_name);
+		setCommentID(comments[index].id);
 	};
 
 	const handleMoreComment = () => {
@@ -40,7 +42,7 @@ const PreviewComment = ({ postId, comments }) => {
 					</div>
 					<div className="inputContainer">
 						<CommentInput
-							postId={id}
+							postId={commentID}
 							setSelected={setValue}
 							setReply={setReply}
 						/>
@@ -49,7 +51,7 @@ const PreviewComment = ({ postId, comments }) => {
 			)}
 			<CommentStyle>
 				<section className="flex flex-col p-[25px] pb-[0px]">
-					<Subtitle>댓글 {comments.length}개</Subtitle>
+					<Subtitle>댓글 {count}개</Subtitle>
 					<div className="w-full">
 						<CommentInput postId={id} setSelected={setValue} />
 					</div>
@@ -105,7 +107,7 @@ const PreviewComment = ({ postId, comments }) => {
 							className="commentBtn caption2"
 							onClick={handleMoreComment}
 						>
-							<p className="mr-1">{comments.length}개 댓글 전체 보기</p>
+							<p className="mr-1">{count}개 댓글 전체 보기</p>
 							<img src={ArrowRightIcon} alt="arrow" />
 						</section>
 					</>
