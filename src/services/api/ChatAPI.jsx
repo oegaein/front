@@ -1,6 +1,7 @@
 import useAuthStore from '@store/authStore';
 import { API } from '@utils/api';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export const chatSeverURL = 'https://api.oegaein.com:8081';
 
@@ -29,7 +30,7 @@ export const getChatListAPI = async (setAccessToken) => {
 					console.error(error);
 				}
 			} catch (error) {
-				console.error(error);
+				window.location.href = 'http://localhost:3000/login';
 			}
 		}
 	}
