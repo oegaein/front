@@ -6,8 +6,6 @@ import styled from 'styled-components'
 import Lottie from 'react-lottie';
 import animationData from '@assets/lottie/로그인/login.json'
 import GoogleIcon from '../../assets/images/google-icon.svg'
-import { GoogleOAuthProvider } from "@react-oauth/google";
-import GoogleLoginButton from '@components/LoginPage/GoogleLoginButton'
 const LoginPage = () => {
   const defaultOptions = {
     loop: true,
@@ -40,7 +38,6 @@ const LoginPage = () => {
           <img className='mr-[60px]' src={GoogleIcon} alt='구글 로그인 아이콘'/>
           <StyledButtonText>Google로 계속하기</StyledButtonText>
         </Link>
-        {/* <GoogleLoginButton/> */}
       </div>
     </>
   )

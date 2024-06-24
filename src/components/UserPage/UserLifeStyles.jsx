@@ -19,63 +19,93 @@ import NotSmoking from '@assets/images/basicInfo/NotSmoking.svg'
 
 const UserLifeStyles = ({userInfo}) => {
   const location = useLocation()
+  console.log(userInfo)
   const path = location.pathname
   return (
-    <SettingStyle>
-      <div>
-        <div className='flex justify-between mb-[35px]'>
-          <div className='flex flex-col items-center w-[57px] gap-[9px]'>
-            <div className='flex items-center h-[44px]'>
-              <img src={Mbti}/>
-            </div>
-            <span className='text-[13px]'>{userInfo.mbti}</span>
+<SettingStyle>
+  <div>
+    <div className="grid grid-cols-4 gap-[35px] mb-[35px]">
+      {userInfo.mbti && (
+        <div className="flex flex-col items-center gap-[9px]">
+          <div className="flex items-center h-[44px]">
+            <img src={Mbti} />
           </div>
-          <div className='flex flex-col items-center w-[57px] gap-[9px]'>
-            <div className='flex items-center h-[44px]'>
-              <img src={SpeechBubble}/>
-            </div>
-            <span className='text-[13px]'>{userInfo.sleeping_habit[0]}</span>
+          <span className="text-[13px]">{userInfo.mbti}</span>
+        </div>
+      )}
+      {userInfo.life_pattern && (
+        <div className="flex flex-col items-center gap-[9px]">
+          <div className="flex items-center h-[44px]">
+            <img src={Morning} />
           </div>
-          <div className='flex flex-col items-center w-[57px] gap-[9px]'>
-            <div className='flex items-center h-[44px]'>
-              <img src={Morning}/>
-            </div>
-            <span className='text-[13px]'>{userInfo.life_pattern}</span>
+          <span className="text-[13px]">{userInfo.life_pattern}</span>
+        </div>
+      )}
+      {userInfo.smoking && (
+        <div className="flex flex-col items-center gap-[9px]">
+          <div className="flex items-center h-[44px]">
+            <img src={NotSmoking} className='h-[44px]'/>
           </div>
-          <div className='flex flex-col items-center w-[57px] gap-[9px]'>
-            <div className='flex items-center h-[44px]'>
-              <img src={NotSmoking}/>
-            </div>
-            <span className='text-[13px]'>{userInfo.smoking}</span>
+          <span className="text-[13px]">{userInfo.smoking}</span>
+        </div>
+      )}
+      {userInfo.cleaning_cycle && (
+        <div className="flex flex-col items-center gap-[9px]">
+          <div className="flex items-center h-[44px]">
+            <img src={Clean} />
+          </div>
+          <span className="text-[13px]">{userInfo.cleaning_cycle} 청소</span>
+        </div>
+      )}
+      {userInfo.outing && (
+        <div className="flex flex-col items-center gap-[9px]">
+          <div className="flex items-center h-[44px]">
+            <img src={House} />
+          </div>
+          <span className="text-[13px]">{userInfo.outing}</span>
+        </div>
+      )}
+      {userInfo.sound_sensitivity && (
+        <div className="flex flex-col items-center gap-[9px]">
+          <div className="flex items-center h-[44px]">
+            <img src={Ear} />
+          </div>
+          <span className="text-[13px]">{userInfo.sound_sensitivity}</span>
+        </div>
+      )}
+      {userInfo.sleeping_habit && (
+        <div className="flex flex-col items-center gap-[9px]">
+          <div className="flex items-center h-[44px]">
+            <img src={SpeechBubble} />
+          </div>
+          <div className="flex flex-col gap-[2px]">
+            {userInfo.sleeping_habit.map((habit, index) => (
+              <span key={index} className="text-[13px]">
+                {habit}
+              </span>
+            ))}
           </div>
         </div>
-        <div className='flex justify-between'>
-          <div className='flex flex-col items-center w-[57px] gap-[9px]'>
-            <div className='flex items-center h-[44px]'>
-              <img src={Clean}/>
-            </div>
-            <span className='text-[13px]'>{userInfo.cleaning_cycle} 청소</span>
-          </div>
-          <div className='flex flex-col items-center w-[57px] gap-[9px]'>
-            <div className='flex items-center h-[44px]'>
-              <img src={House}/>
-            </div>
-            <span className='text-[13px]'>{userInfo.outing}</span>
-          </div>
-          <div className='flex flex-col items-center w-[57px] gap-[9px]'>
-            <div className='flex items-center h-[44px]'>
-              <img src={Ear}/>
-            </div>
-            <span className='text-[13px]'>{userInfo.sound_sensitivity}</span>
-          </div>
-          <div className='flex flex-col items-center w-[57px]'></div>
-        </div>
-      </div>
-    </SettingStyle>
+      )}
+    </div>
+  </div>
+</SettingStyle>
+
   )
 }
 
 export default UserLifeStyles
 
 const SettingStyle = styled.div`
+
+.user-info-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.user-info-card {
+  width: calc(25% - 20px);
+  margin-bottom: 20px;
+}
 `
