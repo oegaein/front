@@ -6,9 +6,7 @@ import useAuthStore from '@store/authStore'
 
 import Next from '@assets/images/next.svg'
 import Dots from '@assets/images/header-dots.svg'
-import BigRedHeart from '@assets/images/bigredheart.svg'
-import BigEmptyHeart from '@assets/images/heart (10) 1.svg'
-import Share from '@assets/images/share.svg'
+
 //styles
 import styled from 'styled-components'
 import FONT from '@styles/fonts'
@@ -22,6 +20,7 @@ import UserPageInfo from '@components/UserPage/UserPageInfo'
 import UserLifeStyles from '@components/UserPage/UserLifeStyles'
 import { profileData } from 'mocks/api/data/profileData'
 import OptionModal from '@common/modal/OptionModal'
+import MatchingApplyNavBar from '@common/MatchingApplyNavBar';
 
 const UserPage = () => {
   const navigate = useNavigate()
@@ -31,7 +30,6 @@ const UserPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isLowerBarVisible, setIsLowerBarVisible] = useState(true)
   const [prevScrollPos, setPrevScrollPos] = useState(window.scrollY)
-  const [like, setLike] = useState(false)
   let {memberId} = useParams()
   const fetchUserInfoData = async () => {
     try {
@@ -107,31 +105,6 @@ const UserPage = () => {
     setIsLowerBarVisible(prevScrollPos > currentScrollPos || currentScrollPos < 10 || isBottom)
     setPrevScrollPos(currentScrollPos)
   }, 200)
-  const fetchLikeData = async () => {
-    try {
-      const response = await API.post('/api/v1/member/like', {
-        receiver_id: memberId
-      })
-      if(response.data.like_id) {
-        setLike(true)
-      }
-    } catch(error) {
-      console.error(error);
-    }
-  }
-  const fetchDeleteLikeData = async () => {
-    try {
-      const response = await API.delete('/api/v1/member/like', {
-        receiver_id: memberId
-      })
-      if (response.data.receiver_id) {
-
-        setLike(false)
-      }
-    } catch(error) {
-      console.error(error);
-    }
-  }
   const handleClickDotsBtn = () => {
     setIsModalOpen(true)
   }
@@ -201,18 +174,7 @@ const UserPage = () => {
           </div>
         </div>
       </div>
-      <div className={`filter-section bg-white z-50 fixed bottom-0 flex items-center justify-between gap-[15px] h-[91px] w-[393px] px-[26px]
-        transition-transform duration-300 ${isLowerBarVisible ? 'translate-y-0' : 'translate-y-full'}`}>
-        <div className='flex gap-[21px]'>
-          {(like && like === memberId) ? 
-          <button onClick={fetchDeleteLikeData} className='whitespace-nowrap w-[22px]'><img src={BigRedHeart}/></button>
-          :  
-          <button onClick={fetchLikeData} className='whitespace-nowrap w-[22px]'><img src={BigEmptyHeart}/></button>
-      }
-      <button className='whitespace-nowrap'><img src={Share}/></button>
-        </div>
-        <button  className='filter-btn whitespace-nowrap'>매칭신청</button>
-      </div>
+      <MatchingApplyNavBar version={'userPage'} isLowerBarVisible={isLowerBarVisible} memberId={memberId}/>
     </SettingStyle>
   )
 }

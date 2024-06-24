@@ -1,8 +1,7 @@
 import useAuthStore from '@store/authStore';
 import { API } from '@utils/api';
-
 export const getAlarmAPI = async (setAccessToken) => {
-	try {
+		try {
 		const { data } = await API.get(
 			`https://api.oegaein.com:8080/api/v1/roommate-alarms`,
 		);
@@ -32,7 +31,7 @@ export const getAlarmAPI = async (setAccessToken) => {
 				}
 			} catch (error) {
 				console.error(error);
-			}
+				window.location.href = 'http://localhost:3000/login';			}
 		}
 	}
 };
