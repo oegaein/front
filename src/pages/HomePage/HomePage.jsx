@@ -22,6 +22,7 @@ import Next from '@assets/images/next.svg'
 import Buttons from '@components/HomePage/Buttons';
 import Premium from '@assets/images/premium-quality.svg'
 import DormNews from '@components/HomePage/DormNews';
+import AddRoommateButton from '@common/button/AddRoommateButton';
 
 
 const HomePage = () => {
@@ -44,6 +45,7 @@ const HomePage = () => {
   // },[])
   return (
     <SettingStyle className='flex flex-col gap-[10px] pb-[11px] scroll-smooth'>
+      <AddRoommateButton/>
       <div>
         <SearchAndNotice/>
         <div className='bg-white p-[25px]'>

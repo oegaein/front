@@ -115,17 +115,12 @@ const UserPage = () => {
     //완료되었는지 확인하는 로직 필요 
     alert('유저를 차단하였습니다.')
   }
-  const checkLike = async () => {
-    const response = await API.get(`/api/v1/member/profile/${memberId}`)
-    console.log(response.data)
-  }
   useEffect(()=>{
     if (memberId === 'my-profile') {
       fetchMyInfoData()
     } else {
       fetchUserInfoData()
     }
-    // checkLike()
   }, [])
 
   useEffect(() => {
@@ -174,7 +169,7 @@ const UserPage = () => {
           </div>
         </div>
       </div>
-      <MatchingApplyNavBar version={'userPage'} isLowerBarVisible={isLowerBarVisible} memberId={memberId}/>
+      <MatchingApplyNavBar version={'userPage'} isLowerBarVisible={isLowerBarVisible} memberId={memberId} isLikeProps={userInfo.is_like}/>
     </SettingStyle>
   )
 }
