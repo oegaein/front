@@ -26,7 +26,7 @@ const SearchAndNotice = () => {
         <SearchBar onClick={()=>navigate('/search')}/>
         <button>
           {/* <img src={Bell}/> */}
-          <Link to='/notification' className='block h-[37px]'>
+          <Link to='/alarm' className='block h-[37px]'>
             <Lottie
             options={defaultOptions}
             />

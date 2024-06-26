@@ -26,7 +26,8 @@ const UserPage = () => {
   const navigate = useNavigate()
   const setAccessToken = useAuthStore(state => state.setAccessToken)
   // const accessToken = useAuthStore.getState().accessToken
-  const [userInfo, setUserInfo] = useState(profileData)
+  // const [userInfo, setUserInfo] = useState(profileData)
+  const [userInfo, setUserInfo] = useState({})
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isLowerBarVisible, setIsLowerBarVisible] = useState(true)
   const [prevScrollPos, setPrevScrollPos] = useState(window.scrollY)
@@ -144,7 +145,7 @@ const UserPage = () => {
 					<span>{userInfo.name} 님의 프로필</span>
 				</Header>
 			</div>
-      <ProfileImageContainer introduction={userInfo.introduction}/>
+      <ProfileImageContainer introduction={userInfo.introduction} profileImage={userInfo.photo_url}/>
       <div className='userinfolifestyles flex flex-col gap-[10px] border-b border-[#DEDEDE]'>
         <div className='bg-white'>
           <div className='user-info pt-[103px] pb-[24px]  px-[25px]'>
@@ -169,7 +170,10 @@ const UserPage = () => {
           </div>
         </div>
       </div>
-      <MatchingApplyNavBar version={'userPage'} isLowerBarVisible={isLowerBarVisible} memberId={memberId} isLikeProps={userInfo.is_like}/>
+      {memberId !== 'my-profile' &&
+      <MatchingApplyNavBar version={'userPage'} isLowerBarVisible={isLowerBarVisible} id={memberId} isLikeProps={userInfo.is_like} 
+      fetchUserInfoData={fetchUserInfoData}/>
+      }
     </SettingStyle>
   )
 }
