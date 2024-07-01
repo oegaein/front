@@ -3,6 +3,12 @@ import { API } from '@utils/api'
 import { useNavigate, useLocation } from 'react-router-dom'
 import useAuthStore from '@store/authStore'
 
+//styles
+import styled from 'styled-components'
+import FONT from '@styles/fonts'
+import COLOR from '@styles/color'
+
+
 //images
 import Share from '@assets/images/share.svg'
 import BigRedHeart from '@assets/images/bigredheart.svg'
@@ -180,7 +186,7 @@ const MatchingApplyNavBar = ({version, isLowerBarVisible, id, isLikeProps}) => {
   }
 
   return (
-    <div className={`filter-section bg-white z-50 fixed bottom-0 flex items-center justify-between gap-[15px] h-[91px] w-[393px] px-[26px]
+    <SettingStyle className={`bg-white z-50 fixed bottom-0 flex items-center justify-between gap-[15px] h-[91px] w-[393px] px-[26px]
       transition-transform duration-300 ${isLowerBarVisible ? 'translate-y-0' : 'translate-y-full'}`}>
       <div className='flex gap-[21px]'>
         {version === 'userPage' &&
@@ -198,8 +204,23 @@ const MatchingApplyNavBar = ({version, isLowerBarVisible, id, isLikeProps}) => {
         <button onClick={clickShareBtn} className='whitespace-nowrap'><img src={Share}/></button>
       </div>
       <button className='filter-btn whitespace-nowrap'>매칭신청</button>
-    </div>
+    </SettingStyle>
   )
 }
 
 export default MatchingApplyNavBar
+
+const SettingStyle = styled.div`
+    .filter-btn {
+    font-size: ${FONT.buttonSB15};
+    color: white;
+    background-color: ${COLOR.purple1};
+    height: 52px;
+    flex: 1;
+    border-radius: 10px;
+    &:hover {
+      opacity: 0.5;
+    }
+  }
+
+`

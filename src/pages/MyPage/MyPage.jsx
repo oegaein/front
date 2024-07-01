@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useMatchingPosts } from 'hooks/useMatchingPosts';
 import { API } from '@utils/api';
 import useAuthStore from '@store/authStore';
+import useMyInfoStore from '@store/myInfoStore';
 //components
 import Header from '@common/header/Header';
 // styles
@@ -11,7 +12,6 @@ import FONT from '@styles/fonts';
 import COLOR from '@styles/color';
 
 // images
-import Profile from '../../assets/images/profile-image.svg';
 import Notification from '@assets/images/notification 1.svg';
 import Heart from '@assets/images/heart (10) 1.svg';
 import Review from '@assets/images/review 1.svg';
@@ -23,7 +23,7 @@ import SelectMenuBar from '@common/menu/SelectMenuBar';
 import { useQuery } from '@tanstack/react-query';
 const MyPage = () => {
 	const accessToken = useAuthStore.getState().accessToken
-  console.log(accessToken)
+	const myInfo = useMyInfoStore.getState().myInfo
 	const {
 		data: comeMatchingRequests,
 		refetch: reFetchComeMatchingRequests,
@@ -39,7 +39,6 @@ const MyPage = () => {
 	console.log(comeMatchingRequests);
 	console.log(myMatchingRequests);
 	const [likeData, setLikeData] = useState([])
-	const [profileImage, setProfileImage] = useState(Profile);
 	const [uploadPostType, setUploadPostType] = useState('roommate');
 	const [likeType, setLikeType] = useState('roommate');
 
@@ -66,11 +65,11 @@ const MyPage = () => {
 				<div className="flex justify-between pt-[20px]">
 					<div className="flex text-left gap-[20px]">
 						<div>
-							<img className="w-[45px] h-[45px] rounded-[50%]" src={Profile} />
+							<img className="w-[45px] h-[45px] rounded-[50%]" src={myInfo.photoUrl} />
 						</div>
 						<div>
-							<p className="myname">happy푸바옹</p>
-							<p className="small-text">맛집 투어 좋아해요!</p>
+							<p className="myname">{myInfo.name}</p>
+							<p className="small-text">{myInfo.introduction}</p>
 						</div>
 					</div>
 					<div>
@@ -128,7 +127,7 @@ const MyPage = () => {
 				</div>
 				<div className='pt-[24px]'>
 					<SelectMenuBar
-					menuList={['룸메이트', '공동배달']}
+					menuList={['룸메이트']}
 					pickedMenuId={setUploadPostType}
 					/>
 					<div className="px-[25px] mt-[16px]">
@@ -161,11 +160,11 @@ const MyPage = () => {
 				</div>
 				<div className='pt-[24px]'>
 					<SelectMenuBar
-					menuList={['룸메이트', '공동배달']}
+					menuList={['룸메이트']}
 					pickedMenuId={setLikeType}
 					/>
 					<div className="likelist flex flex-col gap-[1px]">
-						{likeData.map((like)=> <LikeItem profileImage={Profile} like={like} />)}
+						{likeData.map((like)=> <LikeItem like={like} />)}
 						
 					</div>
 				</div>
@@ -254,7 +253,7 @@ const MyMatchingRequest = ({ post, index }) => {
 			<div className="flex justify-between mt-[28px]">
 				<div className="flex justify-between gap-[13px]">
 					<div>
-						<img src={Profile} className="rounded-[50%] w-[45px] h-[45px]" />
+						<img className="rounded-[50%] w-[45px] h-[45px]" />
 					</div>
 					<div className="text-left overflow-hidden">
 						<p className="font-caption1sb14 whitespace-nowrap overflow-hidden text-ellipsis">

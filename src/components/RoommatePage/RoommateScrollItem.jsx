@@ -62,12 +62,12 @@ const RoommateScrollItem = ({post}) => {
         <div className='text-right'>
           {/* 매칭 대기, 매칭 완료, 매칭 마감 */}
           {post.matchingStatus === '매칭 대기' ?
-          <button onClick={()=>handleClickRegisterBtn(post.matchingPostId)} className='register-btn registered'>매칭신청</button>
+          <button onClick={()=>handleClickRegisterBtn(post.matchingPostId)} className='register-btn'>매칭신청</button>
           : 
           post.matchingStatus === '매칭 완료' ?
           <button onClick={()=>handleClickCancelBtn(post.matchingPostId)} className='register-btn registered'>매칭완료</button>
           :
-          <div className='register-btn'>매칭마감</div>
+          <div className='register-btn registered'>매칭마감</div>
           }
         </div>
       </div>

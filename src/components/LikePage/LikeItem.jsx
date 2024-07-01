@@ -3,7 +3,7 @@ import UserPageInfo from '@components/UserPage/UserPageInfo'
 import Next from '@assets/images/next.svg'
 import RedHeart from '@assets/images/heart-red.svg'
 import Heart from '@assets/images/heart (10) 1.svg'
-const LikeItem = ({profileImage, like}) => {
+const LikeItem = ({like}) => {
   const [liked, setLiked] = useState(false)
   const handleClickHeart = () => {
     //api 요청 로직
@@ -13,7 +13,7 @@ const LikeItem = ({profileImage, like}) => {
     <div className='bg-white px-[25px] pt-[16px] pb-[24px]'> 
       <div className='flex justify-between items-center mb-[16px]'>
         <div className='flex items-center'>
-          <img className='w-[25px] h-[25px] mr-[4px]' src={profileImage}/>
+          <img className='w-[25px] h-[25px] mr-[4px]' src={like.photo_url}/>
           <span className='font-caption2m14'>{like.name}</span>
           <img src={Next}/>
         </div>

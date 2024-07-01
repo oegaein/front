@@ -204,15 +204,4 @@ const SettingStyle = styled.div`
       opacity: 0.5;
     }
   }
-  .filter-btn {
-    font-size: ${FONT.buttonSB15};
-    color: white;
-    background-color: ${COLOR.purple1};
-    height: 52px;
-    flex: 1;
-    border-radius: 10px;
-    &:hover {
-      opacity: 0.5;
-    }
-  }
 `

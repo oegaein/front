@@ -2,7 +2,6 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { API } from '@utils/api'
 //images
-import Yoo from '../../assets/images/유재석.svg'
 
 //styles
 import styled from 'styled-components'
@@ -58,9 +57,9 @@ const RoommateSwiperItem = ({post}) => {
         <button onClick={()=>handleClickRegisterBtn(post.matchingPostId)} className='register text-right'>매칭신청</button>
         :
         post.matchingStatus === '매칭 완료' ?
-        <button onClick={()=>handleClickCancelBtn(post.matchingPostId)} className='register text-right'>매칭완료</button>
+        <button onClick={()=>handleClickCancelBtn(post.matchingPostId)} className='register text-right registered'>매칭완료</button>
         :
-        <div className='register text-right'>매칭마감</div>
+        <div className='register text-right registered'>매칭마감</div>
       }
       </div>
     </SettingStyle>
@@ -94,5 +93,9 @@ const SettingStyle = styled.button`
   .register {
     font-size: ${FONT.caption2M14};
     color: ${COLOR.purple1};
+    &.registered {
+      color: ${COLOR.red}
+    }
+
   }
 `
