@@ -6,7 +6,6 @@ import FONT from '@styles/fonts'
 import COLOR from '@styles/color'
 
 //images
-import Yoo from '../../assets/images/유재석.svg'
 import { API } from '@utils/api'
 
 const RoommateScrollItem = ({post}) => {
@@ -44,7 +43,9 @@ const RoommateScrollItem = ({post}) => {
               {/* 데이터 바인딩 필요 */}
               <span className='mates-number'>모집인원 1명</span>
             </div>
-            <span className='dday'>D-{post.dday}</span>
+            {post.matchingStatus === '매칭 대기' &&
+            <span className='dday'>{post.dday === 0 ? 'D-Day' : `D-${post.dday}`}</span>        
+            }          
           </div>
           <div className='text-left mt-[7px]'>
             <p className='roommate-title max-w-[205px] 
@@ -62,12 +63,12 @@ const RoommateScrollItem = ({post}) => {
         <div className='text-right'>
           {/* 매칭 대기, 매칭 완료, 매칭 마감 */}
           {post.matchingStatus === '매칭 대기' ?
-          <button onClick={()=>handleClickRegisterBtn(post.matchingPostId)} className='register-btn registered'>매칭신청</button>
+          <button onClick={()=>handleClickRegisterBtn(post.matchingPostId)} className='register-btn'>매칭신청</button>
           : 
           post.matchingStatus === '매칭 완료' ?
           <button onClick={()=>handleClickCancelBtn(post.matchingPostId)} className='register-btn registered'>매칭완료</button>
           :
-          <div className='register-btn'>매칭마감</div>
+          <div className='register-btn registered'>매칭마감</div>
           }
         </div>
       </div>

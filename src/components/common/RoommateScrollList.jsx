@@ -57,9 +57,8 @@ const RoommateScrollList = ({ type, searchTerm, filteredPosts, setScreenType }) 
 				if (type === 'search') {
 					if (searchResults) {
 						content = searchResults
-						.filter(post => post.matchingStatus === '매칭대기') // '매칭대기'인 post만 필터링
 						.map(post => (
-							<RoommateScrollItem key={post.id} post={post} /> // 필터링된 post에 대해 컴포넌트 리턴
+							<RoommateScrollItem key={post.matchingPostId} post={post} /> // 필터링된 post에 대해 컴포넌트 리턴
 						));
 					} else {
 						content = <div>검색 결과가 없습니다.</div>;
@@ -69,18 +68,16 @@ const RoommateScrollList = ({ type, searchTerm, filteredPosts, setScreenType }) 
 					if (filteredPosts) {
 						console.log(filteredPosts)
 						content = filteredPosts
-						.filter(post => post.matchingStatus === '매칭대기') // '매칭대기'인 post만 필터링
 						.map((post) => (
-							<RoommateScrollItem key={post.id} post={post} />
+							<RoommateScrollItem key={post.matchingPostId} post={post} />
 						));
 					}
 					//그 외 new, best 등...
 				} else {
 					// 기본 조건일 때, matchingPosts.data 배열을 매핑하여 컴포넌트를 리턴
 					content = matchingPosts.data
-					.filter(post => post.matchingStatus === '매칭대기') // '매칭대기'인 post만 필터링
 					.map((post, index) => (
-						<RoommateScrollItem key={post.id} post={post} />
+						<RoommateScrollItem key={post.matchingPostId} post={post} />
 					));
 				}
 				return content; // 조건에 따라 결정된 내용을 리턴

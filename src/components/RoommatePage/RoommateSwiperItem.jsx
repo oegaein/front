@@ -2,7 +2,6 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { API } from '@utils/api'
 //images
-import Yoo from '../../assets/images/유재석.svg'
 
 //styles
 import styled from 'styled-components'
@@ -36,7 +35,9 @@ const RoommateSwiperItem = ({post}) => {
     <SettingStyle onClick={()=>handleClickPost(post.matchingPostId)} key={post.matchingPostId} className={`w-[192px] h-[179px] border border-[${COLOR.gray100}] rounded-[20px] bg-white p-[17px] pb-[13px] ml-[12px]`}>
       <div className='flex items-center justify-between mb-[10px]'>
         <span className='room'>{post.dong} {post.roomSize}</span>
-        <span className='dday'>D-{post.dday}</span>
+        {post.matchingStatus === '매칭 대기' &&
+        <span className='dday'>{post.dday === 0 ? 'D-Day' : `D-${post.dday}`}</span>        
+        }
       </div>
       <p className='title text-left mb-[13px] h-[25px] 
       whitespace-nowrap overflow-hidden text-ellipsis'>
@@ -58,9 +59,9 @@ const RoommateSwiperItem = ({post}) => {
         <button onClick={()=>handleClickRegisterBtn(post.matchingPostId)} className='register text-right'>매칭신청</button>
         :
         post.matchingStatus === '매칭 완료' ?
-        <button onClick={()=>handleClickCancelBtn(post.matchingPostId)} className='register text-right'>매칭완료</button>
+        <button onClick={()=>handleClickCancelBtn(post.matchingPostId)} className='register text-right registered'>매칭완료</button>
         :
-        <div className='register text-right'>매칭마감</div>
+        <div className='register text-right registered'>매칭마감</div>
       }
       </div>
     </SettingStyle>
@@ -94,5 +95,9 @@ const SettingStyle = styled.button`
   .register {
     font-size: ${FONT.caption2M14};
     color: ${COLOR.purple1};
+    &.registered {
+      color: ${COLOR.red}
+    }
+
   }
 `
