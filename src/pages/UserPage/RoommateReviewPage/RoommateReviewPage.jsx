@@ -12,7 +12,7 @@ const RoommateReviewPage = () => {
     <SettingStyle>
       <div className="px-[28px]">
 				<Header backPath={`user/${memberId}`} rightContent=" " rightEvent={() => {}}>
-					<span>룸메이트 후기</span>
+					<span className='font-bold'>룸메이트 후기</span>
 				</Header>
 			</div>
       <div className='main pt-[12px]'>

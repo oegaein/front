@@ -1,14 +1,11 @@
 import React, {useState, useEffect} from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { API } from '@utils/api'
-import { throttle } from 'lodash';
 import useAuthStore from '@store/authStore'
-
+import useLowerBarVisible from '@hooks/useLowerBarVisible';
 import Next from '@assets/images/next.svg'
 import Dots from '@assets/images/header-dots.svg'
-import BigRedHeart from '@assets/images/bigredheart.svg'
-import BigEmptyHeart from '@assets/images/heart (10) 1.svg'
-import Share from '@assets/images/share.svg'
+
 //styles
 import styled from 'styled-components'
 import FONT from '@styles/fonts'
@@ -22,16 +19,17 @@ import UserPageInfo from '@components/UserPage/UserPageInfo'
 import UserLifeStyles from '@components/UserPage/UserLifeStyles'
 import { profileData } from 'mocks/api/data/profileData'
 import OptionModal from '@common/modal/OptionModal'
+import MatchingApplyNavBar from '@common/MatchingApplyNavBar';
 
 const UserPage = () => {
   const navigate = useNavigate()
   const setAccessToken = useAuthStore(state => state.setAccessToken)
   // const accessToken = useAuthStore.getState().accessToken
-  const [userInfo, setUserInfo] = useState(profileData)
+  // const [userInfo, setUserInfo] = useState(profileData)
+  const [userInfo, setUserInfo] = useState({})
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [isLowerBarVisible, setIsLowerBarVisible] = useState(true)
+  const isLowerBarVisible = useLowerBarVisible()  
   const [prevScrollPos, setPrevScrollPos] = useState(window.scrollY)
-  const [like, setLike] = useState(false)
   let {memberId} = useParams()
   const fetchUserInfoData = async () => {
     try {
@@ -97,41 +95,6 @@ const UserPage = () => {
       }
     }
   }
-  const handleScroll = throttle(() => {
-    const currentScrollPos = window.scrollY
-    const maxScroll = document.documentElement.scrollHeight - document.documentElement.clientHeight
-    //페이지 총 높이
-    //맨 밑으로 이동되었는지 확인하는 변수 
-    let isBottom = currentScrollPos >= maxScroll-1
-
-    setIsLowerBarVisible(prevScrollPos > currentScrollPos || currentScrollPos < 10 || isBottom)
-    setPrevScrollPos(currentScrollPos)
-  }, 200)
-  const fetchLikeData = async () => {
-    try {
-      const response = await API.post('/api/v1/member/like', {
-        receiver_id: memberId
-      })
-      if(response.data.like_id) {
-        setLike(true)
-      }
-    } catch(error) {
-      console.error(error);
-    }
-  }
-  const fetchDeleteLikeData = async () => {
-    try {
-      const response = await API.delete('/api/v1/member/like', {
-        receiver_id: memberId
-      })
-      if (response.data.receiver_id) {
-
-        setLike(false)
-      }
-    } catch(error) {
-      console.error(error);
-    }
-  }
   const handleClickDotsBtn = () => {
     setIsModalOpen(true)
   }
@@ -142,25 +105,14 @@ const UserPage = () => {
     //완료되었는지 확인하는 로직 필요 
     alert('유저를 차단하였습니다.')
   }
-  const checkLike = async () => {
-    const response = await API.get(`/api/v1/member/profile/${memberId}`)
-    console.log(response.data)
-  }
   useEffect(()=>{
     if (memberId === 'my-profile') {
       fetchMyInfoData()
     } else {
       fetchUserInfoData()
     }
-    // checkLike()
   }, [])
 
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll)
-    return ()=> {
-      window.removeEventListener('scroll', handleScroll)
-    }
-  }, [prevScrollPos, isLowerBarVisible, handleScroll])
 
   return (
     <SettingStyle>
@@ -171,12 +123,12 @@ const UserPage = () => {
         setIsOpen={setIsModalOpen}
       />
       }
-      <div className="px-[28px]">
+      <div className="header px-[28px]">
 				<Header backPath="/roommate" rightContent={Dots} rightEvent={handleClickDotsBtn}>
-					<span>{userInfo.name} 님의 프로필</span>
+					<span className='font-bold header-text'>{userInfo.name} 님의 프로필</span>
 				</Header>
 			</div>
-      <ProfileImageContainer introduction={userInfo.introduction}/>
+      <ProfileImageContainer introduction={userInfo.introduction} profileImage={userInfo.photo_url}/>
       <div className='userinfolifestyles flex flex-col gap-[10px] border-b border-[#DEDEDE]'>
         <div className='bg-white'>
           <div className='user-info pt-[103px] pb-[24px]  px-[25px]'>
@@ -201,18 +153,10 @@ const UserPage = () => {
           </div>
         </div>
       </div>
-      <div className={`filter-section bg-white z-50 fixed bottom-0 flex items-center justify-between gap-[15px] h-[91px] w-[393px] px-[26px]
-        transition-transform duration-300 ${isLowerBarVisible ? 'translate-y-0' : 'translate-y-full'}`}>
-        <div className='flex gap-[21px]'>
-          {(like && like === memberId) ? 
-          <button onClick={fetchDeleteLikeData} className='whitespace-nowrap w-[22px]'><img src={BigRedHeart}/></button>
-          :  
-          <button onClick={fetchLikeData} className='whitespace-nowrap w-[22px]'><img src={BigEmptyHeart}/></button>
+      {memberId !== 'my-profile' &&
+      <MatchingApplyNavBar version={'userPage'} isLowerBarVisible={isLowerBarVisible} id={memberId} isLikeProps={userInfo.is_like} 
+      fetchUserInfoData={fetchUserInfoData}/>
       }
-      <button className='whitespace-nowrap'><img src={Share}/></button>
-        </div>
-        <button  className='filter-btn whitespace-nowrap'>매칭신청</button>
-      </div>
     </SettingStyle>
   )
 }
@@ -221,6 +165,12 @@ export default UserPage
 
 const SettingStyle = styled.div`
   background-color: white;
+  .header {
+    background-color: ${COLOR.purple1};
+  }
+  .header-text {
+    color: white;
+  }
   .userinfolifestyles {
     background-color: ${COLOR.gray50};
   }
@@ -238,17 +188,6 @@ const SettingStyle = styled.div`
     height: 52px;
     padding: 0 22px;
     border: 1px solid ${COLOR.gray200};
-    border-radius: 10px;
-    &:hover {
-      opacity: 0.5;
-    }
-  }
-  .filter-btn {
-    font-size: ${FONT.buttonSB15};
-    color: white;
-    background-color: ${COLOR.purple1};
-    height: 52px;
-    flex: 1;
     border-radius: 10px;
     &:hover {
       opacity: 0.5;

@@ -18,10 +18,10 @@ const MyPostPage = () => {
     setUploadPostType(type)
   }
   return (
-    <SettingStyle className='bg-white py-[24px]'>
+    <SettingStyle className='bg-white pb-[24px]'>
       <div className="px-[28px]">
 				<Header backPath="/mypage" rightContent=" " rightEvent={() => {}}>
-					<span>내가 올린 글</span>
+					<span className='font-bold'>내가 올린 글</span>
 				</Header>
 			</div>
       <div>

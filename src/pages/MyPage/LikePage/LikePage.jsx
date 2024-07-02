@@ -29,7 +29,7 @@ const LikePage = () => {
     <SettingStyle>
       <div className="px-[28px]">
 				<Header backPath="/mypage" rightContent=" " rightEvent={() => {}}>
-					<span>좋아요</span>
+					<span className='font-bold'>좋아요</span>
 				</Header>
 			</div>
       <div>

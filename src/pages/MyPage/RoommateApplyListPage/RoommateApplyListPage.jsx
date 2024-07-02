@@ -15,10 +15,10 @@ const RoommateApplyListPage = () => {
     setUploadPostType(type)
   }
   return (
-    <SettingStyle className='bg-white pt-[24px]'>
+    <SettingStyle className='bg-white'>
       <div className="px-[28px]">
 				<Header backPath="/mypage" rightContent=" " rightEvent={() => {}}>
-					<span>내 룸메이트 신청 목록</span>
+					<span className='font-bold'>내 룸메이트 신청 목록</span>
 				</Header>
 			</div>
       <div>

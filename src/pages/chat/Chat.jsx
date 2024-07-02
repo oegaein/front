@@ -20,6 +20,7 @@ const Chat = () => {
 	useEffect(() => {
 		const fetchData = async () => {
 			const result = await getChatListAPI(setAccessToken);
+			console.log(result)
 			setChatList(result);
 		};
 		fetchData();
@@ -45,7 +46,7 @@ const Chat = () => {
 				/>
 				{menu === '룸메이트' ? (
 					<div className="container flex flex-col">
-						{chatList === 'undefined' ? (
+						{chatList?.length === 0 ? (
 							<p className="mt-10">새로운 채팅이 없습니다.</p>
 						) : (
 							chatList?.map((chat, index) => (

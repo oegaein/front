@@ -19,7 +19,6 @@ const RoommateReviewList = ({memberId, isInReviewPage}) => {
     const fetchReviewData = async (path) => {
       try {
         const response = await API.get(path)
-        console.log(response.data.data)
         setReviews(response.data.data)
       } catch (err) {
         console.log(err)

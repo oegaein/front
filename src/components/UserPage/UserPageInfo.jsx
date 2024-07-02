@@ -15,7 +15,7 @@ const UserPageInfo = ({userInfo}) => {
           </div>
           <div className='flex mr-[20px]'>
             <span className='info-label'>생년월일</span>
-            <span className='info-value'>{userInfo?.birthdate.substring(0, 10)}</span>
+            <span className='info-value'>{userInfo?.birthdate?.substring(0, 10)}</span>
           </div>
         </div>
         <div className='flex'>

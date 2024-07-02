@@ -21,7 +21,7 @@ const RoommatePage = () => {
   console.log('필터:', filters)
   
   return (
-    <SettingStyle className='bg-white flex flex-col gap-[10px] scroll-smooth'>
+    <SettingStyle className='bg-white flex flex-col gap-[10px] pt-[11px] scroll-smooth'>
       <AddRoommateButton/>
       <div>
         <SearchAndNotice/>
