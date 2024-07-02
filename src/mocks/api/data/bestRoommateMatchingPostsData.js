@@ -9,7 +9,7 @@ export const bestRoommateMatchingPostsData = {
 			dDay: 7,
 			dong: "A동",
 			roomSize: "2인실",
-			matchingStatus: "매칭 대기"
+			matchingStatus: "매칭 완료"
 		},
 		{
 			star: 5,
@@ -20,7 +20,7 @@ export const bestRoommateMatchingPostsData = {
 			dDay: 7,
 			dong: "A동",
 			roomSize: "2인실",
-			matchingStatus: "매칭 대기"
+			matchingStatus: "매칭 마감"
 		},
 		{
 			star: 5,

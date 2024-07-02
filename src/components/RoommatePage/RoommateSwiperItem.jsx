@@ -35,7 +35,9 @@ const RoommateSwiperItem = ({post}) => {
     <SettingStyle onClick={()=>handleClickPost(post.matchingPostId)} key={post.matchingPostId} className={`w-[192px] h-[179px] border border-[${COLOR.gray100}] rounded-[20px] bg-white p-[17px] pb-[13px] ml-[12px]`}>
       <div className='flex items-center justify-between mb-[10px]'>
         <span className='room'>{post.dong} {post.roomSize}</span>
-        <span className='dday'>D-{post.dday}</span>
+        {post.matchingStatus === '매칭 대기' &&
+        <span className='dday'>{post.dday === 0 ? 'D-Day' : `D-${post.dday}`}</span>        
+        }
       </div>
       <p className='title text-left mb-[13px] h-[25px] 
       whitespace-nowrap overflow-hidden text-ellipsis'>
