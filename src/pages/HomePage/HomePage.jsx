@@ -44,7 +44,7 @@ const HomePage = () => {
   //   fetchData()
   // },[])
   return (
-    <SettingStyle className='flex flex-col gap-[10px] pb-[11px] scroll-smooth'>
+    <SettingStyle className='flex flex-col gap-[10px] pt-[11px] pb-[11px] scroll-smooth'>
       <AddRoommateButton/>
       <div>
         <SearchAndNotice/>

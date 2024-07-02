@@ -42,6 +42,7 @@ export default SearchPage
 
 const SettingStyle = styled.div`
   background-color: white;
+  padding-top: 11px;
   .bold-text {
     font-size: ${FONT.title3SB17};
   }
