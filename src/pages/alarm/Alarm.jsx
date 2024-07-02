@@ -65,7 +65,7 @@ const Alarm = () => {
 				/>
 				{menu === '룸메이트' ? (
 					<div>
-						{data === 'undefined' || data.length === 0 ? (
+						{data === 'undefined' || data?.length === 0 ? (
 							<p className="mt-10">새로운 알림이 없습니다.</p>
 						) : (
 							data?.map((alarm, index) => (
