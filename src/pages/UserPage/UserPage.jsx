@@ -123,9 +123,9 @@ const UserPage = () => {
         setIsOpen={setIsModalOpen}
       />
       }
-      <div className="px-[28px]">
+      <div className="header px-[28px]">
 				<Header backPath="/roommate" rightContent={Dots} rightEvent={handleClickDotsBtn}>
-					<span>{userInfo.name} 님의 프로필</span>
+					<span className='font-bold header-text'>{userInfo.name} 님의 프로필</span>
 				</Header>
 			</div>
       <ProfileImageContainer introduction={userInfo.introduction} profileImage={userInfo.photo_url}/>
@@ -165,6 +165,12 @@ export default UserPage
 
 const SettingStyle = styled.div`
   background-color: white;
+  .header {
+    background-color: ${COLOR.purple1};
+  }
+  .header-text {
+    color: white;
+  }
   .userinfolifestyles {
     background-color: ${COLOR.gray50};
   }

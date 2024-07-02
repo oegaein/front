@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useMatchingPosts } from 'hooks/useMatchingPosts';
+import { useNavigate } from 'react-router-dom';
 import { API } from '@utils/api';
 import useAuthStore from '@store/authStore';
 import useMyInfoStore from '@store/myInfoStore';
@@ -20,6 +21,8 @@ import Dots from '@assets/images/dots-black.svg';
 import RoommateSwiperList from '@common/RoommateSwiperList';
 import LikeItem from '@components/LikePage/LikeItem';
 import SelectMenuBar from '@common/menu/SelectMenuBar';
+import Home from '@assets/images/home.svg'
+import Setting from '@assets/images/settings.svg'
 import { useQuery } from '@tanstack/react-query';
 const MyPage = () => {
 	const accessToken = useAuthStore.getState().accessToken
@@ -38,6 +41,7 @@ const MyPage = () => {
 	} = useMatchingPosts('my-matchingrequests');
 	console.log(comeMatchingRequests);
 	console.log(myMatchingRequests);
+	const navigate = useNavigate()
 	const [likeData, setLikeData] = useState([])
 	const [uploadPostType, setUploadPostType] = useState('roommate');
 	const [likeType, setLikeType] = useState('roommate');
@@ -57,11 +61,12 @@ const MyPage = () => {
 	return (
 		<SettingStyle className="flex flex-col gap-[10px]">
 			<section className="bg-white px-[25px] pb-[24px]">
-				<div>
-					<Header backPath="/mypage" rightContent=" " rightEvent={() => {}}>
-						<span></span>
-					</Header>
-				</div>
+				<div className=" bg-white">
+          <Header backPath="/" leftContent={Home} rightContent={Setting} rightEvent={() => {
+              navigate('/alarm');
+            }}>
+          </Header>
+        </div>
 				<div className="flex justify-between pt-[20px]">
 					<div className="flex text-left gap-[20px]">
 						<div>
@@ -143,9 +148,15 @@ const MyPage = () => {
 				</div>
 			</section>
 			<section className="bg-white py-[24px] text-left">
-				<h1 className="heading-text mb-[16px] px-[25px]">
-					내 룸메이트 신청 목록
-				</h1>
+				<div className="flex justify-between px-[25px] mb-[16px]">
+					<h1 className="heading-text">내 룸메이트 신청 목록</h1>
+					<Link
+						to="/mypage/roommate-applylist"
+						className="flex items-center justify-between username whitespace-nowrap"
+					>
+						더보기 <img src={Next} />
+					</Link>
+				</div>
 				<RoommateSwiperList type="mypost" />
 			</section>
 			<section className="bg-white pt-[24px]">
