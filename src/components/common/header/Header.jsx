@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import BackIcon from '@assets/images/common/BackIcon.svg';
 import styled from 'styled-components';
@@ -14,6 +14,7 @@ const Header = ({
 	children,
 }) => {
 	const navigate = useNavigate();
+	const location = useLocation();
 
 	const handleBackButton = (e) => {
 		if (backPath) {
@@ -30,22 +31,36 @@ const Header = ({
 			rightEvent(e);
 		}
 	};
+
 	return (
 		<>
-			<div className="bg-white flex justify-between w-full h-[50px] items-center">
-				<button onClick={handleBackButton}>
+			<div
+				className={
+					'bg-blue flex flex-1 justify-between w-full h-[57px] items-center'
+				}
+			>
+				<button className={'flex-1'} onClick={handleBackButton}>
 					<img src={BackIcon} />
 				</button>
-				{children && children}
+				<div
+					className={`${location.pathname.substring(0, 12) === '/post-detail' ? 'flex-[10]' : 'flex-[2.5]'}`}
+				>
+					{children && children}
+				</div>
 				{rightEvent &&
 					(rightContent.length >= 10 ? (
-						<img
-							onClick={handleRightButton}
-							src={rightContent}
-							alt="rightBtn"
-						/>
+						<div className="flex flex-1 justify-end">
+							<img
+								className="object-none"
+								onClick={handleRightButton}
+								src={rightContent}
+								alt="rightBtn"
+							/>
+						</div>
 					) : (
-						<SkipBtn onClick={handleRightButton}>{rightContent}</SkipBtn>
+						<div className="flex flex-1 justify-end">
+							<SkipBtn onClick={handleRightButton}>{rightContent}</SkipBtn>
+						</div>
 					))}
 			</div>
 		</>

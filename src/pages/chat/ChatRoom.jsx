@@ -12,7 +12,12 @@ import ExitIcon from '@assets/images/chat/Exit.svg';
 import SendIcon from '@assets/images/chat/Send.svg';
 import FONT from '@styles/fonts';
 import COLOR from '@styles/color';
-import { chatSeverURL, getChatHistory } from 'services/api/ChatAPI';
+import {
+	chatSeverURL,
+	deleteChatRoom,
+	getChatHistory,
+	getMatchingEnd,
+} from 'services/api/ChatAPI';
 import { ImgWrapper } from '@common/ui/Profile';
 
 const Chatroom = () => {
@@ -23,10 +28,16 @@ const Chatroom = () => {
 	const myInfo = {
 		username: '김예은',
 	};
-	const { subscribeID } = useParams();
 	const navigate = useNavigate();
+	const { subscribeID } = useParams();
 
 	const [chats, setChat] = useState([]);
+	const [room, setRoom] = useState({
+		roomName: '',
+		memberCount: 0,
+		matchingPostId: -1,
+		matchingStatus: '',
+	});
 	const [message, setMessage] = useState('');
 
 	const connectClient = () => {
@@ -66,6 +77,15 @@ const Chatroom = () => {
 
 	const checkChat = async () => {
 		const result = await getChatHistory(subscribeID, setAccessToken);
+		console.log(result);
+		setRoom((prev) => ({
+			...prev,
+			roomName: result.roomName,
+			memberCount: result.memberCount,
+			matchingPostId: result.matchingPostId,
+			matchingStatus: result.matchingStatus,
+		}));
+
 		setChat(result.data);
 	};
 
@@ -104,13 +124,15 @@ const Chatroom = () => {
 		}
 	};
 
-	const onDisconnect = () => {
+	const onDisconnect = async () => {
 		clientRef.current.deactivate();
-		navigate(-1);
+		const result = await deleteChatRoom(setAccessToken, subscribeID);
+		console.log(result);
+		navigate('/chat');
 	};
 
 	const onEnter = (e) => {
-		if (e.keyCode === 13) {
+		if (message !== '' && e.keyCode === 13) {
 			sendHandler();
 		}
 	};
@@ -135,17 +157,18 @@ const Chatroom = () => {
 
 	return (
 		<ChatContainer>
-			<section className="pb-3 fixed top-0 z-10 bg-white border-b-black container">
+			<section className="pb-3 fixed top-0 z-10 w-[393px] bg-white border-b-black container">
 				<Header
 					backPath={'/chat'}
-					rightContent={ConfirmMatching()}
+					backEvent={onDisconnect}
+					rightContent={ConfirmMatching(room.matchingStatus)}
 					rightEvent={() => {
-						alert('매칭 종료!');
+						getMatchingEnd(setAccessToken, room.matchingPostId);
 					}}
 				>
-					<div className="flex">
-						<p className="header mr-2">룸메이트 구해요!title</p>
-						<p className="people">4</p>
+					<div className="flex justify-center">
+						<p className="header mr-2">{room.roomName}</p>
+						<p className="people">{room.memberCount}</p>
 					</div>
 				</Header>
 			</section>
@@ -167,7 +190,8 @@ const Chatroom = () => {
 							<div
 								className={
 									isMyChat(chat.senderName) ||
-									prevSender(chat.senderName, chats[index - 1].senderName)
+									(index > 0 &&
+										prevSender(chat.senderName, chats[index - 1].senderName))
 										? 'noneDisplay '
 										: 'name'
 								}
@@ -219,10 +243,10 @@ const Chatroom = () => {
 
 export default Chatroom;
 
-const ConfirmMatching = () => {
+const ConfirmMatching = (status) => {
 	return (
-		<BtnStyle>
-			<p>매칭 종료</p>
+		<BtnStyle status={status === '매칭 완료'}>
+			{status === '매칭 완료' ? <p>매칭 완료</p> : <p>매칭 종료</p>}
 		</BtnStyle>
 	);
 };
@@ -244,6 +268,11 @@ const ChatContainer = styled.div`
 	}
 	.header {
 		font: ${FONT.title4SB17};
+		max-width: 140px;
+		text-align: left;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 	.people {
 		font: ${FONT.title4SB17};
@@ -277,40 +306,44 @@ const ChattingStyle = styled.div`
 	.chat {
 		position: relative;
 		display: inline-block;
+		min-width: 34px;
 		max-width: 100%;
-		padding: 11px;
+		padding: 12px 15px;
 		font: ${FONT.body5M15};
 	}
 
 	.myChat {
 		background-color: ${COLOR.purple2};
+		padding-right: 15px;
 		border-radius: 20px 20px 3px 20px;
 	}
 
 	.yourChat {
 		background-color: ${COLOR.purple3};
+		padding-left: 15px;
 		border-radius: 20px 20px 20px 3px;
 	}
 
 	.middleMsg {
 		border-radius: ${({ isMyChat }) =>
-			isMyChat ? '20px 3px 3px 20px' : '3px 20px 20px 3px'};
+			isMyChat ? '20px 5px 5px 20px' : '5px 20px 20px 5px'};
 	}
 
 	.endMsg {
 		border-radius: ${({ isMyChat }) =>
-			isMyChat ? '20px 3px 20px 20px' : '3px 20px 20px 20px'};
+			isMyChat ? '20px 5px 20px 20px' : '5px 20px 20px 20px'};
 	}
 `;
 
 const BtnStyle = styled.div`
 	border-radius: 20px;
 	padding: 8px 11px;
-	background-color: ${COLOR.purple1};
+	background-color: ${(props) =>
+		props.status ? COLOR.gray100 : COLOR.purple1};
 
 	> p {
 		font: ${FONT.caption2M14};
-		color: ${COLOR.white};
+		color: ${(props) => (props.status ? COLOR.black : COLOR.white)};
 	}
 `;
 
@@ -322,7 +355,7 @@ const InputStyle = styled.div`
 	padding: 25px 25px;
 	position: fixed;
 	bottom: 0;
-	width: 100%;
+	width: 393px;
 
 	.input_box {
 		display: flex;
