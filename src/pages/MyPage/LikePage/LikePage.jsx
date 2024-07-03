@@ -1,11 +1,15 @@
 import React, {useState, useEffect} from 'react'
-import { API } from '@utils/api'
 import Header from '@common/header/Header'
 import styled from 'styled-components'
 import FONT from '@styles/fonts'
 import COLOR from '@styles/color'
 import Profile from '@assets/images/profile-image.svg'
 import LikeItem from '@components/LikePage/LikeItem'
+import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest';
+
+
+
+
 const LikePage = () => {
   const [likeData, setLikeData] = useState([])
   const [uploadPostType, setUploadPostType] = useState('roommate')
@@ -16,10 +20,11 @@ const LikePage = () => {
   useEffect(()=>{
 		const fetchLikeData = async () => {
 			try {
-				const response = await API.get('/api/v1/member/like')
+				const response = await makeAuthorizedRequest('/api/v1/member/like')
 				setLikeData(response.data.data)
 			} catch(error) {
 				console.error(error);
+        
 			}
 		}
 		fetchLikeData()
@@ -35,7 +40,7 @@ const LikePage = () => {
       <div>
         <div className='flex'>
           <div onClick={()=>handleClickUploadPost('roommate')}className={`notification-title ${uploadPostType === 'roommate' && 'selected-title'}`}>룸메이트</div>
-          <div onClick={()=>handleClickUploadPost('delivery')}className={`notification-title ${uploadPostType === 'delivery' && 'selected-title'}`}>공동배달</div>
+          {/* <div onClick={()=>handleClickUploadPost('delivery')}className={`notification-title ${uploadPostType === 'delivery' && 'selected-title'}`}>공동배달</div> */}
         </div>
       </div>
       <div className='likelist flex flex-col gap-[1px]'>

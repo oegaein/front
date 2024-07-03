@@ -5,7 +5,7 @@ import useAuthStore from '@store/authStore'
 import useLowerBarVisible from '@hooks/useLowerBarVisible';
 import Next from '@assets/images/next.svg'
 import Dots from '@assets/images/header-dots.svg'
-
+import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest';
 //styles
 import styled from 'styled-components'
 import FONT from '@styles/fonts'
@@ -29,70 +29,23 @@ const UserPage = () => {
   const [userInfo, setUserInfo] = useState({})
   const [isModalOpen, setIsModalOpen] = useState(false)
   const isLowerBarVisible = useLowerBarVisible()  
-  const [prevScrollPos, setPrevScrollPos] = useState(window.scrollY)
   let {memberId} = useParams()
   const fetchUserInfoData = async () => {
     try {
-      const response = await API.get(`/api/v1/member/profile/${memberId}`)
+      const response = await makeAuthorizedRequest(`/api/v1/member/profile/${memberId}`)
       setUserInfo(response.data)
-      console.log(response.data)
+      console.log('fetchUserInfoData', response.data)
     } catch (error) {
       console.error(error)
-      if (error.response && error.response.status === 403) {
-        try {
-          const refreshResponse = await API.get(`/api/v1/member/refresh`)
-          console.log('refresh', refreshResponse)
-          setAccessToken(refreshResponse.data.access_token)
-          const accessToken = useAuthStore.getState().accessToken
-          console.log(accessToken)
-          try {
-            const response = await API.get(`/api/v1/member/profile/${memberId}`, {
-              headers: { 'Authorization': `Bearer ${accessToken}`}
-            })
-            setUserInfo(response.data)
-            console.log(response.data)
-          } catch (error) {
-            console.log('error')
-            console.error(error)
-          }
-
-        } catch (error) {
-          console.error(error)
-          navigate('/login')
-        }
-      }
     }
   }
   const fetchMyInfoData = async () => {
     try {
-      const response = await API.get(`/api/v1/member/my-profile`)
+      const response = await makeAuthorizedRequest(`/api/v1/member/my-profile`)
       setUserInfo(response.data)
       console.log('fetchMyInfoData',response.data)
     } catch (error) {
       console.error(error)
-      if (error.response && error.response.status === 403) {
-        try {
-          const refreshResponse = await API.get(`/api/v1/member/refresh`)
-          console.log(refreshResponse)
-          setAccessToken(refreshResponse.data.access_token)
-          const accessToken = useAuthStore.getState().accessToken
-          console.log('authStore', accessToken)
-          try {
-            const response = await API.get(`/api/v1/member/my-profile`, {
-              headers: { 'Authorization': `Bearer ${accessToken}`}
-            })
-            setUserInfo(response.data)
-            console.log(response.data)
-          } catch (error) {
-            console.log('error')
-            console.error(error)
-          }
-
-        } catch (error) {
-          console.error(error)
-          navigate('/login')
-        }
-      }
     }
   }
   const handleClickDotsBtn = () => {

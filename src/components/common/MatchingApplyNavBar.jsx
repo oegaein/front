@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
-import { API } from '@utils/api'
 import { useNavigate, useLocation } from 'react-router-dom'
-import useAuthStore from '@store/authStore'
+import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest';
+
 
 //styles
 import styled from 'styled-components'
@@ -19,7 +19,6 @@ import Comment from '@assets/images/comment.svg'
 const MatchingApplyNavBar = ({version, isLowerBarVisible, id, isLikeProps}) => {
   const [isLike, setIsLike] = useState(false)
   const navigate = useNavigate()
-  const setAccessToken = useAuthStore(state => state.setAccessToken)
   const location = useLocation()
   useEffect(() => {
     if (isLikeProps !== undefined) {
@@ -44,79 +43,68 @@ const MatchingApplyNavBar = ({version, isLowerBarVisible, id, isLikeProps}) => {
   }
   const fetchLikeData = async () => {
     try {
-      const response = await API.post('/api/v1/member/like', {
+      const response = await makeAuthorizedRequest('/api/v1/member/like', {
         receiver_id: id
-      })
+      }, 'post')
       console.log(response)
       if(response.data.like_id) {
         setIsLike(true)
       }
     } catch(error) {
       console.error(error);
-      if (error.response && error.response.status === 403) {
-        try {
-          const refreshResponse = await API.get(`/api/v1/member/refresh`)
-          console.log('refresh', refreshResponse)
-          setAccessToken(refreshResponse.data.access_token)
-          const accessToken = useAuthStore.getState().accessToken
-          console.log(accessToken)
-          try {
-            const response = await API.post('/api/v1/member/like', 
-              {receiver_id: id},
-              {
-              headers: { 'Authorization': `Bearer ${accessToken}`}
-            })
-            console.log(response)
-            if(response.data.like_id) {
-              setIsLike(true)
-            }
-          } catch (error) {
-            console.error(error)
-          }
-
-        } catch (error) {
-          console.error(error)
-          navigate('/login')
-        }
-      }
+      
     }
   }
+  // const fetchLikeData = async () => {
+  //   try {
+  //     const response = await API.post('/api/v1/member/like', {
+  //       receiver_id: id
+  //     })
+  //     console.log(response)
+  //     if(response.data.like_id) {
+  //       setIsLike(true)
+  //     }
+  //   } catch(error) {
+  //     console.error(error);
+  //     if (error.response && error.response.status === 403) {
+  //       try {
+  //         const refreshResponse = await API.get(`/api/v1/member/refresh`)
+  //         console.log('refresh', refreshResponse)
+  //         setAccessToken(refreshResponse.data.access_token)
+  //         const accessToken = useAuthStore.getState().accessToken
+  //         console.log(accessToken)
+  //         try {
+  //           const response = await API.post('/api/v1/member/like', 
+  //             {receiver_id: id},
+  //             {
+  //             headers: { 'Authorization': `Bearer ${accessToken}`}
+  //           })
+  //           console.log(response)
+  //           if(response.data.like_id) {
+  //             setIsLike(true)
+  //           }
+  //         } catch (error) {
+  //           console.error(error)
+  //         }
+
+  //       } catch (error) {
+  //         console.error(error)
+  //         navigate('/login')
+  //       }
+  //     }
+  //   }
+  // }
   const fetchDeleteLikeData = async () => {
     try {
-      const response = await API.delete('/api/v1/member/like', {
+      const response = await makeAuthorizedRequest('/api/v1/member/like', {
         receiver_id: id
-      })
+      }, 'delete')
       console.log(response)
       if (response.data.like_id) {
         setIsLike(false)
       }
     } catch(error) {
       console.error(error);
-      if (error.response && error.response.status === 403) {
-        try {
-          const refreshResponse = await API.get(`/api/v1/member/refresh`)
-          console.log('refresh', refreshResponse)
-          setAccessToken(refreshResponse.data.access_token)
-          const accessToken = useAuthStore.getState().accessToken
-          console.log(accessToken)
-          try {
-            const response = await API.delete('/api/v1/member/like', {
-              data: {receiver_id: id},
-              headers: { 'Authorization': `Bearer ${accessToken}`}
-            })
-            console.log(response)
-            if (response.data.like_id) {
-              setIsLike(false)
-            }
-          } catch (error) {
-            console.error(error)
-          }
-
-        } catch (error) {
-          console.error(error)
-          navigate('/login')
-        }
-      }
     }
   }
   const clickShareBtn = () => {

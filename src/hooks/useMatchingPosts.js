@@ -1,5 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
 import { API } from "@utils/api";
+import useAuthStore from "@store/authStore";
+import { makeAuthorizedRequest } from "@utils/makeAuthorizedRequest";
 
 const fetchData = async (type) => {
   let endpoint = '';
@@ -17,14 +19,8 @@ const fetchData = async (type) => {
     endpoint = '/api/v1/my-matchingrequests';
   }
   try {
-    const accessToken = localStorage.getItem('token')
-    const response = await API.get(`${endpoint}`, 
-    // {
-    //   headers: {
-    //     'Authorization': 'Bearer ' + accessToken
-    //   }
-    // }
-    )
+    // const accessToken = localStorage.getItem('token')
+    const response = await makeAuthorizedRequest(`${endpoint}`)
     console.log(`${type}훅:`, response.data)
     return response.data
   } catch(error) {

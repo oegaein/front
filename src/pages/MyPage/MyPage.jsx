@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { API } from '@utils/api';
 import useAuthStore from '@store/authStore';
 import useMyInfoStore from '@store/myInfoStore';
+import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest';
+
 //components
 import Header from '@common/header/Header';
 // styles
@@ -25,7 +27,8 @@ import Home from '@assets/images/home.svg'
 import Setting from '@assets/images/settings.svg'
 import { useQuery } from '@tanstack/react-query';
 const MyPage = () => {
-	const accessToken = useAuthStore.getState().accessToken
+	const setAccessToken = useAuthStore(state => state.setAccessToken)
+	// const accessToken = useAuthStore.getState().accessToken
 	const myInfo = useMyInfoStore.getState().myInfo
 	const {
 		data: comeMatchingRequests,
@@ -49,7 +52,8 @@ const MyPage = () => {
 	useEffect(()=>{
 		const fetchLikeData = async () => {
 			try {
-				const response = await API.get('/api/v1/member/like')
+				const response = await makeAuthorizedRequest('/api/v1/member/like')
+				console.log('like', response.data.data)
 				setLikeData(response.data.data)
 			} catch(error) {
 				console.error(error);
@@ -116,7 +120,6 @@ const MyPage = () => {
 					) : (
 						<div className="text-center">나에게 온 신청 요청이 없습니다.</div>
 					)}
-					{/* <ComeMatchingRequest/> */}
 				</div>
 			</section>
 			{/* 글 2개까지 보이기, 3개 이상부터는 더보기 버튼 */}
@@ -136,14 +139,14 @@ const MyPage = () => {
 					pickedMenuId={setUploadPostType}
 					/>
 					<div className="px-[25px] mt-[16px]">
-						{myMatchingRequests ? (
+						{myMatchingRequests?.data?.length > 0 ? (
 							myMatchingRequests.data.map((post, index) => (
 								<MyMatchingRequest post={post} index={index} />
 							))
 						) : (
 							<div>내가 올린 글이 존재하지 않습니다.</div>
 						)}
-						<MyMatchingRequest />
+						{/* <MyMatchingRequest /> */}
 					</div>
 				</div>
 			</section>
@@ -190,25 +193,29 @@ const ComeMatchingRequest = ({ post, index, reFetchComeMatchingRequests }) => {
 	const [matchingRequestId, setMatchingRequestId] = useState();
 	const handleClickAcceptBtn = async (id) => {
 		try {
-			const response = await API.patch(`/api/v1/matchingrequests/${id}/accept`);
+			const response = await makeAuthorizedRequest(`/api/v1/matchingrequests/${id}/accept`, {} , 'patch');
 			const matchingRequestId = response.data.matchingRequestId;
-			setMatchingRequestId(matchingRequestId);
-			reFetchComeMatchingRequests()
+			if (matchingRequestId) {
+				setMatchingRequestId(matchingRequestId);
+				reFetchComeMatchingRequests()
+			}
 			console.log('수락', response.data)
-		} catch (err) {
-			console.log(err);
+		} catch (error) {
+			console.log(error);
+			
 		}
 	};
 	const handleClickRejectBtn = async (id) => {
 		try {
-			const response = await API.patch(`/api/v1/matchingrequests/${id}/reject`);
+			const response = await makeAuthorizedRequest(`/api/v1/matchingrequests/${id}/reject`, {}, 'patch');
 			const matchingRequestId = response.data.matchingRequestId;
 			setMatchingRequestId(matchingRequestId);
 			reFetchComeMatchingRequests()
 			console.log('거절', response.data)
 
-		} catch (err) {
-			console.log(err);
+		} catch (error) {
+			console.log(error);
+			
 		}
 	};
 	return (
