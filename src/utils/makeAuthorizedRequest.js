@@ -1,12 +1,12 @@
 import { API } from './api';
 import useAuthStore from '@store/authStore';
 import { useNavigate } from 'react-router-dom';
-const makeAuthorizedRequest = async (url, config = {}, method = 'get') => {
+const makeAuthorizedRequest = async (url, method = 'get', config) => {
   try {
     let response;
     switch (method) {
       case 'get':
-        response = await API.get(url, config);
+        response = await API.get(url);
         break;
       case 'post':
         response = await API.post(url, config);
@@ -18,7 +18,7 @@ const makeAuthorizedRequest = async (url, config = {}, method = 'get') => {
         response = await API.delete(url, config);
         break;
       case 'patch':
-        response = await API.patch(url, config);
+        response = await API.patch(url);
         break;
       default:
         throw new Error('Invalid HTTP method');
@@ -32,13 +32,15 @@ const makeAuthorizedRequest = async (url, config = {}, method = 'get') => {
         const refreshResponse = await API.get('/api/v1/member/refresh');
         setAccessToken(refreshResponse.data.access_token);
         const accessToken = useAuthStore.getState().accessToken;
-        let newConfig = {
-          ...config,
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        };
-        return await makeAuthorizedRequest(url, newConfig, method);
+        // let newConfig = {
+        //   ...config,
+        //   headers: {
+        //     Authorization: `Bearer ${accessToken}`,
+        //   },
+        // };
+        API.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
+
+        return await makeAuthorizedRequest(url, method, config);
       } catch (error) {
         console.error(error);
         NavigateToLogin()

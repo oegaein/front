@@ -44,7 +44,7 @@ const HomePage = () => {
   //   fetchData()
   // },[])
   return (
-    <SettingStyle className='flex flex-col gap-[10px] pt-[11px] pb-[11px] scroll-smooth'>
+    <SettingStyle className='flex flex-col gap-[10px] pt-[11px] scroll-smooth'>
       <AddRoommateButton/>
       <div>
         <SearchAndNotice/>
@@ -105,7 +105,6 @@ const HomePage = () => {
         </div>
         <RoommateSwiperList type='new'/>
       </div>
-      <div>새로 올라온 공동배달</div>
     </SettingStyle>
   )
 }

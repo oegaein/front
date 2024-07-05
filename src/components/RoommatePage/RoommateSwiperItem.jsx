@@ -1,6 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { API } from '@utils/api'
+import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest'
 //images
 
 //styles
@@ -10,17 +11,34 @@ import COLOR from '@styles/color'
 const RoommateSwiperItem = ({post}) => {
   const navigate = useNavigate()
 
-  const handleClickRegisterBtn = async (matchingPostId) => {
+  // const handleClickRegisterBtn = async (e, matchingPostId) => {
+  //   e.stopPropagation()
+  //   try {
+  //     const response = await makeAuthorizedRequest('/api/v1/matchingrequests', {
+  //       matchingPostId,
+  //     }, 'post')
+  //     // 매칭신청이 완료되었다는 모달 필요
+  //     console.log('handleClickRegisterBtn', response.data)
+  //     alert('매칭신청')
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
+  const handleClickRegisterBtn = async (e, matchingPostId) => {
+    e.stopPropagation()
     try {
       const response = await API.post('/api/v1/matchingrequests', {
         matchingPostId,
       })
       // 매칭신청이 완료되었다는 모달 필요
+      alert('매칭신청')
     } catch (error) {
       console.log(error)
     }
   }
-  const handleClickCancelBtn = async (matchingPostId) => {
+  const handleClickCancelBtn = async (e, matchingPostId) => {
+    e.stopPropagation()
+
     try {
       const response = await API.delete(`/api/v1/matchingrequests/${matchingPostId}`)
       // 매칭취소가 완료되었다는 모달 필요
@@ -56,10 +74,10 @@ const RoommateSwiperItem = ({post}) => {
       <div className='text-right'>
       {
         post.matchingStatus === '매칭 대기' ?
-        <button onClick={()=>handleClickRegisterBtn(post.matchingPostId)} className='register text-right'>매칭신청</button>
+        <button onClick={(e)=>handleClickRegisterBtn(e, post.matchingPostId)} className='register text-right'>매칭신청</button>
         :
         post.matchingStatus === '매칭 완료' ?
-        <button onClick={()=>handleClickCancelBtn(post.matchingPostId)} className='register text-right registered'>매칭완료</button>
+        <button onClick={(e)=>handleClickCancelBtn(e, post.matchingPostId)} className='register text-right registered'>매칭완료</button>
         :
         <div className='register text-right registered'>매칭마감</div>
       }

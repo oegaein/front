@@ -6,9 +6,11 @@ import { API } from '@utils/api';
 import useAuthStore from '@store/authStore';
 import useMyInfoStore from '@store/myInfoStore';
 import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest';
+import { useMutation, useQueryClient  } from '@tanstack/react-query';
 
 //components
 import Header from '@common/header/Header';
+import ConfirmModal from '@common/modal/ConfirmModal';
 // styles
 import styled from 'styled-components';
 import FONT from '@styles/fonts';
@@ -48,7 +50,13 @@ const MyPage = () => {
 	const [likeData, setLikeData] = useState([])
 	const [uploadPostType, setUploadPostType] = useState('roommate');
 	const [likeType, setLikeType] = useState('roommate');
-
+	const [confirm, setConfirm] = useState(false)
+	const [confirmContent, setConfirmContent] = useState({
+		id: -1,
+		msg: '',
+		btn: '',
+		func: () => {},
+	});
 	useEffect(()=>{
 		const fetchLikeData = async () => {
 			try {
@@ -64,6 +72,13 @@ const MyPage = () => {
 
 	return (
 		<SettingStyle className="flex flex-col gap-[10px]">
+			{confirm && (
+				<ConfirmModal
+					content={confirmContent}
+					isOpen={confirm}
+					setIsOpen={setConfirm}
+				/>
+			)}
 			<section className="bg-white px-[25px] pb-[24px]">
 				<div className=" bg-white">
           <Header backPath="/" leftContent={Home} rightContent={Setting} rightEvent={() => {
@@ -189,34 +204,57 @@ const MyPage = () => {
 
 export default MyPage;
 
+// const ComeMatchingRequest = ({ post, index, reFetchComeMatchingRequests }) => {
+// 	const [matchingRequestId, setMatchingRequestId] = useState();
+// 	const handleClickAcceptBtn = async (id) => {
+// 		try {
+// 			const response = await makeAuthorizedRequest(`/api/v1/matchingrequests/${id}/accept`, 'patch');
+// 			if (response.data.matchingRequestId) {
+
+// 				reFetchComeMatchingRequests({force: true})
+// 			}
+// 			console.log('수락', response.data)
+// 		} catch (error) {
+// 			console.log(error);
+			
+// 		}
+// 	};
 const ComeMatchingRequest = ({ post, index, reFetchComeMatchingRequests }) => {
-	const [matchingRequestId, setMatchingRequestId] = useState();
-	const handleClickAcceptBtn = async (id) => {
-		try {
-			const response = await makeAuthorizedRequest(`/api/v1/matchingrequests/${id}/accept`, {} , 'patch');
-			const matchingRequestId = response.data.matchingRequestId;
-			if (matchingRequestId) {
-				setMatchingRequestId(matchingRequestId);
+	const queryClient = useQueryClient();
+	const acceptMutation = useMutation(
+		{
+			mutationFn: (id) => makeAuthorizedRequest(`/api/v1/matchingrequests/${id}/accept`, 'patch'),
+			onSuccess: (data) => {
+				if (data.data.matching_request_id) {
+					// queryClient.refetchQueries({ queryKey: ['matchingPosts', 'come-matchingrequests'] });
+					reFetchComeMatchingRequests()
+					// queryClient.invalidateQueries({ queryKey: ['matchingPosts', 'come-matchingrequests'] })
+				}
+				console.log('수락', data);
+			},
+			onError: (error) => {
+				console.log(error);
+			}
+		}
+	);
+	const rejectMutation = useMutation({
+		mutationFn: (id) => makeAuthorizedRequest(`/api/v1/matchingrequests/${id}/reject`, 'patch'),
+		onSuccess: (data) => {
+			if (data.data.matching_request_id) {
 				reFetchComeMatchingRequests()
 			}
-			console.log('수락', response.data)
-		} catch (error) {
+			console.log('거절', data);
+		},
+		onError: (error) => {
 			console.log(error);
-			
 		}
+	});
+	
+	const handleClickAcceptBtn = (id) => {
+		acceptMutation.mutate(id)	
 	};
 	const handleClickRejectBtn = async (id) => {
-		try {
-			const response = await makeAuthorizedRequest(`/api/v1/matchingrequests/${id}/reject`, {}, 'patch');
-			const matchingRequestId = response.data.matchingRequestId;
-			setMatchingRequestId(matchingRequestId);
-			reFetchComeMatchingRequests()
-			console.log('거절', response.data)
-
-		} catch (error) {
-			console.log(error);
-			
-		}
+		rejectMutation.mutate(id);
 	};
 	return (
 		<div className="flex justify-between">
