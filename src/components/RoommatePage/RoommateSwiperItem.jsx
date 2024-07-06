@@ -68,7 +68,7 @@ const RoommateSwiperItem = ({post}) => {
             <span className='name mr-[6px]'>{post.name}</span>
             <span className='gender'>{post.gender}</span>
           </p>
-          <p className='number'>모집인원 2명</p>
+          <p className='number'>모집인원 {post.targetNumberOfPeople}명</p>
         </div>
       </div>
       <div className='text-right'>

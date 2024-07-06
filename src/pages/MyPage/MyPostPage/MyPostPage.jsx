@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import Header from '@common/header/Header'
 
 import styled from 'styled-components'
@@ -13,7 +13,8 @@ import Profile from '@assets/images/profile-image.svg'
 
 const MyPostPage = () => {
   const [uploadPostType, setUploadPostType] = useState('roommate')
-
+  const location = useLocation()
+  const myMatchingPosts = location.state
   const handleClickUploadPost = (type) => {
     setUploadPostType(type)
   }
@@ -29,35 +30,14 @@ const MyPostPage = () => {
           <div onClick={()=>handleClickUploadPost('roommate')}className={`notification-title ${uploadPostType === 'roommate' && 'selected-title'}`}>룸메이트</div>
           <div onClick={()=>handleClickUploadPost('delivery')}className={`notification-title ${uploadPostType === 'delivery' && 'selected-title'}`}>공동배달</div>
         </div>
-        <NoResults/>
         <div className='px-[25px] mt-[16px]'>
-          <div className='mypost px-[15px] py-[20px]'>
-            <div className='flex justify-between'>
-              <div className='flex items-center justify-between gap-[10px]'>
-                <span className='color-purple1 font-caption2m14'>A동 4인실</span>
-                <span className='font-caption3m12'>모집인원 2명</span>
-              </div>
-              <div className='flex gap-[14px]'>
-                <div className='font-caption2m14 color-gray500'>11분전</div>
-                <button><img src={Dots}/></button>
-              </div>
-            </div>
-
-            <div className='flex justify-between mt-[28px]'>
-              <div className='flex justify-between gap-[13px]'>
-                <div>
-                  <img src={Profile} className='rounded-[50%] w-[45px] h-[45px]'/>
-                </div>
-                <div className='text-left overflow-hidden'>
-                  <p className='font-caption1sb14 whitespace-nowrap overflow-hidden text-ellipsis'>룸메찾기힘들다ddddddddddddddddd</p>
-                  <p className='font-caption2m14'>happy푸바옹 <span className='font-caption3m12 color-gray400'>남성</span></p>
-                </div>
-              </div>
-              <div className='self-end whitespace-nowrap'>
-                <button className='color-purple1 font-caption2m14'>매칭확정</button>
-              </div>
-            </div>
-          </div>
+          {myMatchingPosts?.data?.length > 0 ? (
+            myMatchingPosts.data.slice(0, 3).map((post, index) => (
+              <MyMatchingRequest post={post} index={index} />
+            ))
+          ) : (
+            <NoResults/>
+          )}
         </div>
       </div>
     </SettingStyle>
@@ -65,6 +45,44 @@ const MyPostPage = () => {
 }
 
 export default MyPostPage
+const MyMatchingRequest = ({ post, index }) => {
+	return (
+		<div className="mypost px-[15px] py-[20px]">
+			<div className="flex justify-between">
+				<div className="flex items-center justify-between gap-[10px]">
+					<span className="color-purple1 font-caption2m14">{post.dong} {post.roomSize}</span>
+					<span className="font-caption3m12">모집인원 {post.targetNumberOfPeople}명</span>
+				</div>
+				<div className="flex gap-[14px]">
+					<div className="font-caption2m14 color-gray500">11분전</div>
+					<button>
+						<img src={Dots} />
+					</button>
+				</div>
+			</div>
+
+			<div className="flex justify-between mt-[28px]">
+				<div className="flex justify-between gap-[13px]">
+					<div>
+						<img className="rounded-[50%] w-[45px] h-[45px]" />
+					</div>
+					<div className="text-left overflow-hidden">
+						<p className="font-caption1sb14 whitespace-nowrap overflow-hidden text-ellipsis">
+							{post.title}
+						</p>
+						<p className="font-caption2m14">
+							{post.name}{' '}
+							<span className="font-caption3m12 color-gray400">{post.gender}</span>
+						</p>
+					</div>
+				</div>
+				<div className="self-end whitespace-nowrap">
+					<button className="color-purple1 font-caption2m14">{post.matchingStatus}</button>
+				</div>
+			</div>
+		</div>
+	);
+};
 
 const NoResults = () => {
   return (

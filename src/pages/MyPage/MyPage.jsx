@@ -30,33 +30,31 @@ import Setting from '@assets/images/settings.svg'
 import { useQuery } from '@tanstack/react-query';
 const MyPage = () => {
 	const setAccessToken = useAuthStore(state => state.setAccessToken)
-	// const accessToken = useAuthStore.getState().accessToken
 	const myInfo = useMyInfoStore.getState().myInfo
+	//나에게 온 매칭신청 목록 조회
 	const {
 		data: comeMatchingRequests,
 		refetch: reFetchComeMatchingRequests,
 		isLoading: isLoadingCome,
 		error: isErrorCome,
 	} = useMatchingPosts('come-matchingrequests');
-
+	//내가 신청한 매칭 신청 목록 조회
 	const {
 		data: myMatchingRequests,
 		isLoading: isLoadingMy,
 		error: isErrorMy,
 	} = useMatchingPosts('my-matchingrequests');
-	console.log(comeMatchingRequests);
-	console.log(myMatchingRequests);
+	//내가 신청한 매칭 신청 목록 조회
+	const {
+		data: myMatchingPosts,
+		isLoading: isLoadingMyUpload,
+		error: isErrorMyUpload,
+	} = useMatchingPosts('mypost');
+
 	const navigate = useNavigate()
 	const [likeData, setLikeData] = useState([])
 	const [uploadPostType, setUploadPostType] = useState('roommate');
 	const [likeType, setLikeType] = useState('roommate');
-	const [confirm, setConfirm] = useState(false)
-	const [confirmContent, setConfirmContent] = useState({
-		id: -1,
-		msg: '',
-		btn: '',
-		func: () => {},
-	});
 	useEffect(()=>{
 		const fetchLikeData = async () => {
 			try {
@@ -72,13 +70,6 @@ const MyPage = () => {
 
 	return (
 		<SettingStyle className="flex flex-col gap-[10px]">
-			{confirm && (
-				<ConfirmModal
-					content={confirmContent}
-					isOpen={confirm}
-					setIsOpen={setConfirm}
-				/>
-			)}
 			<section className="bg-white px-[25px] pb-[24px]">
 				<div className=" bg-white">
           <Header backPath="/" leftContent={Home} rightContent={Setting} rightEvent={() => {
@@ -89,11 +80,11 @@ const MyPage = () => {
 				<div className="flex justify-between pt-[20px]">
 					<div className="flex text-left gap-[20px]">
 						<div>
-							<img className="w-[45px] h-[45px] rounded-[50%]" src={myInfo.photoUrl} />
+							<img className="w-[45px] h-[45px] rounded-[50%]" src={myInfo?.photoUrl} />
 						</div>
 						<div>
-							<p className="myname">{myInfo.name}</p>
-							<p className="small-text">{myInfo.introduction}</p>
+							<p className="myname">{myInfo?.name}</p>
+							<p className="small-text">{myInfo?.introduction}</p>
 						</div>
 					</div>
 					<div>
@@ -143,6 +134,7 @@ const MyPage = () => {
 					<h1 className="heading-text">내가 올린 글</h1>
 					<Link
 						to="/mypage/mypost"
+						state={myMatchingPosts}
 						className="flex items-center justify-between username whitespace-nowrap"
 					>
 						더보기 <img src={Next} />
@@ -154,8 +146,8 @@ const MyPage = () => {
 					pickedMenuId={setUploadPostType}
 					/>
 					<div className="px-[25px] mt-[16px]">
-						{myMatchingRequests?.data?.length > 0 ? (
-							myMatchingRequests.data.map((post, index) => (
+						{myMatchingPosts?.data?.length > 0 ? (
+							myMatchingPosts.data.slice(0, 3).map((post, index) => (
 								<MyMatchingRequest post={post} index={index} />
 							))
 						) : (
@@ -204,31 +196,17 @@ const MyPage = () => {
 
 export default MyPage;
 
-// const ComeMatchingRequest = ({ post, index, reFetchComeMatchingRequests }) => {
-// 	const [matchingRequestId, setMatchingRequestId] = useState();
-// 	const handleClickAcceptBtn = async (id) => {
-// 		try {
-// 			const response = await makeAuthorizedRequest(`/api/v1/matchingrequests/${id}/accept`, 'patch');
-// 			if (response.data.matchingRequestId) {
-
-// 				reFetchComeMatchingRequests({force: true})
-// 			}
-// 			console.log('수락', response.data)
-// 		} catch (error) {
-// 			console.log(error);
-			
-// 		}
-// 	};
 const ComeMatchingRequest = ({ post, index, reFetchComeMatchingRequests }) => {
 	const queryClient = useQueryClient();
+	const [confirm, setConfirm] = useState(false)
+	const [confirmContent, setConfirmContent] = useState({});
+
 	const acceptMutation = useMutation(
 		{
 			mutationFn: (id) => makeAuthorizedRequest(`/api/v1/matchingrequests/${id}/accept`, 'patch'),
 			onSuccess: (data) => {
 				if (data.data.matching_request_id) {
-					// queryClient.refetchQueries({ queryKey: ['matchingPosts', 'come-matchingrequests'] });
 					reFetchComeMatchingRequests()
-					// queryClient.invalidateQueries({ queryKey: ['matchingPosts', 'come-matchingrequests'] })
 				}
 				console.log('수락', data);
 			},
@@ -251,13 +229,32 @@ const ComeMatchingRequest = ({ post, index, reFetchComeMatchingRequests }) => {
 	});
 	
 	const handleClickAcceptBtn = (id) => {
-		acceptMutation.mutate(id)	
+		setConfirm(true)
+		setConfirmContent({
+			id: -1,
+			msg: `${post.name}님의 요청을 수락할까요?`,
+			btn: '수락',
+			func: () => {acceptMutation.mutate(id)},
+		})
 	};
 	const handleClickRejectBtn = async (id) => {
-		rejectMutation.mutate(id);
+		setConfirm(true)
+		setConfirmContent({
+			id: -1,
+			msg: `${post.name}님의 요청을 거절할까요?`,
+			btn: '거절',
+			func: () => {rejectMutation.mutate(id);},
+		})
 	};
 	return (
 		<div className="flex justify-between">
+			{confirm && (
+				<ConfirmModal
+					content={confirmContent}
+					isOpen={confirm}
+					setIsOpen={setConfirm}
+				/>
+			)}
 			<div className="flex gap-[20px]">
 				<div>
 					<img
@@ -295,8 +292,8 @@ const MyMatchingRequest = ({ post, index }) => {
 		<div className="mypost px-[15px] py-[20px]">
 			<div className="flex justify-between">
 				<div className="flex items-center justify-between gap-[10px]">
-					<span className="color-purple1 font-caption2m14">A동 4인실</span>
-					<span className="font-caption3m12">모집인원 2명</span>
+					<span className="color-purple1 font-caption2m14">{post.dong} {post.roomSize}</span>
+					<span className="font-caption3m12">모집인원 {post.targetNumberOfPeople}명</span>
 				</div>
 				<div className="flex gap-[14px]">
 					<div className="font-caption2m14 color-gray500">11분전</div>
@@ -313,16 +310,16 @@ const MyMatchingRequest = ({ post, index }) => {
 					</div>
 					<div className="text-left overflow-hidden">
 						<p className="font-caption1sb14 whitespace-nowrap overflow-hidden text-ellipsis">
-							룸메찾기힘들다ddddddddddddddddd
+							{post.title}
 						</p>
 						<p className="font-caption2m14">
-							happy푸바옹{' '}
-							<span className="font-caption3m12 color-gray400">남성</span>
+							{post.name}{' '}
+							<span className="font-caption3m12 color-gray400">{post.gender}</span>
 						</p>
 					</div>
 				</div>
 				<div className="self-end whitespace-nowrap">
-					<button className="color-purple1 font-caption2m14">매칭확정</button>
+					<button className="color-purple1 font-caption2m14">{post.matchingStatus}</button>
 				</div>
 			</div>
 		</div>

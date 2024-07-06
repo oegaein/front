@@ -22,10 +22,10 @@ root.render(
 	// </React.StrictMode>,
 );
 
-// enableMocking().then(() => {
-//   root.render(
-// 		<React.StrictMode>
-// 			<App />
-// 		</React.StrictMode>,
-// 	);
-// })
+enableMocking().then(() => {
+  root.render(
+		<React.StrictMode>
+			<App />
+		</React.StrictMode>,
+	);
+})
