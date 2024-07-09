@@ -1,6 +1,8 @@
 import React from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { useMatchingPosts } from 'hooks/useMatchingPosts';
+import { useQuery } from '@tanstack/react-query';
+import { API } from '@utils/api';
 
 //styles
 import FONT from '@styles/fonts';
@@ -13,8 +15,7 @@ import Premium from '@assets/images/premium-quality.svg';
 
 //components
 import RoommateScrollItem from '@components/RoommatePage/RoommateScrollItem';
-import { useQuery } from '@tanstack/react-query';
-import { API } from '@utils/api';
+import Pagination from '@components/common/Pagination'
 
 const RoommateScrollList = ({ type, searchTerm, filteredPosts, setScreenType }) => {
 	const { data: matchingPosts, isLoading, error } = useMatchingPosts(type);
@@ -82,7 +83,8 @@ const RoommateScrollList = ({ type, searchTerm, filteredPosts, setScreenType }) 
 				}
 				return content; // 조건에 따라 결정된 내용을 리턴
 			})()}
-</div>
+			</div>
+			<Pagination data={matchingPosts.data}/>
 
 		</SettingStyle>
 	);
@@ -156,7 +158,7 @@ const EndingSoonTitle = () => {
 			</h1>
 			<div className="flex justify-between gap-[4px]">
 				<button className="ending-soon-btn selected">룸메이트</button>
-				<button className="ending-soon-btn">공동배달</button>
+				{/* <button className="ending-soon-btn">공동배달</button> */}
 			</div>
 		</>
 	);

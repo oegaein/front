@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useMatchingPosts } from 'hooks/useMatchingPosts';
 import { useNavigate } from 'react-router-dom';
-import { API } from '@utils/api';
+// import { API } from '@utils/api';
 import useAuthStore from '@store/authStore';
 import useMyInfoStore from '@store/myInfoStore';
 import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest';
@@ -27,7 +27,7 @@ import LikeItem from '@components/LikePage/LikeItem';
 import SelectMenuBar from '@common/menu/SelectMenuBar';
 import Home from '@assets/images/home.svg'
 import Setting from '@assets/images/settings.svg'
-import { useQuery } from '@tanstack/react-query';
+// import { useQuery } from '@tanstack/react-query';
 const MyPage = () => {
 	const setAccessToken = useAuthStore(state => state.setAccessToken)
 	const myInfo = useMyInfoStore.getState().myInfo
@@ -95,7 +95,7 @@ const MyPage = () => {
 				</div>
 				<div className="small-text px-[42px] pt-[48px] flex justify-between">
 					<Link
-						to="/notification"
+						to="/alarm"
 						className="flex flex-col justify-center items-center"
 					>
 						<img
@@ -134,7 +134,6 @@ const MyPage = () => {
 					<h1 className="heading-text">내가 올린 글</h1>
 					<Link
 						to="/mypage/mypost"
-						state={myMatchingPosts}
 						className="flex items-center justify-between username whitespace-nowrap"
 					>
 						더보기 <img src={Next} />
@@ -153,7 +152,6 @@ const MyPage = () => {
 						) : (
 							<div>내가 올린 글이 존재하지 않습니다.</div>
 						)}
-						{/* <MyMatchingRequest /> */}
 					</div>
 				</div>
 			</section>
@@ -167,7 +165,7 @@ const MyPage = () => {
 						더보기 <img src={Next} />
 					</Link>
 				</div>
-				<RoommateSwiperList type="mypost" />
+				<RoommateSwiperList type="my-matchingrequests" />
 			</section>
 			<section className="bg-white pt-[24px]">
 				<div className="flex justify-between px-[25px]">
@@ -306,7 +304,7 @@ const MyMatchingRequest = ({ post, index }) => {
 			<div className="flex justify-between mt-[28px]">
 				<div className="flex justify-between gap-[13px]">
 					<div>
-						<img className="rounded-[50%] w-[45px] h-[45px]" />
+						<img className="rounded-[50%] w-[45px] h-[45px]" src={post.photoUrl} />
 					</div>
 					<div className="text-left overflow-hidden">
 						<p className="font-caption1sb14 whitespace-nowrap overflow-hidden text-ellipsis">
@@ -319,7 +317,7 @@ const MyMatchingRequest = ({ post, index }) => {
 					</div>
 				</div>
 				<div className="self-end whitespace-nowrap">
-					<button className="color-purple1 font-caption2m14">{post.matchingStatus}</button>
+					<div className="color-purple1 font-caption2m14">{post.matchingStatus}</div>
 				</div>
 			</div>
 		</div>

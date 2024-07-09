@@ -6,10 +6,7 @@ import RedHeart from '@assets/images/heart-red.svg'
 import Heart from '@assets/images/heart (10) 1.svg'
 const LikeItem = ({like}) => {
   const [isLike, setIsLike] = useState(false)
-  const handleClickHeart = () => {
-    //api 요청 로직
-    setIsLike(prevState=> !prevState)
-  }
+
   const fetchLikeData = async () => {
     try {
       const response = await makeAuthorizedRequest('/api/v1/member/like', {

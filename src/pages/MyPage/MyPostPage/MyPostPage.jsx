@@ -1,5 +1,7 @@
 import React, {useState} from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { useMatchingPosts } from 'hooks/useMatchingPosts';
+
 import Header from '@common/header/Header'
 
 import styled from 'styled-components'
@@ -14,7 +16,11 @@ import Profile from '@assets/images/profile-image.svg'
 const MyPostPage = () => {
   const [uploadPostType, setUploadPostType] = useState('roommate')
   const location = useLocation()
-  const myMatchingPosts = location.state
+  const {
+		data: myMatchingPosts,
+		isLoading: isLoadingMyUpload,
+		error: isErrorMyUpload,
+	} = useMatchingPosts('mypost');
   const handleClickUploadPost = (type) => {
     setUploadPostType(type)
   }
@@ -28,7 +34,7 @@ const MyPostPage = () => {
       <div>
         <div className='flex'>
           <div onClick={()=>handleClickUploadPost('roommate')}className={`notification-title ${uploadPostType === 'roommate' && 'selected-title'}`}>룸메이트</div>
-          <div onClick={()=>handleClickUploadPost('delivery')}className={`notification-title ${uploadPostType === 'delivery' && 'selected-title'}`}>공동배달</div>
+          {/* <div onClick={()=>handleClickUploadPost('delivery')}className={`notification-title ${uploadPostType === 'delivery' && 'selected-title'}`}>공동배달</div> */}
         </div>
         <div className='px-[25px] mt-[16px]'>
           {myMatchingPosts?.data?.length > 0 ? (
@@ -64,7 +70,7 @@ const MyMatchingRequest = ({ post, index }) => {
 			<div className="flex justify-between mt-[28px]">
 				<div className="flex justify-between gap-[13px]">
 					<div>
-						<img className="rounded-[50%] w-[45px] h-[45px]" />
+						<img className="rounded-[50%] w-[45px] h-[45px]" src={post.photoUrl}/>
 					</div>
 					<div className="text-left overflow-hidden">
 						<p className="font-caption1sb14 whitespace-nowrap overflow-hidden text-ellipsis">

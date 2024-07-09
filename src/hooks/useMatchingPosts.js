@@ -1,14 +1,13 @@
 import { useQuery } from "@tanstack/react-query"
 import { API } from "@utils/api";
-import useAuthStore from "@store/authStore";
 import { makeAuthorizedRequest } from "@utils/makeAuthorizedRequest";
 
-const fetchData = async (type) => {
+const fetchData = async (type, page) => {
   let endpoint = '';
   if (type === 'best') {
     endpoint = '/api/v1/best-roommate-matchingposts';
   } else if (type === 'new') {
-    endpoint = '/api/v1/matchingposts';
+    endpoint = `/api/v1/matchingposts?page=${page}`;
   } else if (type === 'mypost') {
     endpoint = '/api/v1/my-matchingposts';
   } else if (type === 'imminent') {
@@ -19,7 +18,6 @@ const fetchData = async (type) => {
     endpoint = '/api/v1/my-matchingrequests';
   }
   try {
-    // const accessToken = localStorage.getItem('token')
     const response = await makeAuthorizedRequest(`${endpoint}`)
     console.log(`${type}훅:`, response.data)
     return response.data
@@ -27,11 +25,11 @@ const fetchData = async (type) => {
     console.error(error)
   }
 }
-//type: best/new/mypost
-export const useMatchingPosts = (type) => {
+
+export const useMatchingPosts = (type, page = 0) => {
   return useQuery({
-    queryKey: ['matchingPosts', type],
-    queryFn: () => fetchData(type),
+    queryKey: ['matchingPosts', type, page],
+    queryFn: () => fetchData(type, page),
     staleTime: 0,
     gcTime: 5 * 60 * 1000,
     enabled: (type !== 'search' && type !== 'filters'), //type이 search거나 filters일때 쿼리 X

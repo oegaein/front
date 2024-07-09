@@ -24,10 +24,10 @@ const RoommateApplyListPage = () => {
       <div>
         <div className='flex'>
           <div onClick={()=>handleChangeType('roommate')}className={`notification-title ${uploadPostType === 'roommate' && 'selected-title'}`}>룸메이트</div>
-          <div onClick={()=>handleChangeType('delivery')}className={`notification-title ${uploadPostType === 'delivery' && 'selected-title'}`}>공동배달</div>
+          {/* <div onClick={()=>handleChangeType('delivery')}className={`notification-title ${uploadPostType === 'delivery' && 'selected-title'}`}>공동배달</div> */}
         </div>
       </div>
-      <RoommateScrollList type='mypost'/>
+      <RoommateScrollList type='my-matchingrequests'/>
     </SettingStyle>
   )
 }

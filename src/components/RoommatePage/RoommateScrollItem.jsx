@@ -41,7 +41,7 @@ const RoommateScrollItem = ({post}) => {
             <div>
               <span className='room mr-[10px]'>{post.dong} {post.roomSize}</span>
               {/* 데이터 바인딩 필요 */}
-              <span className='mates-number'>모집인원 1명</span>
+              <span className='mates-number'>모집인원 {post.targetNumberOfPeople}명</span>
             </div>
             {post.matchingStatus === '매칭 대기' &&
             <span className='dday'>{post.dday === 0 ? 'D-Day' : `D-${post.dday}`}</span>        

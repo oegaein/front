@@ -5,7 +5,7 @@ import axios from 'axios';
 export const postMatchingPostAPI = async (submitData, setAccessToken) => {
 	try {
 		const { data } = await API.post(
-			`https://api.oegaein.com:8080/api/v1/matchingposts`,
+			`https://api.oegaein.org:8080/api/v1/matchingposts`,
 			submitData,
 		);
 		return data;
@@ -20,7 +20,7 @@ export const postMatchingPostAPI = async (submitData, setAccessToken) => {
 				console.log(accessToken);
 				try {
 					const { data } = await API.post(
-						`https://api.oegaein.com:8080/api/v1/matchingposts`,
+						`https://api.oegaein.org:8080/api/v1/matchingposts`,
 						submitData,
 						{
 							headers: {
@@ -43,7 +43,7 @@ export const postMatchingPostAPI = async (submitData, setAccessToken) => {
 export const getMatchingPostAPI = async (matchingpostID, setAccessToken) => {
 	try {
 		const { data } = await API.get(
-			`https://api.oegaein.com:8080/api/v1/matchingposts/${matchingpostID}`,
+			`https://api.oegaein.org:8080/api/v1/matchingposts/${matchingpostID}`,
 		);
 		return data;
 	} catch (error) {
@@ -57,7 +57,7 @@ export const getMatchingPostAPI = async (matchingpostID, setAccessToken) => {
 				console.log(accessToken);
 				try {
 					const { data } = await API.get(
-						`https://api.oegaein.com:8080/api/v1/matchingposts/${matchingpostID}`,
+						`https://api.oegaein.org:8080/api/v1/matchingposts/${matchingpostID}`,
 						{
 							headers: {
 								Authorization: `Bearer ${accessToken}`,
