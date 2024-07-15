@@ -26,6 +26,10 @@ import UserLifeStyles from '@components/UserPage/UserLifeStyles';
 import { timeAgo } from '@utils/TimeAgo';
 import useAuthStore from '@store/authStore';
 
+const myInfo = {
+	name: '김예은',
+};
+
 const PostDetail = () => {
 	const setAccessToken = useAuthStore((state) => state.setAccessToken);
 	const { postId } = useParams();
@@ -85,6 +89,15 @@ const PostDetail = () => {
 		}));
 	};
 
+	const calculateMarginRight = (name) => {
+		let marginRight = 100;
+		marginRight -= (name.length - 1) * 5;
+		if (marginRight < 0) {
+			marginRight = 0;
+		}
+		return marginRight;
+	};
+
 	const postOptions = [
 		{
 			content: '수정하기',
@@ -106,7 +119,7 @@ const PostDetail = () => {
 		<>
 			{threedots && (
 				<OptionModal
-					options={postOptions} // 작성자 === 클릭자 ? postOptions : yourOptions
+					options={data.author_name === myInfo.name ? postOptions : yourOption}
 					isOpen={threedots}
 					setIsOpen={setThreedots}
 				/>
@@ -127,12 +140,16 @@ const PostDetail = () => {
 							setThreedots(true);
 						}}
 					>
-						<div className="flex justify-start items-center w-5/6">
+						<div className="flex justify-start items-center">
 							<Link to="/home">
-								<img src={HomeIcon} alt="home" className="mr-[60px]" />
+								<img
+									src={HomeIcon}
+									alt="home"
+									className={`mr-[${calculateMarginRight(data.author_name)}px]`}
+								/>
 							</Link>
 							<SimpleProfile
-								Img={data.author_profile?.photoUrl}
+								Img={data.author_profile?.photo_url}
 								nickname={data.author_name}
 								mr={'6px'}
 								width="25px"
@@ -154,7 +171,7 @@ const PostDetail = () => {
 						<div className="flex justify-between w-full mb-4">
 							<div className="flex">
 								<SimpleProfile
-									Img={data.author_profile?.photoUrl}
+									Img={data.author_profile?.photo_url}
 									nickname={data.author_name}
 									mr="6px"
 									width="25px"
@@ -240,7 +257,7 @@ const PostDetail = () => {
 					</div>
 					<div className="container">
 						<BasicProfile
-							Img={data.author_profile?.photoUrl}
+							Img={data.author_profile?.photo_url}
 							nickname={data.author_name}
 							content={data.author_profile.gender}
 							mr="20px"
