@@ -8,10 +8,16 @@ import ArrowUpIcon from '@assets/images/common/ArrowUpIcon.svg';
 import Bar from '@assets/images/common/Bar.svg';
 import { useLocation } from 'react-router-dom';
 
-const BasicDropdown = ({ choice, label = '미선택', options, setSelected }) => {
+const BasicDropdown = ({
+	choice,
+	label = '미선택',
+	options,
+	setSelected,
+	defaultValue,
+}) => {
 	const location = useLocation();
 	const [isOpen, setIsOpen] = useState(false);
-	const [selectedOption, setSelectedOption] = useState('');
+	const [selectedOption, setSelectedOption] = useState(defaultValue || '');
 	const dropdownRef = useRef(null);
 
 	useEffect(() => {
