@@ -7,8 +7,7 @@ import BasicDropdown from '@common/dropdown/BasicDropdown';
 import FemailImg from '@assets/images/basicInfo/Femail.svg';
 import MailImg from '@assets/images/basicInfo/Male.svg';
 import FONT from '@styles/fonts';
-import { NumInput } from './BasicSettingInput';
-import { major_options } from 'mocks/data/profile-setting';
+import { NumInput } from '@components/basicInfo/BasicSettingInput';
 
 const SIoptions = [
 	'24학번',
@@ -23,14 +22,13 @@ const SIoptions = [
 	'15학번',
 ];
 
-const Profile = ({ onGetValue, setButton }) => {
+const ProfileEdit = ({ onGetValue, defaultValue }) => {
 	const gender = [
 		{ id: '여성', img: FemailImg },
 		{ id: '남성', img: MailImg },
 	];
-	const [selectedGender, setSelectedGender] = useState(null);
+	const [selectedGender, setSelectedGender] = useState(0);
 	const [selectedStudentId, setSelectedStudentId] = useState(null);
-	const [selectedMajor, setSelectedMajor] = useState(null);
 	const [selectedBirth, setSelectedBirth] = useState(null);
 
 	const handleGenderChange = (index) => {
@@ -38,23 +36,12 @@ const Profile = ({ onGetValue, setButton }) => {
 	};
 
 	useEffect(() => {
-		if (
-			selectedGender !== null &&
-			selectedStudentId !== null &&
-			selectedMajor !== null &&
-			selectedBirth !== null
-		) {
-			const values = {
-				gender: gender[selectedGender].id,
-				studentId: selectedStudentId,
-				major: selectedMajor,
-				birth: selectedBirth,
-			};
-			onGetValue(values);
-			setButton(false);
-		} else {
-			setButton(true);
-		}
+		const values = {
+			gender: gender[selectedGender].id,
+			studentId: selectedStudentId,
+			birth: selectedBirth,
+		};
+		onGetValue(values);
 	}, [selectedGender, selectedStudentId, selectedBirth]);
 
 	const handleSelectedSI = (value) => {
@@ -64,8 +51,8 @@ const Profile = ({ onGetValue, setButton }) => {
 
 	return (
 		<>
-			<div className="w-full flex flex-col mb-24">
-				<Subtitle>성별</Subtitle>
+			<div className="w-full flex flex-col">
+				<Subtitle>성별 *</Subtitle>
 				<div className="flex justify-around items-center">
 					{gender.map((item, index) => (
 						<GenderBox
@@ -86,29 +73,25 @@ const Profile = ({ onGetValue, setButton }) => {
 						</GenderBox>
 					))}
 				</div>
-				<Subtitle>학번</Subtitle>
+				<Subtitle>학번 *</Subtitle>
 				<BasicDropdown
 					choice="학번"
 					label="학번을 선택해주세요."
 					options={SIoptions}
 					setSelected={handleSelectedSI}
+					defaultValue={defaultValue[1]}
 				/>
-				<Subtitle>전공</Subtitle>
-				<BasicDropdown
-					choice="전공"
-					label="전공을 선택해주세요."
-					options={major_options}
-					setSelected={setSelectedMajor}
+				<Subtitle>생년월일 *</Subtitle>
+				<NumInput
+					setSelected={setSelectedBirth}
+					defaultValue={defaultValue[2]}
 				/>
-				<Subtitle>생년월일</Subtitle>
-				{/* <DatePickerFunc setSelectedBirth={setSelectedBirth} /> */}
-				<NumInput setSelected={setSelectedBirth} />
 			</div>
 		</>
 	);
 };
 
-export default Profile;
+export default ProfileEdit;
 
 const GenderBox = styled.div`
 	display: flex;

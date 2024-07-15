@@ -3,7 +3,7 @@ import { API } from '@utils/api';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-export const chatSeverURL = 'https://api.oegaein.com:8081';
+export const chatSeverURL = 'https://api.oegaein.org:8081';
 
 export const getChatListAPI = async (setAccessToken) => {
 	try {

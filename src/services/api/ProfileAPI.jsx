@@ -12,8 +12,8 @@ export const PostProfileAPI = async (submitData, setAccessToken) => {
 		if (error.response && error.response.status === 403) {
 			try {
 				const refreshResponse = await API.get(`/api/v1/member/refresh`);
-				console.log('refresh!!!!!!' + refreshResponse);
-				setAccessToken(refreshResponse.data.accessToken);
+				console.log('refresh!! + ' + refreshResponse.data.access_token);
+				setAccessToken(refreshResponse.data.access_token);
 				const accessToken = useAuthStore.getState().accessToken;
 				console.log(accessToken);
 				try {
@@ -81,4 +81,35 @@ export const GetDuplicate = async (nickname, setAccessToken) => {
 	}
 
 	// return data;
+};
+
+export const EditProfileAPI = async (submitData, setAccessToken) => {
+	try {
+		const res = await API.put(`/api/v1/member/profile`, submitData);
+		console.log(res.data);
+	} catch (error) {
+		console.error(error);
+		if (error.response && error.response.status === 403) {
+			try {
+				const refreshResponse = await API.get(`/api/v1/member/refresh`);
+				console.log('refresh!! + ' + refreshResponse.data.access_token);
+				setAccessToken(refreshResponse.data.access_token);
+				const accessToken = useAuthStore.getState().accessToken;
+				console.log(accessToken);
+				try {
+					const { data } = await API.put('/api/v1/member/profile', submitData, {
+						headers: {
+							Authorization: `Bearer ${accessToken}`,
+						},
+					});
+					console.log(data);
+				} catch (error) {
+					console.log('error');
+					console.error(error);
+				}
+			} catch (error) {
+				console.error(error);
+			}
+		}
+	}
 };
