@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Input, ContainerStyle } from '@styles/basicInfo/Input';
 import Xbutton from '@assets/images/common/Xbutton.svg';
 import { DropdownWrapper } from '@common/dropdown/BasicDropdown';
 import { postCommentsAPI, postReplyAPI } from 'services/api/CommentsAPI';
+import useAuthStore from '@store/authStore';
 
 //
 export const BasicInput = ({ onChangeValue, limitNum }) => {
@@ -45,9 +46,58 @@ BasicInput.propTypes = {
 	onChangeValue: PropTypes.func.isRequired,
 };
 
+// edit nickname
+export const EditNicknameInput = ({
+	defaultValue,
+	onChangeValue,
+	limitNum,
+}) => {
+	const [value, setValue] = useState(defaultValue || '');
+
+	const handleChange = (e) => {
+		const inputValue = e.target.value;
+		if (inputValue.length <= limitNum) {
+			setValue(inputValue);
+			onChangeValue(inputValue);
+		}
+	};
+
+	return (
+		<>
+			<Input type="text" value={value} onChange={handleChange} />
+		</>
+	);
+};
+
 //
-export const NumInput = ({ setSelected }) => {
+export const NumInput = ({ setSelected, defaultValue = '' }) => {
 	const [value, setValue] = useState('');
+
+	useEffect(() => {
+		if (defaultValue !== '') {
+			setValue(defaultValue);
+			setSelected(defaultValue);
+		}
+	}, [defaultValue]);
+
+	const isCorrect = (val) => {
+		const regex = /^\d{4}-\d{2}-\d{2}$/;
+		if (!regex.test(val)) return false;
+
+		const [year, month, day] = val.split('-').map(Number);
+
+		if (year < 1900 || year > 2024) return false;
+		if (month < 1 || month > 12) return false;
+
+		const maxDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+		if (year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0)) {
+			maxDays[1] = 29; // Leap year
+		}
+
+		if (day < 1 || day > maxDays[month - 1]) return false;
+
+		return true;
+	};
 
 	const handleInputChange = (e) => {
 		const regex = /^\d{4}-\d{2}-\d{2}$/;
@@ -59,14 +109,20 @@ export const NumInput = ({ setSelected }) => {
 
 		if (yyyy && yyyy.length >= 4) {
 			val = `${yyyy}-${mm}`;
+			if (mm.length === 0) {
+				val = `${yyyy}`;
+			}
 		}
 		if (mm && mm.length >= 2) {
 			val = `${yyyy}-${mm}-${dd}`;
+			if (dd.length === 0) {
+				val = `${yyyy}-${mm}`;
+			}
 		}
 
 		setValue(val);
 
-		if (regex.test(val)) {
+		if (isCorrect(val)) {
 			setSelected(val);
 		} else {
 			setSelected(null);
@@ -153,6 +209,7 @@ export const CheckboxInput = ({
 
 //
 export const CommentInput = ({ setSelected, setReply, postId }) => {
+	const setAccessToken = useAuthStore((state) => state.setAccessToken);
 	const [value, setValue] = useState('');
 
 	const handleChange = (e) => {
@@ -163,9 +220,9 @@ export const CommentInput = ({ setSelected, setReply, postId }) => {
 
 	const handlePost = () => {
 		// setReply(false);
-		// postCommentsAPI(postId, value);
-		postReplyAPI(postId, value);
-		window.location.reload();
+		postCommentsAPI(setAccessToken, postId, value);
+		// postReplyAPI(postId, value);
+		// window.location.reload();
 	};
 
 	return (
