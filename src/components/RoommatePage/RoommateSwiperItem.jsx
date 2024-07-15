@@ -1,31 +1,26 @@
 import React, {useState} from 'react'
 import { useNavigate } from 'react-router-dom'
-import { API } from '@utils/api'
 import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest'
 import { useQueryClient } from '@tanstack/react-query'
 import { useMutation } from '@tanstack/react-query'
-
-import ConfirmModal from '@common/modal/ConfirmModal'
 
 //styles
 import styled from 'styled-components'
 import FONT from '@styles/fonts'
 import COLOR from '@styles/color'
 
-const RoommateSwiperItem = ({post, type, index}) => {
+const RoommateSwiperItem = ({post, type, index, setConfirm, setConfirmContent}) => {
 //   매칭글 - 매칭 대기 | 매칭 마감 | 매칭 완료
 // 매칭요청(내 룸메이트 신청 목록, 룸메이트 신청 요청 ) - 매칭 대기 | 매칭 수락 | 매칭 거절 
 
   const queryClient = useQueryClient();
-	const [confirm, setConfirm] = useState(false)
-	const [confirmContent, setConfirmContent] = useState({});
   const navigate = useNavigate()
   const registerMutation = useMutation(
 		{
-			mutationFn: (matchingPostId) => makeAuthorizedRequest('/api/v1/matchingrequests', 'post', {matchingPostId}),
+			mutationFn: (matchingRequestId) => makeAuthorizedRequest('/api/v1/matchingrequests', 'post', {matchingRequestId}),
 			onSuccess: (data) => {
-				if (data.data.matchingRequestId) {
-					queryClient.invalidateQueries(['matchingPosts', type, 0])
+				if (data.status === 201) {
+					queryClient.invalidateQueries(['matchingPosts', type])
 				}
 				console.log('매칭신청', data);
 			},
@@ -36,10 +31,10 @@ const RoommateSwiperItem = ({post, type, index}) => {
 	);
   const cancelMutation = useMutation(
 		{
-			mutationFn: (matchingPostId) => makeAuthorizedRequest(`/api/v1/matchingrequests/${matchingPostId}`, 'delete'),
+			mutationFn: (matchingRequestId) => makeAuthorizedRequest(`/api/v1/matchingrequests/${matchingRequestId}`, 'delete'),
 			onSuccess: (data) => {
-				if (data.status === 200) {
-					queryClient.invalidateQueries(['matchingPosts', type, 0])
+				if (data.status === 204) {
+					queryClient.invalidateQueries(['matchingPosts', type])
 				}
 				console.log('매칭취소', data);
 			},
@@ -67,7 +62,7 @@ const RoommateSwiperItem = ({post, type, index}) => {
 		setConfirmContent({
 			id: -1,
 			msg: `${post.name}님과의 매칭을 취소할까요?`,
-			btn: '취소',
+			btn: '확인',
 			func: () => {cancelMutation.mutate(matchingPostId)},
 		})
   }
@@ -76,13 +71,6 @@ const RoommateSwiperItem = ({post, type, index}) => {
   }
   return (
     <SettingStyle onClick={()=>handleClickPost(post.matchingPostId)} key={post.matchingPostId} className={`w-[192px] h-[179px] border border-[${COLOR.gray100}] rounded-[20px] bg-white p-[17px] pb-[13px] ml-[12px]`}>
-      {confirm && (
-				<ConfirmModal
-					content={confirmContent}
-					isOpen={confirm}
-					setIsOpen={setConfirm}
-				/>
-			)}
       <div className='flex items-center justify-between mb-[10px]'>
         <span className='room'>{post.dong} {post.roomSize}</span>
         {post.matchingStatus === '매칭 대기' &&
@@ -107,7 +95,7 @@ const RoommateSwiperItem = ({post, type, index}) => {
       {
         type === 'my-matchingrequests' ? 
         post.matchingStatus === '매칭 대기' ?
-        <button onClick={(e)=>handleClickCancelBtn(e, post.matchingPostId)} className='register text-right registered'>매칭취소</button>
+        <button onClick={(e)=>handleClickCancelBtn(e, post.matchingRequestId)} className='register text-right registered'>매칭취소</button>
         :
         post.matchingStatus === '매칭 수락' ?
         <div className='register text-right'>매칭수락</div>
@@ -116,10 +104,10 @@ const RoommateSwiperItem = ({post, type, index}) => {
 
         :
         post.matchingStatus === '매칭 대기' ?
-        <button onClick={(e)=>handleClickRegisterBtn(e, post.matchingPostId)} className='register text-right'>매칭신청</button>
+        <button onClick={(e)=>handleClickRegisterBtn(e, post.matchingRequestId)} className='register text-right'>매칭신청</button>
         :
         post.matchingStatus === '매칭 완료' ?
-        <button onClick={(e)=>handleClickCancelBtn(e, post.matchingPostId)} className='register text-right registered'>매칭완료</button>
+        <button onClick={(e)=>handleClickCancelBtn(e, post.matchingRequestId)} className='register text-right registered'>매칭완료</button>
         :
         <div className='register text-right registered'>매칭마감</div>
       }

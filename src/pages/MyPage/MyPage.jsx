@@ -117,7 +117,15 @@ const MyPage = () => {
 			</section>
 
 			<section className="bg-white px-[25px] py-[24px] text-left">
-				<h1 className="heading-text">룸메이트 신청 요청</h1>
+				<div className="flex justify-between">
+					<h1 className="heading-text">룸메이트 신청 요청</h1>
+					<Link
+						to="/mypage/come-matchingrequests"
+						className="flex items-center justify-between username whitespace-nowrap"
+					>
+						더보기 <img src={Next} />
+					</Link>
+				</div>
 				<div className="pt-[16px] flex flex-col gap-[16px]">
 					{comeMatchingRequests?.data?.length > 0 ? (
 						comeMatchingRequests.data.slice(0,3).map((post, index) => (

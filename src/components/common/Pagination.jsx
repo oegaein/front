@@ -1,18 +1,30 @@
 import React, { useState, useEffect } from 'react';
-
-const Pagination = ({ data }) => {
+import Next from '@assets/images/next.svg'
+const Pagination = ({ data, setCurrentPage }) => {
   const { total_pages, cur_page } = data;
-  const [currentPage, setCurrentPage] = useState(cur_page);
+  const groupSize = 5
+  const totalGroups = Math.ceil(total_pages/groupSize);
+  const currentGroup = Math.floor(cur_page / groupSize);
+  const startPage = Math.floor(cur_page / 5) * 5 + 1;
+  const lastPage = Math.min(total_pages, startPage + 9)
 
   const handlePageClick = (page) => {
-    setCurrentPage(page);
     // 페이지 변경에 따른 추가 작업을 여기서 수행 (예: 데이터 요청)
+    setCurrentPage(page)
   };
 
+  const handleGroupChange = (direction) => {
+    const newPage = direction === 'next' 
+      ? (currentGroup + 1) * groupSize 
+      : (currentGroup - 1) * groupSize + (groupSize - 1);
+    setCurrentPage(newPage);
+  };
+
+  //페이지 5개씩 노출 
   const renderPageNumbers = () => {
     const pageNumbers = [];
-    const startPage = Math.floor(currentPage / 10) * 10;
-    const endPage = Math.min(startPage + 10, total_pages);
+    const startPage = currentGroup * groupSize;
+    const endPage = Math.min(startPage + groupSize, total_pages);
 
     for (let i = startPage; i < endPage; i++) {
       pageNumbers.push(
@@ -20,7 +32,7 @@ const Pagination = ({ data }) => {
           key={i}
           onClick={() => handlePageClick(i)}
           style={{
-            color: currentPage === i ? '#8a7ff9' : '#000',
+            color: cur_page === i ? '#8a7ff9' : '#000',
             cursor: 'pointer',
             margin: '0 5px',
             backgroundColor: 'transparent',
@@ -38,15 +50,15 @@ const Pagination = ({ data }) => {
 
   return (
       <div className='flex items-center justify-center py-[10px]'>
-        {currentPage > 9 && (
-          <button onClick={() => handlePageClick(currentPage - 10)}>
-            {'<'}
+        {currentGroup > 0 && (
+          <button onClick={() => handleGroupChange('prev')}>
+            <img src={Next} style={{transform: 'rotate(180deg)'}}/>
           </button>
         )}
         {renderPageNumbers()}
-        {currentPage < total_pages - 10 && (
-          <button onClick={() => handlePageClick(currentPage + 10)}>
-            {'>'}
+        {currentGroup < totalGroups - 1 && (
+          <button onClick={() => handleGroupChange('next')}>
+            <img src={Next}/>
           </button>
         )}
       </div>
