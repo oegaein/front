@@ -64,7 +64,7 @@ const Profile = ({ onGetValue, setButton }) => {
 
 	return (
 		<>
-			<div className="w-full flex flex-col mb-24">
+			<div className="w-full flex flex-col mb-10">
 				<Subtitle>성별</Subtitle>
 				<div className="flex justify-around items-center">
 					{gender.map((item, index) => (
