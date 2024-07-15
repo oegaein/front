@@ -98,6 +98,13 @@ const PostDetail = () => {
 		return marginRight;
 	};
 
+	const changeDate = (date) => {
+		let yyyy = date.slice(0, 4);
+		let mm = date.slice(5, 7);
+		let dd = date.slice(8, 10);
+		return `${yyyy}년 ${mm}월 ${dd}일`;
+	};
+
 	const postOptions = [
 		{
 			content: '수정하기',
@@ -252,7 +259,7 @@ const PostDetail = () => {
 								<img src={Checkbox} className="mr-1" />
 								<Subtitle style={{ margin: '0px' }}>마감 기한</Subtitle>
 							</div>
-							<p className="body5 text-left">{data.deadline}</p>
+							<p className="body5 text-left">{changeDate(data.deadline)}</p>
 						</div>
 					</div>
 					<div className="container">
