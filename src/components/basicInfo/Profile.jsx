@@ -8,6 +8,7 @@ import FemailImg from '@assets/images/basicInfo/Femail.svg';
 import MailImg from '@assets/images/basicInfo/Male.svg';
 import FONT from '@styles/fonts';
 import { NumInput } from './BasicSettingInput';
+import { major_options } from 'mocks/data/profile-setting';
 
 const SIoptions = [
 	'24학번',
@@ -29,6 +30,7 @@ const Profile = ({ onGetValue, setButton }) => {
 	];
 	const [selectedGender, setSelectedGender] = useState(null);
 	const [selectedStudentId, setSelectedStudentId] = useState(null);
+	const [selectedMajor, setSelectedMajor] = useState(null);
 	const [selectedBirth, setSelectedBirth] = useState(null);
 
 	const handleGenderChange = (index) => {
@@ -39,11 +41,13 @@ const Profile = ({ onGetValue, setButton }) => {
 		if (
 			selectedGender !== null &&
 			selectedStudentId !== null &&
+			selectedMajor !== null &&
 			selectedBirth !== null
 		) {
 			const values = {
 				gender: gender[selectedGender].id,
 				studentId: selectedStudentId,
+				major: selectedMajor,
 				birth: selectedBirth,
 			};
 			onGetValue(values);
@@ -88,6 +92,13 @@ const Profile = ({ onGetValue, setButton }) => {
 					label="학번을 선택해주세요."
 					options={SIoptions}
 					setSelected={handleSelectedSI}
+				/>
+				<Subtitle>전공</Subtitle>
+				<BasicDropdown
+					choice="전공"
+					label="전공을 선택해주세요."
+					options={major_options}
+					setSelected={setSelectedMajor}
 				/>
 				<Subtitle>생년월일</Subtitle>
 				{/* <DatePickerFunc setSelectedBirth={setSelectedBirth} /> */}
