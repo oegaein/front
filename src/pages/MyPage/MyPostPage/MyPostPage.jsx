@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { useMatchingPosts } from 'hooks/useMatchingPosts';
 
 import Header from '@common/header/Header'
+import Pagination from '@common/Pagination';
 
 import styled from 'styled-components'
 import FONT from '@styles/fonts'
@@ -15,12 +16,14 @@ import Profile from '@assets/images/profile-image.svg'
 
 const MyPostPage = () => {
   const [uploadPostType, setUploadPostType] = useState('roommate')
+  const [currentPage, setCurrentPage] = useState(0)
+
   const location = useLocation()
   const {
 		data: myMatchingPosts,
 		isLoading: isLoadingMyUpload,
 		error: isErrorMyUpload,
-	} = useMatchingPosts('mypost');
+	} = useMatchingPosts('mypost', currentPage);
   const handleClickUploadPost = (type) => {
     setUploadPostType(type)
   }
@@ -36,9 +39,9 @@ const MyPostPage = () => {
           <div onClick={()=>handleClickUploadPost('roommate')}className={`notification-title ${uploadPostType === 'roommate' && 'selected-title'}`}>룸메이트</div>
           {/* <div onClick={()=>handleClickUploadPost('delivery')}className={`notification-title ${uploadPostType === 'delivery' && 'selected-title'}`}>공동배달</div> */}
         </div>
-        <div className='px-[25px] mt-[16px]'>
+        <div className='flex flex-col gap-[10px] px-[25px] mt-[16px]'>
           {myMatchingPosts?.data?.length > 0 ? (
-            myMatchingPosts.data.slice(0, 3).map((post, index) => (
+            myMatchingPosts.data.map((post, index) => (
               <MyMatchingRequest post={post} index={index} />
             ))
           ) : (
@@ -46,6 +49,7 @@ const MyPostPage = () => {
           )}
         </div>
       </div>
+      <Pagination data={myMatchingPosts} setCurrentPage={setCurrentPage}/>
     </SettingStyle>
   )
 }

@@ -152,9 +152,9 @@ const MyPage = () => {
 					menuList={['룸메이트']}
 					pickedMenuId={setUploadPostType}
 					/>
-					<div className="px-[25px] mt-[16px]">
+					<div className="flex flex-col gap-[10px] px-[25px] mt-[16px]">
 						{myMatchingPosts?.data?.length > 0 ? (
-							myMatchingPosts.data.slice(0, 3).map((post, index) => (
+							myMatchingPosts.data.slice(0, 2).map((post, index) => (
 								<MyMatchingRequest post={post} index={index} />
 							))
 						) : (
@@ -191,7 +191,7 @@ const MyPage = () => {
 					pickedMenuId={setLikeType}
 					/>
 					<div className="likelist flex flex-col gap-[1px]">
-						{likeData.slice(0, 3).map((like)=> <LikeItem like={like} />)}
+						{likeData.slice(0, 2).map((like)=> <LikeItem like={like} />)}
 						
 					</div>
 				</div>
