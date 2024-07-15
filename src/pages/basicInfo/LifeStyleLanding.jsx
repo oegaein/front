@@ -30,7 +30,7 @@ const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
-	padding: 63px 0px;
+	padding: 47px 0px;
 	width: 100%;
 
 	.header {
