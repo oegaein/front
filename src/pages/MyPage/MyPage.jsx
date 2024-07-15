@@ -119,8 +119,8 @@ const MyPage = () => {
 			<section className="bg-white px-[25px] py-[24px] text-left">
 				<h1 className="heading-text">룸메이트 신청 요청</h1>
 				<div className="pt-[16px] flex flex-col gap-[16px]">
-					{comeMatchingRequests ? (
-						comeMatchingRequests.data.map((post, index) => (
+					{comeMatchingRequests?.data?.length > 0 ? (
+						comeMatchingRequests.data.slice(0,3).map((post, index) => (
 							<ComeMatchingRequest post={post} index={index} reFetchComeMatchingRequests={reFetchComeMatchingRequests}/>
 						))
 					) : (
@@ -183,7 +183,7 @@ const MyPage = () => {
 					pickedMenuId={setLikeType}
 					/>
 					<div className="likelist flex flex-col gap-[1px]">
-						{likeData.map((like)=> <LikeItem like={like} />)}
+						{likeData.slice(0, 3).map((like)=> <LikeItem like={like} />)}
 						
 					</div>
 				</div>
