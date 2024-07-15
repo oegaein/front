@@ -16,15 +16,11 @@ export const postMatchingPostAPI = async (submitData, setAccessToken) => {
 				const accessToken = useAuthStore.getState().accessToken;
 				console.log(accessToken);
 				try {
-					const { data } = await API.post(
-						`https://api.oegaein.com:8080/api/v1/matchingposts`,
-						submitData,
-						{
-							headers: {
-								Authorization: `Bearer ${accessToken}`,
-							},
+					const { data } = await API.post(`/api/v1/matchingposts`, submitData, {
+						headers: {
+							Authorization: `Bearer ${accessToken}`,
 						},
-					);
+					});
 					return data;
 				} catch (error) {
 					console.log('error');
@@ -52,7 +48,7 @@ export const getMatchingPostAPI = async (matchingpostID, setAccessToken) => {
 				console.log(accessToken);
 				try {
 					const { data } = await API.get(
-						`https://api.oegaein.com:8080/api/v1/matchingposts/${matchingpostID}`,
+						`/api/v1/matchingposts/${matchingpostID}`,
 						{
 							headers: {
 								Authorization: `Bearer ${accessToken}`,

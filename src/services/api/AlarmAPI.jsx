@@ -1,10 +1,8 @@
 import useAuthStore from '@store/authStore';
 import { API } from '@utils/api';
 export const getAlarmAPI = async (setAccessToken) => {
-		try {
-		const { data } = await API.get(
-			`https://api.oegaein.com:8080/api/v1/roommate-alarms`,
-		);
+	try {
+		const { data } = await API.get(`/api/v1/roommate-alarms`);
 		return data;
 	} catch (error) {
 		console.error(error);
@@ -16,14 +14,11 @@ export const getAlarmAPI = async (setAccessToken) => {
 				const accessToken = useAuthStore.getState().accessToken;
 				console.log(accessToken);
 				try {
-					const { data } = await API.get(
-						`https://api.oegaein.com:8080/api/v1/roommate-alarms`,
-						{
-							headers: {
-								Authorization: `Bearer ${accessToken}`,
-							},
+					const { data } = await API.get(`/api/v1/roommate-alarms`, {
+						headers: {
+							Authorization: `Bearer ${accessToken}`,
 						},
-					);
+					});
 					return data;
 				} catch (error) {
 					console.log('error');
@@ -31,16 +26,15 @@ export const getAlarmAPI = async (setAccessToken) => {
 				}
 			} catch (error) {
 				console.error(error);
-				window.location.href = 'http://localhost:3000/login';			}
+				window.location.href = 'http://localhost:3000/login';
+			}
 		}
 	}
 };
 
 export const deleteAllAlarmAPI = async (setAccessToken) => {
 	try {
-		const { data } = await API.delete(
-			`https://api.oegaein.com:8080/api/v1/roommate-alarms`,
-		);
+		const { data } = await API.delete(`/api/v1/roommate-alarms`);
 		return data;
 	} catch (error) {
 		console.error(error);
@@ -52,14 +46,11 @@ export const deleteAllAlarmAPI = async (setAccessToken) => {
 				const accessToken = useAuthStore.getState().accessToken;
 				console.log(accessToken);
 				try {
-					const { data } = await API.delete(
-						`https://api.oegaein.com:8080/api/v1/roommate-alarms`,
-						{
-							headers: {
-								Authorization: `Bearer ${accessToken}`,
-							},
+					const { data } = await API.delete(`/api/v1/roommate-alarms`, {
+						headers: {
+							Authorization: `Bearer ${accessToken}`,
 						},
-					);
+					});
 					return data;
 				} catch (error) {
 					console.log('error');
@@ -74,9 +65,7 @@ export const deleteAllAlarmAPI = async (setAccessToken) => {
 
 export const deleteAlarmAPI = async (id, setAccessToken) => {
 	try {
-		const { data } = await API.delete(
-			`https://api.oegaein.com:8080/api/v1/roommate-alarms/${id}`,
-		);
+		const { data } = await API.delete(`/api/v1/roommate-alarms/${id}`);
 		return data;
 	} catch (error) {
 		console.error(error);
@@ -88,14 +77,11 @@ export const deleteAlarmAPI = async (id, setAccessToken) => {
 				const accessToken = useAuthStore.getState().accessToken;
 				console.log(accessToken);
 				try {
-					const { data } = await API.delete(
-						`https://api.oegaein.com:8080/api/v1/roommate-alarms`,
-						{
-							headers: {
-								Authorization: `Bearer ${accessToken}`,
-							},
+					const { data } = await API.delete(`/api/v1/roommate-alarms`, {
+						headers: {
+							Authorization: `Bearer ${accessToken}`,
 						},
-					);
+					});
 					return data;
 				} catch (error) {
 					console.log('error');
