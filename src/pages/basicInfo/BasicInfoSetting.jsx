@@ -27,7 +27,7 @@ const BasicInfoSetting = () => {
 		gender: '',
 		student_no: 0,
 		birthdate: '',
-		major: 'GBT',
+		major: '',
 		introduction: '',
 		mbti: null,
 		sleeping_habit: null,
@@ -113,6 +113,7 @@ const BasicInfoSetting = () => {
 			...prevInfo,
 			gender: value.gender,
 			student_no: value.studentId,
+			major: value.major,
 			birthdate: value.birth,
 		}));
 	};
