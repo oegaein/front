@@ -192,7 +192,9 @@ const BasicInfoSetting = () => {
 								/>
 							)}
 						</div>
-						<section className="flex flex-col items-center mb-8">
+						<section
+							className={`flex flex-col items-center ${count === 8 ? 'mb-1' : 'mb-8'}`}
+						>
 							<div className="countbox">{count}</div>
 							<p className="category">
 								{count >= 1 && count <= 3 ? '기본 정보' : '라이프 스타일'}
