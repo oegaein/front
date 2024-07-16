@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import COLOR from '@styles/color';
 import FONT from '@styles/fonts';
 import DotIcon from '@assets/images/common/DotIcon.svg';
 import Threedots from '@assets/images/common/Threedots.svg';
-import OptionModal from '@common/modal/OptionModal';
-import ConfirmModal from '@common/modal/ConfirmModal';
 
 export const SimpleProfile = ({ Img, nickname, mr, width, height, weight }) => {
 	return (
@@ -86,7 +84,7 @@ export const BasicProfile = ({
 
 	return (
 		<>
-			{threedots && (
+			{/* {threedots && (
 				<OptionModal
 					options={yourOption}
 					isOpen={threedots}
@@ -99,14 +97,18 @@ export const BasicProfile = ({
 					isOpen={confirm}
 					setIsOpen={setConfirm}
 				/>
-			)}
+			)} */}
 			<div className="flex w-full">
-				<ImgWrapper mr={mr} width={width} height={height}>
-					<img src={Img} className="img" alt="Profile" />
-				</ImgWrapper>
-				<div className="flex flex-col w-full">
+				<img
+					src={Img}
+					alt="Profile"
+					className={`img mr-[${mr}] rounded-full`}
+					width={width}
+					height={height}
+				/>
+				<div className="flex flex-col items-start w-full">
 					{ver === 'profile' ? (
-						<div className="flex items-center p-[2px]">
+						<div className="flex items-center">
 							<Nickname weight="caption">{nickname}</Nickname>
 							<img src={DotIcon} alt="dotIcon" />
 							<Link to={'/profile'}>
