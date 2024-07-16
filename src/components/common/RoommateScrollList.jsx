@@ -1,6 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { useMatchingPosts } from 'hooks/useMatchingPosts';
+import { useQuery } from '@tanstack/react-query';
+import { API } from '@utils/api';
 
 //styles
 import FONT from '@styles/fonts';
@@ -13,11 +15,12 @@ import Premium from '@assets/images/premium-quality.svg';
 
 //components
 import RoommateScrollItem from '@components/RoommatePage/RoommateScrollItem';
-import { useQuery } from '@tanstack/react-query';
-import { API } from '@utils/api';
+import Pagination from '@components/common/Pagination'
 
 const RoommateScrollList = ({ type, searchTerm, filteredPosts, setScreenType }) => {
-	const { data: matchingPosts, isLoading, error } = useMatchingPosts(type);
+	const [currentPage, setCurrentPage] = useState(0)
+	const { data: matchingPosts, isLoading, error } = useMatchingPosts(type, currentPage);
+	console.log('matchingPosts', matchingPosts)
 	const { data: searchResults } = useQuery({
 		queryKey: ['searchResults', searchTerm],
 		queryFn: () => fetchData(searchTerm),
@@ -71,18 +74,25 @@ const RoommateScrollList = ({ type, searchTerm, filteredPosts, setScreenType }) 
 						.map((post) => (
 							<RoommateScrollItem key={post.matchingPostId} post={post} />
 						));
+					} else {
+						content = <div>필터링된 결과가 없습니다.</div>;
 					}
 					//그 외 new, best 등...
 				} else {
 					// 기본 조건일 때, matchingPosts.data 배열을 매핑하여 컴포넌트를 리턴
-					content = matchingPosts.data
-					.map((post, index) => (
-						<RoommateScrollItem key={post.matchingPostId} post={post} />
-					));
+					if (matchingPosts?.data.length > 0) {
+						content = matchingPosts.data
+						.map((post, index) => (
+							<RoommateScrollItem key={post.matchingPostId} post={post} />
+						));
+					} else {
+						content = <div>결과가 존재하지 않습니다.</div>
+					}
 				}
 				return content; // 조건에 따라 결정된 내용을 리턴
 			})()}
-</div>
+			</div>
+			<Pagination data={matchingPosts} setCurrentPage={setCurrentPage}/>
 
 		</SettingStyle>
 	);
@@ -156,7 +166,7 @@ const EndingSoonTitle = () => {
 			</h1>
 			<div className="flex justify-between gap-[4px]">
 				<button className="ending-soon-btn selected">룸메이트</button>
-				<button className="ending-soon-btn">공동배달</button>
+				{/* <button className="ending-soon-btn">공동배달</button> */}
 			</div>
 		</>
 	);

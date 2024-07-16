@@ -2,11 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useMatchingPosts } from 'hooks/useMatchingPosts';
 import { useNavigate } from 'react-router-dom';
-import { API } from '@utils/api';
+// import { API } from '@utils/api';
 import useAuthStore from '@store/authStore';
 import useMyInfoStore from '@store/myInfoStore';
+import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest';
+import { useMutation, useQueryClient  } from '@tanstack/react-query';
+
 //components
 import Header from '@common/header/Header';
+import ConfirmModal from '@common/modal/ConfirmModal';
 // styles
 import styled from 'styled-components';
 import FONT from '@styles/fonts';
@@ -23,33 +27,39 @@ import LikeItem from '@components/LikePage/LikeItem';
 import SelectMenuBar from '@common/menu/SelectMenuBar';
 import Home from '@assets/images/home.svg'
 import Setting from '@assets/images/settings.svg'
-import { useQuery } from '@tanstack/react-query';
+// import { useQuery } from '@tanstack/react-query';
 const MyPage = () => {
-	const accessToken = useAuthStore.getState().accessToken
+	const setAccessToken = useAuthStore(state => state.setAccessToken)
 	const myInfo = useMyInfoStore.getState().myInfo
+	//나에게 온 매칭신청 목록 조회
 	const {
 		data: comeMatchingRequests,
 		refetch: reFetchComeMatchingRequests,
 		isLoading: isLoadingCome,
 		error: isErrorCome,
 	} = useMatchingPosts('come-matchingrequests');
-
+	//내가 신청한 매칭 신청 목록 조회
 	const {
 		data: myMatchingRequests,
 		isLoading: isLoadingMy,
 		error: isErrorMy,
 	} = useMatchingPosts('my-matchingrequests');
-	console.log(comeMatchingRequests);
-	console.log(myMatchingRequests);
+	//내가 신청한 매칭 신청 목록 조회
+	const {
+		data: myMatchingPosts,
+		isLoading: isLoadingMyUpload,
+		error: isErrorMyUpload,
+	} = useMatchingPosts('mypost');
+
 	const navigate = useNavigate()
 	const [likeData, setLikeData] = useState([])
 	const [uploadPostType, setUploadPostType] = useState('roommate');
 	const [likeType, setLikeType] = useState('roommate');
-
 	useEffect(()=>{
 		const fetchLikeData = async () => {
 			try {
-				const response = await API.get('/api/v1/member/like')
+				const response = await makeAuthorizedRequest('/api/v1/member/like')
+				console.log('like', response.data.data)
 				setLikeData(response.data.data)
 			} catch(error) {
 				console.error(error);
@@ -70,11 +80,11 @@ const MyPage = () => {
 				<div className="flex justify-between pt-[20px]">
 					<div className="flex text-left gap-[20px]">
 						<div>
-							<img className="w-[45px] h-[45px] rounded-[50%]" src={myInfo.photoUrl} />
+							<img className="w-[45px] h-[45px] rounded-[50%]" src={myInfo?.photoUrl} />
 						</div>
 						<div>
-							<p className="myname">{myInfo.name}</p>
-							<p className="small-text">{myInfo.introduction}</p>
+							<p className="myname">{myInfo?.name}</p>
+							<p className="small-text">{myInfo?.introduction}</p>
 						</div>
 					</div>
 					<div>
@@ -85,7 +95,7 @@ const MyPage = () => {
 				</div>
 				<div className="small-text px-[42px] pt-[48px] flex justify-between">
 					<Link
-						to="/notification"
+						to="/alarm"
 						className="flex flex-col justify-center items-center"
 					>
 						<img
@@ -107,16 +117,23 @@ const MyPage = () => {
 			</section>
 
 			<section className="bg-white px-[25px] py-[24px] text-left">
-				<h1 className="heading-text">룸메이트 신청 요청</h1>
+				<div className="flex justify-between">
+					<h1 className="heading-text">룸메이트 신청 요청</h1>
+					<Link
+						to="/mypage/come-matchingrequests"
+						className="flex items-center justify-between username whitespace-nowrap"
+					>
+						더보기 <img src={Next} />
+					</Link>
+				</div>
 				<div className="pt-[16px] flex flex-col gap-[16px]">
-					{comeMatchingRequests ? (
-						comeMatchingRequests.data.map((post, index) => (
+					{comeMatchingRequests?.data?.length > 0 ? (
+						comeMatchingRequests.data.slice(0,3).map((post, index) => (
 							<ComeMatchingRequest post={post} index={index} reFetchComeMatchingRequests={reFetchComeMatchingRequests}/>
 						))
 					) : (
 						<div className="text-center">나에게 온 신청 요청이 없습니다.</div>
 					)}
-					{/* <ComeMatchingRequest/> */}
 				</div>
 			</section>
 			{/* 글 2개까지 보이기, 3개 이상부터는 더보기 버튼 */}
@@ -135,15 +152,14 @@ const MyPage = () => {
 					menuList={['룸메이트']}
 					pickedMenuId={setUploadPostType}
 					/>
-					<div className="px-[25px] mt-[16px]">
-						{myMatchingRequests ? (
-							myMatchingRequests.data.map((post, index) => (
+					<div className="flex flex-col gap-[10px] px-[25px] mt-[16px]">
+						{myMatchingPosts?.data?.length > 0 ? (
+							myMatchingPosts.data.slice(0, 2).map((post, index) => (
 								<MyMatchingRequest post={post} index={index} />
 							))
 						) : (
 							<div>내가 올린 글이 존재하지 않습니다.</div>
 						)}
-						<MyMatchingRequest />
 					</div>
 				</div>
 			</section>
@@ -157,7 +173,7 @@ const MyPage = () => {
 						더보기 <img src={Next} />
 					</Link>
 				</div>
-				<RoommateSwiperList type="mypost" />
+				<RoommateSwiperList type="my-matchingrequests" />
 			</section>
 			<section className="bg-white pt-[24px]">
 				<div className="flex justify-between px-[25px]">
@@ -175,7 +191,11 @@ const MyPage = () => {
 					pickedMenuId={setLikeType}
 					/>
 					<div className="likelist flex flex-col gap-[1px]">
-						{likeData.map((like)=> <LikeItem like={like} />)}
+						{likeData?.length > 0 ?
+						likeData.slice(0, 2).map((like)=> <LikeItem like={like} />)
+					:
+					<div className="bg-white pt-[15px]">좋아하는 룸메이트가 없습니다.<br/>다른 사람의 좋아요를 눌러보세요!</div>
+					}
 						
 					</div>
 				</div>
@@ -187,32 +207,64 @@ const MyPage = () => {
 export default MyPage;
 
 const ComeMatchingRequest = ({ post, index, reFetchComeMatchingRequests }) => {
-	const [matchingRequestId, setMatchingRequestId] = useState();
-	const handleClickAcceptBtn = async (id) => {
-		try {
-			const response = await API.patch(`/api/v1/matchingrequests/${id}/accept`);
-			const matchingRequestId = response.data.matchingRequestId;
-			setMatchingRequestId(matchingRequestId);
-			reFetchComeMatchingRequests()
-			console.log('수락', response.data)
-		} catch (err) {
-			console.log(err);
+	const queryClient = useQueryClient();
+	const [confirm, setConfirm] = useState(false)
+	const [confirmContent, setConfirmContent] = useState({});
+
+	const acceptMutation = useMutation(
+		{
+			mutationFn: (id) => makeAuthorizedRequest(`/api/v1/matchingrequests/${id}/accept`, 'patch'),
+			onSuccess: (data) => {
+				if (data.status === 200) {
+					reFetchComeMatchingRequests()
+				}
+				console.log('수락', data);
+			},
+			onError: (error) => {
+				console.log(error);
+			}
 		}
+	);
+	const rejectMutation = useMutation({
+		mutationFn: (id) => makeAuthorizedRequest(`/api/v1/matchingrequests/${id}/reject`, 'patch'),
+		onSuccess: (data) => {
+			if (data.status === 200) {
+				reFetchComeMatchingRequests()
+			}
+			console.log('거절', data);
+		},
+		onError: (error) => {
+			console.log(error);
+		}
+	});
+	
+	const handleClickAcceptBtn = (id) => {
+		setConfirm(true)
+		setConfirmContent({
+			id: -1,
+			msg: `${post.name}님의 요청을 수락할까요?`,
+			btn: '수락',
+			func: () => {acceptMutation.mutate(id)},
+		})
 	};
 	const handleClickRejectBtn = async (id) => {
-		try {
-			const response = await API.patch(`/api/v1/matchingrequests/${id}/reject`);
-			const matchingRequestId = response.data.matchingRequestId;
-			setMatchingRequestId(matchingRequestId);
-			reFetchComeMatchingRequests()
-			console.log('거절', response.data)
-
-		} catch (err) {
-			console.log(err);
-		}
+		setConfirm(true)
+		setConfirmContent({
+			id: -1,
+			msg: `${post.name}님의 요청을 거절할까요?`,
+			btn: '거절',
+			func: () => {rejectMutation.mutate(id);},
+		})
 	};
 	return (
 		<div className="flex justify-between">
+			{confirm && (
+				<ConfirmModal
+					content={confirmContent}
+					isOpen={confirm}
+					setIsOpen={setConfirm}
+				/>
+			)}
 			<div className="flex gap-[20px]">
 				<div>
 					<img
@@ -250,8 +302,8 @@ const MyMatchingRequest = ({ post, index }) => {
 		<div className="mypost px-[15px] py-[20px]">
 			<div className="flex justify-between">
 				<div className="flex items-center justify-between gap-[10px]">
-					<span className="color-purple1 font-caption2m14">A동 4인실</span>
-					<span className="font-caption3m12">모집인원 2명</span>
+					<span className="color-purple1 font-caption2m14">{post.dong} {post.roomSize}</span>
+					<span className="font-caption3m12">모집인원 {post.targetNumberOfPeople}명</span>
 				</div>
 				<div className="flex gap-[14px]">
 					<div className="font-caption2m14 color-gray500">11분전</div>
@@ -264,20 +316,20 @@ const MyMatchingRequest = ({ post, index }) => {
 			<div className="flex justify-between mt-[28px]">
 				<div className="flex justify-between gap-[13px]">
 					<div>
-						<img className="rounded-[50%] w-[45px] h-[45px]" />
+						<img className="rounded-[50%] w-[45px] h-[45px]" src={post.photoUrl} />
 					</div>
 					<div className="text-left overflow-hidden">
 						<p className="font-caption1sb14 whitespace-nowrap overflow-hidden text-ellipsis">
-							룸메찾기힘들다ddddddddddddddddd
+							{post.title}
 						</p>
 						<p className="font-caption2m14">
-							happy푸바옹{' '}
-							<span className="font-caption3m12 color-gray400">남성</span>
+							{post.name}{' '}
+							<span className="font-caption3m12 color-gray400">{post.gender}</span>
 						</p>
 					</div>
 				</div>
 				<div className="self-end whitespace-nowrap">
-					<button className="color-purple1 font-caption2m14">매칭확정</button>
+					<div className="color-purple1 font-caption2m14">{post.matchingStatus}</div>
 				</div>
 			</div>
 		</div>

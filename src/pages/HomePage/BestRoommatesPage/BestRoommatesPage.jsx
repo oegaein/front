@@ -24,7 +24,7 @@ const BestRoommatesPage = () => {
           <Header backPath="/home" rightContent={Alarm} rightEvent={() => {
               navigate('/alarm');
             }}>
-            <span className='font-bold'>베스트 룸메이트</span>
+            <span>베스트 룸메이트</span>
           </Header>
         </div>
         <div className='p-[25px] bg-white'>

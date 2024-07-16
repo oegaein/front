@@ -18,16 +18,16 @@ const RoommateApplyListPage = () => {
     <SettingStyle className='bg-white'>
       <div className="px-[28px]">
 				<Header backPath="/mypage" rightContent=" " rightEvent={() => {}}>
-					<span className='font-bold'>내 룸메이트 신청 목록</span>
+					<span>내 룸메이트 신청 목록</span>
 				</Header>
 			</div>
       <div>
         <div className='flex'>
           <div onClick={()=>handleChangeType('roommate')}className={`notification-title ${uploadPostType === 'roommate' && 'selected-title'}`}>룸메이트</div>
-          <div onClick={()=>handleChangeType('delivery')}className={`notification-title ${uploadPostType === 'delivery' && 'selected-title'}`}>공동배달</div>
+          {/* <div onClick={()=>handleChangeType('delivery')}className={`notification-title ${uploadPostType === 'delivery' && 'selected-title'}`}>공동배달</div> */}
         </div>
       </div>
-      <RoommateScrollList type='mypost'/>
+      <RoommateScrollList type='my-matchingrequests'/>
     </SettingStyle>
   )
 }

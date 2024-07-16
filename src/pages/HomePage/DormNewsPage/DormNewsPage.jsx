@@ -24,7 +24,7 @@ const DormNewsPage = () => {
           <Header backPath="/home" rightContent={Alarm} rightEvent={() => {
 							navigate('/alarm');
 						}}>
-            <span className='font-bold'>기숙사 소식</span>
+            <span>기숙사 소식</span>
           </Header>
         </div>
         <div className='p-[25px] bg-white'>

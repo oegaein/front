@@ -20,13 +20,17 @@ const CallBack = () => {
         const refreshToken = response.data.refreshToken
         const {email, gender, introduction, name, photoUrl, profileSetUpStatus} = response.data
         const myInfo = {email, gender, introduction, name, photoUrl, profileSetUpStatus}
-        console.log(myInfo)
+        console.log('myinfo', myInfo)
         console.log('callback request', response)
         setAccessToken(accessToken)
         setMyInfo(myInfo)
         API.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
         // API.defaults.withCredentials = true
-        navigate('/home')
+        if (profileSetUpStatus) {
+          navigate('/home')
+        } else {
+          navigate('/setting')
+        }
       } catch(error) {
         console.log(error.message)
       }

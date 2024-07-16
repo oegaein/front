@@ -15,9 +15,6 @@ export const handlers = [
   // happen.
   //룸메이트 매칭글 전체 조회
   http.get('/api/v1/matchingposts', () => {
-    // Response resolver allows you to react to captured requests,
-    // respond with mock responses or passthrough requests entirely.
-    // For now, let's just print a message to the console.
     return HttpResponse.json(matchingPostsData)
   }),
   //베스트 룸메이트 조회
@@ -26,6 +23,14 @@ export const handlers = [
   }),
   //내가 올린 매칭글 조회
   http.get('/api/v1/my-matchingposts', () => {
+    return HttpResponse.json(matchingPostsData)
+  }),
+  //내가 신청한 매칭신청 목록 조회
+  http.get('/api/v1/my-matchingrequests', () => {
+    return HttpResponse.json(matchingPostsData)
+  }),
+  //나에게 온 매칭 신청 목록 조회
+  http.get('/api/v1/come-matchingrequests', () => {
     return HttpResponse.json(matchingPostsData)
   }),
   //마감임박 매칭글 조회

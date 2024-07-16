@@ -20,7 +20,7 @@ const EndingsoonPage = () => {
           <Header backPath="/home" rightContent={Alarm} rightEvent={() => {
               navigate('/alarm');
             }}>
-            <span className='font-bold'>마감임박</span>
+            <span>마감임박</span>
           </Header>
         </div>
         <div className='p-[25px] bg-white'>
