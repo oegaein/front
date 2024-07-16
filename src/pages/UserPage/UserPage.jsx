@@ -78,7 +78,7 @@ const UserPage = () => {
       }
       <div className="header px-[28px]">
 				<Header backPath="/roommate" rightContent={Dots} rightEvent={handleClickDotsBtn}>
-					<span className='font-bold header-text'>{userInfo.name} 님의 프로필</span>
+					<span className='header-text'>{userInfo.name} 님의 프로필</span>
 				</Header>
 			</div>
       <ProfileImageContainer introduction={userInfo.introduction} profileImage={userInfo.photo_url}/>

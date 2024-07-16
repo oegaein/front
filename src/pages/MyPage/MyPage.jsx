@@ -191,7 +191,11 @@ const MyPage = () => {
 					pickedMenuId={setLikeType}
 					/>
 					<div className="likelist flex flex-col gap-[1px]">
-						{likeData.slice(0, 2).map((like)=> <LikeItem like={like} />)}
+						{likeData?.length > 0 ?
+						likeData.slice(0, 2).map((like)=> <LikeItem like={like} />)
+					:
+					<div className="bg-white pt-[15px]">좋아하는 룸메이트가 없습니다.<br/>다른 사람의 좋아요를 눌러보세요!</div>
+					}
 						
 					</div>
 				</div>

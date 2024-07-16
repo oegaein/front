@@ -125,6 +125,7 @@ function MainLayout() {
 				location.pathname !== '/setting' &&
 				location.pathname !== '/roommate/filter' &&
 				location.pathname !== '/alarm' &&
+				location.pathname.substring(0, 11) !== '/my-profile' &&
 				location.pathname.substring(0, 14) !== '/chat/chatroom' &&
 				location.pathname.substring(0, 12) !== '/post-detail' &&
 				location.pathname.substring(0, 5) !== '/user' && <Navbar />}
