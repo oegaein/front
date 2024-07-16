@@ -36,7 +36,7 @@ const Sound = ({ onGetValue, setButton }) => {
 	return (
 		<>
 			<div className="flex flex-col justify-center items-center w-full mb-9">
-				<div className="w-[180px] h-[180px] mb-7">
+				<div className="w-[190px] h-[180px] mb-7">
 					<Lottie animationData={SoundLottie} />
 				</div>
 				<div className="flex justify-between w-full">

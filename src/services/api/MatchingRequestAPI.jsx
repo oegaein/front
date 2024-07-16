@@ -4,10 +4,9 @@ import axios from 'axios';
 
 export const postMatchingRequestAPI = async (id, setAccessToken) => {
 	try {
-		const { data } = await API.post(
-			`https://api.oegaein.com:8080/api/v1/matchingrequests`,
-			{ matchingPostId: id },
-		);
+		const { data } = await API.post(`/api/v1/matchingrequests`, {
+			matchingPostId: id,
+		});
 		console.log(data);
 		return data;
 	} catch (error) {

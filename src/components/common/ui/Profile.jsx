@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import COLOR from '@styles/color';
@@ -7,6 +7,14 @@ import DotIcon from '@assets/images/common/DotIcon.svg';
 import Threedots from '@assets/images/common/Threedots.svg';
 import OptionModal from '@common/modal/OptionModal';
 import ConfirmModal from '@common/modal/ConfirmModal';
+import useMyInfoStore from '@store/myInfoStore';
+import {
+	deleteCommentsAPI,
+	deleteRepliesAPI,
+	putReplyAPI,
+} from 'services/api/CommentsAPI';
+import useAuthStore from '@store/authStore';
+import { BlockUserAPI } from 'services/api/ProfileAPI';
 
 export const SimpleProfile = ({ Img, nickname, mr, width, height, weight }) => {
 	return (
@@ -22,12 +30,17 @@ export const SimpleProfile = ({ Img, nickname, mr, width, height, weight }) => {
 export const BasicProfile = ({
 	Img,
 	nickname,
+	userID = -1,
 	content,
 	mr,
 	width,
 	height,
 	ver,
+	commentID = -1,
+	isReply = false,
 }) => {
+	const setAccessToken = useAuthStore((state) => state.setAccessToken);
+	const myname = useMyInfoStore.getState().myInfo.name;
 	const [threedots, setThreedots] = useState(false);
 	const [confirm, setConfirm] = useState(false);
 	const [confirmContent, setConfirmContent] = useState({
@@ -37,8 +50,8 @@ export const BasicProfile = ({
 		func: () => {},
 	});
 
-	const EditFunc = () => {
-		alert('댓글 수정!');
+	const EditFunc = async () => {
+		alert('수정!');
 	};
 
 	const DeleteFunc = () => {
@@ -47,9 +60,15 @@ export const BasicProfile = ({
 			...prev,
 			msg: '댓글을 삭제할까요?',
 			btn: '삭제',
-			id: 1,
-			func: () => {
-				alert('삭제 API');
+			func: async () => {
+				if (isReply) {
+					const res = await deleteRepliesAPI(setAccessToken, commentID);
+					console.log(res);
+				} else {
+					const res = await deleteCommentsAPI(setAccessToken, commentID);
+					console.log(res);
+				}
+				window.location.reload();
 			},
 		}));
 	};
@@ -58,16 +77,15 @@ export const BasicProfile = ({
 		setConfirm(true);
 		setConfirmContent((prev) => ({
 			...prev,
-			msg: `${nickname}님을 차단할까요?`, // 작성자 이름
+			msg: `${nickname}님을 차단할까요?`,
 			btn: '차단',
-			id: 1,
 			func: () => {
-				alert('차단 API');
+				BlockUserAPI(userID, setAccessToken);
 			},
 		}));
 	};
 
-	const myOption = [
+	const commentOptions = [
 		{
 			content: '수정하기',
 			func: EditFunc,
@@ -88,7 +106,7 @@ export const BasicProfile = ({
 		<>
 			{threedots && (
 				<OptionModal
-					options={yourOption}
+					options={nickname === myname ? commentOptions : yourOption}
 					isOpen={threedots}
 					setIsOpen={setThreedots}
 				/>
@@ -101,12 +119,16 @@ export const BasicProfile = ({
 				/>
 			)}
 			<div className="flex w-full">
-				<ImgWrapper mr={mr} width={width} height={height}>
-					<img src={Img} className="img" alt="Profile" />
-				</ImgWrapper>
-				<div className="flex flex-col w-full">
+				<img
+					src={Img}
+					alt="Profile"
+					className={`img mr-[${mr}] rounded-full`}
+					width={width}
+					height={height}
+				/>
+				<div className="flex flex-col items-start w-full">
 					{ver === 'profile' ? (
-						<div className="flex items-center p-[2px]">
+						<div className="flex items-center">
 							<Nickname weight="caption">{nickname}</Nickname>
 							<img src={DotIcon} alt="dotIcon" />
 							<Link to={'/profile'}>
@@ -114,8 +136,8 @@ export const BasicProfile = ({
 							</Link>
 						</div>
 					) : (
-						<div className="flex justify-between items-center p-[2px]">
-							<Nickname weight="caption" className="mr-3">
+						<div className="flex justify-between items-center w-full">
+							<Nickname weight="bold" className="mr-3">
 								{nickname}
 							</Nickname>
 							<img
@@ -153,5 +175,5 @@ export const ImgWrapper = styled.div`
 
 const Nickname = styled.p`
 	font: ${({ weight }) =>
-		weight === 'bold' ? FONT.title3SB17 : FONT.caption2M14};
+		weight === 'bold' ? FONT.body4SB15 : FONT.caption2M14};
 `;

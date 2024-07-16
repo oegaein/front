@@ -178,7 +178,10 @@ const BasicInfoSetting = () => {
 		<>
 			<SettingStyle>
 				{count === 4 ? (
-					<LifeStyleLanding />
+					<div>
+						<Header backEvent={handleBack} />
+						<LifeStyleLanding />
+					</div>
 				) : (
 					<>
 						<div className="w-full mb-5">
@@ -192,8 +195,10 @@ const BasicInfoSetting = () => {
 								/>
 							)}
 						</div>
-						<section className="flex flex-col items-center mb-8">
-							<div className="countbox">{count}</div>
+						<section
+							className={`flex flex-col items-center ${count === 8 ? 'mb-1' : 'mb-8'}`}
+						>
+							<div className="countbox">{count >= 5 ? count - 4 : count}</div>
 							<p className="category">
 								{count >= 1 && count <= 3 ? '기본 정보' : '라이프 스타일'}
 							</p>

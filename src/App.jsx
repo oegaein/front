@@ -45,59 +45,55 @@ function App() {
 	return (
 		<div className="App">
 			<QueryClientProvider client={queryClient}>
-				<React.StrictMode>
-					<Router>
-						<Routes>
-							<Route path="/" element={<MainLayout />}>
-								<Route index element={<CallBack />} />
-								<Route path="home" element={<HomePage />} />
-								<Route path="home/dormnews" element={<DormNewsPage />} />
-								<Route path="home/ending-soon" element={<EndingsoonPage />} />
-								<Route
-									path="home/best-roommates"
-									element={<BestRoommatesPage />}
-								/>
-								<Route path="notification" element={<NotificationPage />} />
-								<Route path="search" element={<SearchPage />} />
-								<Route path="roommate" element={<RoommatePage />} />
-								<Route
-									path="roommate/filter"
-									element={<RoommateFilterPage />}
-								/>
-								<Route path="landing" element={<LandingPage />} />
-								<Route path="onboarding" element={<OnboardingPage />} />
-								<Route path="login" element={<LoginPage />} />
-								<Route path="mypage" element={<MyPage />} />
-								<Route
-									path="mypage/roommate-applylist"
-									element={<RoommateApplyListPage />}
-								/>
-								<Route path="mypage/like" element={<LikePage />} />
-								<Route path="mypage/mypost" element={<MyPostPage />} />
-								{/* <Route path="mypage/come-matchingrequests" element={< />} /> */}
-								<Route path="my-profile/edit" element={<MyProfileEditPage />} />
-								<Route path="user/:memberId" element={<UserPage />} />
-								<Route
-									path="user/:memberId/reviews"
-									element={<RoommateReviewPage />}
-								/>
-								<Route path="/setting" element={<BasicInfoSetting />} />
-								<Route path="/post-roommate" element={<Post />} />
-								<Route path="/post-detail/:postId" element={<PostDetail />} />
-								<Route
-									path="/comment-detail/:postId"
-									element={<CommentDetail />}
-								/>
-								<Route path="/chat" element={<Chat />} />
-								<Route
-									path="/chat/chatroom/:subscribeID"
-									element={<ChatRoom />}
-								/>
-								<Route path="/alarm" element={<Alarm />} />
-							</Route>
-						</Routes>
-					</Router>
-				</React.StrictMode>
+				{/* <React.StrictMode> */}
+				<Router>
+					<Routes>
+						<Route path="/" element={<MainLayout />}>
+							<Route index element={<CallBack />} />
+							<Route path="home" element={<HomePage />} />
+							<Route path="home/dormnews" element={<DormNewsPage />} />
+							<Route path="home/ending-soon" element={<EndingsoonPage />} />
+							<Route
+								path="home/best-roommates"
+								element={<BestRoommatesPage />}
+							/>
+							<Route path="notification" element={<NotificationPage />} />
+							<Route path="search" element={<SearchPage />} />
+							<Route path="roommate" element={<RoommatePage />} />
+							<Route path="roommate/filter" element={<RoommateFilterPage />} />
+							<Route path="landing" element={<LandingPage />} />
+							<Route path="onboarding" element={<OnboardingPage />} />
+							<Route path="login" element={<LoginPage />} />
+							<Route path="mypage" element={<MyPage />} />
+							<Route
+								path="mypage/roommate-applylist"
+								element={<RoommateApplyListPage />}
+							/>
+							<Route path="mypage/like" element={<LikePage />} />
+							<Route path="mypage/mypost" element={<MyPostPage />} />
+							<Route path="my-profile/edit" element={<MyProfileEditPage />} />
+							<Route path="user/:memberId" element={<UserPage />} />
+							<Route
+								path="user/:memberId/reviews"
+								element={<RoommateReviewPage />}
+							/>
+							<Route path="/setting" element={<BasicInfoSetting />} />
+							<Route path="/post-roommate" element={<Post />} />
+							<Route path="/post-detail/:postId" element={<PostDetail />} />
+							<Route
+								path="/comment-detail/:postId"
+								element={<CommentDetail />}
+							/>
+							<Route path="/chat" element={<Chat />} />
+							<Route
+								path="/chat/chatroom/:subscribeID"
+								element={<ChatRoom />}
+							/>
+							<Route path="/alarm" element={<Alarm />} />
+						</Route>
+					</Routes>
+				</Router>
+				{/* </React.StrictMode> */}
 			</QueryClientProvider>
 		</div>
 	);

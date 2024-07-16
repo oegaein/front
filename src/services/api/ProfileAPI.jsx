@@ -113,3 +113,42 @@ export const EditProfileAPI = async (submitData, setAccessToken) => {
 		}
 	}
 };
+
+export const BlockUserAPI = async (block_user, setAccessToken) => {
+	try {
+		const res = await API.post(`/api/v1/member/profile`, {
+			blocked_id: block_user,
+		});
+		console.log(res.data);
+	} catch (error) {
+		console.error(error);
+		if (error.response && error.response.status === 403) {
+			try {
+				const refreshResponse = await API.get(`/api/v1/member/refresh`);
+				console.log('refresh!! + ' + refreshResponse.data.access_token);
+				setAccessToken(refreshResponse.data.access_token);
+				const accessToken = useAuthStore.getState().accessToken;
+				console.log(accessToken);
+				try {
+					const { data } = await API.post(
+						`/api/v1/member/profile`,
+						{
+							blocked_id: block_user,
+						},
+						{
+							headers: {
+								Authorization: `Bearer ${accessToken}`,
+							},
+						},
+					);
+					console.log(data);
+				} catch (error) {
+					console.log('error');
+					console.error(error);
+				}
+			} catch (error) {
+				console.error(error);
+			}
+		}
+	}
+};

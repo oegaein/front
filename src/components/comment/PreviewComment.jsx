@@ -45,6 +45,7 @@ const PreviewComment = ({ postId, comments, count }) => {
 							postId={commentID}
 							setSelected={setValue}
 							setReply={setReply}
+							isReply={true}
 						/>
 					</div>
 				</CommentBox>
@@ -68,13 +69,15 @@ const PreviewComment = ({ postId, comments, count }) => {
 									<BasicProfile
 										Img={item.photo_url}
 										nickname={item.author_name}
+										userID={item.author_id}
 										content={item.content}
 										mr="13px"
 										width="40px"
 										height="40px"
 										ver="comment"
+										commentID={item.id}
 									/>
-									<div className="flex justify-between mt-4 pl-12 w-[45%]">
+									<div className="flex justify-between mt-2 pl-12 w-[42%]">
 										<span>{timeAgo(item.created_at)}</span>
 										<span
 											className="cursor-pointer"
@@ -84,19 +87,28 @@ const PreviewComment = ({ postId, comments, count }) => {
 										</span>
 									</div>
 									{item.replies &&
-										item.replies.map((reply, index) => (
+										item.replies.map((reply, ind) => (
 											<div className="replybox">
 												<BasicProfile
 													Img={reply.photo_url}
 													nickname={reply.author_name}
+													userID={reply.author_id}
 													content={reply.content}
 													mr="13px"
 													width="40px"
 													height="40px"
 													ver="comment"
+													commentID={reply.id}
+													isReply={true}
 												/>
-												<div className="flex justify-between mt-4 pl-12 w-2/4">
+												<div className="flex justify-between mt-2 pl-12 w-2/4">
 													<span>{timeAgo(reply.created_at)}</span>
+													<span
+														className="cursor-pointer"
+														onClick={() => handleReply(index)}
+													>
+														답글달기
+													</span>
 												</div>
 											</div>
 										))}
@@ -163,10 +175,10 @@ const CommentStyle = styled.div`
 const CommentBox = styled.div`
 	display: flex;
 	flex-direction: column;
-	width: 100%;
+	width: 393px;
 	position: fixed;
 	bottom: 0;
-	z-index: 50;
+	z-index: 51;
 
 	.ing {
 		display: flex;

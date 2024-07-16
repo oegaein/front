@@ -11,12 +11,8 @@ const LifestyleEdit = ({
 	multi = false,
 }) => {
 	const [selectedOption, setSelectedOption] = useState(
-		multi ? defaultValue || [] : defaultValue || '',
+		multi ? defaultValue || [] : defaultValue || null,
 	);
-
-	useEffect(() => {
-		onGetValue(keyProp, selectedOption);
-	}, [selectedOption]);
 
 	const handleCheckboxChange = (value) => {
 		if (multi) {
@@ -27,14 +23,9 @@ const LifestyleEdit = ({
 				setSelectedOption([...selectedOption, value]);
 			}
 		} else {
-			const isSelected = selectedOption === value;
-			console.log(isSelected);
-			if (isSelected) {
-				setSelectedOption('');
-			} else {
-				setSelectedOption(value);
-			}
+			setSelectedOption(selectedOption === value ? '' : value);
 		}
+		onGetValue(keyProp, selectedOption);
 	};
 
 	return (
@@ -43,10 +34,12 @@ const LifestyleEdit = ({
 				<CheckboxItem key={index}>
 					<CheckboxLabel
 						onClick={() => handleCheckboxChange(item)}
-						checked={selectedOption.includes(item)}
+						checked={
+							multi ? selectedOption.includes(item) : selectedOption === item
+						}
 					>
 						<input type="checkbox" checked={selectedOption.includes(item)} />
-						{item}
+						<p>{item}</p>
 					</CheckboxLabel>
 				</CheckboxItem>
 			))}
@@ -76,7 +69,7 @@ const CheckboxItem = styled.div`
 	margin-bottom: 16px;
 `;
 
-const CheckboxLabel = styled.label`
+const CheckboxLabel = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
