@@ -1,35 +1,40 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import Header from '@common/header/Header';
-import { Subtitle } from '@styles/basicInfo/Text';
-import { DropdownWrapper } from '@common/dropdown/BasicDropdown';
-import { BasicProfile, SimpleProfile } from '@common/ui/Profile';
+
 import PreviewComment from '@components/comment/PreviewComment';
+import UserPageInfo from '@components/UserPage/UserPageInfo';
+import UserLifeStyles from '@components/UserPage/UserLifeStyles';
+
+import { BasicProfile, SimpleProfile } from '@common/ui/Profile';
+import Header from '@common/header/Header';
+import { DropdownWrapper } from '@common/dropdown/BasicDropdown';
 import OptionModal from '@common/modal/OptionModal';
 import ConfirmModal from '@common/modal/ConfirmModal';
 import BasicButton from '@common/button/BasicButton';
+import MatchingApplyNavBar from '@common/MatchingApplyNavBar';
+
+import { Subtitle } from '@styles/basicInfo/Text';
 import FONT from '@styles/fonts';
 import COLOR from '@styles/color';
-import Threedots from '@assets/images/common/Threedots.svg';
-import Panda from '@assets/images/common/Panda.png';
-import HomeIcon from '@assets/images/common/HomeIcon.svg';
-import ArrowRightIcon from '@assets/images/common/ArrowRightIcon.svg';
-import BasicArrowUpIcon from '@assets/images/common/BasicArrowUpIcon.svg';
-import Checkbox from '@assets/images/common/Checkbox.svg';
-import CommentIcon from '@assets/images/common/comment.svg';
-import ShareIcon from '@assets/images/common/share.svg';
+
+import useLowerBarVisible from '@hooks/useLowerBarVisible';
+import { timeAgo } from '@utils/TimeAgo';
+import useAuthStore from '@store/authStore';
+import useMyInfoStore from '@store/myInfoStore';
+
 import {
 	deleteMatchingPostAPI,
 	getMatchingPostAPI,
 } from 'services/api/MatchingPostAPI';
 import { postMatchingRequestAPI } from 'services/api/MatchingRequestAPI';
-import UserPageInfo from '@components/UserPage/UserPageInfo';
-import UserLifeStyles from '@components/UserPage/UserLifeStyles';
-import { timeAgo } from '@utils/TimeAgo';
-import useAuthStore from '@store/authStore';
-import useMyInfoStore from '@store/myInfoStore';
 import { BlockUserAPI } from 'services/api/ProfileAPI';
+
+import Threedots from '@assets/images/common/Threedots.svg';
+import HomeIcon from '@assets/images/common/HomeIcon.svg';
+import ArrowRightIcon from '@assets/images/common/ArrowRightIcon.svg';
+import BasicArrowUpIcon from '@assets/images/common/BasicArrowUpIcon.svg';
+import Checkbox from '@assets/images/common/Checkbox.svg';
 
 const PostDetail = () => {
 	const setAccessToken = useAuthStore((state) => state.setAccessToken);
@@ -47,6 +52,7 @@ const PostDetail = () => {
 		func: () => {},
 	});
 	const [matching, setMatching] = useState(false);
+	const isLowerBarVisible = useLowerBarVisible();
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -71,7 +77,6 @@ const PostDetail = () => {
 			...prev,
 			msg: '게시글을 삭제할까요?',
 			btn: '삭제',
-			id: 1,
 			func: async () => {
 				const res = await deleteMatchingPostAPI(postId, setAccessToken);
 				console.log(res);
@@ -87,7 +92,6 @@ const PostDetail = () => {
 			...prev,
 			msg: `${data.author_name}님을 차단할까요?`,
 			btn: '차단',
-			id: 1,
 			func: () => {
 				BlockUserAPI(data.author_profile.id);
 			},
@@ -287,39 +291,11 @@ const PostDetail = () => {
 						count={data.comments_count}
 					/>
 				</section>
-				<section className="container items-center justify-between sticky bottom-0 bg-white z-20">
-					<button
-						onClick={() => {
-							navigate(`/comment-detail/${data.id}`, {
-								state: { postId: data.id },
-							});
-						}}
-						style={{ display: 'flex', alignItems: 'center' }}
-					>
-						<img
-							src={CommentIcon}
-							alt="commentIcon"
-							style={{ marginRight: '5px' }}
-						/>
-						<p className="cation2 gray400">댓글</p>
-					</button>
-					<button className="flex items-center" onClick={() => alert('공유')}>
-						<img
-							src={ShareIcon}
-							alt="shareIcon"
-							style={{ marginRight: '5px' }}
-						/>
-					</button>
-					<BasicButton
-						text={matching ? '신청완료' : '매칭신청'}
-						eventName={() => {
-							setMatching(true);
-							postMatchingRequestAPI(postId, setAccessToken);
-						}}
-						disabled={matching}
-						size="65%"
-					/>
-				</section>
+				<MatchingApplyNavBar
+					version={'comment'}
+					isLowerBarVisible={isLowerBarVisible}
+					id={postId}
+				/>
 			</PostDetailStyle>
 		</>
 	);
