@@ -215,7 +215,7 @@ const ComeMatchingRequest = ({ post, index, reFetchComeMatchingRequests }) => {
 		{
 			mutationFn: (id) => makeAuthorizedRequest(`/api/v1/matchingrequests/${id}/accept`, 'patch'),
 			onSuccess: (data) => {
-				if (data.data.matching_request_id) {
+				if (data.status === 200) {
 					reFetchComeMatchingRequests()
 				}
 				console.log('수락', data);
@@ -228,7 +228,7 @@ const ComeMatchingRequest = ({ post, index, reFetchComeMatchingRequests }) => {
 	const rejectMutation = useMutation({
 		mutationFn: (id) => makeAuthorizedRequest(`/api/v1/matchingrequests/${id}/reject`, 'patch'),
 		onSuccess: (data) => {
-			if (data.data.matching_request_id) {
+			if (data.status === 200) {
 				reFetchComeMatchingRequests()
 			}
 			console.log('거절', data);

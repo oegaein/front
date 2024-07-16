@@ -17,7 +17,7 @@ import Comment from '@assets/images/comment.svg'
 import { stubFalse } from 'lodash';
 
 
-const MatchingApplyNavBar = ({version, isLowerBarVisible, id, isLikeProps}) => {
+const MatchingApplyNavBar = ({version, isLowerBarVisible, id, isLikeProps, userInfo}) => {
   const [isLike, setIsLike] = useState(false)
   const [firstRendering, setFirstRendering] = useState(true)
   const navigate = useNavigate()
@@ -32,13 +32,11 @@ const MatchingApplyNavBar = ({version, isLowerBarVisible, id, isLikeProps}) => {
   }, [isLikeProps]);
 
   useEffect(() => {
-      console.log('isLike is changed', isLike)
-  }, [isLike]);
-  useEffect(() => {
     // 카카오 SDK 초기화
     if (!window.Kakao.isInitialized()) {
-      window.Kakao.init('7e7de13b930d7f7fcc8c267d547989b4');
+      window.Kakao.init('090826f305f3c07c40d74086a30a34cb');
     }
+    console.log(window.Kakao.isInitialized())
   }, []);
   
   const goToDetailComments = () => {
@@ -86,63 +84,34 @@ const MatchingApplyNavBar = ({version, isLowerBarVisible, id, isLikeProps}) => {
       console.log(kakao)
       kakao.Share.sendDefault({
         objectType: 'feed',
-  content: {
-    title: '오늘의 디저트',
-    description: '아메리카노, 빵, 케익',
-    imageUrl:
-      'https://mud-kage.kakao.com/dn/NTmhS/btqfEUdFAUf/FjKzkZsnoeE4o19klTOVI1/openlink_640x640s.jpg',
-    link: {
-      mobileWebUrl: 'https://developers.kakao.com',
-      webUrl: 'https://developers.kakao.com',
-    },
-  },
-  itemContent: {
-    profileText: '외대 룸메이트 매칭은 "외개인"',
-    profileImageUrl: 'https://mud-kage.kakao.com/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png',
-    titleImageUrl: 'https://mud-kage.kakao.com/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png',
-    titleImageText: '친구가 매칭을 공유했어요!',
-    titleImageCategory: '공유한 친구: 김혁수',
-    items: [
-      {
-        item: 'Cake1',
-        itemOp: '1000원',
-      },
-      {
-        item: 'Cake2',
-        itemOp: '2000원',
-      },
-      {
-        item: 'Cake3',
-        itemOp: '3000원',
-      },
-      {
-        item: 'Cake4',
-        itemOp: '4000원',
-      },
-      {
-        item: 'Cake5',
-        itemOp: '5000원',
-      },
-    ],
-    sum: '총 결제금액',
-    sumOp: '15000원',
-  },
-  social: {
-    likeCount: 10,
-    commentCount: 20,
-    sharedCount: 30,
-  },
-  buttons: [
-    {
-      title: '웹으로 이동',
-      link: {
-        mobileWebUrl: 'https://developers.kakao.com',
-        webUrl: `${window.location.origin}${location.pathname}`,
-      },
-    },
-    
-  ],
-      });
+        content: {
+          title: '이 룸메 어떠세요?',
+          description: `${userInfo.introduction}`,
+          imageUrl:
+            'https://i.ibb.co/dts410Q/oegaeinlogo.png',
+          link: {
+            mobileWebUrl: 'https://developers.kakao.com',
+            webUrl: 'https://developers.kakao.com',
+          },
+        },
+        itemContent: {
+          profileText: `${userInfo.name} 님의 글 | 외개인`,
+          profileImageUrl: `${userInfo.photo_url}`,
+          // titleImageText: 'www.hufs.ac.kr',
+          // titleImageCategory: '공유한 친구: 김혁수',
+        },
+        buttons: [
+          {
+            title: '룸메이트 보러가기',
+            link: {
+              mobileWebUrl: 'https://developers.kakao.com',
+              webUrl: `${window.location.origin}${location.pathname}`,
+            },
+          },
+          
+        ],
+      }
+    );
     }
   }
 
