@@ -19,19 +19,21 @@ import BasicArrowUpIcon from '@assets/images/common/BasicArrowUpIcon.svg';
 import Checkbox from '@assets/images/common/Checkbox.svg';
 import CommentIcon from '@assets/images/common/comment.svg';
 import ShareIcon from '@assets/images/common/share.svg';
-import { getMatchingPostAPI } from 'services/api/MatchingPostAPI';
+import {
+	deleteMatchingPostAPI,
+	getMatchingPostAPI,
+} from 'services/api/MatchingPostAPI';
 import { postMatchingRequestAPI } from 'services/api/MatchingRequestAPI';
 import UserPageInfo from '@components/UserPage/UserPageInfo';
 import UserLifeStyles from '@components/UserPage/UserLifeStyles';
 import { timeAgo } from '@utils/TimeAgo';
 import useAuthStore from '@store/authStore';
-
-const myInfo = {
-	name: '김예은',
-};
+import useMyInfoStore from '@store/myInfoStore';
+import { BlockUserAPI } from 'services/api/ProfileAPI';
 
 const PostDetail = () => {
 	const setAccessToken = useAuthStore((state) => state.setAccessToken);
+	const myname = useMyInfoStore.getState().myInfo.name;
 	const { postId } = useParams();
 	const navigate = useNavigate();
 	const [data, setData] = useState(null);
@@ -70,8 +72,11 @@ const PostDetail = () => {
 			msg: '게시글을 삭제할까요?',
 			btn: '삭제',
 			id: 1,
-			func: () => {
-				alert('삭제 API');
+			func: async () => {
+				const res = await deleteMatchingPostAPI(postId, setAccessToken);
+				console.log(res);
+				// 성공하면 홈 화면으로
+				navigate('/home');
 			},
 		}));
 	};
@@ -80,11 +85,11 @@ const PostDetail = () => {
 		setConfirm(true);
 		setConfirmContent((prev) => ({
 			...prev,
-			msg: `${data.author_name}님을 차단할까요?`, // 작성자 이름
+			msg: `${data.author_name}님을 차단할까요?`,
 			btn: '차단',
 			id: 1,
 			func: () => {
-				alert('차단 API');
+				BlockUserAPI(data.author_profile.id);
 			},
 		}));
 	};
@@ -126,7 +131,7 @@ const PostDetail = () => {
 		<>
 			{threedots && (
 				<OptionModal
-					options={data.author_name === myInfo.name ? postOptions : yourOption}
+					options={data.author_name === myname ? postOptions : yourOption}
 					isOpen={threedots}
 					setIsOpen={setThreedots}
 				/>

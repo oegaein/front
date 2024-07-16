@@ -67,6 +67,42 @@ export const getMatchingPostAPI = async (matchingpostID, setAccessToken) => {
 	}
 };
 
+export const deleteMatchingPostAPI = async (matchingpostID, setAccessToken) => {
+	try {
+		const { data } = await API.delete(
+			`/api/v1/matchingposts/${matchingpostID}`,
+		);
+		return data;
+	} catch (error) {
+		console.error(error);
+		if (error.response && error.response.status === 403) {
+			try {
+				const refreshResponse = await API.get(`/api/v1/member/refresh`);
+				console.log('refresh!!!!!!' + refreshResponse);
+				setAccessToken(refreshResponse.data.accessToken);
+				const accessToken = useAuthStore.getState().accessToken;
+				console.log(accessToken);
+				try {
+					const { data } = await API.delete(
+						`/api/v1/matchingposts/${matchingpostID}`,
+						{
+							headers: {
+								Authorization: `Bearer ${accessToken}`,
+							},
+						},
+					);
+					return data;
+				} catch (error) {
+					console.log('error');
+					console.error(error);
+				}
+			} catch (error) {
+				console.error(error);
+			}
+		}
+	}
+};
+
 export const getMatchingListAPI = async () => {
 	const { data } = await axios.get(`/api/v1/matchingposts`);
 	return data;
