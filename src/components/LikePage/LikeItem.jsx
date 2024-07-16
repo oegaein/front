@@ -1,38 +1,52 @@
 import React, {useState} from 'react'
 import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest';
 import UserPageInfo from '@components/UserPage/UserPageInfo'
+import { useMutation } from '@tanstack/react-query';
+
+//images
 import Next from '@assets/images/next.svg'
 import RedHeart from '@assets/images/heart-red.svg'
 import Heart from '@assets/images/heart (10) 1.svg'
-const LikeItem = ({like}) => {
-  const [isLike, setIsLike] = useState(false)
 
+const LikeItem = ({like}) => {
+  const [isLike, setIsLike] = useState(true)
+  const receiverId = like.receiver_id
+  console.log('receiverId', receiverId)
+  const fetchLikeMutation = useMutation(
+		{
+			mutationFn: (receiverId) => makeAuthorizedRequest('/api/v1/member/like', 'post', {receiver_id: receiverId}),
+			onSuccess: (data) => {
+				if(data.status === 201) {
+          setIsLike(true)
+        }
+				console.log('fetchLikeSuccess', data);
+			},
+			onError: (error) => {
+				console.log(error);
+			}
+		}
+	);
+  const cancelLikeMutation = useMutation(
+		{
+			mutationFn: (receiverId) => makeAuthorizedRequest('/api/v1/member/like', 'delete', {receiver_id: receiverId}),
+			onSuccess: (data) => {
+				if (data.status === 204) {
+          setIsLike(false)
+        }
+				console.log('cancelLikeSuccess', data);
+			},
+			onError: (error) => {
+				console.log(error);
+			}
+		}
+	);
   const fetchLikeData = async () => {
-    try {
-      const response = await makeAuthorizedRequest('/api/v1/member/like', {
-        receiver_id: like.receiver_id
-      }, 'post')
-      console.log(response)
-      if(response.data.like_id) {
-        setIsLike(true)
-      }
-    } catch(error) {
-      console.error(error);
-      
-    }
+    fetchLikeMutation.mutate(receiverId)
+
   }
   const fetchDeleteLikeData = async () => {
-    try {
-      const response = await makeAuthorizedRequest('/api/v1/member/like', {
-        receiver_id: like.receiver_id
-      }, 'delete')
-      console.log(response)
-      if (response.data.like_id) {
-        setIsLike(false)
-      }
-    } catch(error) {
-      console.error(error);
-    }
+    cancelLikeMutation.mutate(receiverId)
+
   }
 
   return (
@@ -44,9 +58,9 @@ const LikeItem = ({like}) => {
           <img src={Next}/>
         </div>
         {(isLike) ? 
-            <button onClick={fetchDeleteLikeData} className='w-[20px] h-[20px]'><img src={RedHeart}/></button>
+            <button onClick={fetchDeleteLikeData}><img src={RedHeart} className='w-[20px] h-[20px]'/></button>
             :  
-            <button onClick={fetchLikeData} className='w-[20px] h-[20px]'><img src={Heart}/></button>
+            <button onClick={fetchLikeData}><img src={Heart} className='w-[20px] h-[20px]'/></button>
         }   
       </div>
       <UserPageInfo userInfo={like}/>

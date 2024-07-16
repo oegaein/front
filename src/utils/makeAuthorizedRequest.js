@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 const makeAuthorizedRequest = async (url, method = 'get', config) => {
   try {
     let response;
+    console.log(config)
     switch (method) {
       case 'get':
         response = await API.get(url);
@@ -15,7 +16,7 @@ const makeAuthorizedRequest = async (url, method = 'get', config) => {
         response = await API.put(url, config);
         break;
       case 'delete':
-        response = await API.delete(url, config);
+        response = await API.delete(url, {data: config});
         break;
       case 'patch':
         response = await API.patch(url);

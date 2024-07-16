@@ -43,7 +43,7 @@ const RoommateSwiperList = ({ type }) => {
 						</SwiperSlide>
 					))}
 			</Swiper>
-			{(type === 'new' || type === 'mypost') && data.length >= 10 ? (
+			{(type === 'new' || type === 'mypost') ? (
 				<div className="px-[25px] mt-[16px]">
 					<Link
 						to={

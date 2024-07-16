@@ -73,7 +73,7 @@ const UserLifeStyles = ({userInfo}) => {
           <span className="text-[13px]">{userInfo.sound_sensitivity}</span>
         </div>
       )}
-      {userInfo.sleeping_habit?.length > 0 && (
+      {(userInfo.sleeping_habit && userInfo.sleeping_habit[0]) && (
         <div className="flex flex-col items-center gap-[9px]">
           <div className="flex items-center h-[44px]">
             <img src={SpeechBubble} />

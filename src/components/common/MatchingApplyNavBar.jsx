@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest';
-
+import { useMutation, queryClient } from '@tanstack/react-query';
 
 //styles
 import styled from 'styled-components'
@@ -14,16 +14,19 @@ import Share from '@assets/images/share.svg'
 import BigRedHeart from '@assets/images/bigredheart.svg'
 import BigEmptyHeart from '@assets/images/heart (10) 1.svg'
 import Comment from '@assets/images/comment.svg'
+import { stubFalse } from 'lodash';
 
 
 const MatchingApplyNavBar = ({version, isLowerBarVisible, id, isLikeProps}) => {
   const [isLike, setIsLike] = useState(false)
+  const [firstRendering, setFirstRendering] = useState(true)
   const navigate = useNavigate()
   const location = useLocation()
   useEffect(() => {
-    if (isLikeProps !== undefined) {
+    if (!isLikeProps && firstRendering) {
       // myProps가 undefined가 아닌 경우에만 state 업데이트
       setIsLike(isLikeProps);
+      setFirstRendering(false)
       console.log(isLike)
     }
   }, [isLikeProps]);
@@ -41,71 +44,41 @@ const MatchingApplyNavBar = ({version, isLowerBarVisible, id, isLikeProps}) => {
   const goToDetailComments = () => {
     navigate(`/comment-detail/${id}`)
   }
+  const fetchLikeMutation = useMutation(
+		{
+			mutationFn: (id) => makeAuthorizedRequest('/api/v1/member/like', 'post', {receiver_id: id}),
+			onSuccess: (data) => {
+				if(data.status === 201) {
+          setIsLike(true)
+        }
+				console.log('fetchLikeSuccess', data);
+			},
+			onError: (error) => {
+				console.log(error);
+			}
+		}
+	);
+  const cancelLikeMutation = useMutation(
+		{
+			mutationFn: (id) => makeAuthorizedRequest('/api/v1/member/like', 'delete', {
+        receiver_id: id
+      }),
+			onSuccess: (data) => {
+				if (data.status === 204) {
+          setIsLike(false)
+        }
+				console.log('cancelLikeSuccess', data);
+			},
+			onError: (error) => {
+				console.log(error);
+			}
+		}
+	);
   const fetchLikeData = async () => {
-    try {
-      const response = await makeAuthorizedRequest('/api/v1/member/like', {
-        receiver_id: id
-      }, 'post')
-      console.log(response)
-      if(response.data.like_id) {
-        setIsLike(true)
-      }
-    } catch(error) {
-      console.error(error);
-      
-    }
+    fetchLikeMutation.mutate(id)
   }
-  // const fetchLikeData = async () => {
-  //   try {
-  //     const response = await API.post('/api/v1/member/like', {
-  //       receiver_id: id
-  //     })
-  //     console.log(response)
-  //     if(response.data.like_id) {
-  //       setIsLike(true)
-  //     }
-  //   } catch(error) {
-  //     console.error(error);
-  //     if (error.response && error.response.status === 403) {
-  //       try {
-  //         const refreshResponse = await API.get(`/api/v1/member/refresh`)
-  //         console.log('refresh', refreshResponse)
-  //         setAccessToken(refreshResponse.data.access_token)
-  //         const accessToken = useAuthStore.getState().accessToken
-  //         console.log(accessToken)
-  //         try {
-  //           const response = await API.post('/api/v1/member/like', 
-  //             {receiver_id: id},
-  //             {
-  //             headers: { 'Authorization': `Bearer ${accessToken}`}
-  //           })
-  //           console.log(response)
-  //           if(response.data.like_id) {
-  //             setIsLike(true)
-  //           }
-  //         } catch (error) {
-  //           console.error(error)
-  //         }
-
-  //       } catch (error) {
-  //         console.error(error)
-  //         navigate('/login')
-  //       }
-  //     }
-  //   }
-  // }
   const fetchDeleteLikeData = async () => {
-    try {
-      const response = await makeAuthorizedRequest('/api/v1/member/like', {
-        receiver_id: id
-      }, 'delete')
-      console.log(response)
-      if (response.data.like_id) {
-        setIsLike(false)
-      }
-    } catch(error) {
-      console.error(error);
-    }
+    cancelLikeMutation.mutate(id)
   }
   const clickShareBtn = () => {
     if (window.Kakao) {
