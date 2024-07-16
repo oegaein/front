@@ -208,7 +208,12 @@ export const CheckboxInput = ({
 };
 
 //
-export const CommentInput = ({ setSelected, setReply, postId }) => {
+export const CommentInput = ({
+	postId,
+	setSelected,
+	setReply,
+	isReply = false,
+}) => {
 	const setAccessToken = useAuthStore((state) => state.setAccessToken);
 	const [value, setValue] = useState('');
 
@@ -218,11 +223,16 @@ export const CommentInput = ({ setSelected, setReply, postId }) => {
 		setSelected(inputValue);
 	};
 
-	const handlePost = () => {
-		// setReply(false);
-		postCommentsAPI(setAccessToken, postId, value);
-		// postReplyAPI(postId, value);
-		// window.location.reload();
+	const handlePost = async () => {
+		if (isReply) {
+			const res = await postReplyAPI(setAccessToken, postId, value);
+			console.log(res);
+			setReply(false);
+		} else {
+			const res = await postCommentsAPI(setAccessToken, postId, value);
+			console.log(res);
+		}
+		window.location.reload();
 	};
 
 	return (
