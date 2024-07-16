@@ -35,9 +35,7 @@ const Header = ({
 	return (
 		<>
 			<div
-				className={
-					'bg-blue flex flex-1 justify-between w-full h-[57px] items-center'
-				}
+				className={'flex flex-1 justify-between w-full h-[57px] items-center'}
 			>
 				<button className={'flex-1'} onClick={handleBackButton}>
 					<img src={BackIcon} />
