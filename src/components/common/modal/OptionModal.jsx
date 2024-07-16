@@ -58,7 +58,7 @@ const Motion = styled(motion.div)`
 	width: 393px;
 	bottom: 20px;
 	left: calc(50% - 177px);
-	z-index: 51;
+	z-index: 52;
 `;
 
 const ModalWrapper = styled.div`
