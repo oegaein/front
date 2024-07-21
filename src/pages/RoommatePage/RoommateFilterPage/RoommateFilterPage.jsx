@@ -304,7 +304,7 @@ function RoommateFilterPage() {
     <SettingStyle className='flex flex-col'>
       <div className="px-[28px]">
 				<Header backPath="/roommate" rightContent=" " rightEvent={() => {}}>
-					<span>필터</span>
+					<span className='header'>필터</span>
 				</Header>
 			</div>
       {screenType==='results' ? <RoommateScrollList type='filters' filteredPosts={filteredPosts} setScreenType={setScreenType}/> :
@@ -527,6 +527,9 @@ export default RoommateFilterPage;
 
 const SettingStyle = styled.main`
   text-align: left;
+  .header {
+    font: ${FONT.title2B19}
+  }
   .filter-section {
     padding: 25px;
     border-top: 1px solid ${COLOR.gray100};

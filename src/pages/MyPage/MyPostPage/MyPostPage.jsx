@@ -43,7 +43,7 @@ const MyPostPage = () => {
 			)}
       <div className="px-[28px]">
 				<Header backPath="/mypage" rightContent=" " rightEvent={() => {}}>
-					<span>내가 올린 글</span>
+					<span className='header'>내가 올린 글</span>
 				</Header>
 			</div>
       <div>
@@ -75,6 +75,9 @@ const NoResults = () => {
 }
 
 const SettingStyle = styled.main`
+  .header {
+    font: ${FONT.title2B19}
+  }
   .notification-title {
     flex: 1;
     font-size: ${FONT.caption2M14};

@@ -24,7 +24,7 @@ const BestRoommatesPage = () => {
           <Header backPath="/home" rightContent={Alarm} rightEvent={() => {
               navigate('/alarm');
             }}>
-            <span>베스트 룸메이트</span>
+            <span className='header'>베스트 룸메이트</span>
           </Header>
         </div>
         <div className='p-[25px] bg-white'>
@@ -40,4 +40,7 @@ export default BestRoommatesPage
 
 const SettingStyle = styled.div`
   background-color: ${COLOR.gray50};
+  .header {
+    font: ${FONT.title2B19}
+  }
 `

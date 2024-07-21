@@ -30,7 +30,7 @@ const ComeMatchingListPage = () => {
     <SettingStyle className='bg-white'>
       <div className="px-[28px]">
 				<Header backPath="/mypage" rightContent=" " rightEvent={() => {}}>
-					<span>룸메이트 신청 요청</span>
+					<span className='header'>룸메이트 신청 요청</span>
 				</Header>
 			</div>
       <div>
@@ -56,6 +56,9 @@ const ComeMatchingListPage = () => {
 export default ComeMatchingListPage
 
 const SettingStyle = styled.main`
+  .header {
+    font: ${FONT.title2B19}
+  }
   .notification-title {
     flex: 1;
     font-size: ${FONT.caption2M14};

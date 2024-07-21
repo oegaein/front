@@ -18,7 +18,7 @@ const RoommateApplyListPage = () => {
     <SettingStyle className='bg-white'>
       <div className="px-[28px]">
 				<Header backPath="/mypage" rightContent=" " rightEvent={() => {}}>
-					<span>내 룸메이트 신청 목록</span>
+					<span className='header'>내 룸메이트 신청 목록</span>
 				</Header>
 			</div>
       <div>
@@ -35,6 +35,9 @@ const RoommateApplyListPage = () => {
 export default RoommateApplyListPage
 
 const SettingStyle = styled.main`
+  .header {
+    font: ${FONT.title2B19}
+  }
   .username {
     font-size: ${FONT.caption2M14};
   }
