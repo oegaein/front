@@ -1,5 +1,4 @@
-import useAuthStore from '@store/authStore';
-import { API } from '@utils/api';
+import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest';
 
 export const PostProfileAPI = async (submitData) => {
 	const response = await makeAuthorizedRequest(
