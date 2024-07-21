@@ -11,7 +11,6 @@ import Header from '@common/header/Header';
 import { DropdownWrapper } from '@common/dropdown/BasicDropdown';
 import OptionModal from '@common/modal/OptionModal';
 import ConfirmModal from '@common/modal/ConfirmModal';
-import BasicButton from '@common/button/BasicButton';
 import MatchingApplyNavBar from '@common/MatchingApplyNavBar';
 
 import { Subtitle } from '@styles/basicInfo/Text';
@@ -20,14 +19,12 @@ import COLOR from '@styles/color';
 
 import useLowerBarVisible from '@hooks/useLowerBarVisible';
 import { timeAgo } from '@utils/TimeAgo';
-import useAuthStore from '@store/authStore';
 import useMyInfoStore from '@store/myInfoStore';
 
 import {
 	deleteMatchingPostAPI,
 	getMatchingPostAPI,
 } from 'services/api/MatchingPostAPI';
-import { postMatchingRequestAPI } from 'services/api/MatchingRequestAPI';
 import { BlockUserAPI } from 'services/api/ProfileAPI';
 
 import Threedots from '@assets/images/common/Threedots.svg';
@@ -50,7 +47,6 @@ const PostDetail = () => {
 		btn: '',
 		func: () => {},
 	});
-	const [matching, setMatching] = useState(false);
 	const isLowerBarVisible = useLowerBarVisible();
 
 	useEffect(() => {
