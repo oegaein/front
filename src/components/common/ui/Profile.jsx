@@ -80,7 +80,7 @@ export const BasicProfile = ({
 			msg: `${nickname}님을 차단할까요?`,
 			btn: '차단',
 			func: () => {
-				BlockUserAPI(userID, setAccessToken);
+				BlockUserAPI(userID);
 			},
 		}));
 	};
