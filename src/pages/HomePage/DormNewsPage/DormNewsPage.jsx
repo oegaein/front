@@ -24,7 +24,7 @@ const DormNewsPage = () => {
           <Header backPath="/home" rightContent={Alarm} rightEvent={() => {
 							navigate('/alarm');
 						}}>
-            <span>기숙사 소식</span>
+            <span className='header'>기숙사 소식</span>
           </Header>
         </div>
         <div className='p-[25px] bg-white'>
@@ -50,5 +50,8 @@ const SettingStyle = styled.div`
   }
   .news-list {
     background-color: ${COLOR.gray100};
+  }
+  .header {
+    font: ${FONT.title2B19}
   }
 `

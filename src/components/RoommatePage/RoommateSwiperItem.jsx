@@ -50,7 +50,7 @@ const RoommateSwiperItem = ({post, type, index, setConfirm, setConfirmContent}) 
     setConfirm(true)
 		setConfirmContent({
 			id: -1,
-			msg: `${post.name}님께 매칭을 신청할까요?`,
+			msg: `'${post.name}'님께 매칭을 신청할까요?`,
 			btn: '수락',
 			func: () => {registerMutation.mutate(matchingPostId)},
 		})
@@ -61,7 +61,7 @@ const RoommateSwiperItem = ({post, type, index, setConfirm, setConfirmContent}) 
     setConfirm(true)
 		setConfirmContent({
 			id: -1,
-			msg: `${post.name}님과의 매칭을 취소할까요?`,
+			msg: `'${post.name}'님과의 매칭을 취소할까요?`,
 			btn: '확인',
 			func: () => {cancelMutation.mutate(matchingPostId)},
 		})

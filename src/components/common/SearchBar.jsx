@@ -31,7 +31,7 @@ const SearchBar = forwardRef(function SearchBar(props, ref) {
 	return (
 		<div
 			onClick={onClick}
-			className={`border border-[${COLOR.gray200}]] rounded-[10px] px-[15px] py-[7px] flex justify-between w-[302px] bg-white`}
+			className={`border border-[${COLOR.gray200}]] rounded-[10px] px-[15px] py-[7px] h-[46px] flex justify-between w-[302px] bg-white`}
 		>
 			<input
 				ref={ref}

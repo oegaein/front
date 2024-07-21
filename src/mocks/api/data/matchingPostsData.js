@@ -3,6 +3,7 @@ export const matchingPostsData = {
 	{
 			major: "컴퓨터전자시스템공학부",
 			studentNo: "19",
+      introduction: '룸메 구해용~~~~',
 			name: "설희관",
 			gender: "남성",
 			mbti: "ESTP",
@@ -27,6 +28,7 @@ export const matchingPostsData = {
 		{
 			major: "컴퓨터전자시스템공학부",
 			studentNo: "22",
+      introduction: '룸메 구해용~~~~',
 			name: "김예은",
 			gender: "여성",
 			mbti: "ESTP",
@@ -52,6 +54,7 @@ export const matchingPostsData = {
 		{
 			major: "컴퓨터전자시스템공학부",
 			studentNo: "17",
+      introduction: '룸메 구해용~~~~',
 			name: "김혁수",
 			gender: "남성",
 			mbti: "ENFJ",
@@ -78,6 +81,7 @@ export const matchingPostsData = {
 			major: "컴퓨터전자시스템공학부",
 			studentNo: "18",
 			name: "이아영",
+      introduction: '아따 마 룸메 구한다 아잉교~~~~',
 			gender: "여성",
 			mbti: "ESTP",
 			sleepingHabits: [],
@@ -103,6 +107,7 @@ export const matchingPostsData = {
 			major: "컴퓨터전자시스템공학부",
 			studentNo: "24",
 			name: "정재웅",
+      introduction: '아따 마 룸메 구한다 아잉교~~~~',
 			gender: "남성",
 			mbti: "ISFP",
 			sleepingHabits: [],
@@ -121,8 +126,6 @@ export const matchingPostsData = {
       birthdate: "2005-01-01T15:00:00.000+00:00",
       targetNumberOfPeople: 1,
       photoUrl: "https://lh3.googleusercontent.com/a-/ALV-UjWX4UNs37PJmJbCleL5m9p16yBTZOAcer_4YC4KhVlxj_MNNA=s96-c"
-
-
 		},
 
 	]

@@ -372,7 +372,7 @@ function RoommateFilterPage() {
 		<SettingStyle className="flex flex-col">
 			<div className="px-[28px]">
 				<Header backPath="/roommate" rightContent=" " rightEvent={() => {}}>
-					<p className="header">필터</p>
+					<span className='header'>필터</span>
 				</Header>
 			</div>
 			{screenType === 'results' ? (

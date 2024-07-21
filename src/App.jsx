@@ -38,6 +38,8 @@ import MyPostPage from '@pages/MyPage/MyPostPage/MyPostPage';
 import RoommateApplyListPage from '@pages/MyPage/RoommateApplyListPage/RoommateApplyListPage';
 import CallBack from '@components/LoginPage/CallBack';
 import DormNewsPage from '@pages/HomePage/DormNewsPage/DormNewsPage';
+import UserPostPage from '@pages/UserPage/UserPostPage/UserPostPage';
+import ComeMatchingListPage from '@pages/MyPage/ComeMatchingListPage/ComeMatchingListPage';
 
 const queryClient = new QueryClient();
 

@@ -20,7 +20,7 @@ const EndingsoonPage = () => {
           <Header backPath="/home" rightContent={Alarm} rightEvent={() => {
               navigate('/alarm');
             }}>
-            <span>마감임박</span>
+            <span className='header'>마감임박</span>
           </Header>
         </div>
         <div className='p-[25px] bg-white'>
@@ -36,4 +36,7 @@ export default EndingsoonPage
 
 const SettingStyle = styled.div`
   background-color: ${COLOR.gray50};
+  .header {
+    font: ${FONT.title2B19}
+  }
 `
