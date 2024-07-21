@@ -120,6 +120,7 @@ const SettingStyle = styled.div`
   background-color: white;
   .header {
     background-color: ${COLOR.purple1};
+    font: ${FONT.title2B19}
   }
   .header-text {
     color: white;

@@ -16,11 +16,13 @@ import Premium from '@assets/images/premium-quality.svg';
 //components
 import RoommateScrollItem from '@components/RoommatePage/RoommateScrollItem';
 import Pagination from '@components/common/Pagination'
+import ConfirmModal from '@common/modal/ConfirmModal';
 
 const RoommateScrollList = ({ type, searchTerm, filteredPosts, setScreenType }) => {
 	const [currentPage, setCurrentPage] = useState(0)
+	const [confirm, setConfirm] = useState(false)
+	const [confirmContent, setConfirmContent] = useState({});
 	const { data: matchingPosts, isLoading, error } = useMatchingPosts(type, currentPage);
-	console.log('matchingPosts', matchingPosts)
 	const { data: searchResults } = useQuery({
 		queryKey: ['searchResults', searchTerm],
 		queryFn: () => fetchData(searchTerm),
@@ -45,6 +47,13 @@ const RoommateScrollList = ({ type, searchTerm, filteredPosts, setScreenType }) 
 	if (error) return <div>{error.message}</div>;
 	return (
 		<SettingStyle>
+			{confirm && (
+				<ConfirmModal
+					content={confirmContent}
+					isOpen={confirm}
+					setIsOpen={setConfirm}
+				/>
+			)}
 			<div className="flex justify-between items-center px-[24px] py-[16px]">
 				{(path === '/roommate' || path === '/search') && (
 					<FindRoommateTitle path={path} />
@@ -83,7 +92,8 @@ const RoommateScrollList = ({ type, searchTerm, filteredPosts, setScreenType }) 
 					if (matchingPosts?.data.length > 0) {
 						content = matchingPosts.data
 						.map((post, index) => (
-							<RoommateScrollItem key={post.matchingPostId} post={post} />
+							// <RoommateScrollItem key={post.matchingPostId} post={post} setConfirm={setConfirm} setConfirmContent={setConfirmContent}/>
+							<RoommateScrollItem post={post} type={type} setConfirm={setConfirm} setConfirmContent={setConfirmContent}/>
 						));
 					} else {
 						content = <div>결과가 존재하지 않습니다.</div>

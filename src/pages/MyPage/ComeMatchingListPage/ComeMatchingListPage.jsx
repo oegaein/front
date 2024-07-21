@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import { useMatchingPosts } from '@hooks/useMatchingPosts'
 import { Link } from 'react-router-dom'
 
 //styles
@@ -6,19 +7,30 @@ import styled from 'styled-components'
 import FONT from '@styles/fonts'
 import COLOR from '@styles/color'
 
+//components
 import Header from '@common/header/Header'
-import RoommateScrollList from '@common/RoommateScrollList'
-const RoommateApplyListPage = () => {
+import ComeMatchingRequest from '@common/ui/item/ComeMatchingRequest'
+
+const ComeMatchingListPage = () => {
   const [uploadPostType, setUploadPostType] = useState('roommate')
+  const {
+		data: comeMatchingRequests,
+		refetch: reFetchComeMatchingRequests,
+		isLoading: isLoadingCome,
+		error: isErrorCome,
+	} = useMatchingPosts('come-matchingrequests');
   const handleChangeType = (type) => {
     //api 요청 로직
     setUploadPostType(type)
+  }
+  if (isLoadingCome) {
+    return <div>로딩중</div>
   }
   return (
     <SettingStyle className='bg-white'>
       <div className="px-[28px]">
 				<Header backPath="/mypage" rightContent=" " rightEvent={() => {}}>
-					<span className='header'>내 룸메이트 신청 목록</span>
+					<span className='header'>룸메이트 신청 요청</span>
 				</Header>
 			</div>
       <div>
@@ -27,28 +39,26 @@ const RoommateApplyListPage = () => {
           {/* <div onClick={()=>handleChangeType('delivery')}className={`notification-title ${uploadPostType === 'delivery' && 'selected-title'}`}>공동배달</div> */}
         </div>
       </div>
-      <RoommateScrollList type='my-matchingrequests'/>
+      <div className="flex flex-col gap-[10px] px-[25px] mt-[16px]">
+          {comeMatchingRequests?.data?.length > 0 ? (
+						comeMatchingRequests.data.slice(0,3).map((post, index) => (
+							<ComeMatchingRequest post={post} index={index} reFetchComeMatchingRequests={reFetchComeMatchingRequests}/>
+						))
+					) : (
+						<div className="text-center">나에게 온 신청 요청이 없습니다.</div>
+					)}
+					</div>
+      
     </SettingStyle>
   )
 }
 
-export default RoommateApplyListPage
+export default ComeMatchingListPage
 
 const SettingStyle = styled.main`
   .header {
     font: ${FONT.title2B19}
   }
-  .username {
-    font-size: ${FONT.caption2M14};
-  }
-  .heading-text {
-    font-size: ${FONT.title3SB17};
-  }
-  .small-text {
-    font-size: ${FONT.caption2M14};
-    color: ${COLOR.gray600};
-  }
-
   .notification-title {
     flex: 1;
     font-size: ${FONT.caption2M14};
@@ -68,8 +78,5 @@ const SettingStyle = styled.main`
   .noresults {
     font-size: ${FONT.caption2M14};
     color: ${COLOR.gray500};
-  }
-  .likelist {
-    background-color: ${COLOR.gray100};
   }
 `
