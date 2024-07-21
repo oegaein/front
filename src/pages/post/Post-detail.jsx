@@ -37,7 +37,6 @@ import BasicArrowUpIcon from '@assets/images/common/BasicArrowUpIcon.svg';
 import Checkbox from '@assets/images/common/Checkbox.svg';
 
 const PostDetail = () => {
-	const setAccessToken = useAuthStore((state) => state.setAccessToken);
 	const myname = useMyInfoStore.getState().myInfo.name;
 	const { postId } = useParams();
 	const navigate = useNavigate();
@@ -56,7 +55,7 @@ const PostDetail = () => {
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const result = await getMatchingPostAPI(postId, setAccessToken);
+			const result = await getMatchingPostAPI(postId);
 			console.log(result);
 			setData(result);
 		};
@@ -78,7 +77,7 @@ const PostDetail = () => {
 			msg: '게시글을 삭제할까요?',
 			btn: '삭제',
 			func: async () => {
-				const res = await deleteMatchingPostAPI(postId, setAccessToken);
+				const res = await deleteMatchingPostAPI(postId);
 				console.log(res);
 				// 성공하면 홈 화면으로
 				navigate('/home');

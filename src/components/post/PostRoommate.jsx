@@ -10,7 +10,6 @@ import React, { useEffect, useState } from 'react';
 import { postMatchingPostAPI } from 'services/api/MatchingPostAPI';
 
 const PostRoommate = () => {
-	const setAccessToken = useAuthStore((state) => state.setAccessToken);
 	const [postContent, setPostContent] = useState({
 		title: '',
 		detail: '',
@@ -56,7 +55,7 @@ const PostRoommate = () => {
 			roomSizeType: postContent.type,
 		};
 		console.log(SubmitData);
-		postMatchingPostAPI(SubmitData, setAccessToken);
+		postMatchingPostAPI(SubmitData);
 	};
 
 	const isFormValid = () => {
