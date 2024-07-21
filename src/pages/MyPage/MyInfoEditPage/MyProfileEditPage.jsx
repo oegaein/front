@@ -40,7 +40,7 @@ const MyProfileEdit = () => {
 		gender: '',
 		student_no: 0,
 		birthdate: '',
-		major: 'GBT',
+		major: '',
 		introduction: '',
 		mbti: null,
 		sleeping_habit: [],
