@@ -22,7 +22,7 @@ const SearchAndNotice = () => {
   }
 
   return (
-    <div className='flex justify-between bg-white px-[24px]'>
+    <div className='flex justify-between items-center bg-white px-[24px] h-[57px]'>
         <SearchBar onClick={()=>navigate('/search')}/>
         <button>
           {/* <img src={Bell}/> */}

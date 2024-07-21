@@ -38,6 +38,8 @@ import MyPostPage from '@pages/MyPage/MyPostPage/MyPostPage';
 import RoommateApplyListPage from '@pages/MyPage/RoommateApplyListPage/RoommateApplyListPage';
 import CallBack from '@components/LoginPage/CallBack';
 import DormNewsPage from '@pages/HomePage/DormNewsPage/DormNewsPage';
+import UserPostPage from '@pages/UserPage/UserPostPage/UserPostPage';
+import ComeMatchingListPage from '@pages/MyPage/ComeMatchingListPage/ComeMatchingListPage';
 
 const queryClient = new QueryClient();
 
@@ -74,9 +76,10 @@ function App() {
 								/>
 								<Route path="mypage/like" element={<LikePage />} />
 								<Route path="mypage/mypost" element={<MyPostPage />} />
-								{/* <Route path="mypage/come-matchingrequests" element={< />} /> */}
+								<Route path="mypage/come-matchingrequests" element={<ComeMatchingListPage />} />
 								<Route path="my-profile/edit" element={<MyProfileEditPage />} />
 								<Route path="user/:memberId" element={<UserPage />} />
+								<Route path="user/:memberId/post" element={<UserPostPage />} />
 								<Route
 									path="user/:memberId/reviews"
 									element={<RoommateReviewPage />}

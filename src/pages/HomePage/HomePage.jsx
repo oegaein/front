@@ -44,7 +44,7 @@ const HomePage = () => {
   //   fetchData()
   // },[])
   return (
-    <SettingStyle className='flex flex-col gap-[10px] pt-[11px] scroll-smooth'>
+    <SettingStyle className='flex flex-col gap-[10px] scroll-smooth'>
       <AddRoommateButton/>
       <div>
         <SearchAndNotice/>
@@ -53,10 +53,10 @@ const HomePage = () => {
             <div className='flex'>
               <h1 className='heading text-left font-bold mr-[3px]'>오늘의 기숙사 소식</h1>
             </div>
-            <a href='#' className='more flex'>
+            <Link to='/home/dormnews' className='more flex'>
               더보기
               <img src={Next}/>
-            </a>
+            </Link>
           </div>
           {dormNews ? 
           <Swiper 

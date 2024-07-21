@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest';
 import { useMutation, queryClient } from '@tanstack/react-query';
-
+import { postMatchingRequestAPI } from 'services/api/MatchingRequestAPI';
 //styles
 import styled from 'styled-components'
 import FONT from '@styles/fonts'
@@ -14,7 +14,6 @@ import Share from '@assets/images/share.svg'
 import BigRedHeart from '@assets/images/bigredheart.svg'
 import BigEmptyHeart from '@assets/images/heart (10) 1.svg'
 import Comment from '@assets/images/comment.svg'
-import { stubFalse } from 'lodash';
 
 
 const MatchingApplyNavBar = ({version, isLowerBarVisible, id, isLikeProps, userInfo}) => {
@@ -22,6 +21,8 @@ const MatchingApplyNavBar = ({version, isLowerBarVisible, id, isLikeProps, userI
   const [firstRendering, setFirstRendering] = useState(true)
   const navigate = useNavigate()
   const location = useLocation()
+  // /user or /post-detail 
+  console.log('location', location)
   useEffect(() => {
     if (!isLikeProps && firstRendering) {
       // myProps가 undefined가 아닌 경우에만 state 업데이트
@@ -41,6 +42,9 @@ const MatchingApplyNavBar = ({version, isLowerBarVisible, id, isLikeProps, userI
   
   const goToDetailComments = () => {
     navigate(`/comment-detail/${id}`)
+  }
+  const goToUserPostPage = () => {
+    navigate(`/user/${id}/list`)
   }
   const fetchLikeMutation = useMutation(
 		{
@@ -72,11 +76,23 @@ const MatchingApplyNavBar = ({version, isLowerBarVisible, id, isLikeProps, userI
 			}
 		}
 	);
-  const fetchLikeData = async () => {
+  const fetchLikeData = () => {
     fetchLikeMutation.mutate(id)
   }
-  const fetchDeleteLikeData = async () => {
+  const fetchDeleteLikeData = () => {
     cancelLikeMutation.mutate(id)
+  }
+  const fetchMatchingRequest = async () => {
+    try {
+      const response = await postMatchingRequestAPI(id)
+      if (response.status === 200) {
+        alert('매칭 신청 완료')
+      } else {
+        alert('신청 안됨')
+      }
+    } catch (err) {
+      console.error(err)
+    }
   }
   const clickShareBtn = () => {
     if (window.Kakao) {
@@ -133,7 +149,11 @@ const MatchingApplyNavBar = ({version, isLowerBarVisible, id, isLikeProps, userI
         }
         <button onClick={clickShareBtn} className='whitespace-nowrap'><img src={Share}/></button>
       </div>
-      <button className='filter-btn whitespace-nowrap'>매칭신청</button>
+      {location.pathname.substring(0,5) === "/user" ? 
+      <button onClick={goToUserPostPage} className='filter-btn whitespace-nowrap'>매칭신청</button>
+      :
+      <button onClick={fetchMatchingRequest} className='filter-btn whitespace-nowrap'>매칭신청</button>
+      }
     </SettingStyle>
   )
 }

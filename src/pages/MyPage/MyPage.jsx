@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 import useAuthStore from '@store/authStore';
 import useMyInfoStore from '@store/myInfoStore';
 import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest';
-import { useMutation, useQueryClient  } from '@tanstack/react-query';
 
 //components
 import Header from '@common/header/Header';
@@ -21,13 +20,16 @@ import Notification from '@assets/images/notification 1.svg';
 import Heart from '@assets/images/heart (10) 1.svg';
 import Review from '@assets/images/review 1.svg';
 import Next from '@assets/images/next.svg';
-import Dots from '@assets/images/dots-black.svg';
+import Home from '@assets/images/home.svg'
+import Setting from '@assets/images/settings.svg'
+
+//components
 import RoommateSwiperList from '@common/RoommateSwiperList';
 import LikeItem from '@components/LikePage/LikeItem';
 import SelectMenuBar from '@common/menu/SelectMenuBar';
-import Home from '@assets/images/home.svg'
-import Setting from '@assets/images/settings.svg'
-// import { useQuery } from '@tanstack/react-query';
+import ComeMatchingRequest from '@common/ui/item/ComeMatchingRequest';
+import MyPost from '@common/ui/item/MyPost';
+
 const MyPage = () => {
 	const setAccessToken = useAuthStore(state => state.setAccessToken)
 	const myInfo = useMyInfoStore.getState().myInfo
@@ -55,6 +57,9 @@ const MyPage = () => {
 	const [likeData, setLikeData] = useState([])
 	const [uploadPostType, setUploadPostType] = useState('roommate');
 	const [likeType, setLikeType] = useState('roommate');
+	const [confirm, setConfirm] = useState(false)
+	const [confirmContent, setConfirmContent] = useState({});
+
 	useEffect(()=>{
 		const fetchLikeData = async () => {
 			try {
@@ -70,6 +75,13 @@ const MyPage = () => {
 
 	return (
 		<SettingStyle className="flex flex-col gap-[10px]">
+			{confirm && (
+				<ConfirmModal
+					content={confirmContent}
+					isOpen={confirm}
+					setIsOpen={setConfirm}
+				/>
+			)}
 			<section className="bg-white px-[25px] pb-[24px]">
 				<div className=" bg-white">
           <Header backPath="/" leftContent={Home} rightContent={Setting} rightEvent={() => {
@@ -126,7 +138,7 @@ const MyPage = () => {
 						더보기 <img src={Next} />
 					</Link>
 				</div>
-				<div className="pt-[16px] flex flex-col gap-[16px]">
+				<div className="pt-[16px] flex flex-col gap-[30px]">
 					{comeMatchingRequests?.data?.length > 0 ? (
 						comeMatchingRequests.data.slice(0,3).map((post, index) => (
 							<ComeMatchingRequest post={post} index={index} reFetchComeMatchingRequests={reFetchComeMatchingRequests}/>
@@ -155,7 +167,7 @@ const MyPage = () => {
 					<div className="flex flex-col gap-[10px] px-[25px] mt-[16px]">
 						{myMatchingPosts?.data?.length > 0 ? (
 							myMatchingPosts.data.slice(0, 2).map((post, index) => (
-								<MyMatchingRequest post={post} index={index} />
+								<MyPost post={post} index={index} setConfirm={setConfirm} setConfirmContent={setConfirmContent}/>
 							))
 						) : (
 							<div>내가 올린 글이 존재하지 않습니다.</div>
@@ -206,155 +218,11 @@ const MyPage = () => {
 
 export default MyPage;
 
-const ComeMatchingRequest = ({ post, index, reFetchComeMatchingRequests }) => {
-	const queryClient = useQueryClient();
-	const [confirm, setConfirm] = useState(false)
-	const [confirmContent, setConfirmContent] = useState({});
-
-	const acceptMutation = useMutation(
-		{
-			mutationFn: (id) => makeAuthorizedRequest(`/api/v1/matchingrequests/${id}/accept`, 'patch'),
-			onSuccess: (data) => {
-				if (data.status === 200) {
-					reFetchComeMatchingRequests()
-				}
-				console.log('수락', data);
-			},
-			onError: (error) => {
-				console.log(error);
-			}
-		}
-	);
-	const rejectMutation = useMutation({
-		mutationFn: (id) => makeAuthorizedRequest(`/api/v1/matchingrequests/${id}/reject`, 'patch'),
-		onSuccess: (data) => {
-			if (data.status === 200) {
-				reFetchComeMatchingRequests()
-			}
-			console.log('거절', data);
-		},
-		onError: (error) => {
-			console.log(error);
-		}
-	});
-	
-	const handleClickAcceptBtn = (id) => {
-		setConfirm(true)
-		setConfirmContent({
-			id: -1,
-			msg: `${post.name}님의 요청을 수락할까요?`,
-			btn: '수락',
-			func: () => {acceptMutation.mutate(id)},
-		})
-	};
-	const handleClickRejectBtn = async (id) => {
-		setConfirm(true)
-		setConfirmContent({
-			id: -1,
-			msg: `${post.name}님의 요청을 거절할까요?`,
-			btn: '거절',
-			func: () => {rejectMutation.mutate(id);},
-		})
-	};
-	return (
-		<div className="flex justify-between">
-			{confirm && (
-				<ConfirmModal
-					content={confirmContent}
-					isOpen={confirm}
-					setIsOpen={setConfirm}
-				/>
-			)}
-			<div className="flex gap-[20px]">
-				<div>
-					<img
-						src={post.photoUrl}
-						className="rounded-[50%] w-[45px] h-[45px]"
-					/>
-				</div>
-				<div>
-					<Link to="/user/1" className="username flex">
-						{post.name} <img src={Next} />
-					</Link>
-					<p className="small-text">{post.introduction}</p>
-				</div>
-			</div>
-			<div className="flex gap-[5px]">
-				<button
-					onClick={() => handleClickAcceptBtn(post.matchingRequestId)}
-					className="button allowed"
-				>
-					수락
-				</button>
-				<button
-					onClick={() => handleClickRejectBtn(post.matchingRequestId)}
-					className="button declined"
-				>
-					거절
-				</button>
-			</div>
-		</div>
-	);
-};
-
-const MyMatchingRequest = ({ post, index }) => {
-	return (
-		<div className="mypost px-[15px] py-[20px]">
-			<div className="flex justify-between">
-				<div className="flex items-center justify-between gap-[10px]">
-					<span className="color-purple1 font-caption2m14">{post.dong} {post.roomSize}</span>
-					<span className="font-caption3m12">모집인원 {post.targetNumberOfPeople}명</span>
-				</div>
-				<div className="flex gap-[14px]">
-					<div className="font-caption2m14 color-gray500">11분전</div>
-					<button>
-						<img src={Dots} />
-					</button>
-				</div>
-			</div>
-
-			<div className="flex justify-between mt-[28px]">
-				<div className="flex justify-between gap-[13px]">
-					<div>
-						<img className="rounded-[50%] w-[45px] h-[45px]" src={post.photoUrl} />
-					</div>
-					<div className="text-left overflow-hidden">
-						<p className="font-caption1sb14 whitespace-nowrap overflow-hidden text-ellipsis">
-							{post.title}
-						</p>
-						<p className="font-caption2m14">
-							{post.name}{' '}
-							<span className="font-caption3m12 color-gray400">{post.gender}</span>
-						</p>
-					</div>
-				</div>
-				<div className="self-end whitespace-nowrap">
-					<div className="color-purple1 font-caption2m14">{post.matchingStatus}</div>
-				</div>
-			</div>
-		</div>
-	);
-};
 
 const SettingStyle = styled.main`
 	background-color: ${COLOR.gray50};
 	.color-purple1 {
 		color: ${COLOR.purple1};
-	}
-	.color-gray500 {
-		color: ${COLOR.gray500};
-	}
-	.color-gray400 {
-		color: ${COLOR.gray400};
-	}
-	.font-caption2m14 {
-		font-size: ${FONT.caption2M14};
-	}
-	.font-caption3m12 {
-		font-size: ${FONT.caption3M12};
-	}
-	.font-caption1sb14 {
-		font-size: ${FONT.caption1SB14};
 	}
 	.myname {
 		font-size: ${FONT.body3M16};
@@ -368,43 +236,6 @@ const SettingStyle = styled.main`
 	.small-text {
 		font-size: ${FONT.caption2M14};
 		color: ${COLOR.gray600};
-	}
-	.button {
-		border: 1px solid ${COLOR.gray100};
-		font-size: ${FONT.caption2M14};
-		width: 43px;
-		height: 26px;
-		border-radius: 5px;
-		&.allowed {
-			color: ${COLOR.gray600};
-		}
-		&.declined {
-			color: ${COLOR.red};
-		}
-	}
-	.notification-title {
-		flex: 1;
-		font-size: ${FONT.caption2M14};
-		color: ${COLOR.gray500};
-		border-bottom: 2px solid ${COLOR.gray100};
-		padding-bottom: 16px;
-		cursor: pointer;
-		&:hover {
-			border-bottom: 2px solid ${COLOR.purple1};
-			color: black;
-		}
-	}
-	.selected-title {
-		border-bottom: 2px solid ${COLOR.purple1};
-		color: black;
-	}
-	.noresults {
-		font-size: ${FONT.caption2M14};
-		color: ${COLOR.gray500};
-	}
-	.mypost {
-		border: 1px solid ${COLOR.gray100};
-		border-radius: 10px;
 	}
 	.likelist {
 		background-color: ${COLOR.gray100};
