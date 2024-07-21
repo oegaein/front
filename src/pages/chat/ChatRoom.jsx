@@ -23,7 +23,6 @@ import { ImgWrapper } from '@common/ui/Profile';
 const Chatroom = () => {
 	const messageEndRef = useRef(null);
 	const clientRef = useRef(null);
-	const setAccessToken = useAuthStore((state) => state.setAccessToken);
 	const accessToken = useAuthStore.getState().accessToken;
 	const myInfo = {
 		username: '김예은',
@@ -76,7 +75,7 @@ const Chatroom = () => {
 	};
 
 	const checkChat = async () => {
-		const result = await getChatHistory(subscribeID, setAccessToken);
+		const result = await getChatHistory(subscribeID);
 		console.log(result);
 		setRoom((prev) => ({
 			...prev,
@@ -126,7 +125,7 @@ const Chatroom = () => {
 
 	const onDisconnect = async () => {
 		clientRef.current.deactivate();
-		const result = await deleteChatRoom(setAccessToken, subscribeID);
+		const result = await deleteChatRoom(subscribeID);
 		console.log(result);
 		navigate('/chat');
 	};
@@ -163,7 +162,7 @@ const Chatroom = () => {
 					backEvent={onDisconnect}
 					rightContent={ConfirmMatching(room.matchingStatus)}
 					rightEvent={() => {
-						getMatchingEnd(setAccessToken, room.matchingPostId);
+						getMatchingEnd(room.matchingPostId);
 					}}
 				>
 					<div className="flex justify-center">
