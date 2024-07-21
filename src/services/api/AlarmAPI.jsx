@@ -13,7 +13,7 @@ export const deleteAllAlarmAPI = async () => {
 		`/api/v1/roommate-alarms`,
 		'delete',
 	);
-	console.log(response);
+	return response.data;
 };
 
 export const deleteAlarmAPI = async (id) => {
@@ -21,5 +21,5 @@ export const deleteAlarmAPI = async (id) => {
 		`/api/v1/roommate-alarms/${id}`,
 		'delete',
 	);
-	console.log(response);
+	return response.data;
 };
