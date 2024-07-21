@@ -21,15 +21,14 @@ const Alarm = () => {
 	useEffect(() => {
 		const fetchData = async () => {
 			const result = await getAlarmAPI(setAccessToken);
-			console.log(result.data);
-			setData(result.data);
+			setData(result);
 		};
 		fetchData();
 	}, []);
 
 	const DeleteAllAlarm = () => {
 		const fetchData = async () => {
-			const result = await deleteAllAlarmAPI(setAccessToken);
+			const result = await deleteAllAlarmAPI();
 			console.log(result);
 			setData(result);
 		};
@@ -38,7 +37,7 @@ const Alarm = () => {
 
 	const DeleteAlarm = (id) => {
 		const fetchData = async () => {
-			const result = await deleteAlarmAPI(id, setAccessToken);
+			const result = await deleteAlarmAPI(id);
 			console.log(result);
 			setData(result);
 		};

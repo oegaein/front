@@ -1,95 +1,25 @@
 import useAuthStore from '@store/authStore';
 import { API } from '@utils/api';
-export const getAlarmAPI = async (setAccessToken) => {
-	try {
-		const { data } = await API.get(`/api/v1/roommate-alarms`);
-		return data;
-	} catch (error) {
-		console.error(error);
-		if (error.response && error.response.status === 403) {
-			try {
-				const refreshResponse = await API.get(`/api/v1/member/refresh`);
-				console.log('refresh!!!!!!' + refreshResponse.data.access_token);
-				setAccessToken(refreshResponse.data.access_token);
-				const accessToken = useAuthStore.getState().accessToken;
-				console.log(accessToken);
-				try {
-					const { data } = await API.get(`/api/v1/roommate-alarms`, {
-						headers: {
-							Authorization: `Bearer ${accessToken}`,
-						},
-					});
-					return data;
-				} catch (error) {
-					console.log('error');
-					console.error(error);
-				}
-			} catch (error) {
-				console.error(error);
-				window.location.href = 'http://localhost:3000/login';
-			}
-		}
-	}
+import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest';
+import { method } from 'lodash';
+export const getAlarmAPI = async () => {
+	const response = await makeAuthorizedRequest(`/api/v1/roommate-alarms`);
+	console.log(response.data.data);
+	return response.data.data;
 };
 
-export const deleteAllAlarmAPI = async (setAccessToken) => {
-	try {
-		const { data } = await API.delete(`/api/v1/roommate-alarms`);
-		return data;
-	} catch (error) {
-		console.error(error);
-		if (error.response && error.response.status === 403) {
-			try {
-				const refreshResponse = await API.get(`/api/v1/member/refresh`);
-				console.log('refresh!!!!!!' + refreshResponse.data.access_token);
-				setAccessToken(refreshResponse.data.access_token);
-				const accessToken = useAuthStore.getState().accessToken;
-				console.log(accessToken);
-				try {
-					const { data } = await API.delete(`/api/v1/roommate-alarms`, {
-						headers: {
-							Authorization: `Bearer ${accessToken}`,
-						},
-					});
-					return data;
-				} catch (error) {
-					console.log('error');
-					console.error(error);
-				}
-			} catch (error) {
-				console.error(error);
-			}
-		}
-	}
+export const deleteAllAlarmAPI = async () => {
+	const response = await makeAuthorizedRequest(
+		`/api/v1/roommate-alarms`,
+		'delete',
+	);
+	console.log(response);
 };
 
-export const deleteAlarmAPI = async (id, setAccessToken) => {
-	try {
-		const { data } = await API.delete(`/api/v1/roommate-alarms/${id}`);
-		return data;
-	} catch (error) {
-		console.error(error);
-		if (error.response && error.response.status === 403) {
-			try {
-				const refreshResponse = await API.get(`/api/v1/member/refresh`);
-				console.log('refresh!!!!!!' + refreshResponse.data.access_token);
-				setAccessToken(refreshResponse.data.access_token);
-				const accessToken = useAuthStore.getState().accessToken;
-				console.log(accessToken);
-				try {
-					const { data } = await API.delete(`/api/v1/roommate-alarms`, {
-						headers: {
-							Authorization: `Bearer ${accessToken}`,
-						},
-					});
-					return data;
-				} catch (error) {
-					console.log('error');
-					console.error(error);
-				}
-			} catch (error) {
-				console.error(error);
-			}
-		}
-	}
+export const deleteAlarmAPI = async (id) => {
+	const response = await makeAuthorizedRequest(
+		`/api/v1/roommate-alarms/${id}`,
+		'delete',
+	);
+	console.log(response);
 };
