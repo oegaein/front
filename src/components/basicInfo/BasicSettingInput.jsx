@@ -214,7 +214,6 @@ export const CommentInput = ({
 	setReply,
 	isReply = false,
 }) => {
-	const setAccessToken = useAuthStore((state) => state.setAccessToken);
 	const [value, setValue] = useState('');
 
 	const handleChange = (e) => {
@@ -225,11 +224,11 @@ export const CommentInput = ({
 
 	const handlePost = async () => {
 		if (isReply) {
-			const res = await postReplyAPI(setAccessToken, postId, value);
+			const res = await postReplyAPI(postId, value);
 			console.log(res);
 			setReply(false);
 		} else {
-			const res = await postCommentsAPI(setAccessToken, postId, value);
+			const res = await postCommentsAPI(postId, value);
 			console.log(res);
 		}
 		window.location.reload();

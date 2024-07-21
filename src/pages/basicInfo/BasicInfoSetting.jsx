@@ -19,7 +19,6 @@ import { PostProfileAPI } from 'services/api/ProfileAPI';
 import useAuthStore from '@store/authStore';
 
 const BasicInfoSetting = () => {
-	const setAccessToken = useAuthStore((state) => state.setAccessToken);
 	const [activeButton, setActiveButton] = useState(true);
 	const [count, setCount] = useState(1);
 	const [info, setInfo] = useState({
@@ -69,7 +68,7 @@ const BasicInfoSetting = () => {
 
 		if (count === 11) {
 			try {
-				const response = await PostProfileAPI(info, setAccessToken);
+				const response = await PostProfileAPI(info);
 				console.log(response);
 			} catch (error) {
 				console.error(error);
@@ -93,7 +92,7 @@ const BasicInfoSetting = () => {
 
 		if (count === 11) {
 			try {
-				const response = await PostProfileAPI(info, setAccessToken);
+				const response = await PostProfileAPI(info);
 				console.log(response);
 			} catch (error) {
 				console.error(error);

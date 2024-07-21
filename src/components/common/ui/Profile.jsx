@@ -62,10 +62,10 @@ export const BasicProfile = ({
 			btn: '삭제',
 			func: async () => {
 				if (isReply) {
-					const res = await deleteRepliesAPI(setAccessToken, commentID);
+					const res = await deleteRepliesAPI(commentID);
 					console.log(res);
 				} else {
-					const res = await deleteCommentsAPI(setAccessToken, commentID);
+					const res = await deleteCommentsAPI(commentID);
 					console.log(res);
 				}
 				window.location.reload();
@@ -80,7 +80,7 @@ export const BasicProfile = ({
 			msg: `${nickname}님을 차단할까요?`,
 			btn: '차단',
 			func: () => {
-				BlockUserAPI(userID, setAccessToken);
+				BlockUserAPI(userID);
 			},
 		}));
 	};

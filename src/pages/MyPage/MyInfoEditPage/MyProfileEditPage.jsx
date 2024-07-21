@@ -34,13 +34,12 @@ const mocks = {
 };
 
 const MyProfileEdit = () => {
-	const setAccessToken = useAuthStore((state) => state.setAccessToken);
 	const [info, setInfo] = useState({
 		name: '',
 		gender: '',
 		student_no: 0,
 		birthdate: '',
-		major: 'GBT',
+		major: '',
 		introduction: '',
 		mbti: null,
 		sleeping_habit: [],
@@ -102,7 +101,7 @@ const MyProfileEdit = () => {
 	};
 
 	const handleSubmit = async () => {
-		const response = await EditProfileAPI(info, setAccessToken);
+		const response = await EditProfileAPI(info);
 		console.log(response);
 	};
 
