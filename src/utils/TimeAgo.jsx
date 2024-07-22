@@ -1,7 +1,12 @@
-export const timeAgo = (dateString) => {
+export const timeAgo = (dateString1, dateString2 = null) => {
+	const date1 = new Date(dateString1);
+  const date2 = dateString2 ? new Date(dateString2) : null;
+  
+  // 최신 날짜를 선택
+	const latestDate = date2 && date2 > date1 ? date2 : date1;  
 	const now = new Date();
-	const past = new Date(dateString);
-	const secondsAgo = Math.floor((now - past) / 1000);
+
+	const secondsAgo = Math.floor((now - latestDate) / 1000);
 	const minutesAgo = Math.floor(secondsAgo / 60);
 	const hoursAgo = Math.floor(minutesAgo / 60);
 	const daysAgo = Math.floor(hoursAgo / 24);

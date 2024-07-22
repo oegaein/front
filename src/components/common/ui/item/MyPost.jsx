@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest';
-import { calculateTimeAgo } from '@utils/calculateTimeAgo';
+import { timeAgo } from '@utils/TimeAgo';
 import styled from 'styled-components'
 import FONT from '@styles/fonts'
 import COLOR from '@styles/color'
@@ -38,6 +38,7 @@ const MyPost = ({ post, index, setConfirm, setConfirmContent }) => {
 			func: () => {confirmMutation.mutate(post.matchingPostId)},
 		})
 	}
+
 	return (
 		<SettingStyle className="px-[15px] py-[20px]">
 			<div className="flex justify-between">
@@ -46,7 +47,7 @@ const MyPost = ({ post, index, setConfirm, setConfirmContent }) => {
 					<span className="font-caption3m12">모집인원 {post.targetNumberOfPeople}명</span>
 				</div>
 				<div className="flex gap-[14px]">
-					<div className="font-caption2m14 color-gray500">{calculateTimeAgo(post.updatedAt)}</div>
+					<div className="font-caption2m14 color-gray500">{timeAgo(post.updatedAt, post.createdAt)}</div>
 					<button>
 						<img src={Dots} />
 					</button>
