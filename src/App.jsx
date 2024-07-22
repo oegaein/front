@@ -67,6 +67,7 @@ function App() {
 							<Route path="onboarding" element={<OnboardingPage />} />
 							<Route path="login" element={<LoginPage />} />
 							<Route path="mypage" element={<MyPage />} />
+							<Route path="mypage/come-matchingrequests" element={<ComeMatchingListPage />} />
 							<Route
 								path="mypage/roommate-applylist"
 								element={<RoommateApplyListPage />}

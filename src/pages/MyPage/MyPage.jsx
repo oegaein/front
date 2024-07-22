@@ -130,7 +130,7 @@ const MyPage = () => {
 
 			<section className="bg-white px-[25px] py-[24px] text-left">
 				<div className="flex justify-between">
-					<h1 className="heading-text">룸메이트 신청 요청</h1>
+					<h1 className="heading-text">내게 온 룸메이트 신청</h1>
 					<Link
 						to="/mypage/come-matchingrequests"
 						className="flex items-center justify-between username whitespace-nowrap"
@@ -177,7 +177,7 @@ const MyPage = () => {
 			</section>
 			<section className="bg-white py-[24px] text-left">
 				<div className="flex justify-between px-[25px] mb-[16px]">
-					<h1 className="heading-text">내 룸메이트 신청 목록</h1>
+					<h1 className="heading-text">내가 신청한 룸메이트</h1>
 					<Link
 						to="/mypage/roommate-applylist"
 						className="flex items-center justify-between username whitespace-nowrap"
@@ -189,7 +189,7 @@ const MyPage = () => {
 			</section>
 			<section className="bg-white pt-[24px]">
 				<div className="flex justify-between px-[25px]">
-					<h1 className="heading-text">좋아요</h1>
+					<h1 className="heading-text">좋아요한 룸메이트</h1>
 					<Link
 						to="/mypage/like"
 						className="flex items-center justify-between username whitespace-nowrap"

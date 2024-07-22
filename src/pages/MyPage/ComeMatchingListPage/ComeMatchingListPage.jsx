@@ -30,7 +30,7 @@ const ComeMatchingListPage = () => {
     <SettingStyle className='bg-white'>
       <div className="px-[28px]">
 				<Header backPath="/mypage" rightContent=" " rightEvent={() => {}}>
-					<span className='header'>룸메이트 신청 요청</span>
+					<span className='header'>내게 온 룸메이트 신청</span>
 				</Header>
 			</div>
       <div>

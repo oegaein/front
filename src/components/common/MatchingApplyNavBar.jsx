@@ -22,7 +22,6 @@ const MatchingApplyNavBar = ({version, isLowerBarVisible, id, isLikeProps, userI
   const navigate = useNavigate()
   const location = useLocation()
   // /user or /post-detail 
-  console.log('location', location)
   useEffect(() => {
     if (!isLikeProps && firstRendering) {
       // myProps가 undefined가 아닌 경우에만 state 업데이트
@@ -85,7 +84,7 @@ const MatchingApplyNavBar = ({version, isLowerBarVisible, id, isLikeProps, userI
   const fetchMatchingRequest = async () => {
     try {
       const response = await postMatchingRequestAPI(id)
-      if (response.status === 200) {
+      if (response.status === 201) {
         alert('매칭 신청 완료')
       } else {
         alert('신청 안됨')
@@ -102,7 +101,7 @@ const MatchingApplyNavBar = ({version, isLowerBarVisible, id, isLikeProps, userI
         objectType: 'feed',
         content: {
           title: '이 룸메 어떠세요?',
-          description: `${userInfo.introduction}`,
+          description: `${userInfo?.introduction}`,
           imageUrl:
             'https://i.ibb.co/dts410Q/oegaeinlogo.png',
           link: {
@@ -111,8 +110,8 @@ const MatchingApplyNavBar = ({version, isLowerBarVisible, id, isLikeProps, userI
           },
         },
         itemContent: {
-          profileText: `${userInfo.name} 님의 글 | 외개인`,
-          profileImageUrl: `${userInfo.photo_url}`,
+          profileText: `${userInfo?.name} 님의 글 | 외개인`,
+          profileImageUrl: `${userInfo?.photo_url}`,
           // titleImageText: 'www.hufs.ac.kr',
           // titleImageCategory: '공유한 친구: 김혁수',
         },

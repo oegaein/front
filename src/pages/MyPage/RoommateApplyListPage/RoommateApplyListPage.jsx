@@ -18,7 +18,7 @@ const RoommateApplyListPage = () => {
     <SettingStyle className='bg-white'>
       <div className="px-[28px]">
 				<Header backPath="/mypage" rightContent=" " rightEvent={() => {}}>
-					<span className='header'>내 룸메이트 신청 목록</span>
+					<span className='header'>내가 신청한 룸메이트</span>
 				</Header>
 			</div>
       <div>

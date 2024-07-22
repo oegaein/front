@@ -34,7 +34,7 @@ const LikePage = () => {
     <SettingStyle>
       <div className="px-[28px]">
 				<Header backPath="/mypage" rightContent=" " rightEvent={() => {}}>
-					<span className='header'>좋아요</span>
+					<span className='header'>좋아요한 룸메이트</span>
 				</Header>
 			</div>
       <div>
