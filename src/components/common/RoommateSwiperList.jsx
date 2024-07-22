@@ -32,7 +32,6 @@ const RoommateSwiperList = ({ type }) => {
 			<Swiper
 				spaceBetween={12}
 				slidesPerView={2}
-				loop={true}
 				className="mySwiper pt-[5px]"
 			>
 				{data?.data?.length > 0 ?

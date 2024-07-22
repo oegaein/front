@@ -10,6 +10,7 @@ import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest';
 //components
 import Header from '@common/header/Header';
 import ConfirmModal from '@common/modal/ConfirmModal';
+import OptionModal from '@common/modal/OptionModal';
 // styles
 import styled from 'styled-components';
 import FONT from '@styles/fonts';
@@ -31,7 +32,7 @@ import ComeMatchingRequest from '@common/ui/item/ComeMatchingRequest';
 import MyPost from '@common/ui/item/MyPost';
 
 const MyPage = () => {
-	const setAccessToken = useAuthStore(state => state.setAccessToken)
+	//const setAccessToken = useAuthStore(state => state.setAccessToken)
 	const myInfo = useMyInfoStore.getState().myInfo
 	//나에게 온 매칭신청 목록 조회
 	const {
@@ -59,6 +60,9 @@ const MyPage = () => {
 	const [likeType, setLikeType] = useState('roommate');
 	const [confirm, setConfirm] = useState(false)
 	const [confirmContent, setConfirmContent] = useState({});
+	const [option, setOption] = useState(false)
+	const [optionModalOptions, setOptionModalOptions] = useState({});
+
 
 	useEffect(()=>{
 		const fetchLikeData = async () => {
@@ -82,6 +86,13 @@ const MyPage = () => {
 					setIsOpen={setConfirm}
 				/>
 			)}
+			{option &&
+        <OptionModal
+          options={optionModalOptions}
+          isOpen={option}
+          setIsOpen={setOption}
+        />
+      }
 			<section className="bg-white px-[25px] pb-[24px]">
 				<div className=" bg-white">
           <Header backPath="/" leftContent={Home} rightContent={Setting} rightEvent={() => {
@@ -167,7 +178,8 @@ const MyPage = () => {
 					<div className="flex flex-col gap-[10px] px-[25px] mt-[16px]">
 						{myMatchingPosts?.data?.length > 0 ? (
 							myMatchingPosts.data.slice(0, 2).map((post, index) => (
-								<MyPost post={post} index={index} setConfirm={setConfirm} setConfirmContent={setConfirmContent}/>
+								<MyPost post={post} index={index} setConfirm={setConfirm} setConfirmContent={setConfirmContent}
+								setOption={setOption} setOptionModalOptions={setOptionModalOptions}/>
 							))
 						) : (
 							<div>내가 올린 글이 존재하지 않습니다.</div>

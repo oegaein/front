@@ -1,17 +1,23 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest';
 import { timeAgo } from '@utils/TimeAgo';
+import {
+	deleteMatchingPostAPI,
+	getMatchingPostAPI,
+} from 'services/api/MatchingPostAPI';
+//styles
 import styled from 'styled-components'
 import FONT from '@styles/fonts'
 import COLOR from '@styles/color'
 
 import Dots from '@assets/images/dots-black.svg'
-const MyPost = ({ post, index, setConfirm, setConfirmContent }) => {
+const MyPost = ({ post, index, setConfirm, setConfirmContent, setOption, setOptionModalOptions }) => {
 	//   매칭글 - 매칭 대기 | 매칭 마감 | 매칭 완료
 // 매칭요청(내 룸메이트 신청 목록, 룸메이트 신청 요청 ) - 매칭 대기 | 매칭 수락 | 매칭 거절 
 	const queryClient = useQueryClient();
+	const navigate = useNavigate();
 
 	const confirmMutation = useMutation(
 		{
@@ -29,7 +35,6 @@ const MyPost = ({ post, index, setConfirm, setConfirmContent }) => {
 	);
 	const handleClickConfirmBtn = async () => {
 		// e.stopPropagation()
-
     setConfirm(true)
 		setConfirmContent({
 			id: -1,
@@ -37,6 +42,36 @@ const MyPost = ({ post, index, setConfirm, setConfirmContent }) => {
 			btn: '확정',
 			func: () => {confirmMutation.mutate(post.matchingPostId)},
 		})
+	}
+	const editFunc = () => {
+		navigate('/post-edit');	//우선 임의 경로로 처리함 
+	}
+	const deleteFunc = () => {
+		setConfirm(true);
+		setConfirmContent((prev) => ({
+			...prev,
+			msg: '게시글을 삭제할까요?',
+			btn: '삭제',
+			func: async () => {
+				const res = await deleteMatchingPostAPI(post.matchingPostId);
+				console.log('삭제', res);
+				navigate('/mypage');
+			},
+		}));
+	}
+	const handleClickThreeDotsBtn = () => {
+		setOption(true)
+		setOptionModalOptions([
+			{
+				content: '수정하기',
+				func: editFunc,
+			},
+			{
+				content: '삭제하기',
+				func: deleteFunc,
+			},
+		])
+
 	}
 
 	return (
@@ -48,7 +83,7 @@ const MyPost = ({ post, index, setConfirm, setConfirmContent }) => {
 				</div>
 				<div className="flex gap-[14px]">
 					<div className="font-caption2m14 color-gray500">{timeAgo(post.updatedAt, post.createdAt)}</div>
-					<button>
+					<button onClick={handleClickThreeDotsBtn}>
 						<img src={Dots} />
 					</button>
 				</div>
