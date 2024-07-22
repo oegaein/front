@@ -372,7 +372,7 @@ function RoommateFilterPage() {
 		<SettingStyle className="flex flex-col">
 			<div className="px-[28px]">
 				<Header backPath="/roommate" rightContent=" " rightEvent={() => {}}>
-					<span className='header'>필터</span>
+					<div className='header'>필터</div>
 				</Header>
 			</div>
 			{screenType === 'results' ? (
@@ -833,6 +833,7 @@ const SettingStyle = styled.main`
 	text-align: left;
 
 	.header {
+		width: 100%;
 		font: ${FONT.title3SB17};
 		text-align: center;
 	}
