@@ -38,10 +38,13 @@ const SettingStyle = styled.div`
   .info-label {
     font-size: ${FONT.caption2M14};
     margin-right: 8px;
+    white-space: nowrap;
   }
   .info-value {
     font-size: ${FONT.caption2M14};
     color: ${COLOR.purple1};
+    white-space: nowrap;
+
   }
 
 `
