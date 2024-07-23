@@ -290,6 +290,7 @@ const PostDetail = () => {
 					version={'comment'}
 					isLowerBarVisible={isLowerBarVisible}
 					id={postId}
+					userInfo={data.author_profile}
 				/>
 			</PostDetailStyle>
 		</>
