@@ -28,7 +28,7 @@ const Chat = () => {
 	return (
 		<>
 			<ChatStyle>
-				<div className="container">
+				<div className="flex w-full px-[25px]">
 					<Header
 						backPath={'/home'}
 						rightContent={Alarm}
