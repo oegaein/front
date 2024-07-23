@@ -93,6 +93,14 @@ const PostDetail = () => {
 		}));
 	};
 
+	const handleProfile = () => {
+		if (myname === data.author_name) {
+			navigate('/user/my-profile');
+		} else {
+			navigate(`/user/${data.author_profile.id}`);
+		}
+	};
+
 	const calculateMarginRight = (name) => {
 		let marginRight = 100;
 		marginRight -= (name.length - 1) * 5;
@@ -190,9 +198,9 @@ const PostDetail = () => {
 									weight="light"
 								/>
 							</div>
-							<Link to={'/profile'}>
+							<button onClick={() => handleProfile()}>
 								<span className="cation2 color-purple">프로필 보기</span>
-							</Link>
+							</button>
 						</div>
 						<UserPageInfo userInfo={data.author_profile} />
 					</div>
@@ -270,6 +278,7 @@ const PostDetail = () => {
 						<BasicProfile
 							Img={data.author_profile?.photo_url}
 							nickname={data.author_name}
+							userID={data.author_profile.id}
 							content={data.author_profile.gender}
 							mr="20px"
 							width="45px"
