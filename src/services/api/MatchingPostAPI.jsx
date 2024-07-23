@@ -1,7 +1,4 @@
-import useAuthStore from '@store/authStore';
-import { API } from '@utils/api';
 import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest';
-import axios from 'axios';
 
 export const postMatchingPostAPI = async (submitData) => {
 	const response = await makeAuthorizedRequest(
