@@ -40,7 +40,7 @@ export const putReplyAPI = async (commentID, content) => {
 	return response.data;
 };
 
-export const deleteCommentsAPI = async (setAccessToken, commentID) => {
+export const deleteCommentsAPI = async (commentID) => {
 	const response = await makeAuthorizedRequest(
 		`/api/v1/comments/${commentID}`,
 		'delete',
@@ -48,7 +48,7 @@ export const deleteCommentsAPI = async (setAccessToken, commentID) => {
 	return response;
 };
 
-export const deleteRepliesAPI = async (setAccessToken, commentID) => {
+export const deleteRepliesAPI = async (commentID) => {
 	const response = await makeAuthorizedRequest(
 		`/api/v1/replies/${commentID}`,
 		'delete',
