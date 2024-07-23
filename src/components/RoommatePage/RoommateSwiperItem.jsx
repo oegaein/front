@@ -102,15 +102,16 @@ const RoommateSwiperItem = ({post, type, index, setConfirm, setConfirmContent}) 
         <div className='register text-right'>매칭수락</div>
         :
         <div className='register text-right gray500'>매칭거절</div>
-
-        :
-        post.matchingStatus === '매칭 대기' ?
-        <button onClick={(e)=>handleClickRegisterBtn(e, post.matchingPostId)} className='register text-right'>매칭신청</button>
+        //my-matchingrequests를 제외한 나머지 
         :
         post.matchingStatus === '매칭 완료' ?
-        <button onClick={(e)=>handleClickCancelBtn(e, post.matchingPostId)} className='register text-right registered'>매칭완료</button>
+        <div className='register text-right registered'>{post.matchingStatus}</div>
         :
-        <div className='register text-right registered'>매칭마감</div>
+        post.matchingStatus === '매칭 마감' ?
+        <button  className='register text-right gray500'>{post.matchingStatus}</button>
+        :
+        //매칭 대기 
+        <div className='register text-right'>{post.matchingStatus}</div>
       }
       </div>
     </SettingStyle>
