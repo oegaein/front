@@ -44,7 +44,7 @@ const CommentDetailStyle = styled.div`
 		border-bottom: 1px solid ${COLOR.gray100};
 
 		p {
-			font: ${FONT.title3SB17};
+			font: ${FONT.title4SB17};
 		}
 	}
 `;

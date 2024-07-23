@@ -7,7 +7,6 @@ import useAuthStore from '@store/authStore';
 import * as SockJS from 'sockjs-client';
 import { Client } from '@stomp/stompjs';
 
-import Alarm from '@assets/images/common/alarm.svg';
 import ExitIcon from '@assets/images/chat/Exit.svg';
 import SendIcon from '@assets/images/chat/Send.svg';
 import FONT from '@styles/fonts';
@@ -19,14 +18,13 @@ import {
 	getMatchingEnd,
 } from 'services/api/ChatAPI';
 import { ImgWrapper } from '@common/ui/Profile';
+import useMyInfoStore from '@store/myInfoStore';
 
 const Chatroom = () => {
 	const messageEndRef = useRef(null);
 	const clientRef = useRef(null);
 	const accessToken = useAuthStore.getState().accessToken;
-	const myInfo = {
-		username: '김예은',
-	};
+	const myname = useMyInfoStore.getState().myInfo.name;
 	const navigate = useNavigate();
 	const { subscribeID } = useParams();
 
@@ -137,7 +135,7 @@ const Chatroom = () => {
 	};
 
 	const isMyChat = (name) => {
-		return name === myInfo.username;
+		return name === myname;
 	};
 
 	const prevSender = (current, prev) => {

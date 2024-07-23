@@ -35,7 +35,7 @@ const Container = styled.div`
 
 	.header {
 		margin-bottom: 30px;
-		font: ${FONT.title2B19};
+		font: ${FONT.title3B19};
 		text-align: left;
 	}
 

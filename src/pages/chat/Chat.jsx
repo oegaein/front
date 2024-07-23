@@ -122,7 +122,7 @@ const ChatStyle = styled.div`
 	}
 
 	.header {
-		font: ${FONT.title3SB17};
+		font: ${FONT.title4SB17};
 	}
 
 	.nonDisplay {
@@ -145,7 +145,7 @@ const ChatList = styled.div`
 	}
 
 	.title {
-		font: ${FONT.title3SB17};
+		font: ${FONT.title4SB17};
 		margin-right: 7px;
 		max-width: 200px;
 		text-align: left;

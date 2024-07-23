@@ -166,7 +166,7 @@ export const DropdownList = styled(motion.div)`
 		margin-bottom: 24px;
 		width: 100%;
 		text-align: left;
-		font: ${FONT.title1SB20};
+		font: ${FONT.title2SB21};
 	}
 
 	.item {

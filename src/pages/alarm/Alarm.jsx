@@ -150,7 +150,7 @@ const AlarmContainer = styled.div`
 		width: 100%;
 
 		p {
-			font: ${FONT.title3SB17};
+			font: ${FONT.title4SB17};
 		}
 	}
 
