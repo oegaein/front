@@ -1,5 +1,5 @@
-export const timeAgo = (dateString1, dateString2 = null) => {
-	const date1 = new Date(dateString1);
+export const timeAgo = (dateString1 = null, dateString2 = null) => {
+	const date1 = dateString1 ? new Date(dateString1) : null;
   const date2 = dateString2 ? new Date(dateString2) : null;
   
   // 최신 날짜를 선택

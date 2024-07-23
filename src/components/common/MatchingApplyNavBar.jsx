@@ -43,7 +43,7 @@ const MatchingApplyNavBar = ({version, isLowerBarVisible, id, isLikeProps, userI
     navigate(`/comment-detail/${id}`)
   }
   const goToUserPostPage = () => {
-    navigate(`/user/${id}/list`)
+    navigate(`/user/${id}/posts`)
   }
   const fetchLikeMutation = useMutation(
 		{

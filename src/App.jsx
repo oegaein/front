@@ -76,6 +76,7 @@ function App() {
 							<Route path="mypage/mypost" element={<MyPostPage />} />
 							<Route path="my-profile/edit" element={<MyProfileEditPage />} />
 							<Route path="user/:memberId" element={<UserPage />} />
+							<Route path="user/:memberId/posts" element={<UserPostPage />} />
 							<Route
 								path="user/:memberId/reviews"
 								element={<RoommateReviewPage />}

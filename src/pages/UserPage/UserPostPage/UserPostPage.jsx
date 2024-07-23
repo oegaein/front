@@ -1,23 +1,29 @@
 import React, {useState, useEffect} from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useParams } from 'react-router-dom'
 import { useMatchingPosts } from 'hooks/useMatchingPosts';
 import { API } from '@utils/api';
 import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest';
 
 import Header from '@common/header/Header'
 import Pagination from '@common/Pagination';
-
+import MyPost from '@common/ui/item/MyPost';
 import styled from 'styled-components'
 import FONT from '@styles/fonts'
 import COLOR from '@styles/color'
 
-import Dots from '@assets/images/dots-black.svg'
 
 
 const UserPostPage = () => {
-  const [userPosts, setUserPosts] = useState([])
+  const params = useParams()
+  const memberId = params.memberId
+  const [userPosts, setUserPosts] = useState({})
   const [uploadPostType, setUploadPostType] = useState('roommate')
   const [currentPage, setCurrentPage] = useState(0)
+  const [confirm, setConfirm] = useState(false)
+	const [confirmContent, setConfirmContent] = useState({});
+	const [option, setOption] = useState(false)
+	const [optionModalOptions, setOptionModalOptions] = useState({});
+
   const location = useLocation()
   const handleClickUploadPost = (type) => {
     setUploadPostType(type)
@@ -26,19 +32,23 @@ const UserPostPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await makeAuthorizedRequest(`/`)
+        const response = await makeAuthorizedRequest(`/api/v1/other-matchingposts/${memberId}`)
         console.log(`userpostpage`, response.data)
         setUserPosts(response.data)
       } catch(error) {
         console.error(error)
       }
     }
+    fetchData()
   }, [])
+  if (!userPosts) {
+    return <div>로딩중...</div>;
+  }
   return (
     <SettingStyle className='bg-white pb-[24px]'>
       <div className="px-[28px]">
 				<Header backPath="/mypage" rightContent=" " rightEvent={() => {}}>
-					<span>내가 올린 글</span>
+					<span>{userPosts?.data?.[0]?.name}님의 글</span>
 				</Header>
 			</div>
       <div>
@@ -49,7 +59,8 @@ const UserPostPage = () => {
         <div className='flex flex-col gap-[10px] px-[25px] mt-[16px]'>
           {userPosts?.data?.length > 0 ? (
             userPosts.data.map((post, index) => (
-              <MyMatchingRequest post={post} index={index} />
+              <MyPost key={index} post={post} index={index} setConfirm={setConfirm} setConfirmContent={setConfirmContent} 
+              setOption={setOption} setOptionModalOptions={setOptionModalOptions}/>
             ))
           ) : (
             <NoResults/>
@@ -62,44 +73,6 @@ const UserPostPage = () => {
 }
 
 export default UserPostPage
-const MyMatchingRequest = ({ post, index }) => {
-	return (
-		<div className="mypost px-[15px] py-[20px]">
-			<div className="flex justify-between">
-				<div className="flex items-center justify-between gap-[10px]">
-					<span className="color-purple1 font-caption2m14">{post.dong} {post.roomSize}</span>
-					<span className="font-caption3m12">모집인원 {post.targetNumberOfPeople}명</span>
-				</div>
-				<div className="flex gap-[14px]">
-					<div className="font-caption2m14 color-gray500">11분전</div>
-					<button>
-						<img src={Dots} />
-					</button>
-				</div>
-			</div>
-
-			<div className="flex justify-between mt-[28px]">
-				<div className="flex justify-between gap-[13px]">
-					<div>
-						<img className="rounded-[50%] w-[45px] h-[45px]" src={post.photoUrl}/>
-					</div>
-					<div className="text-left overflow-hidden">
-						<p className="font-caption1sb14 whitespace-nowrap overflow-hidden text-ellipsis">
-							{post.title}
-						</p>
-						<p className="font-caption2m14">
-							{post.name}{' '}
-							<span className="font-caption3m12 color-gray400">{post.gender}</span>
-						</p>
-					</div>
-				</div>
-				<div className="self-end whitespace-nowrap">
-					<button className="color-purple1 font-caption2m14">{post.matchingStatus}</button>
-				</div>
-			</div>
-		</div>
-	);
-};
 
 const NoResults = () => {
   return (
