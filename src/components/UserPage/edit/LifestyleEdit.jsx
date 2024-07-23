@@ -16,7 +16,7 @@ const LifestyleEdit = ({
 
 	const handleCheckboxChange = (value) => {
 		if (multi) {
-			const isSelected = selectedOption.includes(value);
+			const isSelected = selectedOption?.includes(value);
 			if (isSelected) {
 				setSelectedOption(selectedOption.filter((item) => item !== value));
 			} else {
@@ -35,10 +35,10 @@ const LifestyleEdit = ({
 					<CheckboxLabel
 						onClick={() => handleCheckboxChange(item)}
 						checked={
-							multi ? selectedOption.includes(item) : selectedOption === item
+							multi ? selectedOption?.includes(item) : selectedOption === item
 						}
 					>
-						<input type="checkbox" checked={selectedOption.includes(item)} />
+						<input type="checkbox" checked={selectedOption?.includes(item)} />
 						<p>{item}</p>
 					</CheckboxLabel>
 				</CheckboxItem>
