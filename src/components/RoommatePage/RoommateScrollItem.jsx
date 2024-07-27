@@ -97,12 +97,12 @@ const RoommateScrollItem = ({post, type, setConfirm, setConfirmContent}) => {
         <div className='text-right'>
           {/* 매칭 대기, 매칭 완료, 매칭 마감 */}
           {post.matchingStatus === '매칭 대기' ?
-          <button onClick={(e)=>handleClickRegisterBtn(e, post.matchingPostId)} className='register-btn'>매칭신청</button>
+          <div className='register-btn'>{post.matchingStatus}</div>
           : 
           post.matchingStatus === '매칭 완료' ?
-          <button onClick={(e)=>handleClickCancelBtn(e, post.matchingPostId)} className='register-btn registered'>매칭완료</button>
+          <div className='register-btn registered'>{post.matchingStatus}</div>
           :
-          <div className='register-btn registered'>매칭마감</div>
+          <div className='register-btn gray500'>{post.matchingStatus}</div>
           }
         </div>
       </div>
@@ -143,6 +143,9 @@ const SettingStyle = styled.div`
     color: ${COLOR.purple1};
     &.registered {
       color: ${COLOR.red}
+    }
+    &.gray500 {
+      color: ${COLOR.gray500};
     }
   }
 `

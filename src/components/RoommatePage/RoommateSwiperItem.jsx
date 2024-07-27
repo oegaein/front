@@ -11,7 +11,7 @@ import COLOR from '@styles/color'
 
 const RoommateSwiperItem = ({post, type, index, setConfirm, setConfirmContent}) => {
 //   매칭글 - 매칭 대기 | 매칭 마감 | 매칭 완료
-// 매칭요청(내 룸메이트 신청 목록, 룸메이트 신청 요청 ) - 매칭 대기 | 매칭 수락 | 매칭 거절 
+// 매칭요청(내 룸메이트 신청 목록, 룸메이트 신청 요청 ) - 매칭 대기(대기중) | 매칭 수락(수락됨) | 매칭 거절(거절됨)
 
   const queryClient = useQueryClient();
   const navigate = useNavigate()
@@ -70,7 +70,7 @@ const RoommateSwiperItem = ({post, type, index, setConfirm, setConfirmContent}) 
     navigate(`/post-detail/${matchingPostId}`)
   }
   return (
-    <SettingStyle onClick={()=>handleClickPost(post.matchingPostId)} key={post.matchingPostId} className={`w-[192px] h-[179px] border border-[${COLOR.gray100}] rounded-[20px] bg-white p-[17px] pb-[13px] ml-[12px]`}>
+    <SettingStyle onClick={()=>handleClickPost(post.matchingPostId)} key={post.matchingPostId} className={`w-[192px] h-[179px] border border-[${COLOR.gray100}] rounded-[20px] bg-white p-[17px] pb-[13px]`}>
       <div className='flex items-center justify-between mb-[10px]'>
         <span className='room'>{post.dong} {post.roomSize}</span>
         {post.matchingStatus === '매칭 대기' &&
@@ -108,7 +108,7 @@ const RoommateSwiperItem = ({post, type, index, setConfirm, setConfirmContent}) 
         <div className='register text-right registered'>{post.matchingStatus}</div>
         :
         post.matchingStatus === '매칭 마감' ?
-        <button  className='register text-right gray500'>{post.matchingStatus}</button>
+        <div  className='register text-right gray500'>{post.matchingStatus}</div>
         :
         //매칭 대기 
         <div className='register text-right'>{post.matchingStatus}</div>

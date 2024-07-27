@@ -24,7 +24,6 @@ const makeAuthorizedRequest = async (url, method = 'get', config) => {
       default:
         throw new Error('Invalid HTTP method');
     }    
-    console.log(response)
     return response;
   } catch (error) {
     console.error(error);

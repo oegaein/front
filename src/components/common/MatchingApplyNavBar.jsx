@@ -84,6 +84,7 @@ const MatchingApplyNavBar = ({version, isLowerBarVisible, id, isLikeProps, userI
   const fetchMatchingRequest = async () => {
     try {
       const response = await postMatchingRequestAPI(id)
+      console.log('매칭신청', response)
       if (response.status === 201) {
         alert('매칭 신청 완료')
       } else {
