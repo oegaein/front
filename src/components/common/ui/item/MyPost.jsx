@@ -107,11 +107,15 @@ const MyPost = ({ post, index, setConfirm, setConfirmContent, setOption, setOpti
 					</div>
 				</div>
 				<div className="self-end whitespace-nowrap">
-					{post.matchingStatus === '매칭 대기' ?
-					<button onClick={handleClickConfirmBtn} className="color-purple1 font-caption2m14">매칭 확정</button>
+					{post.matchingStatus === '매칭 완료' ?
+					<div className="color-red font-caption2m14">{post.matchingStatus}</div>
 					:
-					<button className="color-purple1 font-caption2m14">{post.matchingStatus}</button>
-					}
+					post.matchingStatus === '매칭 마감' ?
+					<div  className='color-gray500 font-caption2m14'>{post.matchingStatus}</div>
+					:
+					//매칭 대기 
+					<div className='color-purple1 font-caption2m14'>{post.matchingStatus}</div>
+						}
 				</div>
 			</div>
 		</SettingStyle>
@@ -128,6 +132,9 @@ const SettingStyle = styled.div`
 	}
   .color-gray500 {
 		color: ${COLOR.gray500};
+	}
+	.color-red {
+		color: ${COLOR.red};
 	}
   .font-caption2m14 {
 		font-size: ${FONT.caption2M14};
