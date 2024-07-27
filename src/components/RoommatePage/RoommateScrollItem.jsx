@@ -96,13 +96,25 @@ const RoommateScrollItem = ({post, type, setConfirm, setConfirmContent}) => {
         </div>
         <div className='text-right'>
           {/* 매칭 대기, 매칭 완료, 매칭 마감 */}
-          {post.matchingStatus === '매칭 대기' ?
-          <div className='register-btn'>{post.matchingStatus}</div>
+          {type === 'my-matchingrequests' ? 
+          post.matchingStatus === '매칭 대기' ?
+          <div className='register-btn'>대기중</div>
           : 
-          post.matchingStatus === '매칭 완료' ?
-          <div className='register-btn registered'>{post.matchingStatus}</div>
+          post.matchingStatus === '매칭 수락' ?
+          <div className='register-btn registered'>수락됨</div>
           :
-          <div className='register-btn gray500'>{post.matchingStatus}</div>
+          <div className='register-btn registered'>거절됨</div>
+                  //my-matchingrequests를 제외한 나머지 
+          :
+          post.matchingStatus === '매칭 완료' ?
+          <div className='register-btn text-right registered'>{post.matchingStatus}</div>
+          :
+          post.matchingStatus === '매칭 마감' ?
+          <div  className='register-btn text-right gray500'>{post.matchingStatus}</div>
+          :
+          //매칭 대기 
+          <div className='register-btn text-right'>{post.matchingStatus}</div>
+
           }
         </div>
       </div>
