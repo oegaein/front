@@ -111,11 +111,11 @@ const MyPost = ({ post, index, setConfirm, setConfirmContent, setOption, setOpti
 					<div className="color-red font-caption2m14">{post.matchingStatus}</div>
 					:
 					post.matchingStatus === '매칭 마감' ?
-					<div  className='color-gray500 font-caption2m14'>{post.matchingStatus}</div>
+					<div className='color-gray500 font-caption2m14'>{post.matchingStatus}</div>
 					:
 					//매칭 대기 
 					<div className='color-purple1 font-caption2m14'>{post.matchingStatus}</div>
-						}
+					}
 				</div>
 			</div>
 		</SettingStyle>

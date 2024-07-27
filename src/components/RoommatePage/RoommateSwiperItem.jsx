@@ -77,7 +77,7 @@ const RoommateSwiperItem = ({post, type, index, setConfirm, setConfirmContent}) 
         <span className='dday'>{post.dday === 0 ? 'D-Day' : `D-${post.dday}`}</span>        
         }
       </div>
-      <p className='title text-left mb-[13px] h-[25px] 
+      <p className='title text-left mb-[13px] h-[21px] 
       whitespace-nowrap overflow-hidden text-ellipsis'>
         {post.title}
       </p>
@@ -85,7 +85,7 @@ const RoommateSwiperItem = ({post, type, index, setConfirm, setConfirmContent}) 
         <img className='h-[60px] w-[60px] rounded-[50%]' src={post.photoUrl} alt='profile image'/>
         <div className='my-[auto] ml-[10px] text-left'>
           <p>
-            <span className='name mr-[6px]'>{post.name}</span>
+            <span className='name mr-[6px]'>{post.name.length > 3 ? `${post.name.substring(0, 3)}...` : post.name.substring(0, 3)}</span>
             <span className='gender'>{post.gender}</span>
           </p>
           <p className='number'>모집인원 {post.targetNumberOfPeople}명</p>
