@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useMatchingPosts } from 'hooks/useMatchingPosts';
 
+//components
 import Header from '@common/header/Header';
 import Pagination from '@common/Pagination';
 import MyPost from '@common/ui/item/MyPost';
 import ConfirmModal from '@common/modal/ConfirmModal';
 import OptionModal from '@common/modal/OptionModal';
 
+//styles
 import styled from 'styled-components';
 import FONT from '@styles/fonts';
 import COLOR from '@styles/color';
@@ -17,7 +19,7 @@ const MyPostPage = () => {
 	const [currentPage, setCurrentPage] = useState(0);
 	const [confirm, setConfirm] = useState(false);
 	const [confirmContent, setConfirmContent] = useState({});
-	const [option, setOption] = useState(false)
+	const [option, setOption] = useState(false);
 	const [optionModalOptions, setOptionModalOptions] = useState({});
 
 	const location = useLocation();
@@ -42,37 +44,49 @@ const MyPostPage = () => {
 					setIsOpen={setConfirm}
 				/>
 			)}
-      {option &&
-        <OptionModal
-          options={optionModalOptions}
-          isOpen={option}
-          setIsOpen={setOption}
-        />
-      }
+			{option && (
+				<OptionModal
+					options={optionModalOptions}
+					isOpen={option}
+					setIsOpen={setOption}
+				/>
+			)}
+			<div className="px-[28px]">
 				<Header backPath="/mypage" rightContent=" " rightEvent={() => {}}>
 					<span className="header">내가 올린 글</span>
 				</Header>
 			</div>
-      <div>
-        <div className='flex'>
-          <div onClick={()=>handleClickUploadPost('roommate')}className={`notification-title ${uploadPostType === 'roommate' && 'selected-title'}`}>룸메이트</div>
-          {/* <div onClick={()=>handleClickUploadPost('delivery')}className={`notification-title ${uploadPostType === 'delivery' && 'selected-title'}`}>공동배달</div> */}
-        </div>
-        <div className='flex flex-col gap-[10px] px-[25px] mt-[16px]'>
-          {myMatchingPosts?.data?.length > 0 ? (
-            myMatchingPosts.data.map((post, index) => (
-              <MyPost post={post} index={index} setConfirm={setConfirm} setConfirmContent={setConfirmContent} 
-              setOption={setOption} setOptionModalOptions={setOptionModalOptions}/>
-            ))
-          ) : (
-            <NoResults/>
-          )}
-        </div>
-      </div>
-      <Pagination data={myMatchingPosts} setCurrentPage={setCurrentPage}/>
-    </SettingStyle>
-  )
-}
+			<div>
+				<div className="flex">
+					<div
+						onClick={() => handleClickUploadPost('roommate')}
+						className={`notification-title ${uploadPostType === 'roommate' && 'selected-title'}`}
+					>
+						룸메이트
+					</div>
+					{/* <div onClick={()=>handleClickUploadPost('delivery')}className={`notification-title ${uploadPostType === 'delivery' && 'selected-title'}`}>공동배달</div> */}
+				</div>
+				<div className="flex flex-col gap-[10px] px-[25px] mt-[16px]">
+					{myMatchingPosts?.data?.length > 0 ? (
+						myMatchingPosts.data.map((post, index) => (
+							<MyPost
+								post={post}
+								index={index}
+								setConfirm={setConfirm}
+								setConfirmContent={setConfirmContent}
+								setOption={setOption}
+								setOptionModalOptions={setOptionModalOptions}
+							/>
+						))
+					) : (
+						<NoResults />
+					)}
+				</div>
+			</div>
+			<Pagination data={myMatchingPosts} setCurrentPage={setCurrentPage} />
+		</SettingStyle>
+	);
+};
 
 export default MyPostPage;
 
@@ -82,7 +96,7 @@ const NoResults = () => {
 
 const SettingStyle = styled.main`
 	.header {
-		font: ${FONT.title3B19};
+		font: ${FONT.title2B19};
 	}
 	.notification-title {
 		flex: 1;
