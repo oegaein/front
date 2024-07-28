@@ -21,8 +21,8 @@ import Notification from '@assets/images/notification 1.svg';
 import Heart from '@assets/images/heart (10) 1.svg';
 import Review from '@assets/images/review 1.svg';
 import Next from '@assets/images/next.svg';
-import Home from '@assets/images/home.svg'
-import Setting from '@assets/images/settings.svg'
+import Home from '@assets/images/home.svg';
+import Setting from '@assets/images/settings.svg';
 
 //components
 import RoommateSwiperList from '@common/RoommateSwiperList';
@@ -32,7 +32,6 @@ import ComeMatchingRequest from '@common/ui/item/ComeMatchingRequest';
 import MyPost from '@common/ui/item/MyPost';
 
 const MyPage = () => {
-	//const setAccessToken = useAuthStore(state => state.setAccessToken)
 	const myInfo = useMyInfoStore.getState().myInfo
 	//나에게 온 매칭신청 목록 조회
 	const {
@@ -54,28 +53,28 @@ const MyPage = () => {
 		error: isErrorMyUpload,
 	} = useMatchingPosts('mypost');
 
-	const navigate = useNavigate()
-	const [likeData, setLikeData] = useState([])
+	const navigate = useNavigate();
+	const [likeData, setLikeData] = useState([]);
 	const [uploadPostType, setUploadPostType] = useState('roommate');
 	const [likeType, setLikeType] = useState('roommate');
-	const [confirm, setConfirm] = useState(false)
+	const [confirm, setConfirm] = useState(false);
 	const [confirmContent, setConfirmContent] = useState({});
 	const [option, setOption] = useState(false)
 	const [optionModalOptions, setOptionModalOptions] = useState({});
 
 
-	useEffect(()=>{
+	useEffect(() => {
 		const fetchLikeData = async () => {
 			try {
-				const response = await makeAuthorizedRequest('/api/v1/member/like')
-				console.log('like', response.data.data)
-				setLikeData(response.data.data)
-			} catch(error) {
+				const response = await makeAuthorizedRequest('/api/v1/member/like');
+				console.log('like', response.data.data);
+				setLikeData(response.data.data);
+			} catch (error) {
 				console.error(error);
 			}
-		}
-		fetchLikeData()
-	}, [])
+		};
+		fetchLikeData();
+	}, []);
 
 	return (
 		<SettingStyle className="flex flex-col gap-[10px]">
@@ -95,15 +94,22 @@ const MyPage = () => {
       }
 			<section className="bg-white px-[25px] pb-[24px]">
 				<div className=" bg-white">
-          <Header backPath="/" leftContent={Home} rightContent={Setting} rightEvent={() => {
-              navigate('/alarm');
-            }}>
-          </Header>
-        </div>
+					<Header
+						backPath="/"
+						leftContent={Home}
+						rightContent={Setting}
+						rightEvent={() => {
+							navigate('/alarm');
+						}}
+					></Header>
+				</div>
 				<div className="flex justify-between pt-[20px]">
 					<div className="flex text-left gap-[20px]">
 						<div>
-							<img className="w-[45px] h-[45px] rounded-[50%]" src={myInfo?.photoUrl} />
+							<img
+								className="w-[45px] h-[45px] rounded-[50%]"
+								src={myInfo?.photoUrl}
+							/>
 						</div>
 						<div>
 							<p className="myname">{myInfo?.name}</p>
@@ -111,7 +117,10 @@ const MyPage = () => {
 						</div>
 					</div>
 					<div>
-						<Link to="/user/my-profile" className="color-purple1 font-caption2m14">
+						<Link
+							to="/user/my-profile"
+							className="color-purple1 font-caption2m14"
+						>
 							프로필 보기
 						</Link>
 					</div>
@@ -151,9 +160,15 @@ const MyPage = () => {
 				</div>
 				<div className="pt-[16px] flex flex-col gap-[30px]">
 					{comeMatchingRequests?.data?.length > 0 ? (
-						comeMatchingRequests.data.slice(0,3).map((post, index) => (
-							<ComeMatchingRequest post={post} index={index} reFetchComeMatchingRequests={reFetchComeMatchingRequests}/>
-						))
+						comeMatchingRequests.data
+							.slice(0, 3)
+							.map((post, index) => (
+								<ComeMatchingRequest
+									post={post}
+									index={index}
+									reFetchComeMatchingRequests={reFetchComeMatchingRequests}
+								/>
+							))
 					) : (
 						<div className="text-center">나에게 온 신청 요청이 없습니다.</div>
 					)}
@@ -170,10 +185,10 @@ const MyPage = () => {
 						더보기 <img src={Next} />
 					</Link>
 				</div>
-				<div className='pt-[24px]'>
+				<div className="pt-[24px]">
 					<SelectMenuBar
-					menuList={['룸메이트']}
-					pickedMenuId={setUploadPostType}
+						menuList={['룸메이트']}
+						pickedMenuId={setUploadPostType}
 					/>
 					<div className="flex flex-col gap-[10px] px-[25px] mt-[16px]">
 						{myMatchingPosts?.data?.length > 0 ? (
@@ -209,18 +224,18 @@ const MyPage = () => {
 						더보기 <img src={Next} />
 					</Link>
 				</div>
-				<div className='pt-[24px]'>
-					<SelectMenuBar
-					menuList={['룸메이트']}
-					pickedMenuId={setLikeType}
-					/>
+				<div className="pt-[24px]">
+					<SelectMenuBar menuList={['룸메이트']} pickedMenuId={setLikeType} />
 					<div className="likelist flex flex-col gap-[1px]">
-						{likeData?.length > 0 ?
-						likeData.slice(0, 2).map((like)=> <LikeItem like={like} />)
-					:
-					<div className="bg-white pt-[15px]">좋아하는 룸메이트가 없습니다.<br/>다른 사람의 좋아요를 눌러보세요!</div>
-					}
-						
+						{likeData?.length > 0 ? (
+							likeData.slice(0, 2).map((like) => <LikeItem like={like} />)
+						) : (
+							<div className="bg-white pt-[15px]">
+								좋아하는 룸메이트가 없습니다.
+								<br />
+								다른 사람의 좋아요를 눌러보세요!
+							</div>
+						)}
 					</div>
 				</div>
 			</section>
@@ -229,7 +244,6 @@ const MyPage = () => {
 };
 
 export default MyPage;
-
 
 const SettingStyle = styled.main`
 	background-color: ${COLOR.gray50};
@@ -243,7 +257,7 @@ const SettingStyle = styled.main`
 		font-size: ${FONT.caption2M14};
 	}
 	.heading-text {
-		font-size: ${FONT.title3SB17};
+		font-size: ${FONT.title4SB17};
 	}
 	.small-text {
 		font-size: ${FONT.caption2M14};

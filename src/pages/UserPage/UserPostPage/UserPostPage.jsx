@@ -4,14 +4,14 @@ import { useMatchingPosts } from 'hooks/useMatchingPosts';
 import { API } from '@utils/api';
 import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest';
 
-import Header from '@common/header/Header'
+import Header from '@common/header/Header';
 import Pagination from '@common/Pagination';
 import MyPost from '@common/ui/item/MyPost';
 import styled from 'styled-components'
 import FONT from '@styles/fonts'
 import COLOR from '@styles/color'
 
-
+import Dots from '@assets/images/dots-black.svg';
 
 const UserPostPage = () => {
   const params = useParams()
@@ -75,81 +75,79 @@ const UserPostPage = () => {
 export default UserPostPage
 
 const NoResults = () => {
-  return (
-    <p className='noresults mt-[138px]'>내가 올린 글이 없어요.</p>
-  )
-}
+	return <p className="noresults mt-[138px]">내가 올린 글이 없어요.</p>;
+};
 
 const SettingStyle = styled.main`
-  .color-purple1 {
-    color: ${COLOR.purple1};
-  }
-  .color-gray500 {
-    color: ${COLOR.gray500};
-  }
-  .color-gray400 {
-    color: ${COLOR.gray400};
-  }
-  .font-caption2m14 {
-    font-size: ${FONT.caption2M14};
-  }
-  .font-caption3m12 {
-    font-size: ${FONT.caption3M12};
-  }
-  .font-caption1sb14 {
-    font-size: ${FONT.caption1SB14};
-  }
-  .myname {
-    font-size: ${FONT.body3M16};
-  }
-  .username {
-    font-size: ${FONT.caption2M14};
-  }
-  .heading-text {
-    font-size: ${FONT.title3SB17};
-  }
-  .small-text {
-    font-size: ${FONT.caption2M14};
-    color: ${COLOR.gray600};
-  }
-  .button {
-    border: 1px solid ${COLOR.gray100};
-    font-size: ${FONT.caption2M14};
-    width: 43px;
-    height: 26px;
-    border-radius: 5px;
-    &.allowed {
-      color: ${COLOR.gray600};
-    }
-    &.declined {
-      color: ${COLOR.red};
-    }
-  }
-  .notification-title {
-    flex: 1;
-    font-size: ${FONT.caption2M14};
-    color: ${COLOR.gray500};
-    border-bottom: 2px solid ${COLOR.gray100};
-    padding-bottom: 16px;
-    cursor: pointer;
-    &:hover {
-      border-bottom: 2px solid ${COLOR.purple1};
-      color: black;
-    }
-  }
-  .selected-title {
-    border-bottom: 2px solid ${COLOR.purple1};
-    color: black;
-  }
-  .noresults {
-    font-size: ${FONT.caption2M14};
-    color: ${COLOR.gray500};
-  }
-  .mypost {
-    border: 1px solid ${COLOR.gray100};
-    border-radius: 10px;
-  }
-  .likelist {
-    background-color: ${COLOR.gray100};
-  }
-`
+	.color-purple1 {
+		color: ${COLOR.purple1};
+	}
+	.color-gray500 {
+		color: ${COLOR.gray500};
+	}
+	.color-gray400 {
+		color: ${COLOR.gray400};
+	}
+	.font-caption2m14 {
+		font-size: ${FONT.caption2M14};
+	}
+	.font-caption3m12 {
+		font-size: ${FONT.caption3M12};
+	}
+	.font-caption1sb14 {
+		font-size: ${FONT.caption1SB14};
+	}
+	.myname {
+		font-size: ${FONT.body3M16};
+	}
+	.username {
+		font-size: ${FONT.caption2M14};
+	}
+	.heading-text {
+		font-size: ${FONT.title4SB17};
+	}
+	.small-text {
+		font-size: ${FONT.caption2M14};
+		color: ${COLOR.gray600};
+	}
+	.button {
+		border: 1px solid ${COLOR.gray100};
+		font-size: ${FONT.caption2M14};
+		width: 43px;
+		height: 26px;
+		border-radius: 5px;
+		&.allowed {
+			color: ${COLOR.gray600};
+		}
+		&.declined {
+			color: ${COLOR.red};
+		}
+	}
+	.notification-title {
+		flex: 1;
+		font-size: ${FONT.caption2M14};
+		color: ${COLOR.gray500};
+		border-bottom: 2px solid ${COLOR.gray100};
+		padding-bottom: 16px;
+		cursor: pointer;
+		&:hover {
+			border-bottom: 2px solid ${COLOR.purple1};
+			color: black;
+		}
+	}
+	.selected-title {
+		border-bottom: 2px solid ${COLOR.purple1};
+		color: black;
+	}
+	.noresults {
+		font-size: ${FONT.caption2M14};
+		color: ${COLOR.gray500};
+	}
+	.mypost {
+		border: 1px solid ${COLOR.gray100};
+		border-radius: 10px;
+	}
+	.likelist {
+		background-color: ${COLOR.gray100};
+	}
+`;

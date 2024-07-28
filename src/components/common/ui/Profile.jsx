@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import COLOR from '@styles/color';
 import FONT from '@styles/fonts';
@@ -8,12 +8,7 @@ import Threedots from '@assets/images/common/Threedots.svg';
 import OptionModal from '@common/modal/OptionModal';
 import ConfirmModal from '@common/modal/ConfirmModal';
 import useMyInfoStore from '@store/myInfoStore';
-import {
-	deleteCommentsAPI,
-	deleteRepliesAPI,
-	putReplyAPI,
-} from 'services/api/CommentsAPI';
-import useAuthStore from '@store/authStore';
+import { deleteCommentsAPI, deleteRepliesAPI } from 'services/api/CommentsAPI';
 import { BlockUserAPI } from 'services/api/ProfileAPI';
 
 export const SimpleProfile = ({ Img, nickname, mr, width, height, weight }) => {
@@ -39,8 +34,8 @@ export const BasicProfile = ({
 	commentID = -1,
 	isReply = false,
 }) => {
-	const setAccessToken = useAuthStore((state) => state.setAccessToken);
 	const myname = useMyInfoStore.getState().myInfo.name;
+	const navigate = useNavigate();
 	const [threedots, setThreedots] = useState(false);
 	const [confirm, setConfirm] = useState(false);
 	const [confirmContent, setConfirmContent] = useState({
@@ -85,6 +80,14 @@ export const BasicProfile = ({
 		}));
 	};
 
+	const handleProfile = () => {
+		if (myname === nickname) {
+			navigate('/user/my-profile');
+		} else {
+			navigate(`/user/${userID}`);
+		}
+	};
+
 	const commentOptions = [
 		{
 			content: '수정하기',
@@ -122,18 +125,16 @@ export const BasicProfile = ({
 				<img
 					src={Img}
 					alt="Profile"
-					className={`img mr-[${mr}] rounded-full`}
-					width={width}
-					height={height}
+					className={`img mr-[${mr}] rounded-full w-[${width}] h-[${height}]`}
 				/>
 				<div className="flex flex-col items-start w-full">
 					{ver === 'profile' ? (
 						<div className="flex items-center">
 							<Nickname weight="caption">{nickname}</Nickname>
 							<img src={DotIcon} alt="dotIcon" />
-							<Link to={'/profile'}>
+							<button onClick={() => handleProfile()}>
 								<span className="cation2 color-purple">프로필 보기</span>
-							</Link>
+							</button>
 						</div>
 					) : (
 						<div className="flex justify-between items-center w-full">

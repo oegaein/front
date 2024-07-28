@@ -2,6 +2,7 @@ import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import BackIcon from '@assets/images/common/BackIcon.svg';
+import BackIconWhite from '@assets/images/common/BackIconWhite.svg';
 import styled from 'styled-components';
 import FONT from '@styles/fonts';
 import COLOR from '@styles/color';
@@ -38,10 +39,12 @@ const Header = ({
 				className={'flex flex-1 justify-between w-full h-[57px] items-center'}
 			>
 				<button className={'flex-1'} onClick={handleBackButton}>
-					<img src={BackIcon} />
+					<img
+						src={`${location.pathname.substring(0, 16) !== '/user/my-profile' ? BackIcon : BackIconWhite}`}
+					/>
 				</button>
 				<div
-					className={`${location.pathname.substring(0, 12) === '/post-detail' ? 'flex-[10]' : 'flex-[2.5]'}`}
+					className={`${location.pathname.substring(0, 12) === '/post-detail' ? 'flex-[10]' : 'flex-[2.6]'}`}
 				>
 					{children && children}
 				</div>

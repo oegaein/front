@@ -1,18 +1,13 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { CommentInput } from '@components/basicInfo/BasicSettingInput';
-import { Subtitle } from '@styles/basicInfo/Text';
 import { BasicProfile } from '@common/ui/Profile';
 import FONT from '@styles/fonts';
 import COLOR from '@styles/color';
-import ArrowRightIcon from '@assets/images/common/ArrowRightIcon.svg';
-import { Box } from '@pages/post/Post-detail';
-import { useNavigate } from 'react-router-dom';
 import { timeAgo } from '@utils/TimeAgo';
 
-const PreviewComment = ({ postId, comments, count }) => {
+const DetailComment = ({ postId, comments }) => {
 	const id = postId;
-	const navigate = useNavigate();
 	const [value, setValue] = useState('');
 	const [reply, setReply] = useState(false);
 	const [owner, setOwner] = useState('');
@@ -22,10 +17,6 @@ const PreviewComment = ({ postId, comments, count }) => {
 		setReply(true);
 		setOwner(comments[index].author_name);
 		setCommentID(comments[index].id);
-	};
-
-	const handleMoreComment = () => {
-		navigate(`/comment-detail/${postId}`);
 	};
 
 	return (
@@ -49,12 +40,6 @@ const PreviewComment = ({ postId, comments, count }) => {
 				</CommentBox>
 			)}
 			<CommentStyle>
-				<section className="flex flex-col p-[25px] pb-[0px]">
-					<Subtitle>댓글 {count}개</Subtitle>
-					<div className="w-full">
-						<CommentInput postId={id} setSelected={setValue} />
-					</div>
-				</section>
 				{comments.length === 0 ? (
 					<div className="flex justify-center items-center p-4 mb-3">
 						<p className="text-gray-400">아직 작성된 댓글이 없습니다.</p>
@@ -113,22 +98,19 @@ const PreviewComment = ({ postId, comments, count }) => {
 								</div>
 							))}
 						</section>
-						<section
-							className="commentBtn caption2"
-							onClick={handleMoreComment}
-						>
-							<p className="mr-1">{count}개 댓글 전체 보기</p>
-							<img src={ArrowRightIcon} alt="arrow" />
+						<section className="flex flex-col p-[25px]">
+							<div className="w-[343px] fixed bottom-0">
+								<CommentInput postId={id} setSelected={setValue} />
+							</div>
 						</section>
 					</>
 				)}
-				<Box />
 			</CommentStyle>
 		</>
 	);
 };
 
-export default PreviewComment;
+export default DetailComment;
 
 const CommentStyle = styled.div`
 	display: flex;
@@ -143,7 +125,7 @@ const CommentStyle = styled.div`
 	.commentbox {
 		display: flex;
 		flex-direction: column;
-		padding: 0px 25px;
+		padding: 25px;
 		border-bottom: 1px solid ${COLOR.gray100};
 	}
 

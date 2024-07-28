@@ -26,7 +26,6 @@ const Navbar = () => {
 
 	useInterval(async () => {
 		const res = await getChattingCountAPI(setAccessToken);
-		console.log(res);
 		setChatCount(res);
 	}, 10000);
 
@@ -39,9 +38,11 @@ const Navbar = () => {
 						src={location.pathname === '/chat' ? ChatIconClicked : ChatIcon}
 						alt="채팅 페이지로 가기"
 					/>
-					<div className="chatting-counts absolute top-[-3px] left-[17px] rounded-[10px] px-[5px]">
-						15
-					</div>
+					{chatCount > 0 ? (
+						<div className="chatting-counts absolute top-[-3px] left-[17px] rounded-[10px] px-[5px]">
+							{chatCount}
+						</div>
+					) : null}
 				</div>
 				<span className={location.pathname === '/chat' ? 'purple' : undefined}>
 					채팅

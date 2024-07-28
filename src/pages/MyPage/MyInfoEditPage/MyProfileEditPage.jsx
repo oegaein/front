@@ -13,25 +13,8 @@ import { major_options, MBTI_options } from 'mocks/data/profile-setting';
 import { Box } from '@pages/post/Post-detail';
 import LifestyleEdit from '@components/UserPage/edit/LifestyleEdit';
 import BasicButton from '@common/button/BasicButton';
-import useAuthStore from '@store/authStore';
 import { EditProfileAPI } from 'services/api/ProfileAPI';
-
-const mocks = {
-	photo_url: Alarm,
-	name: '김예은',
-	gender: '여성',
-	student_no: '21학번',
-	birthdate: '2002-11-15',
-	major: 'GBT',
-	introduction: '프개입니다',
-	mbti: 'ESFJ',
-	sleeping_habit: ['무소음형'],
-	life_pattern: '저녁형',
-	smoking: '비흡연',
-	cleaning_cycle: '주 1회 이상',
-	outing: '집순이',
-	sound_sensitivity: '예민한편',
-};
+import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest';
 
 const MyProfileEdit = () => {
 	const [info, setInfo] = useState({
@@ -53,7 +36,12 @@ const MyProfileEdit = () => {
 	console.log(disable);
 
 	useEffect(() => {
-		setInfo(mocks);
+		const fetchData = async () => {
+			const response = await makeAuthorizedRequest(`/api/v1/member/my-profile`);
+			console.log(response);
+			setInfo(response.data);
+		};
+		fetchData();
 	}, []);
 
 	useEffect(() => {
@@ -114,17 +102,17 @@ const MyProfileEdit = () => {
 					</Header>
 				</div>
 				<div className="img">
-					<img src={mocks.photo_url} alt="photo" />
+					<img src={info.photo_url} alt="photo" />
 				</div>
 				<section className="w-full">
 					<div className="w-full px-[25px]">
 						<div className="nickname mb">
-							<NicknameEdit onGetValue={handleInfo} defaultValue={mocks.name} />
+							<NicknameEdit onGetValue={handleInfo} defaultValue={info.name} />
 						</div>
 						<div className="profile mb">
 							<ProfileEdit
 								onGetValue={handleProfile}
-								defaultValue={[mocks.gender, mocks.student_no, mocks.birthdate]}
+								defaultValue={[info.gender, info.student_no, info.birthdate]}
 							/>
 						</div>
 						<div className="major mb">
@@ -134,13 +122,13 @@ const MyProfileEdit = () => {
 								label="전공을 선택해주세요."
 								options={major_options}
 								setSelected={handleMajor}
-								defaultValue={mocks.major}
+								defaultValue={info.major}
 							/>
 						</div>
 						<div className="introduction mb">
 							<IntroduceEdit
 								onGetValue={handleInfo}
-								defaultValue={mocks.introduction}
+								defaultValue={info.introduction}
 							/>
 						</div>
 					</div>
@@ -153,7 +141,7 @@ const MyProfileEdit = () => {
 								label="MBTI를 선택해주세요."
 								options={MBTI_options}
 								setSelected={handleMBTI}
-								defaultValue={mocks.mbti}
+								defaultValue={info.mbti}
 							/>
 						</div>
 						<div className="lifestyle mb">
@@ -162,7 +150,7 @@ const MyProfileEdit = () => {
 								lists={['코골이형', '이갈이형', '잠꼬대형', '무소음형']}
 								keyProp={'sleeping_habit'}
 								onGetValue={handleInfo}
-								defaultValue={mocks.sleeping_habit}
+								defaultValue={info.sleeping_habit}
 								multi={true}
 							/>
 							<Subtitle>생활 패턴</Subtitle>
@@ -170,35 +158,35 @@ const MyProfileEdit = () => {
 								lists={['아침형', '저녁형']}
 								keyProp={'life_pattern'}
 								onGetValue={handleInfo}
-								defaultValue={mocks.life_pattern}
+								defaultValue={info.life_pattern}
 							/>
 							<Subtitle>흡연 여부</Subtitle>
 							<LifestyleEdit
 								lists={['흡연', '비흡연']}
 								keyProp={'smoking'}
 								onGetValue={handleInfo}
-								defaultValue={mocks.smoking}
+								defaultValue={info.smoking}
 							/>
 							<Subtitle>청소 주기</Subtitle>
 							<LifestyleEdit
 								lists={['매일', '주 1회 이상', '월 1회 이상', '생각날 때 가끔']}
 								keyProp={'cleaning_cycle'}
 								onGetValue={handleInfo}
-								defaultValue={mocks.cleaning_cycle}
+								defaultValue={info.cleaning_cycle}
 							/>
 							<Subtitle>외출 빈도</Subtitle>
 							<LifestyleEdit
 								lists={['집순이', '밖순이']}
 								keyProp={'outing'}
 								onGetValue={handleInfo}
-								defaultValue={mocks.outing}
+								defaultValue={info.outing}
 							/>
 							<Subtitle>소리 민감 정도</Subtitle>
 							<LifestyleEdit
 								lists={['예민한편', '둔감한편']}
 								keyProp={'sound_sensitivity'}
 								onGetValue={handleInfo}
-								defaultValue={mocks.sound_sensitivity}
+								defaultValue={info.sound_sensitivity}
 							/>
 						</div>
 						<BasicButton
@@ -230,7 +218,7 @@ const EditProfileStyle = styled.div`
 		border-bottom: 1px solid ${COLOR.gray100};
 
 		p {
-			font: ${FONT.title3SB17};
+			font: ${FONT.title4SB17};
 		}
 	}
 

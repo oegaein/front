@@ -1,36 +1,29 @@
 const FONT = {
-	largetitleB23: `
+	title1B23: `
       font-family: 'Pretendard';
       font-size: 23px;
       font-style: normal;
       font-weight: 700;
       line-height: auto;
       `,
-	title1SB20: `
+	title2SB21: `
       font-family: 'Pretendard';
       font-size: 21px;
       font-style: normal;
       font-weight: 600;
       line-height: auto;
       `,
-	title2B19: `
+	title3B19: `
       font-family: 'Pretendard';
       font-size: 19px;
       font-style: normal;
       font-weight: 700;
       line-height: auto;
       `,
-	title3SB17: `
-      font-family: 'Pretendard';
-      font-size: 17px;
-      font-style: normal;
-      font-weight: 600;
-      line-height: 25px;
-      `,
 	title4SB17: `
       font-family: 'Pretendard';
       font-size: 17px;
-      font-style: bold;
+      font-style: normal;
       font-weight: 600;
       line-height: 25px;
       `,

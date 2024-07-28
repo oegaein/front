@@ -833,8 +833,8 @@ const SettingStyle = styled.main`
 	text-align: left;
 
 	.header {
+		font: ${FONT.title4SB17};
 		width: 100%;
-		font: ${FONT.title3SB17};
 		text-align: center;
 	}
 	.filter-section {
@@ -882,7 +882,7 @@ const SettingStyle = styled.main`
 		}
 	}
 	.filter-title {
-		font-size: ${FONT.title3SB17};
+		font-size: ${FONT.title4SB17};
 		margin-bottom: 16px;
 	}
 	.filter-subtitle {

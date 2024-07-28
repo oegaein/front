@@ -11,7 +11,6 @@ import Header from '@common/header/Header';
 import { DropdownWrapper } from '@common/dropdown/BasicDropdown';
 import OptionModal from '@common/modal/OptionModal';
 import ConfirmModal from '@common/modal/ConfirmModal';
-import BasicButton from '@common/button/BasicButton';
 import MatchingApplyNavBar from '@common/MatchingApplyNavBar';
 
 import { Subtitle } from '@styles/basicInfo/Text';
@@ -20,14 +19,12 @@ import COLOR from '@styles/color';
 
 import useLowerBarVisible from '@hooks/useLowerBarVisible';
 import { timeAgo } from '@utils/TimeAgo';
-import useAuthStore from '@store/authStore';
 import useMyInfoStore from '@store/myInfoStore';
 
 import {
 	deleteMatchingPostAPI,
 	getMatchingPostAPI,
 } from 'services/api/MatchingPostAPI';
-import { postMatchingRequestAPI } from 'services/api/MatchingRequestAPI';
 import { BlockUserAPI } from 'services/api/ProfileAPI';
 
 import Threedots from '@assets/images/common/Threedots.svg';
@@ -50,7 +47,6 @@ const PostDetail = () => {
 		btn: '',
 		func: () => {},
 	});
-	const [matching, setMatching] = useState(false);
 	const isLowerBarVisible = useLowerBarVisible();
 
 	useEffect(() => {
@@ -95,6 +91,14 @@ const PostDetail = () => {
 				BlockUserAPI(data.author_profile.id);
 			},
 		}));
+	};
+
+	const handleProfile = () => {
+		if (myname === data.author_name) {
+			navigate('/user/my-profile');
+		} else {
+			navigate(`/user/${data.author_profile.id}`);
+		}
 	};
 
 	const calculateMarginRight = (name) => {
@@ -159,8 +163,10 @@ const PostDetail = () => {
 							<Link to="/home">
 								<img
 									src={HomeIcon}
-									alt="home"
-									className={`mr-[${calculateMarginRight(data.author_name)}px]`}
+									alt="홈으로 가기"
+									style={{
+										marginRight: `${calculateMarginRight(data.author_name)}px`,
+									}}
 								/>
 							</Link>
 							<SimpleProfile
@@ -194,9 +200,9 @@ const PostDetail = () => {
 									weight="light"
 								/>
 							</div>
-							<Link to={'/profile'}>
+							<button onClick={() => handleProfile()}>
 								<span className="cation2 color-purple">프로필 보기</span>
-							</Link>
+							</button>
 						</div>
 						<UserPageInfo userInfo={data.author_profile} />
 					</div>
@@ -274,6 +280,7 @@ const PostDetail = () => {
 						<BasicProfile
 							Img={data.author_profile?.photo_url}
 							nickname={data.author_name}
+							userID={data.author_profile.id}
 							content={data.author_profile.gender}
 							mr="20px"
 							width="45px"
@@ -294,6 +301,7 @@ const PostDetail = () => {
 					version={'comment'}
 					isLowerBarVisible={isLowerBarVisible}
 					id={postId}
+					userInfo={data.author_profile}
 					matchingStatus={data.matching_status}
 					matchingRequestId={data.matching_request_id}
 				/>
@@ -339,7 +347,7 @@ const PostDetailStyle = styled.div`
 		border-bottom: 1px solid ${COLOR.gray100};
 
 		> p {
-			font: ${FONT.title3SB17};
+			font: ${FONT.title4SB17};
 		}
 	}
 `;

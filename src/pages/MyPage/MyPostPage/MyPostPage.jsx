@@ -1,45 +1,41 @@
-import React, {useState} from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import React, { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { useMatchingPosts } from 'hooks/useMatchingPosts';
 
-//components
-import Header from '@common/header/Header'
+import Header from '@common/header/Header';
 import Pagination from '@common/Pagination';
 import MyPost from '@common/ui/item/MyPost';
 import ConfirmModal from '@common/modal/ConfirmModal';
 import OptionModal from '@common/modal/OptionModal';
 
-//styles
-import styled from 'styled-components'
-import FONT from '@styles/fonts'
-import COLOR from '@styles/color'
-
-
+import styled from 'styled-components';
+import FONT from '@styles/fonts';
+import COLOR from '@styles/color';
 
 const MyPostPage = () => {
-  const [uploadPostType, setUploadPostType] = useState('roommate')
-  const [currentPage, setCurrentPage] = useState(0)
-	const [confirm, setConfirm] = useState(false)
+	const [uploadPostType, setUploadPostType] = useState('roommate');
+	const [currentPage, setCurrentPage] = useState(0);
+	const [confirm, setConfirm] = useState(false);
 	const [confirmContent, setConfirmContent] = useState({});
 	const [option, setOption] = useState(false)
 	const [optionModalOptions, setOptionModalOptions] = useState({});
 
-  const location = useLocation()
-  const {
+	const location = useLocation();
+	const {
 		data: myMatchingPosts,
 		isLoading: isLoadingMyUpload,
 		error: isErrorMyUpload,
 	} = useMatchingPosts('mypost', currentPage);
-  const handleClickUploadPost = (type) => {
-    setUploadPostType(type)
-  }
+	const handleClickUploadPost = (type) => {
+		setUploadPostType(type);
+	};
 
-  if (isLoadingMyUpload) {
-    return <div>로딩중</div>
-  }
-  return (
-    <SettingStyle className='bg-white pb-[24px]'>
-      {confirm && (
+	if (isLoadingMyUpload) {
+		return <div>로딩중</div>;
+	}
+	return (
+		<SettingStyle className="bg-white pb-[24px]">
+			{confirm && (
 				<ConfirmModal
 					content={confirmContent}
 					isOpen={confirm}
@@ -53,9 +49,8 @@ const MyPostPage = () => {
           setIsOpen={setOption}
         />
       }
-      <div className="px-[28px]">
 				<Header backPath="/mypage" rightContent=" " rightEvent={() => {}}>
-					<span className='header'>내가 올린 글</span>
+					<span className="header">내가 올린 글</span>
 				</Header>
 			</div>
       <div>
@@ -79,36 +74,34 @@ const MyPostPage = () => {
   )
 }
 
-export default MyPostPage
+export default MyPostPage;
 
 const NoResults = () => {
-  return (
-    <p className='noresults mt-[138px]'>내가 올린 글이 없어요.</p>
-  )
-}
+	return <p className="noresults mt-[138px]">내가 올린 글이 없어요.</p>;
+};
 
 const SettingStyle = styled.main`
-  .header {
-    font: ${FONT.title2B19}
-  }
-  .notification-title {
-    flex: 1;
-    font-size: ${FONT.caption2M14};
-    color: ${COLOR.gray500};
-    border-bottom: 2px solid ${COLOR.gray100};
-    padding-bottom: 16px;
-    cursor: pointer;
-    &:hover {
-      border-bottom: 2px solid ${COLOR.purple1};
-      color: black;
-    }
-  }
-  .selected-title {
-    border-bottom: 2px solid ${COLOR.purple1};
-    color: black;
-  }
-  .noresults {
-    font-size: ${FONT.caption2M14};
-    color: ${COLOR.gray500};
-  }
-`
+	.header {
+		font: ${FONT.title3B19};
+	}
+	.notification-title {
+		flex: 1;
+		font-size: ${FONT.caption2M14};
+		color: ${COLOR.gray500};
+		border-bottom: 2px solid ${COLOR.gray100};
+		padding-bottom: 16px;
+		cursor: pointer;
+		&:hover {
+			border-bottom: 2px solid ${COLOR.purple1};
+			color: black;
+		}
+	}
+	.selected-title {
+		border-bottom: 2px solid ${COLOR.purple1};
+		color: black;
+	}
+	.noresults {
+		font-size: ${FONT.caption2M14};
+		color: ${COLOR.gray500};
+	}
+`;

@@ -39,7 +39,7 @@ const PostStyle = styled.div`
 	width: 100%;
 
 	.currentP {
-		font: ${FONT.title3SB17};
+		font: ${FONT.title4SB17};
 		margin-right: 6px;
 	}
 `;
