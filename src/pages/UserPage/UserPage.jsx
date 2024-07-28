@@ -107,7 +107,7 @@ const UserPage = () => {
         </div>
       </div>
       {memberId !== 'my-profile' &&
-      <MatchingApplyNavBar version={'userPage'} isLowerBarVisible={isLowerBarVisible} id={memberId} isLikeProps={userInfo.is_like} userInfo={userInfo}
+      <MatchingApplyNavBar version={'userPage'} isLowerBarVisible={isLowerBarVisible} id={memberId} userInfo={userInfo}
       fetchUserInfoData={fetchUserInfoData}/>
       }
     </SettingStyle>

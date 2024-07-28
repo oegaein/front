@@ -16,12 +16,21 @@ import BigEmptyHeart from '@assets/images/heart (10) 1.svg'
 import Comment from '@assets/images/comment.svg'
 
 
-const MatchingApplyNavBar = ({version, isLowerBarVisible, id, isLikeProps, userInfo}) => {
+const MatchingApplyNavBar = ({version, isLowerBarVisible, id, userInfo, matchingStatus, matchingRequestId}) => {
+  console.log('matchingapplynavbar', matchingStatus, matchingRequestId)
   const [isLike, setIsLike] = useState(false)
   const [firstRendering, setFirstRendering] = useState(true)
+  const isLikeProps = userInfo?.is_like
   const navigate = useNavigate()
   const location = useLocation()
   // /user or /post-detail 
+
+  //조건 변수 정의
+  const isUserPage = location.pathname.substring(0, 5) === "/user";
+  const isPostDetailPage = !isUserPage;
+  const isMyApplyPost = matchingRequestId;
+  const isMatchingPending = matchingStatus === '매칭 대기';
+  const isMatchingClosed = matchingStatus === '매칭 완료' || matchingStatus === '매칭 마감';
   useEffect(() => {
     if (!isLikeProps && firstRendering) {
       // myProps가 undefined가 아닌 경우에만 state 업데이트
@@ -130,6 +139,29 @@ const MatchingApplyNavBar = ({version, isLowerBarVisible, id, isLikeProps, userI
     );
     }
   }
+  const renderButton = () => {
+    if (isUserPage) {
+      return <button onClick={goToUserPostPage} className='filter-btn whitespace-nowrap'>매칭신청</button>;
+    }
+  
+    if (isPostDetailPage) {
+      if (isMyApplyPost) {
+        if (isMatchingPending) {
+          return <div className='filter-btn whitespace-nowrap applied'>신청완료</div>;
+        } else if (isMatchingClosed) {
+          return <div className='filter-btn whitespace-nowrap registered'>매칭 마감</div>;
+        }
+      } else {
+        if (isMatchingPending) {
+          return <button onClick={fetchMatchingRequest} className='filter-btn whitespace-nowrap'>매칭신청</button>;
+        } else if (isMatchingClosed) {
+          return <div className='filter-btn whitespace-nowrap registered'>매칭 마감</div>;
+        }
+      }
+    }
+  
+    return null; // 기본적으로 아무것도 렌더링하지 않음
+  };
 
   return (
     <SettingStyle className={`bg-white z-50 fixed bottom-0 flex items-center justify-between gap-[15px] h-[91px] w-[393px] px-[26px]
@@ -149,11 +181,7 @@ const MatchingApplyNavBar = ({version, isLowerBarVisible, id, isLikeProps, userI
         }
         <button onClick={clickShareBtn} className='whitespace-nowrap'><img src={Share}/></button>
       </div>
-      {location.pathname.substring(0,5) === "/user" ? 
-      <button onClick={goToUserPostPage} className='filter-btn whitespace-nowrap'>매칭신청</button>
-      :
-      <button onClick={fetchMatchingRequest} className='filter-btn whitespace-nowrap'>매칭신청</button>
-      }
+      {renderButton()}
     </SettingStyle>
   )
 }
@@ -166,10 +194,22 @@ const SettingStyle = styled.div`
     color: white;
     background-color: ${COLOR.purple1};
     height: 52px;
+    line-height: 52px;
     flex: 1;
     border-radius: 10px;
     &:hover {
       opacity: 0.5;
+    }
+    &.registered {
+      color: ${COLOR.red};
+      background-color: ${COLOR.gray50};
+    }
+    &.gray500 {
+      color: ${COLOR.gray500};
+    }
+    &.applied {
+      background-color: ${COLOR.gray50};
+      color: black;
     }
   }
 
