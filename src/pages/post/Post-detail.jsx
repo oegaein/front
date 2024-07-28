@@ -163,8 +163,10 @@ const PostDetail = () => {
 							<Link to="/home">
 								<img
 									src={HomeIcon}
-									alt="home"
-									className={`mr-[${calculateMarginRight(data.author_name)}px]`}
+									alt="홈으로 가기"
+									style={{
+										marginRight: `${calculateMarginRight(data.author_name)}px`,
+									}}
 								/>
 							</Link>
 							<SimpleProfile
