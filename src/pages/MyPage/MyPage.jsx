@@ -10,6 +10,7 @@ import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest';
 //components
 import Header from '@common/header/Header';
 import ConfirmModal from '@common/modal/ConfirmModal';
+import OptionModal from '@common/modal/OptionModal';
 // styles
 import styled from 'styled-components';
 import FONT from '@styles/fonts';
@@ -31,8 +32,7 @@ import ComeMatchingRequest from '@common/ui/item/ComeMatchingRequest';
 import MyPost from '@common/ui/item/MyPost';
 
 const MyPage = () => {
-	const setAccessToken = useAuthStore((state) => state.setAccessToken);
-	const myInfo = useMyInfoStore.getState().myInfo;
+	const myInfo = useMyInfoStore.getState().myInfo
 	//나에게 온 매칭신청 목록 조회
 	const {
 		data: comeMatchingRequests,
@@ -59,6 +59,9 @@ const MyPage = () => {
 	const [likeType, setLikeType] = useState('roommate');
 	const [confirm, setConfirm] = useState(false);
 	const [confirmContent, setConfirmContent] = useState({});
+	const [option, setOption] = useState(false)
+	const [optionModalOptions, setOptionModalOptions] = useState({});
+
 
 	useEffect(() => {
 		const fetchLikeData = async () => {
@@ -82,6 +85,13 @@ const MyPage = () => {
 					setIsOpen={setConfirm}
 				/>
 			)}
+			{option &&
+        <OptionModal
+          options={optionModalOptions}
+          isOpen={option}
+          setIsOpen={setOption}
+        />
+      }
 			<section className="bg-white px-[25px] pb-[24px]">
 				<div className=" bg-white">
 					<Header
@@ -140,7 +150,7 @@ const MyPage = () => {
 
 			<section className="bg-white px-[25px] py-[24px] text-left">
 				<div className="flex justify-between">
-					<h1 className="heading-text">룸메이트 신청 요청</h1>
+					<h1 className="heading-text">내게 온 룸메이트 신청</h1>
 					<Link
 						to="/mypage/come-matchingrequests"
 						className="flex items-center justify-between username whitespace-nowrap"
@@ -182,16 +192,10 @@ const MyPage = () => {
 					/>
 					<div className="flex flex-col gap-[10px] px-[25px] mt-[16px]">
 						{myMatchingPosts?.data?.length > 0 ? (
-							myMatchingPosts.data
-								.slice(0, 2)
-								.map((post, index) => (
-									<MyPost
-										post={post}
-										index={index}
-										setConfirm={setConfirm}
-										setConfirmContent={setConfirmContent}
-									/>
-								))
+							myMatchingPosts.data.slice(0, 2).map((post, index) => (
+								<MyPost post={post} index={index} setConfirm={setConfirm} setConfirmContent={setConfirmContent}
+								setOption={setOption} setOptionModalOptions={setOptionModalOptions}/>
+							))
 						) : (
 							<div>내가 올린 글이 존재하지 않습니다.</div>
 						)}
@@ -200,7 +204,7 @@ const MyPage = () => {
 			</section>
 			<section className="bg-white py-[24px] text-left">
 				<div className="flex justify-between px-[25px] mb-[16px]">
-					<h1 className="heading-text">내 룸메이트 신청 목록</h1>
+					<h1 className="heading-text">내가 신청한 룸메이트</h1>
 					<Link
 						to="/mypage/roommate-applylist"
 						className="flex items-center justify-between username whitespace-nowrap"
@@ -212,7 +216,7 @@ const MyPage = () => {
 			</section>
 			<section className="bg-white pt-[24px]">
 				<div className="flex justify-between px-[25px]">
-					<h1 className="heading-text">좋아요</h1>
+					<h1 className="heading-text">좋아요한 룸메이트</h1>
 					<Link
 						to="/mypage/like"
 						className="flex items-center justify-between username whitespace-nowrap"

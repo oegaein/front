@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest';
 import { useMutation, useQueryClient  } from '@tanstack/react-query';
-import { calculateTimeAgo } from '@utils/calculateTimeAgo';
+import { timeAgo } from '@utils/TimeAgo';
 //components
 import ConfirmModal from '@common/modal/ConfirmModal';
 
@@ -75,7 +75,7 @@ const ComeMatchingRequest = ({ post, index, reFetchComeMatchingRequests }) => {
 			)}
 			<div className="flex justify-between">
 				<p className='font-caption1sb14'>{post.title}</p>
-				<div className="font-caption2m14 color-gray500">{calculateTimeAgo(post.createdAt)}</div>
+				<div className="font-caption2m14 color-gray500">{timeAgo(post.createdAt)}</div>
 			</div>
 			<div className="flex justify-between">
 				<div className="flex items-center justify-between gap-[10px]">

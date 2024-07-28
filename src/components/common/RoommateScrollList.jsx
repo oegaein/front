@@ -43,7 +43,7 @@ const RoommateScrollList = ({
 	const fetchData = async (searchTerm) => {
 		try {
 			const response = await API.get(`/api/v1/search?q=${searchTerm}`);
-			console.log(response.data.matching_posts_data);
+			console.log('검색', response);
 			return response.data.matching_posts_data;
 		} catch (err) {
 			console.log(err);
@@ -115,7 +115,7 @@ const RoommateScrollList = ({
 					return content; // 조건에 따라 결정된 내용을 리턴
 				})()}
 			</div>
-			<Pagination data={matchingPosts} setCurrentPage={setCurrentPage} />
+			{/* <Pagination data={matchingPosts} setCurrentPage={setCurrentPage}/> */}
 		</SettingStyle>
 	);
 };

@@ -30,9 +30,9 @@ const RoommateSwiperList = ({ type }) => {
 				/>
 			)}
 			<Swiper
-				spaceBetween={12}
-				slidesPerView={2}
-				loop={true}
+				slidesPerView={1.95}
+				slidesOffsetBefore={12}
+				slidesOffsetAfter={12}
 				className="mySwiper pt-[5px]"
 			>
 				{data?.data?.length > 0 ?
@@ -41,9 +41,10 @@ const RoommateSwiperList = ({ type }) => {
 						<SwiperSlide key={post.matchingPostId}>
 							<RoommateSwiperItem post={post} type={type} index={index} setConfirm={setConfirm} setConfirmContent={setConfirmContent} />
 						</SwiperSlide>
-					))
-				:
-				<div className="text-center pt-[16px]">룸메이트 데이터가 없습니다.</div>
+						)
+					)
+					:
+					<div className="text-center pt-[16px]">룸메이트 데이터가 없습니다.</div>
 				}
 			</Swiper>
 			{(type === 'new' || type === 'mypost') ? (

@@ -16,7 +16,7 @@ const makeAuthorizedRequest = async (url, method = 'get', config) => {
         response = await API.put(url, config);
         break;
       case 'delete':
-        response = await API.delete(url, {data: config});
+        response = await API.delete(url, { data: config });
         break;
       case 'patch':
         response = await API.patch(url);
@@ -24,7 +24,6 @@ const makeAuthorizedRequest = async (url, method = 'get', config) => {
       default:
         throw new Error('Invalid HTTP method');
     }    
-    console.log(response)
     return response;
   } catch (error) {
     console.error(error);
@@ -33,12 +32,6 @@ const makeAuthorizedRequest = async (url, method = 'get', config) => {
         const refreshResponse = await API.get('/api/v1/member/refresh');
         setAccessToken(refreshResponse.data.access_token);
         const accessToken = useAuthStore.getState().accessToken;
-        // let newConfig = {
-        //   ...config,
-        //   headers: {
-        //     Authorization: `Bearer ${accessToken}`,
-        //   },
-        // };
         API.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
 
         return await makeAuthorizedRequest(url, method, config);

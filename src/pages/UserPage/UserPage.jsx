@@ -86,49 +86,38 @@ const UserPage = () => {
 					<span className="header-text">{userInfo.name} 님의 프로필</span>
 				</Header>
 			</div>
-			<ProfileImageContainer
-				introduction={userInfo.introduction}
-				profileImage={userInfo.photo_url}
-			/>
-			<div className="userinfolifestyles flex flex-col gap-[10px] border-b border-[#DEDEDE]">
-				<div className="bg-white">
-					<div className="user-info pt-[103px] pb-[24px]  px-[25px]">
-						<h1 className="information-title text-left mb-[16px]">기본 정보</h1>
-						<UserPageInfo userInfo={userInfo} />
-					</div>
-					<div className="px-[25px] py-[24px]">
-						<h1 className="pb-[19px] text-left font-bold">
-							성향 및 라이프 스타일
-						</h1>
-						<UserLifeStyles userInfo={userInfo} />
-					</div>
-				</div>
-				<div>
-					<div className="bg-white pt-[24px] px-[24px] flex justify-between items-center">
-						<h1 className="roommate-review-title">받은 룸메이트 후기 2</h1>
-						<Link to="reviews" className="more flex">
-							더보기
-							<img src={Next} alt="see more icon" />
-						</Link>
-					</div>
-					<div className="bg-white py-[16px]">
-						<RoommateReviewList memberId={memberId} />
-					</div>
-				</div>
-			</div>
-			{memberId !== 'my-profile' && (
-				<MatchingApplyNavBar
-					version={'userPage'}
-					isLowerBarVisible={isLowerBarVisible}
-					id={memberId}
-					isLikeProps={userInfo.is_like}
-					userInfo={userInfo}
-					fetchUserInfoData={fetchUserInfoData}
-				/>
-			)}
-		</SettingStyle>
-	);
-};
+      <ProfileImageContainer introduction={userInfo.introduction} profileImage={userInfo.photo_url}/>
+      <div className='userinfolifestyles flex flex-col gap-[10px] border-b border-[#DEDEDE]'>
+        <div className='bg-white'>
+          <div className='user-info pt-[103px] pb-[24px]  px-[25px]'>
+            <h1 className='information-title text-left mb-[16px]'>기본 정보</h1>
+            <UserPageInfo userInfo={userInfo}/>
+          </div>
+          <div className='px-[25px] py-[24px]'>
+            <h1 className='pb-[19px] text-left font-bold'>성향 및 라이프 스타일</h1>
+            <UserLifeStyles userInfo={userInfo}/>
+          </div>
+        </div>
+        <div>
+          <div className='bg-white pt-[24px] px-[24px] flex justify-between items-center'>
+            <h1 className='roommate-review-title'>받은 룸메이트 후기 2</h1>
+            <Link to='reviews' className='more flex'>
+              더보기
+              <img src={Next} alt='see more icon'/>
+            </Link>
+          </div>
+          <div className='bg-white py-[16px]'>
+            <RoommateReviewList memberId={memberId}/>
+          </div>
+        </div>
+      </div>
+      {memberId !== 'my-profile' &&
+      <MatchingApplyNavBar version={'userPage'} isLowerBarVisible={isLowerBarVisible} id={memberId} userInfo={userInfo}
+      fetchUserInfoData={fetchUserInfoData}/>
+      }
+    </SettingStyle>
+  )
+}
 
 export default UserPage;
 

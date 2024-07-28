@@ -52,7 +52,7 @@ const PostDetail = () => {
 	useEffect(() => {
 		const fetchData = async () => {
 			const result = await getMatchingPostAPI(postId);
-			console.log(result);
+			console.log('상세 게시글', result);
 			setData(result);
 		};
 		fetchData();
@@ -302,6 +302,8 @@ const PostDetail = () => {
 					isLowerBarVisible={isLowerBarVisible}
 					id={postId}
 					userInfo={data.author_profile}
+					matchingStatus={data.matching_status}
+					matchingRequestId={data.matching_request_id}
 				/>
 			</PostDetailStyle>
 		</>
