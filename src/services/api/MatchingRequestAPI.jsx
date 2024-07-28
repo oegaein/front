@@ -6,6 +6,6 @@ export const postMatchingRequestAPI = async (id) => {
 		'post',
 		{ matchingPostId: id },
 	);
-	return response.data;
+	return response;
 };
 
