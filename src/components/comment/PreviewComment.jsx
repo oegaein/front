@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { CommentInput } from '@components/basicInfo/BasicSettingInput';
 import { Subtitle } from '@styles/basicInfo/Text';
@@ -25,9 +25,7 @@ const PreviewComment = ({ postId, comments, count }) => {
 	};
 
 	const handleMoreComment = () => {
-		navigate(`/comment-detail/${postId}`, {
-			state: { all: comments },
-		});
+		navigate(`/comment-detail/${postId}`);
 	};
 
 	return (
@@ -77,7 +75,7 @@ const PreviewComment = ({ postId, comments, count }) => {
 										ver="comment"
 										commentID={item.id}
 									/>
-									<div className="flex justify-between mt-2 pl-12 w-[42%]">
+									<div className="flex justify-between mt-2 pl-[53px] w-[43%]">
 										<span>{timeAgo(item.created_at)}</span>
 										<span
 											className="cursor-pointer"
@@ -101,7 +99,7 @@ const PreviewComment = ({ postId, comments, count }) => {
 													commentID={reply.id}
 													isReply={true}
 												/>
-												<div className="flex justify-between mt-2 pl-12 w-2/4">
+												<div className="flex justify-between mt-2 pl-14 w-[53%]">
 													<span>{timeAgo(reply.created_at)}</span>
 													<span
 														className="cursor-pointer"
