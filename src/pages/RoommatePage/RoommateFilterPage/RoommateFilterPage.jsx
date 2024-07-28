@@ -309,39 +309,29 @@ function RoommateFilterPage() {
 		if (matchingPosts?.data?.length > 0) {
 			const filtered = matchingPosts.data.filter((post) => {
 				const now = new Date();
-				const age =
-					now.getFullYear() - Number(post.birthdate.substring(0, 4)) + 1;
-
+				const age = now.getFullYear() - Number(post.birthdate?.substring(0, 4)) + 1;
+	
 				return (
 					(filters.targetNumberOfPeople.length === 0 ||
-						filters.targetNumberOfPeople.includes(
-							`${post.targetNumberOfPeople}인`,
-						)) &&
+						filters.targetNumberOfPeople.includes(`${post.targetNumberOfPeople}인`)) &&
 					(filters.gender === '' || filters.gender === post.gender) &&
 					(filters.dong.length === 0 || filters.dong.includes(post.dong)) &&
-					(filters.roomSize.length === 0 ||
-						filters.roomSize.includes(post.roomSize)) &&
+					(filters.roomSize.length === 0 || filters.roomSize.includes(post.roomSize)) &&
 					(filters.mbti.length === 0 || filters.mbti.includes(post.mbti)) &&
 					(filters.sleepingHabits.length === 0 ||
-						filters.sleepingHabits.some((habit) =>
-							post.SleepingHabits.includes(habit),
-						)) &&
-					(filters.lifePattern.length === 0 ||
-						filters.lifePattern.includes(post.lifePattern)) &&
-					(filters.smoking.length === 0 ||
-						filters.smoking.includes(post.smoking)) &&
-					(filters.cleaningCycle.length === 0 ||
-						filters.cleaningCycle.includes(post.cleaningCycle)) &&
-					(filters.outing.length === 0 ||
-						filters.outing.includes(post.outing)) &&
-					(filters.sensitivity.length === 0 ||
-						filters.sensitivity.includes(post.sensitivity)) &&
+						(post.sleepingHabits && filters.sleepingHabits.some((habit) => post.sleepingHabits.includes(habit)))) &&
+					(filters.lifePattern.length === 0 || filters.lifePattern.includes(post.lifePattern)) &&
+					(filters.smoking.length === 0 || filters.smoking.includes(post.smoking)) &&
+					(filters.cleaningCycle.length === 0 || filters.cleaningCycle.includes(post.cleaningCycle)) &&
+					(filters.outing.length === 0 || filters.outing.includes(post.outing)) &&
+					(filters.sensitivity.length === 0 || filters.sensitivity.includes(post.sensitivity)) &&
 					age >= filters.minAge &&
 					age <= filters.maxAge &&
 					Number(post.studentNo) >= filters.minYear &&
 					Number(post.studentNo) <= filters.maxYear
 				);
 			});
+	
 			if (filters.sort === '최신순') {
 				const sorted = filtered.sort((a, b) => {
 					const dateA = new Date(a.createdAt);
@@ -364,7 +354,7 @@ function RoommateFilterPage() {
 			setFilteredPosts([]);
 		}
 	}, [filters, matchingPosts]);
-	useEffect(() => {
+		useEffect(() => {
 		console.log(filters);
 	}, [filters]);
 
