@@ -19,6 +19,7 @@ import {
 } from 'services/api/ChatAPI';
 import { ImgWrapper } from '@common/ui/Profile';
 import useMyInfoStore from '@store/myInfoStore';
+import ConfirmModal from '@common/modal/ConfirmModal';
 
 const Chatroom = () => {
 	const messageEndRef = useRef(null);
@@ -36,6 +37,8 @@ const Chatroom = () => {
 		matchingStatus: '',
 	});
 	const [message, setMessage] = useState('');
+	const [confirm, setConfirm] = useState(false);
+	const [confirmContent, setConfirmContent] = useState({});
 
 	const connectClient = () => {
 		const socket = new SockJS(`${chatSeverURL}/oegaein`);
@@ -123,9 +126,18 @@ const Chatroom = () => {
 
 	const onDisconnect = async () => {
 		clientRef.current.deactivate();
-		const result = await deleteChatRoom(subscribeID);
-		console.log(result);
-		navigate('/chat');
+		setConfirm(true);
+		setConfirmContent((prev) => ({
+			...prev,
+			msg: '채팅방에서 나가시겠습니까?',
+			btn: '나가기',
+			func: async () => {
+				const result = await deleteChatRoom(subscribeID);
+				console.log(result);
+				// 성공하면 홈 화면으로
+				navigate('/chat');
+			},
+		}));
 	};
 
 	const onEnter = (e) => {
@@ -153,88 +165,105 @@ const Chatroom = () => {
 	};
 
 	return (
-		<ChatContainer>
-			<section className="pb-3 fixed top-0 z-10 w-[393px] bg-white border-b-black container">
-				<Header
-					backPath={'/chat'}
-					backEvent={onDisconnect}
-					rightContent={ConfirmMatching(room.matchingStatus)}
-					rightEvent={() => {
-						getMatchingEnd(room.matchingPostId);
-					}}
-				>
-					<div className="flex justify-center">
-						<p className="header mr-2">{room.roomName}</p>
-						<p className="people">{room.memberCount}</p>
-					</div>
-				</Header>
-			</section>
-			<section className="chatRoom">
-				{chats.map((chat, index) => (
-					<ChattingStyle key={index} isMyChat={isMyChat(chat.senderName)}>
-						<ImgVisible
-							className={isMyChat(chat.senderName) ? 'noneDisplay' : ''}
-							visible={
-								index > 0 &&
-								prevSender(chat.senderName, chats[index - 1].senderName)
-							}
-						>
-							<ImgWrapper mr={'10px'} width={'50px'} height={'50px'}>
-								<img src={chat.photoUrl} alt="profile" className="img" />
-							</ImgWrapper>
-						</ImgVisible>
-						<div className="flex flex-col">
-							<div
-								className={
-									isMyChat(chat.senderName) ||
-									(index > 0 &&
-										prevSender(chat.senderName, chats[index - 1].senderName))
-										? 'noneDisplay '
-										: 'name'
-								}
-							>
-								{chat.senderName}
-							</div>
-							<div
-								className={`chat ${isMyChat(chat.senderName) ? 'myChat' : 'yourChat'} ${
+		<>
+			{confirm && (
+				<ConfirmModal
+					content={confirmContent}
+					isOpen={confirm}
+					setIsOpen={setConfirm}
+				/>
+			)}
+			<ChatContainer>
+				<section className="headerContainer">
+					<Header
+						backPath={'/chat'}
+						backEvent={onDisconnect}
+						rightContent={ConfirmMatching(room.matchingStatus)}
+						rightEvent={() => {
+							getMatchingEnd(room.matchingPostId);
+						}}
+					>
+						<div className="flex justify-center">
+							<p className="header mr-2">{room.roomName}</p>
+							<p className="people">{room.memberCount}</p>
+						</div>
+					</Header>
+				</section>
+				<section className="chatRoom">
+					{chats.map((chat, index) => (
+						<ChattingStyle key={index} isMyChat={isMyChat(chat.senderName)}>
+							<ImgVisible
+								className={isMyChat(chat.senderName) ? 'noneDisplay' : ''}
+								visible={
 									index > 0 &&
 									prevSender(chat.senderName, chats[index - 1].senderName)
-										? nextSender(chat.senderName, chats[index + 1]?.senderName)
-											? 'middleMsg'
-											: 'endMsg'
-										: ''
-								}`}
+								}
 							>
-								{chat.message}
+								<ImgWrapper mr={'10px'} width={'50px'} height={'50px'}>
+									<img src={chat.photoUrl} alt="profile" className="img" />
+								</ImgWrapper>
+							</ImgVisible>
+							<div className="flex flex-col">
+								<div
+									className={
+										isMyChat(chat.senderName) ||
+										(index > 0 &&
+											prevSender(chat.senderName, chats[index - 1].senderName))
+											? 'noneDisplay '
+											: 'name'
+									}
+								>
+									{chat.senderName}
+								</div>
+								<div
+									className={`chat ${isMyChat(chat.senderName) ? 'myChat' : 'yourChat'} ${
+										index > 0 &&
+										prevSender(chat.senderName, chats[index - 1].senderName)
+											? nextSender(
+													chat.senderName,
+													chats[index + 1]?.senderName,
+												)
+												? 'middleMsg'
+												: 'endMsg'
+											: ''
+									}`}
+								>
+									{chat.message}
+								</div>
 							</div>
-						</div>
-					</ChattingStyle>
-				))}
-				<div ref={messageEndRef}></div>
-			</section>
-			<InputStyle>
-				<div className="input_box">
-					<input
-						className="input"
-						type="text"
-						placeholder="메세지 보내기..."
-						onChange={inputMessage}
-						onKeyDown={onEnter}
-						value={message}
-					/>
-					<button
-						className={message.length === 0 ? 'noneDisplay' : ''}
-						onClick={sendHandler}
-					>
-						<img src={SendIcon} alt="send" />
+						</ChattingStyle>
+					))}
+					<div ref={messageEndRef}></div>
+				</section>
+				<InputStyle>
+					<div className="input_box">
+						<input
+							className="input"
+							type="text"
+							placeholder={
+								room.memberCount > 1
+									? '메세지 보내기...'
+									: '메세지를 보낼 수 없습니다.'
+							}
+							onChange={inputMessage}
+							onKeyDown={onEnter}
+							value={message}
+							disabled={room.memberCount > 1 ? false : true}
+						/>
+						<button
+							className={message.length === 0 ? 'noneDisplay' : ''}
+							onClick={sendHandler}
+						>
+							<img src={SendIcon} alt="send" />
+						</button>
+					</div>
+					<button onClick={onDisconnect}>
+						<img src={ExitIcon} alt="exit" />
 					</button>
-				</div>
-				<button onClick={onDisconnect}>
-					<img src={ExitIcon} alt="exit" />
-				</button>
-			</InputStyle>
-			<br />
-		</ChatContainer>
+				</InputStyle>
+				<br />
+			</ChatContainer>
+		</>
 	);
 };
 
@@ -263,6 +292,18 @@ const ChatContainer = styled.div`
 		border-bottom: 1px solid ${COLOR.gray100};
 		margin-bottom: 10px;
 	}
+	.headerContainer {
+		display: flex;
+		padding: 10px 25px;
+		width: 393px;
+		position: fixed;
+		top: 0;
+		z-index: 10;
+		background-color: ${COLOR.white};
+		border-bottom: 1px solid ${COLOR.gray100};
+		margin-bottom: 10px;
+	}
+
 	.header {
 		font: ${FONT.title4SB17};
 		max-width: 140px;
@@ -277,7 +318,7 @@ const ChatContainer = styled.div`
 	}
 	.chatRoom {
 		width: 100%;
-		padding: 50px 25px 0px 25px;
+		padding: 100px 25px 0px 25px;
 		overflow-y: auto;
 	}
 	.noneDisplay {
@@ -289,7 +330,7 @@ const ChattingStyle = styled.div`
 	display: flex;
 	width: 100%;
 	margin-bottom: 4px;
-	flex-direction: 'row-reverse';
+	flex-direction: row-reverse;
 	flex-direction: ${({ isMyChat }) => (isMyChat ? 'row-reverse' : 'row')};
 
 	.name {
