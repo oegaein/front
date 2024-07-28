@@ -8,7 +8,7 @@ import styled from 'styled-components'
 import FONT from '@styles/fonts'
 import COLOR from '@styles/color'
 
-
+import BasicModal from './modal/BasicModal';
 //images
 import Share from '@assets/images/share.svg'
 import BigRedHeart from '@assets/images/bigredheart.svg'
@@ -28,7 +28,7 @@ const MatchingApplyNavBar = ({version, isLowerBarVisible, id, userInfo, matching
   //조건 변수 정의
   const isUserPage = location.pathname.substring(0, 5) === "/user";
   const isPostDetailPage = !isUserPage;
-  const isMyApplyPost = matchingRequestId;
+  const [isMyApplyPost, setIsMyApplyPost] = useState(matchingRequestId);
   const isMatchingPending = matchingStatus === '매칭 대기';
   const isMatchingClosed = matchingStatus === '매칭 완료' || matchingStatus === '매칭 마감';
   useEffect(() => {
@@ -95,6 +95,7 @@ const MatchingApplyNavBar = ({version, isLowerBarVisible, id, userInfo, matching
       const response = await postMatchingRequestAPI(id)
       console.log('매칭신청', response)
       if (response.status === 201) {
+        setIsMyApplyPost(true)
         alert('매칭 신청 완료')
       } else {
         alert('신청 안됨')

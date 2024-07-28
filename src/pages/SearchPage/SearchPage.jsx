@@ -26,7 +26,7 @@ const SearchPage = () => {
 	}, []);
 	return (
 		<SettingStyle>
-			<div className="flex justify-between bg-white px-[28px] mb-[4px]">
+			<div className="flex justify-between items-center bg-white px-[28px] mb-[4px] h-[57px]">
 				<button onClick={() => navigate(-1)}>
 					<img
 						src={BackButton}
@@ -49,7 +49,6 @@ export default SearchPage;
 
 const SettingStyle = styled.div`
 	background-color: white;
-	padding-top: 11px;
 	.bold-text {
 		font-size: ${FONT.title4SB17};
 	}
