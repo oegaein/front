@@ -146,11 +146,7 @@ const MatchingApplyNavBar = ({version, isLowerBarVisible, id, userInfo, matching
   
     if (isPostDetailPage) {
       if (isMyApplyPost) {
-        if (isMatchingPending) {
-          return <div className='filter-btn whitespace-nowrap applied'>신청완료</div>;
-        } else if (isMatchingClosed) {
-          return <div className='filter-btn whitespace-nowrap registered'>매칭 마감</div>;
-        }
+        return <div className='filter-btn whitespace-nowrap applied'>신청완료</div>;
       } else {
         if (isMatchingPending) {
           return <button onClick={fetchMatchingRequest} className='filter-btn whitespace-nowrap'>매칭신청</button>;

@@ -13,6 +13,9 @@ const RoommateSwiperItem = ({post, type, index, setConfirm, setConfirmContent}) 
 //   매칭글 - 매칭 대기 | 매칭 마감 | 매칭 완료
 // 매칭요청(내 룸메이트 신청 목록, 룸메이트 신청 요청 ) - 매칭 대기(대기중) | 매칭 수락(수락됨) | 매칭 거절(거절됨)
 
+
+  //조건 변수 정의
+  
   const queryClient = useQueryClient();
   const navigate = useNavigate()
   const registerMutation = useMutation(
@@ -69,6 +72,32 @@ const RoommateSwiperItem = ({post, type, index, setConfirm, setConfirmContent}) 
   const handleClickPost = (matchingPostId) => {
     navigate(`/post-detail/${matchingPostId}`)
   }
+
+  const isMyMatchingRequests = type === 'my-matchingrequests';
+  const isMatchingPending = post.matchingStatus === '매칭 대기';
+  const isMatchingAccepted = post.matchingStatus === '매칭 수락';
+  const isMatchingRejected = post.matchingStatus === '매칭 거절';
+  const isMatchingClosed = post.matchingStatus === '매칭 완료' || post.matchingStatus === '매칭 마감';
+
+  const renderStatus = () => {
+    if (isMyMatchingRequests) {
+      if (isMatchingPending) {
+        return <div className='register text-right'>대기중</div>;
+      } else if (isMatchingAccepted) {
+        return <div className='register text-right registered'>수락됨</div>;
+      } else if (isMatchingRejected) {
+        return <div className='register text-right registered'>거절됨</div>;
+      }
+    } else {
+      if (isMatchingClosed) {
+        return <div className='register text-right gray500'>매칭 마감</div>;
+      } else if (isMatchingPending) {
+        return <div className='register text-right'>{post.matchingStatus}</div>;
+      }
+    }
+  
+    return null; // 기본적으로 아무것도 렌더링하지 않음
+  };
   return (
     <SettingStyle onClick={()=>handleClickPost(post.matchingPostId)} key={post.matchingPostId} className={`w-[192px] h-[179px] border border-[${COLOR.gray100}] rounded-[20px] bg-white p-[17px] pb-[13px]`}>
       <div className='flex items-center justify-between mb-[10px]'>
@@ -92,27 +121,7 @@ const RoommateSwiperItem = ({post, type, index, setConfirm, setConfirmContent}) 
         </div>
       </div>
       <div className='text-right'>
-      {
-        type === 'my-matchingrequests' ? 
-        //매칭대기 and requestId 
-        post.matchingStatus === '매칭 대기' ?
-        <div className='register text-right'>대기중</div>
-        :
-        post.matchingStatus === '매칭 수락' ?
-        <div className='register text-right registered'>수락됨</div>
-        :
-        <div className='register text-right registered'>거절됨</div>
-        //my-matchingrequests를 제외한 나머지 
-        :
-        post.matchingStatus === '매칭 완료' ?
-        <div className='register text-right registered'>{post.matchingStatus}</div>
-        :
-        post.matchingStatus === '매칭 마감' ?
-        <div  className='register text-right gray500'>{post.matchingStatus}</div>
-        :
-        //매칭 대기 
-        <div className='register text-right'>{post.matchingStatus}</div>
-      }
+      {renderStatus()}
       </div>
     </SettingStyle>
   )
