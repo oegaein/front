@@ -33,15 +33,17 @@ const Header = ({
 		}
 	};
 
+	const isUserProfile =
+		/^\/user\/\d+$/.test(location.pathname) ||
+		location.pathname === '/user/my-profile';
+
 	return (
 		<>
 			<div
 				className={'flex flex-1 justify-between w-full h-[57px] items-center'}
 			>
 				<button className={'flex-1'} onClick={handleBackButton}>
-					<img
-						src={`${location.pathname.substring(0, 16) !== '/user/my-profile' ? BackIcon : BackIconWhite}`}
-					/>
+					<img src={`${isUserProfile ? BackIconWhite : BackIcon}`} />
 				</button>
 				<div
 					className={`${location.pathname.substring(0, 12) === '/post-detail' ? 'flex-[10]' : 'flex-[2.6]'}`}

@@ -12,6 +12,7 @@ import {
 } from 'services/api/AlarmAPI';
 import useAuthStore from '@store/authStore';
 import { timeAgo } from '@utils/TimeAgo';
+import { Link } from 'react-router-dom';
 
 const Alarm = () => {
 	const setAccessToken = useAuthStore((state) => state.setAccessToken);
@@ -68,31 +69,35 @@ const Alarm = () => {
 							<p className="mt-10">새로운 알림이 없습니다.</p>
 						) : (
 							data?.map((alarm, index) => (
-								<div className="flex w-full justify-between px-6 py-4">
-									<div className="flex">
-										<div className="mr-[10px]">
-											<img
-												src={alarm.photo_url}
-												style={{ width: '65px', height: '65px' }}
-											/>
+								<Link to={`/post-detail/${alarm.matching_post_id}`}>
+									<div className="flex w-full justify-between px-6 py-4">
+										<div className="flex">
+											<div className="mr-[10px]">
+												<img
+													src={alarm.photo_url}
+													width={'65px'}
+													height={'65px'}
+													className="rounded-full"
+												/>
+											</div>
+											<div className="flex flex-col justify-center items-start">
+												<p className="title">
+													{alarm.name}님이 룸메이트 신청을 보냈어요.
+												</p>
+												{/* <p className="sub">{alarm.title}</p> */}
+												<p className="time mt-1">{timeAgo(alarm.created_at)}</p>
+											</div>
 										</div>
-										<div className="flex flex-col justify-center items-start">
-											<p className="title">
-												{alarm.name}님이 룸메이트 신청을 보냈습니다.
-											</p>
-											{alarm.sub !== '' && <p className="sub">{alarm.sub}</p>}
-											<p className="time mt-1">{timeAgo(alarm.created_at)}</p>
-										</div>
+										<button
+											onClick={() => {
+												DeleteAlarm(alarm.matching_post_id);
+											}}
+											className="flex items-center mb-5"
+										>
+											<img src={Close} alt="close button" />
+										</button>
 									</div>
-									<button
-										onClick={() => {
-											DeleteAlarm(alarm.matching_post_id);
-										}}
-										className="flex items-center mb-5"
-									>
-										<img src={Close} alt="close button" />
-									</button>
-								</div>
+								</Link>
 							))
 						)}
 					</div>
@@ -112,7 +117,7 @@ const Alarm = () => {
 										</div>
 										<div className="flex flex-col justify-center items-start">
 											<p className="title">
-												{alarm.name}님이 룸메이트 신청을 보냈습니다.
+												{alarm.name}님이 룸메이트 신청을 보냈어요.
 											</p>
 											{alarm.sub !== '' && <p className="sub">{alarm.sub}</p>}
 											<p className="time mt-1">{timeAgo(alarm.created_at)}</p>
@@ -155,6 +160,8 @@ const AlarmContainer = styled.div`
 	}
 
 	.title {
+		padding-right: 12px;
+		text-align: start;
 		font: ${FONT.body5M15};
 	}
 
