@@ -67,6 +67,31 @@ const RoommateScrollItem = ({post, type, setConfirm, setConfirmContent}) => {
   const handleClickPost = (matchingPostId) => {
     navigate(`/post-detail/${matchingPostId}`)
   }
+  const isMyMatchingRequests = type === 'my-matchingrequests';
+  const isMatchingPending = post.matchingStatus === '매칭 대기';
+  const isMatchingAccepted = post.matchingStatus === '매칭 수락';
+  const isMatchingRejected = post.matchingStatus === '매칭 거절';
+  const isMatchingClosed = post.matchingStatus === '매칭 완료' || post.matchingStatus === '매칭 마감';
+
+  const renderStatus = () => {
+    if (isMyMatchingRequests) {
+      if (isMatchingPending) {
+        return <div className='register text-right'>대기중</div>;
+      } else if (isMatchingAccepted) {
+        return <div className='register text-right registered'>수락됨</div>;
+      } else if (isMatchingRejected) {
+        return <div className='register text-right registered'>거절됨</div>;
+      }
+    } else {
+      if (isMatchingClosed) {
+        return <div className='register text-right gray500'>매칭 마감</div>;
+      } else if (isMatchingPending) {
+        return <div className='register text-right'>{post.matchingStatus}</div>;
+      }
+    }
+    return null; // 기본적으로 아무것도 렌더링하지 않음
+  };
+
   return (
     <SettingStyle onClick={()=>handleClickPost(post.matchingPostId)} key={post.matchingPostId} className={`flex bg-white border border-[${COLOR.gray100}] rounded-[20px] p-[14px]`}>
       <img className='w-[100px] h-[100px] mr-[12px] rounded-[50%]' src={post.photoUrl}/>
@@ -96,26 +121,7 @@ const RoommateScrollItem = ({post, type, setConfirm, setConfirmContent}) => {
         </div>
         <div className='text-right'>
           {/* 매칭 대기, 매칭 완료, 매칭 마감 */}
-          {type === 'my-matchingrequests' ? 
-          post.matchingStatus === '매칭 대기' ?
-          <div className='register-btn'>대기중</div>
-          : 
-          post.matchingStatus === '매칭 수락' ?
-          <div className='register-btn registered'>수락됨</div>
-          :
-          <div className='register-btn registered'>거절됨</div>
-                  //my-matchingrequests를 제외한 나머지 
-          :
-          post.matchingStatus === '매칭 완료' ?
-          <div className='register-btn text-right registered'>{post.matchingStatus}</div>
-          :
-          post.matchingStatus === '매칭 마감' ?
-          <div  className='register-btn text-right gray500'>{post.matchingStatus}</div>
-          :
-          //매칭 대기 
-          <div className='register-btn text-right'>{post.matchingStatus}</div>
-
-          }
+          {renderStatus()}
         </div>
       </div>
     </SettingStyle>
@@ -149,8 +155,7 @@ const SettingStyle = styled.div`
     font-size: ${FONT.caption3M12};
     color: ${COLOR.gray500};
   }
-
-  .register-btn {
+  .register {
     font-size: ${FONT.caption2M14};
     color: ${COLOR.purple1};
     &.registered {
