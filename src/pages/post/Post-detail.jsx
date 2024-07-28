@@ -87,8 +87,9 @@ const PostDetail = () => {
 			...prev,
 			msg: `${data.author_name}님을 차단할까요?`,
 			btn: '차단',
-			func: () => {
-				BlockUserAPI(data.author_profile.id);
+			func: async () => {
+				const res = await BlockUserAPI(data.author_profile.id);
+				console.log(res);
 			},
 		}));
 	};
