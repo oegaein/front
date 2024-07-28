@@ -125,9 +125,7 @@ export const BasicProfile = ({
 				<img
 					src={Img}
 					alt="Profile"
-					className={`img mr-[${mr}] rounded-full`}
-					width={width}
-					height={height}
+					className={`img mr-[${mr}] rounded-full w-[${width}] h-[${height}]`}
 				/>
 				<div className="flex flex-col items-start w-full">
 					{ver === 'profile' ? (
