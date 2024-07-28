@@ -107,7 +107,7 @@ const ComeMatchingRequest = ({ post, index, reFetchComeMatchingRequests }) => {
 						/>
 					</div>
 					<div>
-						<Link to={`/user/${id}`} className="username flex">
+						<Link to={`/user/${post.id}`} className="username flex">
 							{post.name} <img src={Next} />
 						</Link>
 						<p className="small-text">{post.introduction}</p>
