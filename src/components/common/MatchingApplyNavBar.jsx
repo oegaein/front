@@ -1,14 +1,15 @@
 import React, {useState, useEffect} from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest';
-import { useMutation, queryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { postMatchingRequestAPI } from 'services/api/MatchingRequestAPI';
+import useMyInfoStore from '@store/myInfoStore';
+
 //styles
 import styled from 'styled-components'
 import FONT from '@styles/fonts'
 import COLOR from '@styles/color'
 
-import BasicModal from './modal/BasicModal';
 //images
 import Share from '@assets/images/share.svg'
 import BigRedHeart from '@assets/images/bigredheart.svg'
@@ -16,13 +17,19 @@ import BigEmptyHeart from '@assets/images/heart (10) 1.svg'
 import Comment from '@assets/images/comment.svg'
 
 
-const MatchingApplyNavBar = ({version, isLowerBarVisible, id, userInfo, matchingStatus, matchingRequestId}) => {
+const MatchingApplyNavBar = ({version, isLowerBarVisible, memberId, postId, userInfo,
+  fetchUserInfoData, matchingStatus, matchingRequestId, setConfirm, setConfirmContent}) => {
   console.log('matchingapplynavbar', matchingStatus, matchingRequestId)
   const [isLike, setIsLike] = useState(false)
   const [firstRendering, setFirstRendering] = useState(true)
+  const [isMyPost, setIsMyPost] = useState(false)
   const isLikeProps = userInfo?.is_like
   const navigate = useNavigate()
   const location = useLocation()
+  const queryClient = useQueryClient();
+
+  const myInfo = useMyInfoStore.getState().myInfo
+
   // /user or /post-detail 
 
   //조건 변수 정의
@@ -39,6 +46,11 @@ const MatchingApplyNavBar = ({version, isLowerBarVisible, id, userInfo, matching
       console.log(isLike)
     }
   }, [isLikeProps]);
+  useEffect(() => {
+    if (myInfo.id === memberId) {
+      setIsMyPost(true)
+    }
+  }, []);
 
   useEffect(() => {
     // 카카오 SDK 초기화
@@ -49,10 +61,10 @@ const MatchingApplyNavBar = ({version, isLowerBarVisible, id, userInfo, matching
   }, []);
   
   const goToDetailComments = () => {
-    navigate(`/comment-detail/${id}`)
+    navigate(`/comment-detail/${postId}`)
   }
   const goToUserPostPage = () => {
-    navigate(`/user/${id}/posts`)
+    navigate(`/user/${memberId}/posts`)
   }
   const fetchLikeMutation = useMutation(
 		{
@@ -85,14 +97,41 @@ const MatchingApplyNavBar = ({version, isLowerBarVisible, id, userInfo, matching
 		}
 	);
   const fetchLikeData = () => {
-    fetchLikeMutation.mutate(id)
+    fetchLikeMutation.mutate(memberId)
   }
   const fetchDeleteLikeData = () => {
-    cancelLikeMutation.mutate(id)
+    cancelLikeMutation.mutate(memberId)
   }
+
+  //매칭확정
+  const confirmMutation = useMutation(
+		{
+			mutationFn: (matchingRequestId) => makeAuthorizedRequest(`/api/v1/matchingrequests/${matchingRequestId}/accept`, 'patch'),
+			onSuccess: (data) => {
+				if (data.status === 200) {
+					queryClient.invalidateQueries(['matchingPosts', 'mypost'])
+				}
+				console.log('매칭확정', data);
+			},
+			onError: (error) => {
+				console.log(error);
+			}
+		}
+	);
+	const handleClickConfirmBtn = async () => {
+		// e.stopPropagation()
+    setConfirm(true)
+		setConfirmContent({
+			id: -1,
+			msg: `룸메이트 매칭을 확정할까요?`,
+			btn: '확정',
+			func: () => {confirmMutation.mutate(postId)},
+		})
+	}
+
   const fetchMatchingRequest = async () => {
     try {
-      const response = await postMatchingRequestAPI(id)
+      const response = await postMatchingRequestAPI(postId)
       console.log('매칭신청', response)
       if (response.status === 201) {
         setIsMyApplyPost(true)
@@ -146,13 +185,19 @@ const MatchingApplyNavBar = ({version, isLowerBarVisible, id, userInfo, matching
     }
   
     if (isPostDetailPage) {
-      if (isMyApplyPost) {
+      if (isMyPost) {
+        if (isMatchingPending) {
+          return <button onClick={handleClickConfirmBtn} className='filter-btn whitespace-nowrap'>매칭확정</button>;
+        } else if (isMatchingClosed) {
+          return <div className='filter-btn whitespace-nowrap registered'>매칭완료</div>;
+        }
+      }else if (isMyApplyPost) {
         return <div className='filter-btn whitespace-nowrap applied'>신청완료</div>;
       } else {
         if (isMatchingPending) {
           return <button onClick={fetchMatchingRequest} className='filter-btn whitespace-nowrap'>매칭신청</button>;
         } else if (isMatchingClosed) {
-          return <div className='filter-btn whitespace-nowrap registered'>매칭 마감</div>;
+          return <div className='filter-btn whitespace-nowrap registered'>매칭마감</div>;
         }
       }
     }

@@ -18,7 +18,7 @@ const CallBack = () => {
         const response = await API.get(`/api/v1/member/auth/google/callback?code=${code}`)
         const accessToken = response.data.accessToken
         const refreshToken = response.data.refreshToken
-        const {email, gender, introduction, name, photoUrl, profileSetUpStatus} = response.data
+        const {email, gender, introduction, name, photoUrl, profileSetUpStatus, id} = response.data
         const myInfo = {email, gender, introduction, name, photoUrl, profileSetUpStatus}
         console.log('myinfo', myInfo)
         console.log('callback request', response)

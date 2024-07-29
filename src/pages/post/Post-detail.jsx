@@ -301,10 +301,13 @@ const PostDetail = () => {
 				<MatchingApplyNavBar
 					version={'comment'}
 					isLowerBarVisible={isLowerBarVisible}
-					id={postId}
+					memberId={data.author_id}
+					postId={postId}
 					userInfo={data.author_profile}
 					matchingStatus={data.matching_status}
 					matchingRequestId={data.matching_request_id}
+					setConfirm={setConfirm}
+					setConfirmContent={setConfirmContent}
 				/>
 			</PostDetailStyle>
 		</>
