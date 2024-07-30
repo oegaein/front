@@ -15,8 +15,10 @@ import LifestyleEdit from '@components/UserPage/edit/LifestyleEdit';
 import BasicButton from '@common/button/BasicButton';
 import { EditProfileAPI } from 'services/api/ProfileAPI';
 import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest';
+import useMyInfoStore from '@store/myInfoStore';
 
 const MyProfileEdit = () => {
+	const setMyInfo = useMyInfoStore((state) => state.setMyInfo);
 	const [info, setInfo] = useState({
 		name: '',
 		gender: '',
@@ -34,6 +36,7 @@ const MyProfileEdit = () => {
 	});
 	const [disable, setDisable] = useState(false);
 	console.log(disable);
+	console.log('info' + info.student_no);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -90,7 +93,10 @@ const MyProfileEdit = () => {
 
 	const handleSubmit = async () => {
 		const response = await EditProfileAPI(info);
-		console.log(response);
+		if (response.status === 200) {
+			const response = await makeAuthorizedRequest(`/api/v1/member/my-profile`);
+			setMyInfo(response.data);
+		}
 	};
 
 	return (
