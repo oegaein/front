@@ -66,7 +66,7 @@ const Alarm = () => {
 				{menu === '룸메이트' ? (
 					<div>
 						{data === 'undefined' || data?.length === 0 ? (
-							<p className="mt-10">새로운 알림이 없습니다.</p>
+							<p className="sub mt-10">새로운 알림이 없습니다.</p>
 						) : (
 							data?.map((alarm, index) => (
 								<Link to={`/post-detail/${alarm.matching_post_id}`}>
@@ -104,7 +104,7 @@ const Alarm = () => {
 				) : (
 					<div>
 						{data.length === 0 ? (
-							<p className="mt-10">새로운 알림이 없습니다.</p>
+							<p className="sub mt-10">새로운 알림이 없습니다.</p>
 						) : (
 							data?.map((alarm, index) => (
 								<div className="flex w-full justify-between px-6 py-4">
