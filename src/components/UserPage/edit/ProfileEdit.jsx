@@ -28,20 +28,26 @@ const ProfileEdit = ({ onGetValue, defaultValue }) => {
 		{ id: '남성', img: MailImg },
 	];
 	const [selectedGender, setSelectedGender] = useState(0);
-	const [selectedStudentId, setSelectedStudentId] = useState(null);
-	const [selectedBirth, setSelectedBirth] = useState(null);
+	const [selectedStudentId, setSelectedStudentId] = useState(0);
+	const [selectedBirth, setSelectedBirth] = useState('');
 
 	const handleGenderChange = (index) => {
 		setSelectedGender(index);
 	};
 
 	useEffect(() => {
-		const values = {
-			gender: gender[selectedGender].id,
-			studentId: selectedStudentId,
-			birth: selectedBirth,
-		};
-		onGetValue(values);
+		if (
+			selectedGender !== 0 &&
+			selectedStudentId !== 0 &&
+			selectedBirth !== ''
+		) {
+			const values = {
+				gender: gender[selectedGender].id,
+				studentId: selectedStudentId,
+				birth: selectedBirth,
+			};
+			onGetValue(values);
+		}
 	}, [selectedGender, selectedStudentId, selectedBirth]);
 
 	const handleSelectedSI = (value) => {
@@ -79,7 +85,7 @@ const ProfileEdit = ({ onGetValue, defaultValue }) => {
 					label="학번을 선택해주세요."
 					options={SIoptions}
 					setSelected={handleSelectedSI}
-					defaultValue={defaultValue[1]}
+					defaultValue={`${defaultValue[1]}학번`}
 				/>
 				<Subtitle>생년월일 *</Subtitle>
 				<NumInput

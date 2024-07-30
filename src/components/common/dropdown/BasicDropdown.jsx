@@ -17,8 +17,16 @@ const BasicDropdown = ({
 }) => {
 	const location = useLocation();
 	const [isOpen, setIsOpen] = useState(false);
-	const [selectedOption, setSelectedOption] = useState(defaultValue || '');
-	const dropdownRef = useRef(null);
+	const [selectedOption, setSelectedOption] = useState('');
+
+	useEffect(() => {
+		if (
+			defaultValue &&
+			(defaultValue !== null || defaultValue !== '' || defaultValue !== 0)
+		) {
+			setSelectedOption(defaultValue);
+		}
+	}, [defaultValue]);
 
 	useEffect(() => {
 		if (isOpen) {
