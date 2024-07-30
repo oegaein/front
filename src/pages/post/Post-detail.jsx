@@ -152,7 +152,7 @@ const PostDetail = () => {
 				/>
 			)}
 			<PostDetailStyle>
-				<div className="container justify-between sticky top-0 bg-white z-20">
+				<div className="header_container justify-between sticky top-0 bg-white z-20">
 					<Header
 						backPath={'/home'}
 						rightContent={Threedots}
@@ -348,6 +348,17 @@ const PostDetailStyle = styled.div`
 	.container {
 		display: flex;
 		padding: 25px;
+		width: 100%;
+		border-bottom: 1px solid ${COLOR.gray100};
+
+		> p {
+			font: ${FONT.title4SB17};
+		}
+	}
+
+	.header_container {
+		display: flex;
+		padding: 0px 25px;
 		width: 100%;
 		border-bottom: 1px solid ${COLOR.gray100};
 

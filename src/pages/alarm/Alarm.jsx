@@ -151,7 +151,7 @@ const AlarmContainer = styled.div`
 
 	.container {
 		display: flex;
-		padding: 25px;
+		padding: 0px 25px;
 		width: 100%;
 
 		p {
