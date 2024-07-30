@@ -52,7 +52,11 @@ export const EditNicknameInput = ({
 	onChangeValue,
 	limitNum,
 }) => {
-	const [value, setValue] = useState(defaultValue || '');
+	const [value, setValue] = useState('');
+
+	useEffect(() => {
+		setValue(defaultValue || '');
+	}, [defaultValue]);
 
 	const handleChange = (e) => {
 		const inputValue = e.target.value;
