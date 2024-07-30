@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Subtitle } from '@styles/basicInfo/Text';
+import { Subtitle, UnderMsg } from '@styles/basicInfo/Text';
 import COLOR from '@styles/color';
 import styled from 'styled-components';
 import BasicDropdown from '@common/dropdown/BasicDropdown';
@@ -22,7 +22,7 @@ const SIoptions = [
 	'15학번',
 ];
 
-const ProfileEdit = ({ onGetValue, defaultValue }) => {
+const ProfileEdit = ({ onGetValue, defaultValue, setDisable }) => {
 	const gender = [
 		{ id: '여성', img: FemailImg },
 		{ id: '남성', img: MailImg },
@@ -30,12 +30,14 @@ const ProfileEdit = ({ onGetValue, defaultValue }) => {
 	const [selectedGender, setSelectedGender] = useState(0);
 	const [selectedStudentId, setSelectedStudentId] = useState(0);
 	const [selectedBirth, setSelectedBirth] = useState('');
+	const [alertMsg, setAlertMsg] = useState('');
 
 	const handleGenderChange = (index) => {
 		setSelectedGender(index);
 	};
 
 	useEffect(() => {
+		console.log(selectedBirth);
 		if (
 			selectedGender !== 0 &&
 			selectedStudentId !== 0 &&
@@ -48,6 +50,14 @@ const ProfileEdit = ({ onGetValue, defaultValue }) => {
 			};
 			onGetValue(values);
 		}
+
+		if (selectedBirth === null) {
+			setAlertMsg('형식에 알맞게 입력해주세요.');
+			setDisable(true);
+		} else {
+			setAlertMsg('');
+			setDisable(false);
+		}
 	}, [selectedGender, selectedStudentId, selectedBirth]);
 
 	const handleSelectedSI = (value) => {
@@ -58,7 +68,9 @@ const ProfileEdit = ({ onGetValue, defaultValue }) => {
 	return (
 		<>
 			<div className="w-full flex flex-col">
-				<Subtitle>성별 *</Subtitle>
+				<Subtitle>
+					성별 <span className="red">*</span>
+				</Subtitle>
 				<div className="flex justify-around items-center">
 					{gender.map((item, index) => (
 						<GenderBox
@@ -79,7 +91,9 @@ const ProfileEdit = ({ onGetValue, defaultValue }) => {
 						</GenderBox>
 					))}
 				</div>
-				<Subtitle>학번 *</Subtitle>
+				<Subtitle>
+					학번 <span className="red">*</span>
+				</Subtitle>
 				<BasicDropdown
 					choice="학번"
 					label="학번을 선택해주세요."
@@ -87,11 +101,20 @@ const ProfileEdit = ({ onGetValue, defaultValue }) => {
 					setSelected={handleSelectedSI}
 					defaultValue={`${defaultValue[1]}학번`}
 				/>
-				<Subtitle>생년월일 *</Subtitle>
+				<Subtitle>
+					생년월일 <span className="red">*</span>
+				</Subtitle>
 				<NumInput
 					setSelected={setSelectedBirth}
 					defaultValue={defaultValue[2]}
 				/>
+				<div className="flex w-full justify-start p-2">
+					{alertMsg === '' ? (
+						<UnderMsg>ex. 2002-04-05</UnderMsg>
+					) : (
+						<UnderMsg style={{ color: `${COLOR.red}` }}>{alertMsg}</UnderMsg>
+					)}
+				</div>
 			</div>
 		</>
 	);

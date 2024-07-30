@@ -36,7 +36,6 @@ const MyProfileEdit = () => {
 		sound_sensitivity: null,
 	});
 	const [disable, setDisable] = useState(false);
-	console.log(disable);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -48,12 +47,12 @@ const MyProfileEdit = () => {
 	}, []);
 
 	useEffect(() => {
-		console.log(info);
 		if (
 			info.name !== '' &&
 			info.gender !== '' &&
 			info.student_no !== 0 &&
-			info.birthdate !== null
+			info.birthdate !== null &&
+			info.introduction !== ''
 		) {
 			setDisable(false);
 		} else {
@@ -92,6 +91,7 @@ const MyProfileEdit = () => {
 	};
 
 	const handleSubmit = async () => {
+		console.log(info);
 		const response = await EditProfileAPI(info);
 		if (response.status === 200) {
 			const response = await makeAuthorizedRequest(`/api/v1/member/my-profile`);
@@ -113,16 +113,23 @@ const MyProfileEdit = () => {
 				<section className="w-full">
 					<div className="w-full px-[25px]">
 						<div className="nickname mb">
-							<NicknameEdit onGetValue={handleInfo} defaultValue={info.name} />
+							<NicknameEdit
+								onGetValue={handleInfo}
+								defaultValue={info.name}
+								setDisable={setDisable}
+							/>
 						</div>
 						<div className="profile mb">
 							<ProfileEdit
 								onGetValue={handleProfile}
 								defaultValue={[info.gender, info.student_no, info.birthdate]}
+								setDisable={setDisable}
 							/>
 						</div>
 						<div className="major mb">
-							<Subtitle>전공</Subtitle>
+							<Subtitle>
+								전공 <span className="red">*</span>
+							</Subtitle>
 							<BasicDropdown
 								choice="전공"
 								label="전공을 선택해주세요."

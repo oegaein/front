@@ -9,7 +9,7 @@ import {
 } from '@components/basicInfo/BasicSettingInput';
 import { GetDuplicate } from 'services/api/ProfileAPI';
 
-const NicknameEdit = ({ onGetValue, defaultValue }) => {
+const NicknameEdit = ({ onGetValue, defaultValue, setDisable }) => {
 	const [input, setInput] = useState('');
 	const [duplicated, setDuplicated] = useState(true);
 	const [alertMsg, setAlertMsg] = useState('');
@@ -17,12 +17,14 @@ const NicknameEdit = ({ onGetValue, defaultValue }) => {
 	const handleChangeValue = (nickname) => {
 		setInput(nickname);
 		setDuplicated(true);
+		handleButton(nickname);
+		setDisable(true);
 	};
 
-	const handleDuplicate = () => {
-		const result = GetDuplicate(input);
+	const handleDuplicate = async () => {
+		const result = await GetDuplicate(input);
 		if (validateNickname(input)) {
-			if (result) {
+			if (!result) {
 				setDuplicated(false);
 				alert('사용 가능한 닉네임입니다!');
 				onGetValue('name', input);
@@ -30,6 +32,15 @@ const NicknameEdit = ({ onGetValue, defaultValue }) => {
 				setDuplicated(true);
 				alert('사용 불가능한 닉네임입니다!');
 			}
+		}
+	};
+
+	const handleButton = (nickname) => {
+		if (!validateNickname(nickname) || duplicated) {
+			setDisable(true);
+		} else {
+			onGetValue(nickname);
+			setDisable(false);
 		}
 	};
 
@@ -51,7 +62,9 @@ const NicknameEdit = ({ onGetValue, defaultValue }) => {
 
 	return (
 		<>
-			<Subtitle>닉네임 *</Subtitle>
+			<Subtitle>
+				닉네임 <span className="red">*</span>
+			</Subtitle>
 			<div className="flex pb-1 mb-2 w-full">
 				<EditNicknameInput
 					defaultValue={defaultValue}
