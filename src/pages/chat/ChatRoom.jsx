@@ -276,7 +276,7 @@ export default Chatroom;
 const ConfirmMatching = (status) => {
 	return (
 		<BtnStyle status={status === '매칭 완료'}>
-			{status === '매칭 완료' ? <p>매칭 완료</p> : <p>매칭 종료</p>}
+			{status === '매칭 완료' ? <p>매칭 마감</p> : <p>마감하기</p>}
 		</BtnStyle>
 	);
 };
