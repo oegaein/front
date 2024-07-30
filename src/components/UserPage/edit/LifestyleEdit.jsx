@@ -10,22 +10,31 @@ const LifestyleEdit = ({
 	defaultValue,
 	multi = false,
 }) => {
-	const [selectedOption, setSelectedOption] = useState(
-		multi ? defaultValue || [] : defaultValue || null,
-	);
+	const [selectedOption, setSelectedOption] = useState(multi ? [] : null);
+
+	useEffect(() => {
+		const filteredDefaultValue = multi
+			? (defaultValue || []).filter((value) => value !== null)
+			: defaultValue || null;
+		setSelectedOption(filteredDefaultValue);
+	}, [defaultValue, multi]);
 
 	const handleCheckboxChange = (value) => {
+		let updatedSelection;
+
 		if (multi) {
 			const isSelected = selectedOption?.includes(value);
 			if (isSelected) {
-				setSelectedOption(selectedOption.filter((item) => item !== value));
+				updatedSelection = selectedOption.filter((item) => item !== value);
 			} else {
-				setSelectedOption([...selectedOption, value]);
+				updatedSelection = [...selectedOption, value];
 			}
 		} else {
-			setSelectedOption(selectedOption === value ? '' : value);
+			updatedSelection = selectedOption === value ? null : value;
 		}
-		onGetValue(keyProp, selectedOption);
+
+		setSelectedOption(updatedSelection);
+		onGetValue(keyProp, updatedSelection);
 	};
 
 	return (
@@ -38,7 +47,11 @@ const LifestyleEdit = ({
 							multi ? selectedOption?.includes(item) : selectedOption === item
 						}
 					>
-						<input type="checkbox" checked={selectedOption?.includes(item)} />
+						<input
+							type="checkbox"
+							checked={selectedOption?.includes(item)}
+							readOnly
+						/>
 						<p>{item}</p>
 					</CheckboxLabel>
 				</CheckboxItem>

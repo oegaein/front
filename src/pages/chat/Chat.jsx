@@ -20,8 +20,8 @@ const Chat = () => {
 	useEffect(() => {
 		const fetchData = async () => {
 			const result = await getChatListAPI(setAccessToken);
-			setChatList(result);
-			console.log(result);
+			const reversedResult = result.reverse();
+			setChatList(reversedResult);
 		};
 		fetchData();
 	}, []);
@@ -50,50 +50,53 @@ const Chat = () => {
 							<p className="mt-10">새로운 채팅이 없습니다.</p>
 						) : (
 							chatList?.map(
-								(chat, index) => (
-									// chat.last_message_content !== null && (
-									<Link
-										key={chat.id}
-										to={`/chat/chatroom/${chat.room_id}`}
-										state={{ subscribeID: chat.room_id }}
-									>
-										<ChatList>
-											<div className="w-[65px] h-[65px] mr-[11px]">
-												<ImgWrapper mr={'11px'} width={'65px'} height={'65px'}>
-													<img
-														src={chat.photo_url}
-														alt="profile"
-														className="img"
-													/>
-												</ImgWrapper>
-											</div>
-											<div className="info_wrapper">
-												<div className="flex justify-between items-center mb-1">
-													<div className="flex items-center">
-														<p className="title">{chat.room_name}</p>
-														<p className="time">{chat.member_count}</p>
-													</div>
-													<p className="time">
-														{timeAgo(chat.last_message_date)}
-													</p>
-												</div>
-												<div className="flex justify-between items-center">
-													<p className="msg">{chat.last_message_content}</p>
-													<div
-														className={
-															chat.un_read_message_count === 0
-																? 'nonDisplay'
-																: 'culBox'
-														}
+								(chat, index) =>
+									chat.last_message_content !== null && (
+										<Link
+											key={chat.id}
+											to={`/chat/chatroom/${chat.room_id}`}
+											state={{ subscribeID: chat.room_id }}
+										>
+											<ChatList>
+												<div className="w-[65px] h-[65px] mr-[11px]">
+													<ImgWrapper
+														mr={'11px'}
+														width={'65px'}
+														height={'65px'}
 													>
-														{chat.un_read_message_count}
+														<img
+															src={chat.photo_url}
+															alt="profile"
+															className="img"
+														/>
+													</ImgWrapper>
+												</div>
+												<div className="info_wrapper">
+													<div className="flex justify-between items-center mb-1">
+														<div className="flex items-center">
+															<p className="title">{chat.room_name}</p>
+															<p className="time">{chat.member_count}</p>
+														</div>
+														<p className="time">
+															{timeAgo(chat.last_message_date)}
+														</p>
+													</div>
+													<div className="flex justify-between items-center">
+														<p className="msg">{chat.last_message_content}</p>
+														<div
+															className={
+																chat.un_read_message_count === 0
+																	? 'nonDisplay'
+																	: 'culBox'
+															}
+														>
+															{chat.un_read_message_count}
+														</div>
 													</div>
 												</div>
-											</div>
-										</ChatList>
-									</Link>
-								),
-								// ),
+											</ChatList>
+										</Link>
+									),
 							)
 						)}
 					</div>

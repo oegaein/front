@@ -27,10 +27,10 @@ const Nickname = ({ onGetValue, setButton }) => {
 		}
 	};
 
-	const handleDuplicate = () => {
-		const result = GetDuplicate(input);
+	const handleDuplicate = async () => {
+		const result = await GetDuplicate(input);
 		if (validateNickname(input)) {
-			if (result) {
+			if (!result) {
 				setDuplicated(false);
 				alert('사용 가능한 닉네임입니다!');
 				onGetValue(input);

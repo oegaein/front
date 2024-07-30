@@ -15,8 +15,10 @@ import LifestyleEdit from '@components/UserPage/edit/LifestyleEdit';
 import BasicButton from '@common/button/BasicButton';
 import { EditProfileAPI } from 'services/api/ProfileAPI';
 import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest';
+import useMyInfoStore from '@store/myInfoStore';
 
 const MyProfileEdit = () => {
+	const setMyInfo = useMyInfoStore((state) => state.setMyInfo);
 	const [info, setInfo] = useState({
 		name: '',
 		gender: '',
@@ -33,7 +35,6 @@ const MyProfileEdit = () => {
 		sound_sensitivity: null,
 	});
 	const [disable, setDisable] = useState(false);
-	console.log(disable);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -45,12 +46,12 @@ const MyProfileEdit = () => {
 	}, []);
 
 	useEffect(() => {
-		console.log(info);
 		if (
 			info.name !== '' &&
 			info.gender !== '' &&
 			info.student_no !== 0 &&
-			info.birthdate !== null
+			info.birthdate !== null &&
+			info.introduction !== ''
 		) {
 			setDisable(false);
 		} else {
@@ -90,7 +91,10 @@ const MyProfileEdit = () => {
 
 	const handleSubmit = async () => {
 		const response = await EditProfileAPI(info);
-		console.log(response);
+		if (response.status === 200) {
+			const response = await makeAuthorizedRequest(`/api/v1/member/my-profile`);
+			setMyInfo(response.data);
+		}
 	};
 
 	return (
@@ -107,16 +111,23 @@ const MyProfileEdit = () => {
 				<section className="w-full">
 					<div className="w-full px-[25px]">
 						<div className="nickname mb">
-							<NicknameEdit onGetValue={handleInfo} defaultValue={info.name} />
+							<NicknameEdit
+								onGetValue={handleInfo}
+								defaultValue={info.name}
+								setDisable={setDisable}
+							/>
 						</div>
 						<div className="profile mb">
 							<ProfileEdit
 								onGetValue={handleProfile}
 								defaultValue={[info.gender, info.student_no, info.birthdate]}
+								setDisable={setDisable}
 							/>
 						</div>
 						<div className="major mb">
-							<Subtitle>전공</Subtitle>
+							<Subtitle>
+								전공 <span className="red">*</span>
+							</Subtitle>
 							<BasicDropdown
 								choice="전공"
 								label="전공을 선택해주세요."
@@ -183,7 +194,7 @@ const MyProfileEdit = () => {
 							/>
 							<Subtitle>소리 민감 정도</Subtitle>
 							<LifestyleEdit
-								lists={['예민한편', '둔감한편']}
+								lists={['예민한 편', '둔감한 편']}
 								keyProp={'sound_sensitivity'}
 								onGetValue={handleInfo}
 								defaultValue={info.sound_sensitivity}

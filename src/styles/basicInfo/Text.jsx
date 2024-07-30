@@ -7,6 +7,10 @@ export const Subtitle = styled.p`
 	text-align: left;
 	margin-bottom: 16px;
 	width: 100%;
+
+	.red {
+		color: ${COLOR.red};
+	}
 `;
 
 export const UnderMsg = styled.p`

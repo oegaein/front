@@ -1,15 +1,16 @@
 import BasicButton from '@common/button/BasicButton';
 import BasicDropdown, { DropdownWrapper } from '@common/dropdown/BasicDropdown';
-import OpenDropdown from '@common/dropdown/OpenDropdown';
 import { NumInput, RadioInput } from '@components/basicInfo/BasicSettingInput';
 import { Content } from '@components/basicInfo/Lifepattern';
-import useAuthStore from '@store/authStore';
 import { Input, TextArea } from '@styles/basicInfo/Input';
 import { Subtitle } from '@styles/basicInfo/Text';
 import React, { useEffect, useState } from 'react';
-import { postMatchingPostAPI } from 'services/api/MatchingPostAPI';
+import {
+	postMatchingPostAPI,
+	putMatchingPostAPI,
+} from 'services/api/MatchingPostAPI';
 
-const PostRoommate = () => {
+const PostRoommate = ({ defaultValue = null, ver = 'post' }) => {
 	const [postContent, setPostContent] = useState({
 		title: '',
 		detail: '',
@@ -17,12 +18,26 @@ const PostRoommate = () => {
 		type: '',
 		people: 0,
 		date: '',
-		time: '',
 	});
 	const buildings = ['A동', 'B동', 'C동', 'D동', 'E동'];
 	const type = ['2인실', '4인실'];
 	const people = ['1명', '2명', '3명'];
 	const [button, setButton] = useState(false);
+	console.log(postContent);
+
+	useEffect(() => {
+		if (defaultValue !== null) {
+			setPostContent({
+				title: defaultValue.title,
+				detail: defaultValue.content,
+				building: defaultValue.dong,
+				type: defaultValue.room_size,
+				people: defaultValue.target_number_of_people,
+				date: defaultValue.deadline,
+			});
+		}
+		console.log(defaultValue);
+	}, [defaultValue]);
 
 	useEffect(() => {
 		setButton(isFormValid());
@@ -49,13 +64,26 @@ const PostRoommate = () => {
 		const SubmitData = {
 			title: postContent.title,
 			content: postContent.detail,
-			deadline: postContent.date + postContent.time,
+			deadline: postContent.date,
 			targetNumberOfPeople: postContent.people,
 			dongType: postContent.building,
 			roomSizeType: postContent.type,
 		};
 		console.log(SubmitData);
 		postMatchingPostAPI(SubmitData);
+	};
+
+	const handleEdit = () => {
+		const SubmitData = {
+			title: postContent.title,
+			content: postContent.detail,
+			deadline: postContent.date,
+			targetNumberOfPeople: postContent.people,
+			dongType: postContent.building,
+			roomSizeType: postContent.type,
+		};
+		console.log(SubmitData);
+		putMatchingPostAPI(defaultValue.id, SubmitData);
 	};
 
 	const isFormValid = () => {
@@ -163,14 +191,24 @@ const PostRoommate = () => {
 						setSelected={(value) =>
 							setPostContent({ ...postContent, date: value })
 						}
+						defaultValue={postContent.date}
 					/>
 				</div>
-				<BasicButton
-					text={'완료'}
-					path={'/home'}
-					eventName={handleSubmit}
-					disabled={!button}
-				/>
+				{ver === 'edit' ? (
+					<BasicButton
+						text={'수정하기'}
+						path={'/home'}
+						eventName={handleEdit}
+						disabled={!button}
+					/>
+				) : (
+					<BasicButton
+						text={'작성 완료'}
+						path={'/home'}
+						eventName={handleSubmit}
+						disabled={!button}
+					/>
+				)}
 			</div>
 		</>
 	);

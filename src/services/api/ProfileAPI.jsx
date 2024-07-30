@@ -24,7 +24,7 @@ export const EditProfileAPI = async (submitData) => {
 		'put',
 		submitData,
 	);
-	return response.data;
+	return response;
 };
 
 export const BlockUserAPI = async (block_user) => {

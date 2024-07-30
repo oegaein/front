@@ -52,7 +52,11 @@ export const EditNicknameInput = ({
 	onChangeValue,
 	limitNum,
 }) => {
-	const [value, setValue] = useState(defaultValue || '');
+	const [value, setValue] = useState('');
+
+	useEffect(() => {
+		setValue(defaultValue || '');
+	}, [defaultValue]);
 
 	const handleChange = (e) => {
 		const inputValue = e.target.value;
@@ -75,8 +79,8 @@ export const NumInput = ({ setSelected, defaultValue = '' }) => {
 
 	useEffect(() => {
 		if (defaultValue !== '') {
-			setValue(defaultValue);
-			setSelected(defaultValue);
+			setValue(defaultValue?.substring(0, 10));
+			setSelected(defaultValue?.substring(0, 10));
 		}
 	}, [defaultValue]);
 
@@ -100,7 +104,6 @@ export const NumInput = ({ setSelected, defaultValue = '' }) => {
 	};
 
 	const handleInputChange = (e) => {
-		const regex = /^\d{4}-\d{2}-\d{2}$/;
 		let val = e.target.value.replace(/\D/g, '');
 
 		const yyyy = val.slice(0, 4);

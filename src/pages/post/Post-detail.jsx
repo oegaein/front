@@ -63,7 +63,7 @@ const PostDetail = () => {
 	}
 
 	const EditFunc = () => {
-		navigate('/post-edit');
+		navigate(`/post-roommate/edit/${postId}`);
 	};
 
 	const DeleteFunc = () => {
