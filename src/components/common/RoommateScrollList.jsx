@@ -29,10 +29,10 @@ const RoommateScrollList = ({
 	const [confirmContent, setConfirmContent] = useState({});
 	const {
 		data: matchingPosts,
-		isLoading,
+		isLoading: matchingLoading,
 		error,
 	} = useMatchingPosts(type, currentPage);
-	const { data: searchResults } = useQuery({
+	const { data: searchResults, isLoading: searchLoading } = useQuery({
 		queryKey: ['searchResults', searchTerm],
 		queryFn: () => fetchData(searchTerm),
 		staleTime: 0,
@@ -43,8 +43,8 @@ const RoommateScrollList = ({
 	const fetchData = async (searchTerm) => {
 		try {
 			const response = await API.get(`/api/v1/search?q=${searchTerm}`);
-			console.log('검색', response);
-			return response.data.matching_posts_data;
+			console.log('검색', response.data);
+			return response.data;
 		} catch (err) {
 			console.log(err);
 		}
@@ -52,7 +52,7 @@ const RoommateScrollList = ({
 	const location = useLocation();
 	const path = location.pathname;
 
-	if (isLoading) return <div>데이터 로딩중</div>;
+	if (matchingLoading || searchLoading) return <div>데이터 로딩중</div>;
 	if (error) return <div>{error.message}</div>;
 	return (
 		<SettingStyle>
@@ -79,7 +79,7 @@ const RoommateScrollList = ({
 					// search일 때
 					if (type === 'search') {
 						if (searchResults) {
-							content = searchResults.map((post) => (
+							content = searchResults.matching_posts_data.map((post) => (
 								<RoommateScrollItem key={post.matchingPostId} post={post} /> // 필터링된 post에 대해 컴포넌트 리턴
 							));
 						} else {
@@ -115,7 +115,14 @@ const RoommateScrollList = ({
 					return content; // 조건에 따라 결정된 내용을 리턴
 				})()}
 			</div>
-			{/* <Pagination data={matchingPosts} setCurrentPage={setCurrentPage}/> */}
+			{type === 'search' ?
+			searchResults ?
+			<Pagination data={searchResults} setCurrentPage={setCurrentPage}/>
+			:
+			null
+			:
+			<Pagination data={matchingPosts} setCurrentPage={setCurrentPage}/>
+			}
 		</SettingStyle>
 	);
 };
