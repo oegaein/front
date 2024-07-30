@@ -13,7 +13,7 @@ const Post = () => {
 	return (
 		<>
 			<PostStyle>
-				<section className="w-full pl-7 pr-7 pb-4 border-b border-solid border-[#DEDEDE]">
+				<section className="w-full px-[25x] border-b border-solid border-[#DEDEDE] mb-6">
 					<Header
 						backPath="home"
 						rightContent={'임시저장'}
@@ -40,6 +40,5 @@ const PostStyle = styled.div`
 
 	.currentP {
 		font: ${FONT.title4SB17};
-		margin-right: 6px;
 	}
 `;
