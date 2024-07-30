@@ -49,13 +49,13 @@ const PostDetail = () => {
 	});
 	const isLowerBarVisible = useLowerBarVisible();
 
+	const fetchPostData = async () => {
+		const result = await getMatchingPostAPI(postId);
+		console.log('상세 게시글', result);
+		setData(result);
+	};
 	useEffect(() => {
-		const fetchData = async () => {
-			const result = await getMatchingPostAPI(postId);
-			console.log('상세 게시글', result);
-			setData(result);
-		};
-		fetchData();
+		fetchPostData();
 	}, [postId]);
 
 	if (!data) {
@@ -304,6 +304,7 @@ const PostDetail = () => {
 					memberId={data.author_id}
 					postId={postId}
 					userInfo={data.author_profile}
+					reFetchData={fetchPostData}
 					matchingStatus={data.matching_status}
 					matchingRequestId={data.matching_request_id}
 					setConfirm={setConfirm}

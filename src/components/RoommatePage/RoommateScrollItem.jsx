@@ -9,7 +9,6 @@ import FONT from '@styles/fonts'
 import COLOR from '@styles/color'
 
 //images
-import { API } from '@utils/api'
 
 const RoommateScrollItem = ({post, type, setConfirm, setConfirmContent}) => {
   const queryClient = useQueryClient();

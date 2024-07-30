@@ -19,7 +19,7 @@ const CallBack = () => {
         const accessToken = response.data.accessToken
         const refreshToken = response.data.refreshToken
         const {email, gender, introduction, name, photoUrl, profileSetUpStatus, id} = response.data
-        const myInfo = {email, gender, introduction, name, photoUrl, profileSetUpStatus}
+        const myInfo = {email, gender, introduction, name, photoUrl, profileSetUpStatus, id}
         console.log('myinfo', myInfo)
         console.log('callback request', response)
         setAccessToken(accessToken)

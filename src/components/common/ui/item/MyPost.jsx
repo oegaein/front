@@ -18,30 +18,38 @@ const MyPost = ({ post, index, setConfirm, setConfirmContent, setOption, setOpti
 // 매칭요청(내 룸메이트 신청 목록, 룸메이트 신청 요청 ) - 매칭 대기 | 매칭 수락 | 매칭 거절 
 	const queryClient = useQueryClient();
 	const navigate = useNavigate();
+  const isMatchingClosed = post.matchingStatus === '매칭 완료' || post.matchingStatus === '매칭 마감';
+	// const confirmMutation = useMutation(
+	// 	{
+	// 		mutationFn: (matchingRequestId) => makeAuthorizedRequest(`/api/v1/matchingrequests/${matchingRequestId}/accept`, 'patch'),
+	// 		onSuccess: (data) => {
+	// 			if (data.status === 200) {
+	// 				queryClient.invalidateQueries(['matchingPosts', 'mypost'])
+	// 			}
+	// 			console.log('매칭확정', data);
+	// 		},
+	// 		onError: (error) => {
+	// 			console.log(error);
+	// 		}
+	// 	}
+	// );
+	// const handleClickConfirmBtn = async () => {
+	// 	// e.stopPropagation()
+  //   setConfirm(true)
+	// 	setConfirmContent({
+	// 		id: -1,
+	// 		msg: `룸메이트 매칭을 확정할까요?`,
+	// 		btn: '확정',
+	// 		func: () => {confirmMutation.mutate(post.matchingPostId)},
+	// 	})
+	// }
+	const renderStatus = () => {
+		if (isMatchingClosed) {
+			return <div className="color-gray500 font-caption2m14">매칭 마감</div>
+		} else {
+			return <div className="color-gray500 font-caption2m14">매칭 대기</div>
 
-	const confirmMutation = useMutation(
-		{
-			mutationFn: (matchingRequestId) => makeAuthorizedRequest(`/api/v1/matchingrequests/${matchingRequestId}/accept`, 'patch'),
-			onSuccess: (data) => {
-				if (data.status === 200) {
-					queryClient.invalidateQueries(['matchingPosts', 'mypost'])
-				}
-				console.log('매칭확정', data);
-			},
-			onError: (error) => {
-				console.log(error);
-			}
 		}
-	);
-	const handleClickConfirmBtn = async () => {
-		// e.stopPropagation()
-    setConfirm(true)
-		setConfirmContent({
-			id: -1,
-			msg: `룸메이트 매칭을 확정할까요?`,
-			btn: '확정',
-			func: () => {confirmMutation.mutate(post.matchingPostId)},
-		})
 	}
 	const editFunc = () => {
 		navigate('/post-edit');	//우선 임의 경로로 처리함 
@@ -107,15 +115,7 @@ const MyPost = ({ post, index, setConfirm, setConfirmContent, setOption, setOpti
 					</div>
 				</div>
 				<div className="self-end whitespace-nowrap">
-					{post.matchingStatus === '매칭 완료' ?
-					<div className="color-red font-caption2m14">{post.matchingStatus}</div>
-					:
-					post.matchingStatus === '매칭 마감' ?
-					<div className='color-gray500 font-caption2m14'>{post.matchingStatus}</div>
-					:
-					//매칭 대기 
-					<div className='color-purple1 font-caption2m14'>{post.matchingStatus}</div>
-					}
+					{renderStatus()}
 				</div>
 			</div>
 		</SettingStyle>

@@ -18,18 +18,26 @@ import Comment from '@assets/images/comment.svg'
 
 
 const MatchingApplyNavBar = ({version, isLowerBarVisible, memberId, postId, userInfo,
-  fetchUserInfoData, matchingStatus, matchingRequestId, setConfirm, setConfirmContent}) => {
-  console.log('matchingapplynavbar', matchingStatus, matchingRequestId)
-  const [isLike, setIsLike] = useState(false)
-  const [firstRendering, setFirstRendering] = useState(true)
-  const [isMyPost, setIsMyPost] = useState(false)
-  const isLikeProps = userInfo?.is_like
-  const navigate = useNavigate()
-  const location = useLocation()
-  const queryClient = useQueryClient();
-
-  const myInfo = useMyInfoStore.getState().myInfo
-
+  reFetchData, matchingStatus, matchingRequestId, setConfirm, setConfirmContent}) => {
+    const [isLike, setIsLike] = useState(false)
+    const [firstRendering, setFirstRendering] = useState(true)
+    const [isMyPost, setIsMyPost] = useState(false)
+    const isLikeProps = userInfo?.is_like
+    const navigate = useNavigate()
+    const location = useLocation()
+    const queryClient = useQueryClient();
+    
+    const myInfo = useMyInfoStore.getState().myInfo
+    console.log(`version: ${version}`);
+    console.log(`isLowerBarVisible: ${isLowerBarVisible}`);
+    console.log(`memberId: ${memberId}`);
+    console.log(`postId: ${postId}`);
+    console.log(`userInfo: ${JSON.stringify(userInfo)}`);
+    console.log(`reFetchData: ${reFetchData}`);
+    console.log(`matchingStatus: ${matchingStatus}`);
+    console.log(`matchingRequestId: ${matchingRequestId}`);
+    console.log(`setConfirm: ${setConfirm}`);
+    console.log(`setConfirmContent: ${setConfirmContent}`);
   // /user or /post-detail 
 
   //조건 변수 정의
@@ -50,14 +58,15 @@ const MatchingApplyNavBar = ({version, isLowerBarVisible, memberId, postId, user
     if (myInfo.id === memberId) {
       setIsMyPost(true)
     }
-  }, []);
+    console.log('isMyPost',isMyPost)
+  }, [isMyPost]);
 
   useEffect(() => {
     // 카카오 SDK 초기화
     if (!window.Kakao.isInitialized()) {
       window.Kakao.init('090826f305f3c07c40d74086a30a34cb');
     }
-    console.log(window.Kakao.isInitialized())
+    // console.log(window.Kakao.isInitialized())
   }, []);
   
   const goToDetailComments = () => {
@@ -103,32 +112,34 @@ const MatchingApplyNavBar = ({version, isLowerBarVisible, memberId, postId, user
     cancelLikeMutation.mutate(memberId)
   }
 
-  //매칭확정
-  const confirmMutation = useMutation(
+  //매칭마감 
+  const terminateMutation = useMutation(
 		{
-			mutationFn: (matchingRequestId) => makeAuthorizedRequest(`/api/v1/matchingrequests/${matchingRequestId}/accept`, 'patch'),
+			mutationFn: (matchingPostId) => makeAuthorizedRequest(`/api/v1/matchingposts/${matchingPostId}`, 'patch'),
 			onSuccess: (data) => {
 				if (data.status === 200) {
-					queryClient.invalidateQueries(['matchingPosts', 'mypost'])
+					// queryClient.invalidateQueries(['matchingPosts', 'mypost'])
+          reFetchData()
 				}
-				console.log('매칭확정', data);
+				console.log('매칭마감', data);
 			},
 			onError: (error) => {
 				console.log(error);
 			}
 		}
 	);
-	const handleClickConfirmBtn = async () => {
+  //매칭마감 버튼
+	const handleClickTerminateBtn = async () => {
 		// e.stopPropagation()
     setConfirm(true)
 		setConfirmContent({
 			id: -1,
-			msg: `룸메이트 매칭을 확정할까요?`,
-			btn: '확정',
-			func: () => {confirmMutation.mutate(postId)},
+			msg: `룸메이트 매칭을 마감할까요?`,
+			btn: '마감',
+			func: () => {terminateMutation.mutate(postId)},
 		})
 	}
-
+  //매칭신청
   const fetchMatchingRequest = async () => {
     try {
       const response = await postMatchingRequestAPI(postId)
@@ -143,6 +154,7 @@ const MatchingApplyNavBar = ({version, isLowerBarVisible, memberId, postId, user
       console.error(err)
     }
   }
+  //카카오톡 공유하기
   const clickShareBtn = () => {
     if (window.Kakao) {
       const kakao = window.Kakao
@@ -187,9 +199,9 @@ const MatchingApplyNavBar = ({version, isLowerBarVisible, memberId, postId, user
     if (isPostDetailPage) {
       if (isMyPost) {
         if (isMatchingPending) {
-          return <button onClick={handleClickConfirmBtn} className='filter-btn whitespace-nowrap'>매칭확정</button>;
+          return <button onClick={handleClickTerminateBtn} className='filter-btn whitespace-nowrap'>마감하기</button>;
         } else if (isMatchingClosed) {
-          return <div className='filter-btn whitespace-nowrap registered'>매칭완료</div>;
+          return <div className='filter-btn whitespace-nowrap registered'>매칭 마감</div>;
         }
       }else if (isMyApplyPost) {
         return <div className='filter-btn whitespace-nowrap applied'>신청완료</div>;
@@ -197,7 +209,7 @@ const MatchingApplyNavBar = ({version, isLowerBarVisible, memberId, postId, user
         if (isMatchingPending) {
           return <button onClick={fetchMatchingRequest} className='filter-btn whitespace-nowrap'>매칭신청</button>;
         } else if (isMatchingClosed) {
-          return <div className='filter-btn whitespace-nowrap registered'>매칭마감</div>;
+          return <div className='filter-btn whitespace-nowrap registered'>매칭 마감</div>;
         }
       }
     }
