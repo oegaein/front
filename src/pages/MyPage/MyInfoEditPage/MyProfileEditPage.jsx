@@ -20,6 +20,7 @@ import useMyInfoStore from '@store/myInfoStore';
 const MyProfileEdit = () => {
 	const setMyInfo = useMyInfoStore((state) => state.setMyInfo);
 	const [info, setInfo] = useState({
+		photo_url: '',
 		name: '',
 		gender: '',
 		student_no: 0,
@@ -36,7 +37,6 @@ const MyProfileEdit = () => {
 	});
 	const [disable, setDisable] = useState(false);
 	console.log(disable);
-	console.log('info' + info.student_no);
 
 	useEffect(() => {
 		const fetchData = async () => {
