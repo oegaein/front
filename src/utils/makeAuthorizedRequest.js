@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 const makeAuthorizedRequest = async (url, method = 'get', config) => {
   try {
     let response;
-    console.log(config)
     switch (method) {
       case 'get':
         response = await API.get(url);

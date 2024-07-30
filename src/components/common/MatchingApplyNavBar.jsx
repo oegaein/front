@@ -43,7 +43,8 @@ const MatchingApplyNavBar = ({version, isLowerBarVisible, memberId, postId, user
   //조건 변수 정의
   const isUserPage = location.pathname.substring(0, 5) === "/user";
   const isPostDetailPage = !isUserPage;
-  const [isMyApplyPost, setIsMyApplyPost] = useState(matchingRequestId);
+  //const [isMyApplyPost, setIsMyApplyPost] = useState(matchingRequestId);
+  const isMyApplyPost = matchingRequestId
   const isMatchingPending = matchingStatus === '매칭 대기';
   const isMatchingClosed = matchingStatus === '매칭 완료' || matchingStatus === '매칭 마감';
   useEffect(() => {
@@ -145,7 +146,8 @@ const MatchingApplyNavBar = ({version, isLowerBarVisible, memberId, postId, user
       const response = await postMatchingRequestAPI(postId)
       console.log('매칭신청', response)
       if (response.status === 201) {
-        setIsMyApplyPost(true)
+        //setIsMyApplyPost(true)
+        reFetchData()
         alert('매칭 신청 완료')
       } else {
         alert('신청 안됨')
