@@ -20,7 +20,6 @@ import useMyInfoStore from '@store/myInfoStore';
 const MyProfileEdit = () => {
 	const setMyInfo = useMyInfoStore((state) => state.setMyInfo);
 	const [info, setInfo] = useState({
-		photo_url: '',
 		name: '',
 		gender: '',
 		student_no: 0,
@@ -91,7 +90,6 @@ const MyProfileEdit = () => {
 	};
 
 	const handleSubmit = async () => {
-		console.log(info);
 		const response = await EditProfileAPI(info);
 		if (response.status === 200) {
 			const response = await makeAuthorizedRequest(`/api/v1/member/my-profile`);
@@ -196,7 +194,7 @@ const MyProfileEdit = () => {
 							/>
 							<Subtitle>소리 민감 정도</Subtitle>
 							<LifestyleEdit
-								lists={['예민한편', '둔감한편']}
+								lists={['예민한 편', '둔감한 편']}
 								keyProp={'sound_sensitivity'}
 								onGetValue={handleInfo}
 								defaultValue={info.sound_sensitivity}
