@@ -20,6 +20,7 @@ import {
 import { ImgWrapper } from '@common/ui/Profile';
 import useMyInfoStore from '@store/myInfoStore';
 import ConfirmModal from '@common/modal/ConfirmModal';
+import NotificationDropdown from '@common/dropdown/NotificationDropdown';
 
 const Chatroom = () => {
 	const messageEndRef = useRef(null);
@@ -175,19 +176,22 @@ const Chatroom = () => {
 			)}
 			<ChatContainer>
 				<section className="headerContainer">
-					<Header
-						backPath={'/chat'}
-						backEvent={onDisconnect}
-						rightContent={ConfirmMatching(room.matchingStatus)}
-						rightEvent={() => {
-							getMatchingEnd(room.matchingPostId);
-						}}
-					>
-						<div className="flex justify-center">
-							<p className="header mr-2">{room.roomName}</p>
-							<p className="people">{room.memberCount}</p>
-						</div>
-					</Header>
+					<div className="px-[15px]">
+						<Header
+							backPath={'/chat'}
+							backEvent={onDisconnect}
+							rightContent={ConfirmMatching(room.matchingStatus)}
+							rightEvent={() => {
+								getMatchingEnd(room.matchingPostId);
+							}}
+						>
+							<div className="flex justify-center">
+								<p className="header mr-2">{room.roomName}</p>
+								<p className="people">{room.memberCount}</p>
+							</div>
+						</Header>
+					</div>
+					<NotificationDropdown />
 				</section>
 				<section className="chatRoom">
 					{chats.map((chat, index) => (
@@ -294,13 +298,13 @@ const ChatContainer = styled.div`
 	}
 	.headerContainer {
 		display: flex;
-		padding: 10px 25px;
+		flex-direction: column;
+		padding: 10px 10px;
 		width: 393px;
 		position: fixed;
 		top: 0;
 		z-index: 10;
 		background-color: ${COLOR.white};
-		border-bottom: 1px solid ${COLOR.gray100};
 		margin-bottom: 10px;
 	}
 
@@ -318,7 +322,7 @@ const ChatContainer = styled.div`
 	}
 	.chatRoom {
 		width: 100%;
-		padding: 100px 25px 0px 25px;
+		padding: 150px 25px 0px 25px;
 		overflow-y: auto;
 	}
 	.noneDisplay {
