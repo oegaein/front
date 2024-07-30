@@ -1,9 +1,7 @@
 import BasicButton from '@common/button/BasicButton';
 import BasicDropdown, { DropdownWrapper } from '@common/dropdown/BasicDropdown';
-import OpenDropdown from '@common/dropdown/OpenDropdown';
 import { NumInput, RadioInput } from '@components/basicInfo/BasicSettingInput';
 import { Content } from '@components/basicInfo/Lifepattern';
-import useAuthStore from '@store/authStore';
 import { Input, TextArea } from '@styles/basicInfo/Input';
 import { Subtitle } from '@styles/basicInfo/Text';
 import React, { useEffect, useState } from 'react';
