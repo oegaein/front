@@ -26,7 +26,7 @@ import { BlockUserAPI } from 'services/api/ProfileAPI';
 const UserPage = () => {
 	const location = useLocation();
 	console.log(location.pathname);
-	const myname = useMyInfoStore.getState().myInfo.name;
+	const myId = useMyInfoStore.getState().myInfo.id;
 	const navigate = useNavigate();
 	const [userInfo, setUserInfo] = useState({});
 	const [threedots, setThreedots] = useState(false);
@@ -105,7 +105,7 @@ const UserPage = () => {
 		<>
 			{threedots && (
 				<OptionModal
-					options={userInfo.name === myname ? myOptions : yourOption}
+					options={userInfo.id === myId ? myOptions : yourOption}
 					isOpen={threedots}
 					setIsOpen={setThreedots}
 				/>

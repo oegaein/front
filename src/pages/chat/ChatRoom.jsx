@@ -26,7 +26,7 @@ const Chatroom = () => {
 	const messageEndRef = useRef(null);
 	const clientRef = useRef(null);
 	const accessToken = useAuthStore.getState().accessToken;
-	const myname = useMyInfoStore.getState().myInfo.name;
+	const myId = useMyInfoStore.getState().myInfo.id;
 	const navigate = useNavigate();
 	const { subscribeID } = useParams();
 
@@ -148,7 +148,7 @@ const Chatroom = () => {
 	};
 
 	const isMyChat = (name) => {
-		return name === myname;
+		return name === myId;
 	};
 
 	const prevSender = (current, prev) => {
@@ -195,9 +195,9 @@ const Chatroom = () => {
 				</section>
 				<section className="chatRoom">
 					{chats.map((chat, index) => (
-						<ChattingStyle key={index} isMyChat={isMyChat(chat.senderName)}>
+						<ChattingStyle key={index} isMyChat={isMyChat(chat.senderId)}>
 							<ImgVisible
-								className={isMyChat(chat.senderName) ? 'noneDisplay' : ''}
+								className={isMyChat(chat.senderId) ? 'noneDisplay' : ''}
 								visible={
 									index > 0 &&
 									prevSender(chat.senderName, chats[index - 1].senderName)
@@ -210,7 +210,7 @@ const Chatroom = () => {
 							<div className="flex flex-col">
 								<div
 									className={
-										isMyChat(chat.senderName) ||
+										isMyChat(chat.senderId) ||
 										(index > 0 &&
 											prevSender(chat.senderName, chats[index - 1].senderName))
 											? 'noneDisplay '
@@ -220,7 +220,7 @@ const Chatroom = () => {
 									{chat.senderName}
 								</div>
 								<div
-									className={`chat ${isMyChat(chat.senderName) ? 'myChat' : 'yourChat'} ${
+									className={`chat ${isMyChat(chat.senderId) ? 'myChat' : 'yourChat'} ${
 										index > 0 &&
 										prevSender(chat.senderName, chats[index - 1].senderName)
 											? nextSender(

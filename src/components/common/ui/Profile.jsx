@@ -34,7 +34,7 @@ export const BasicProfile = ({
 	commentID = -1,
 	isReply = false,
 }) => {
-	const myname = useMyInfoStore.getState().myInfo.name;
+	const myId = useMyInfoStore.getState().myInfo.id;
 	const navigate = useNavigate();
 	const [threedots, setThreedots] = useState(false);
 	const [confirm, setConfirm] = useState(false);
@@ -81,7 +81,7 @@ export const BasicProfile = ({
 	};
 
 	const handleProfile = () => {
-		if (myname === nickname) {
+		if (myId === userID) {
 			navigate('/user/my-profile');
 		} else {
 			navigate(`/user/${userID}`);
@@ -109,7 +109,7 @@ export const BasicProfile = ({
 		<>
 			{threedots && (
 				<OptionModal
-					options={nickname === myname ? commentOptions : yourOption}
+					options={userID === myId ? commentOptions : yourOption}
 					isOpen={threedots}
 					setIsOpen={setThreedots}
 				/>

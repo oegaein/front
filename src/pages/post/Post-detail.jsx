@@ -34,7 +34,7 @@ import BasicArrowUpIcon from '@assets/images/common/BasicArrowUpIcon.svg';
 import Checkbox from '@assets/images/common/Checkbox.svg';
 
 const PostDetail = () => {
-	const myname = useMyInfoStore.getState().myInfo.name;
+	const myId = useMyInfoStore.getState().myInfo.id;
 	const { postId } = useParams();
 	const navigate = useNavigate();
 	const [data, setData] = useState(null);
@@ -95,7 +95,7 @@ const PostDetail = () => {
 	};
 
 	const handleProfile = () => {
-		if (myname === data.author_name) {
+		if (myId === data.author_id) {
 			navigate('/user/my-profile');
 		} else {
 			navigate(`/user/${data.author_profile.id}`);
@@ -139,7 +139,7 @@ const PostDetail = () => {
 		<>
 			{threedots && (
 				<OptionModal
-					options={data.author_name === myname ? postOptions : yourOption}
+					options={data.author_id === myId ? postOptions : yourOption}
 					isOpen={threedots}
 					setIsOpen={setThreedots}
 				/>
