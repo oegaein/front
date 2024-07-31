@@ -39,6 +39,6 @@ const PostStyle = styled.div`
 	width: 100%;
 
 	.currentP {
-		font: ${FONT.title4SB17};
+		font: ${FONT.title3B19};
 	}
 `;

@@ -123,7 +123,7 @@ const ChatStyle = styled.div`
 	}
 
 	.header {
-		font: ${FONT.title4SB17};
+		font: ${FONT.title3B19};
 	}
 
 	.nonDisplay {
