@@ -3,7 +3,8 @@ import BasicDropdown, { DropdownWrapper } from '@common/dropdown/BasicDropdown';
 import { NumInput, RadioInput } from '@components/basicInfo/BasicSettingInput';
 import { Content } from '@components/basicInfo/Lifepattern';
 import { Input, TextArea } from '@styles/basicInfo/Input';
-import { Subtitle } from '@styles/basicInfo/Text';
+import { Subtitle, UnderMsg } from '@styles/basicInfo/Text';
+import COLOR from '@styles/color';
 import React, { useEffect, useState } from 'react';
 import {
 	postMatchingPostAPI,
@@ -23,7 +24,7 @@ const PostRoommate = ({ defaultValue = null, ver = 'post' }) => {
 	const type = ['2인실', '4인실'];
 	const people = ['1명', '2명', '3명'];
 	const [button, setButton] = useState(false);
-	console.log(postContent);
+	const [alertMsg, setAlertMsg] = useState('');
 
 	useEffect(() => {
 		if (defaultValue !== null) {
@@ -36,11 +37,15 @@ const PostRoommate = ({ defaultValue = null, ver = 'post' }) => {
 				date: defaultValue.deadline,
 			});
 		}
-		console.log(defaultValue);
 	}, [defaultValue]);
 
 	useEffect(() => {
 		setButton(isFormValid());
+		if (postContent.date === null || !isDateValid()) {
+			setAlertMsg('형식에 알맞게 입력해주세요.');
+		} else {
+			setAlertMsg('');
+		}
 	}, [postContent]);
 
 	const handleInputChange = (e) => {
@@ -86,15 +91,23 @@ const PostRoommate = ({ defaultValue = null, ver = 'post' }) => {
 		putMatchingPostAPI(defaultValue.id, SubmitData);
 	};
 
+	const isDateValid = () => {
+		const currentDate = new Date();
+		const selectedDate = new Date(postContent.date);
+		return selectedDate >= currentDate;
+	};
+
 	const isFormValid = () => {
 		const { title, detail, building, type, people, date } = postContent;
+
 		return (
 			title !== '' &&
 			detail !== '' &&
 			building !== '' &&
 			type !== '' &&
 			people !== 0 &&
-			date !== ''
+			date !== '' &&
+			isDateValid()
 		);
 	};
 
@@ -193,6 +206,13 @@ const PostRoommate = ({ defaultValue = null, ver = 'post' }) => {
 						}
 						defaultValue={postContent.date}
 					/>
+					<div className="flex w-full justify-start p-2">
+						{alertMsg === '' ? (
+							<UnderMsg>ex. 2029-09-10</UnderMsg>
+						) : (
+							<UnderMsg style={{ color: `${COLOR.red}` }}>{alertMsg}</UnderMsg>
+						)}
+					</div>
 				</div>
 				{ver === 'edit' ? (
 					<BasicButton
