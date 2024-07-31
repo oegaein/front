@@ -10,12 +10,22 @@ import SelectMenuBar from '@common/menu/SelectMenuBar';
 import { timeAgo } from '@utils/TimeAgo';
 import { ImgWrapper } from '@common/ui/Profile';
 import { getChatListAPI } from 'services/api/ChatAPI';
+import useInterval from '@utils/useInterval';
 
 const Chat = () => {
 	const setAccessToken = useAuthStore((state) => state.setAccessToken);
 	const navigate = useNavigate();
 	const [menu, setMenu] = useState('룸메이트');
 	const [chatList, setChatList] = useState([{}]);
+
+	useInterval(async () => {
+		const fetchData = async () => {
+			const result = await getChatListAPI(setAccessToken);
+			const reversedResult = result.reverse();
+			setChatList(reversedResult);
+		};
+		fetchData();
+	}, 5000);
 
 	useEffect(() => {
 		const fetchData = async () => {
