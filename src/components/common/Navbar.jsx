@@ -27,7 +27,7 @@ const Navbar = () => {
 	useInterval(async () => {
 		const res = await getChattingCountAPI(setAccessToken);
 		setChatCount(res);
-	}, 10000);
+	}, 5000);
 
 	return (
 		<SettingStyle className="flex fixed z-50 bottom-0 max-w-[393px] justify-around items-center h-[76px] bg-white w-full">
