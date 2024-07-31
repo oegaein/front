@@ -136,6 +136,8 @@ function MainLayout() {
 				location.pathname.substring(0, 11) !== '/my-profile' &&
 				location.pathname.substring(0, 14) !== '/chat/chatroom' &&
 				location.pathname.substring(0, 12) !== '/post-detail' &&
+				location.pathname.substring(0, 15) !== '/comment-detail' &&
+				location.pathname.substring(0, 14) !== '/post-roommate' &&
 				location.pathname.substring(0, 5) !== '/user' && <Navbar />}
 		</div>
 	);
