@@ -96,7 +96,7 @@ const NoResults = () => {
 
 const SettingStyle = styled.main`
 	.header {
-		font: ${FONT.title2B19};
+		font: ${FONT.title3B19};
 	}
 	.notification-title {
 		flex: 1;
