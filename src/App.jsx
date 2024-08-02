@@ -81,10 +81,10 @@ function App() {
 							<Route path="my-profile/edit" element={<MyProfileEditPage />} />
 							<Route path="user/:memberId" element={<UserPage />} />
 							<Route path="user/:memberId/posts" element={<UserPostPage />} />
-							<Route
+							{/* <Route
 								path="user/:memberId/reviews"
 								element={<RoommateReviewPage />}
-							/>
+							/> */}
 							<Route path="/setting" element={<BasicInfoSetting />} />
 							<Route path="/post-roommate" element={<Post />} />
 							<Route
