@@ -166,12 +166,13 @@ const FindRoommateTitle = ({ path }) => {
 		<>
 			<h1 className="title">룸메이트 찾기</h1>
 			<div className="flex justify-between gap-[7px]">
-				<button onClick={handleClickNewestBtn} className="sort-btn selected">
+				{/* 최신순, 마감순 추후 서비스 예정 */}
+				{/* <button onClick={handleClickNewestBtn} className="sort-btn selected">
 					최신순
 				</button>
 				<button onClick={handleClickOldestBtn} className="sort-btn">
 					마감순
-				</button>
+				</button> */}
 				{path === '/roommate' && (
 					<Link
 						to="/roommate/filter"
