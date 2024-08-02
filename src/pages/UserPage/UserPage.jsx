@@ -39,6 +39,7 @@ const UserPage = () => {
 	});
 	const isLowerBarVisible = useLowerBarVisible();
 	let { memberId } = useParams();
+	console.log('memberId',memberId)
 	const fetchUserInfoData = async () => {
 		try {
 			const response = await makeAuthorizedRequest(
@@ -163,7 +164,7 @@ const UserPage = () => {
 					<MatchingApplyNavBar
 						version={'userPage'}
 						isLowerBarVisible={isLowerBarVisible}
-						id={memberId}
+						memberId={memberId}
 						userInfo={userInfo}
 						fetchUserInfoData={fetchUserInfoData}
 					/>
