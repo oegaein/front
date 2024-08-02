@@ -36,6 +36,7 @@ const Chatroom = () => {
 		memberCount: 0,
 		matchingPostId: -1,
 		matchingStatus: '',
+		memberId: -1,
 	});
 	const [message, setMessage] = useState('');
 	const [confirm, setConfirm] = useState(false);
@@ -85,9 +86,8 @@ const Chatroom = () => {
 			memberCount: result.memberCount,
 			matchingPostId: result.matchingPostId,
 			matchingStatus: result.matchingStatus,
+			memberId: result.memberId,
 		}));
-
-		setChat(result.data);
 	};
 
 	useEffect(() => {
@@ -141,6 +141,27 @@ const Chatroom = () => {
 		}));
 	};
 
+	const handleRightBtn = () => {
+		if (room.memberId === myId) {
+			if (room.matchingStatus !== '매칭 완료') {
+				setConfirm(true);
+				setConfirmContent((prev) => ({
+					...prev,
+					msg: '매칭을 마감하시겠습니까?',
+					btn: '확인',
+					func: async () => {
+						getMatchingEnd(room.matchingPostId);
+						setRoom({ matchingStatus: '매칭 완료' });
+					},
+				}));
+			} else {
+				return;
+			}
+		} else {
+			navigate(`/post-detail/${room.matchingPostId}`);
+		}
+	};
+
 	const onEnter = (e) => {
 		if (message !== '' && e.keyCode === 13) {
 			sendHandler();
@@ -180,9 +201,12 @@ const Chatroom = () => {
 						<Header
 							backPath={'/chat'}
 							backEvent={onDisconnect}
-							rightContent={ConfirmMatching(room.matchingStatus)}
+							rightContent={ConfirmMatching(
+								room.matchingStatus,
+								room.memberId === myId,
+							)}
 							rightEvent={() => {
-								getMatchingEnd(room.matchingPostId);
+								handleRightBtn();
 							}}
 						>
 							<div className="flex justify-center">
@@ -273,10 +297,18 @@ const Chatroom = () => {
 
 export default Chatroom;
 
-const ConfirmMatching = (status) => {
+const ConfirmMatching = (status, isMyPost) => {
 	return (
 		<BtnStyle status={status === '매칭 완료'}>
-			{status === '매칭 완료' ? <p>매칭 마감</p> : <p>마감하기</p>}
+			{isMyPost ? (
+				status === '매칭 완료' ? (
+					<p>매칭 마감</p>
+				) : (
+					<p>마감하기</p>
+				)
+			) : (
+				<p>글 보기</p>
+			)}
 		</BtnStyle>
 	);
 };
