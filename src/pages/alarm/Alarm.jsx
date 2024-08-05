@@ -81,35 +81,39 @@ const Alarm = () => {
 							<p className="sub mt-10">새로운 알림이 없습니다.</p>
 						) : (
 							data?.map((alarm, index) => (
-								<Link to={`/post-detail/${alarm.matching_post_id}`}>
-									<div className="flex w-full justify-between px-6 py-4">
-										<div className="flex">
-											<div className="mr-[10px]">
-												<img
-													src={alarm.photo_url}
-													width={'65px'}
-													height={'65px'}
-													className="rounded-full"
-												/>
-											</div>
-											<div className="flex flex-col justify-center items-start">
-												<p className="title">
-													{AlarmMsg(alarm.roommate_alarm_type, alarm.name)}
-												</p>
-												<p className="sub">{alarm.title}</p>
-												<p className="time mt-1">{timeAgo(alarm.created_at)}</p>
-											</div>
+								<div
+									className="flex w-full justify-between px-6 py-4"
+									key={index}
+								>
+									<Link
+										to={`/post-detail/${alarm.matching_post_id}`}
+										className="flex w-full"
+									>
+										<div className="mr-[10px]">
+											<img
+												src={alarm.photo_url}
+												width={'65px'}
+												height={'65px'}
+												className="rounded-full"
+											/>
 										</div>
-										<button
-											onClick={() => {
-												DeleteAlarm(alarm.roommate_alarm_id);
-											}}
-											className="flex items-center mb-5"
-										>
-											<img src={Close} alt="close button" />
-										</button>
-									</div>
-								</Link>
+										<div className="flex flex-col justify-center items-start">
+											<p className="title">
+												{AlarmMsg(alarm.roommate_alarm_type, alarm.name)}
+											</p>
+											<p className="sub">{alarm.title}</p>
+											<p className="time mt-1">{timeAgo(alarm.created_at)}</p>
+										</div>
+									</Link>
+									<button
+										onClick={() => {
+											DeleteAlarm(alarm.roommate_alarm_id);
+										}}
+										className="flex items-center"
+									>
+										<img src={Close} alt="close button" />
+									</button>
+								</div>
 							))
 						)}
 					</div>
