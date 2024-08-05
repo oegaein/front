@@ -41,6 +41,7 @@ import DormNewsPage from '@pages/HomePage/DormNewsPage/DormNewsPage';
 import UserPostPage from '@pages/UserPage/UserPostPage/UserPostPage';
 import ComeMatchingListPage from '@pages/MyPage/ComeMatchingListPage/ComeMatchingListPage';
 import PostRoommateEdit from '@components/post/PostRoommateEdit';
+import Delivery from '@pages/delivery/Delivery';
 
 const queryClient = new QueryClient();
 
@@ -102,6 +103,7 @@ function App() {
 								element={<ChatRoom />}
 							/>
 							<Route path="/alarm" element={<Alarm />} />
+							<Route path="/delivery" element={<Delivery />} />
 						</Route>
 					</Routes>
 				</Router>
