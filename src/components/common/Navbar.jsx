@@ -90,7 +90,7 @@ const Navbar = () => {
 					홈
 				</span>
 			</Link>
-			<Link className="flex flex-col items-center">
+			<Link to="delivery" className="flex flex-col items-center">
 				<div className="mb-[4.5px]">
 					<img
 						className="w-[26px] h-[26px]"
