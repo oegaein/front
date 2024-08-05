@@ -258,7 +258,7 @@ export const CommentInput = ({
 					}}
 				/>
 				<button
-					className={value.length > 1 ? 'color-purple' : 'color-gray'}
+					className={value.length >= 1 ? 'color-purple' : 'color-gray'}
 					onClick={handlePost}
 				>
 					등록
