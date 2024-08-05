@@ -28,16 +28,6 @@ const MatchingApplyNavBar = ({version, isLowerBarVisible, memberId, postId, user
     const queryClient = useQueryClient();
     
     const myInfo = useMyInfoStore.getState().myInfo
-    console.log(`version: ${version}`);
-    console.log(`isLowerBarVisible: ${isLowerBarVisible}`);
-    console.log(`memberId: ${memberId}`);
-    console.log(`postId: ${postId}`);
-    console.log(`userInfo: ${JSON.stringify(userInfo)}`);
-    console.log(`reFetchData: ${reFetchData}`);
-    console.log(`matchingStatus: ${matchingStatus}`);
-    console.log(`matchingRequestId: ${matchingRequestId}`);
-    console.log(`setConfirm: ${setConfirm}`);
-    console.log(`setConfirmContent: ${setConfirmContent}`);
   // /user or /post-detail 
 
   //조건 변수 정의

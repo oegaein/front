@@ -39,6 +39,7 @@ const UserPage = () => {
 	});
 	const isLowerBarVisible = useLowerBarVisible();
 	let { memberId } = useParams();
+	console.log('memberId',memberId)
 	const fetchUserInfoData = async () => {
 		try {
 			const response = await makeAuthorizedRequest(
@@ -146,7 +147,8 @@ const UserPage = () => {
 							<UserLifeStyles userInfo={userInfo} />
 						</div>
 					</div>
-					<div>
+					{/* 후기 추후 서비스 예정 */}
+					{/* <div>
 						<div className="bg-white pt-[24px] px-[24px] flex justify-between items-center">
 							<h1 className="roommate-review-title">받은 룸메이트 후기 2</h1>
 							<Link to="reviews" className="more flex">
@@ -157,13 +159,13 @@ const UserPage = () => {
 						<div className="bg-white py-[16px]">
 							<RoommateReviewList memberId={memberId} />
 						</div>
-					</div>
+					</div> */}
 				</div>
 				{memberId !== 'my-profile' && (
 					<MatchingApplyNavBar
 						version={'userPage'}
 						isLowerBarVisible={isLowerBarVisible}
-						id={memberId}
+						memberId={memberId}
 						userInfo={userInfo}
 						fetchUserInfoData={fetchUserInfoData}
 					/>

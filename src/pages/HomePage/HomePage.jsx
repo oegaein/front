@@ -25,23 +25,10 @@ import DormNews from '@components/HomePage/DormNews';
 import AddRoommateButton from '@common/button/AddRoommateButton';
 
 const HomePage = () => {
+	useEffect(()=> {console.log('마운트')},[])
 	const accessToken = useAuthStore.getState().accessToken;
 	console.log(accessToken);
 	const { data: dormNews, isLoading, error } = useDormNews();
-	// const [dormNews, setDormNews] = useState([])
-	// const fetchData = async () => {
-	//   try {
-	//     const response = await API.get(`/api/v1/news`)
-	//     console.log(response.data.data)
-	//     setDormNews(response.data.data)
-	//   } catch(error) {
-	//     console.error(error)
-	//   }
-	// }
-
-	// useEffect(()=>{
-	//   fetchData()
-	// },[])
 	return (
 		<SettingStyle className="flex flex-col gap-[10px] scroll-smooth">
 			<AddRoommateButton />

@@ -53,8 +53,8 @@ function App() {
 				<Router>
 					<Routes>
 						<Route path="/" element={<MainLayout />}>
-							<Route index element={<CallBack />} />
-							<Route path="home" element={<HomePage />} />
+							<Route element={<CallBack />} />
+							<Route index path="home" element={<HomePage />} />
 							<Route path="home/dormnews" element={<DormNewsPage />} />
 							<Route path="home/ending-soon" element={<EndingsoonPage />} />
 							<Route
@@ -82,10 +82,10 @@ function App() {
 							<Route path="my-profile/edit" element={<MyProfileEditPage />} />
 							<Route path="user/:memberId" element={<UserPage />} />
 							<Route path="user/:memberId/posts" element={<UserPostPage />} />
-							<Route
+							{/* <Route
 								path="user/:memberId/reviews"
 								element={<RoommateReviewPage />}
-							/>
+							/> */}
 							<Route path="/setting" element={<BasicInfoSetting />} />
 							<Route path="/post-roommate" element={<Post />} />
 							<Route
@@ -138,6 +138,8 @@ function MainLayout() {
 				location.pathname.substring(0, 11) !== '/my-profile' &&
 				location.pathname.substring(0, 14) !== '/chat/chatroom' &&
 				location.pathname.substring(0, 12) !== '/post-detail' &&
+				location.pathname.substring(0, 15) !== '/comment-detail' &&
+				location.pathname.substring(0, 14) !== '/post-roommate' &&
 				location.pathname.substring(0, 5) !== '/user' && <Navbar />}
 		</div>
 	);

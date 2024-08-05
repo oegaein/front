@@ -55,7 +55,7 @@ const MyPost = ({
 		if (isMatchingClosed) {
 			return <div className="color-gray500 font-caption2m14">매칭 마감</div>;
 		} else {
-			return <div className="color-gray500 font-caption2m14">매칭 대기</div>;
+			return <div className="color-purple1 font-caption2m14">매칭 대기</div>
 		}
 	};
 	const editFunc = () => {

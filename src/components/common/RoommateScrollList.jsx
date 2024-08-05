@@ -33,16 +33,16 @@ const RoommateScrollList = ({
 		error,
 	} = useMatchingPosts(type, currentPage);
 	const { data: searchResults, isLoading: searchLoading } = useQuery({
-		queryKey: ['searchResults', searchTerm],
-		queryFn: () => fetchData(searchTerm),
+		queryKey: ['searchResults', searchTerm, currentPage],
+		queryFn: () => fetchData(searchTerm, currentPage),
 		staleTime: 0,
 		gcTime: 5 * 60 * 1000,
 		enabled: !!searchTerm,
 	});
 
-	const fetchData = async (searchTerm) => {
+	const fetchData = async (searchTerm, currentPage) => {
 		try {
-			const response = await API.get(`/api/v1/search?q=${searchTerm}`);
+			const response = await API.get(`/api/v1/search?q=${searchTerm}&page=${currentPage}`);
 			console.log('검색', response.data);
 			return response.data;
 		} catch (err) {
@@ -78,7 +78,7 @@ const RoommateScrollList = ({
 					let content; // 렌더링할 내용을 담을 변수 선언
 					// search일 때
 					if (type === 'search') {
-						if (searchResults) {
+						if (searchResults && searchResults.matching_posts_data.length > 0) {
 							content = searchResults.matching_posts_data.map((post) => (
 								<RoommateScrollItem key={post.matchingPostId} post={post} /> // 필터링된 post에 대해 컴포넌트 리턴
 							));
@@ -166,12 +166,13 @@ const FindRoommateTitle = ({ path }) => {
 		<>
 			<h1 className="title">룸메이트 찾기</h1>
 			<div className="flex justify-between gap-[7px]">
-				<button onClick={handleClickNewestBtn} className="sort-btn selected">
+				{/* 최신순, 마감순 추후 서비스 예정 */}
+				{/* <button onClick={handleClickNewestBtn} className="sort-btn selected">
 					최신순
 				</button>
 				<button onClick={handleClickOldestBtn} className="sort-btn">
 					마감순
-				</button>
+				</button> */}
 				{path === '/roommate' && (
 					<Link
 						to="/roommate/filter"
