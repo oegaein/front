@@ -43,6 +43,6 @@ const EditPostStyle = styled.div`
 	flex-direction: column;
 
 	.header {
-		font: ${FONT.title4SB17};
+		font: ${FONT.title3B19};
 	}
 `;

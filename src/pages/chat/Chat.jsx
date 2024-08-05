@@ -10,12 +10,23 @@ import SelectMenuBar from '@common/menu/SelectMenuBar';
 import { timeAgo } from '@utils/TimeAgo';
 import { ImgWrapper } from '@common/ui/Profile';
 import { getChatListAPI } from 'services/api/ChatAPI';
+import useInterval from '@utils/useInterval';
+import DeliveryNotification from '@common/ui/item/DeliveryNotification';
 
 const Chat = () => {
 	const setAccessToken = useAuthStore((state) => state.setAccessToken);
 	const navigate = useNavigate();
 	const [menu, setMenu] = useState('룸메이트');
 	const [chatList, setChatList] = useState([{}]);
+
+	useInterval(async () => {
+		const fetchData = async () => {
+			const result = await getChatListAPI(setAccessToken);
+			const reversedResult = result.reverse();
+			setChatList(reversedResult);
+		};
+		fetchData();
+	}, 5000);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -101,7 +112,9 @@ const Chat = () => {
 						)}
 					</div>
 				) : (
-					<div></div>
+					<div className="flex justify-center items-center w-full h-[50vh]">
+						<DeliveryNotification />
+					</div>
 				)}
 			</ChatStyle>
 		</>
@@ -123,7 +136,7 @@ const ChatStyle = styled.div`
 	}
 
 	.header {
-		font: ${FONT.title4SB17};
+		font: ${FONT.title3B19};
 	}
 
 	.nonDisplay {

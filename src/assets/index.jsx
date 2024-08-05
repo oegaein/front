@@ -5,3 +5,4 @@ export { default as SmokeLottie } from '@assets/lottie/lifestyle/smoke.json';
 export { default as CleanLottie } from '@assets/lottie/lifestyle/clean.json';
 export { default as WalkLottie } from '@assets/lottie/lifestyle/walk.json';
 export { default as SoundLottie } from '@assets/lottie/lifestyle/sound.json';
+export { default as DeliveryLottie } from '@assets/lottie/common/DeliveryLottie.json';

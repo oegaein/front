@@ -13,6 +13,7 @@ import {
 import useAuthStore from '@store/authStore';
 import { timeAgo } from '@utils/TimeAgo';
 import { Link } from 'react-router-dom';
+import DeliveryNotification from '@common/ui/item/DeliveryNotification';
 
 const Alarm = () => {
 	const setAccessToken = useAuthStore((state) => state.setAccessToken);
@@ -45,6 +46,18 @@ const Alarm = () => {
 		fetchData();
 	};
 
+	const AlarmMsg = (type, name) => {
+		if (type === '매칭 요청') {
+			return `${name}님이 룸메이트 신청을 보냈어요.`;
+		} else if (type === '매칭 수락') {
+			return `${name}님이 신청을 수락했습니다.`;
+		} else if (type === '매칭 거부') {
+			return `${name}님이 신청을 거절했습니다.`;
+		} else if (type === '매칭 완료') {
+			return `${name}님 과의 매칭이 완료되었습니다.`;
+		}
+	};
+
 	return (
 		<>
 			<AlarmContainer>
@@ -66,74 +79,52 @@ const Alarm = () => {
 				{menu === '룸메이트' ? (
 					<div>
 						{data === 'undefined' || data?.length === 0 ? (
-							<p className="mt-10">새로운 알림이 없습니다.</p>
+							<p className="sub mt-10">새로운 알림이 없습니다.</p>
 						) : (
 							data?.map((alarm, index) => (
-								<Link to={`/post-detail/${alarm.matching_post_id}`}>
-									<div className="flex w-full justify-between px-6 py-4">
-										<div className="flex">
-											<div className="mr-[10px]">
-												<img
-													src={alarm.photo_url}
-													width={'65px'}
-													height={'65px'}
-													className="rounded-full"
-												/>
-											</div>
-											<div className="flex flex-col justify-center items-start">
-												<p className="title">
-													{alarm.name}님이 룸메이트 신청을 보냈어요.
-												</p>
-												{/* <p className="sub">{alarm.title}</p> */}
-												<p className="time mt-1">{timeAgo(alarm.created_at)}</p>
-											</div>
-										</div>
-										<button
-											onClick={() => {
-												DeleteAlarm(alarm.matching_post_id);
-											}}
-											className="flex items-center mb-5"
-										>
-											<img src={Close} alt="close button" />
-										</button>
-									</div>
-								</Link>
-							))
-						)}
-					</div>
-				) : (
-					<div>
-						{data.length === 0 ? (
-							<p className="mt-10">새로운 알림이 없습니다.</p>
-						) : (
-							data?.map((alarm, index) => (
-								<div className="flex w-full justify-between px-6 py-4">
-									<div className="flex">
+								<div
+									className="flex w-full justify-between px-6 py-4"
+									key={index}
+								>
+									<Link
+										to={`/post-detail/${alarm.matching_post_id}`}
+										className="flex w-full"
+									>
 										<div className="mr-[10px]">
 											<img
 												src={alarm.photo_url}
-												style={{ width: '65px', height: '65px' }}
+												width={'65px'}
+												height={'65px'}
+												className="rounded-full"
 											/>
 										</div>
 										<div className="flex flex-col justify-center items-start">
 											<p className="title">
-												{alarm.name}님이 룸메이트 신청을 보냈어요.
+												{AlarmMsg(alarm.roommate_alarm_type, alarm.name)}
 											</p>
-											{alarm.sub !== '' && <p className="sub">{alarm.sub}</p>}
+											<p className="sub">{alarm.title}</p>
 											<p className="time mt-1">{timeAgo(alarm.created_at)}</p>
 										</div>
-									</div>
+									</Link>
 									<button
 										onClick={() => {
-											DeleteAlarm(alarm.matching_post_id);
+											DeleteAlarm(alarm.roommate_alarm_id);
 										}}
-										className="flex items-center mb-5"
+										className="flex items-center"
 									>
 										<img src={Close} alt="close button" />
 									</button>
 								</div>
 							))
 						)}
+					</div>
+				) : (
+					<div className="flex justify-center items-center w-full h-[50vh]">
+						{/* {data.length === 0 ? (
+							<p className="sub mt-10">새로운 알림이 없습니다.</p>
+						) : ( */}
+						<DeliveryNotification />
+						{/* )} */}
 					</div>
 				)}
 			</AlarmContainer>
@@ -151,11 +142,11 @@ const AlarmContainer = styled.div`
 
 	.container {
 		display: flex;
-		padding: 25px;
+		padding: 0px 25px;
 		width: 100%;
 
 		p {
-			font: ${FONT.title4SB17};
+			font: ${FONT.title3B19};
 		}
 	}
 

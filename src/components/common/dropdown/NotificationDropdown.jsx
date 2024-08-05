@@ -45,6 +45,9 @@ const NotificationDropdown = () => {
 							2️⃣ 최종 결정 후 오른쪽 상단에 있는 '마감하기' 버튼을 눌러 매칭을
 							확정해주세요!
 						</p>
+						<p className="text-red-600 font-bold">
+							3️⃣ 게시글을 삭제하면 연결된 채팅방이 함께 사라집니다.
+						</p>
 					</ContentStyle>
 				)}
 			</NotificationDropdownStyle>

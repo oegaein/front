@@ -27,7 +27,7 @@ const Navbar = () => {
 	useInterval(async () => {
 		const res = await getChattingCountAPI(setAccessToken);
 		setChatCount(res);
-	}, 10000);
+	}, 5000);
 
 	return (
 		<SettingStyle className="flex fixed z-50 bottom-0 max-w-[393px] justify-around items-center h-[76px] bg-white w-full">
@@ -90,7 +90,7 @@ const Navbar = () => {
 					홈
 				</span>
 			</Link>
-			<Link className="flex flex-col items-center">
+			<Link to="delivery" className="flex flex-col items-center">
 				<div className="mb-[4.5px]">
 					<img
 						className="w-[26px] h-[26px]"

@@ -37,7 +37,6 @@ const ProfileEdit = ({ onGetValue, defaultValue, setDisable }) => {
 	};
 
 	useEffect(() => {
-		console.log(selectedBirth);
 		if (
 			selectedGender !== 0 &&
 			selectedStudentId !== 0 &&
