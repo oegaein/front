@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 //styles
 import styled from 'styled-components';
@@ -20,14 +20,22 @@ import useInterval from '@utils/useInterval';
 import useAuthStore from '@store/authStore';
 
 const Navbar = () => {
+	const accessToken = useAuthStore((state) => state.accessToken);
 	const setAccessToken = useAuthStore((state) => state.setAccessToken);
+
 	const location = useLocation();
 	const [chatCount, setChatCount] = useState(0);
 
-	useInterval(async () => {
-		const res = await getChattingCountAPI(setAccessToken);
-		setChatCount(res);
-	}, 5000);
+	useInterval(
+		() => {
+			if (accessToken) {
+				getChattingCountAPI(setAccessToken).then((res) => {
+					setChatCount(res);
+				});
+			}
+		},
+		accessToken ? 5000 : null,
+	);
 
 	return (
 		<SettingStyle className="flex fixed z-50 bottom-0 max-w-[393px] justify-around items-center h-[76px] bg-white w-full">
