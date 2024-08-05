@@ -30,7 +30,9 @@ const PostRoommateEdit = () => {
 						<p className="header">룸메이트 찾기</p>
 					</Header>
 				</section>
-				<PostRoommate defaultValue={data} ver={'edit'} />
+				<section className="w-full px-[25px]">
+					<PostRoommate defaultValue={data} ver={'edit'} />
+				</section>
 			</EditPostStyle>
 		</>
 	);
