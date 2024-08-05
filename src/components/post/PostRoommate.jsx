@@ -27,6 +27,10 @@ const PostRoommate = ({ defaultValue = null, ver = 'post' }) => {
 	const [alertMsg, setAlertMsg] = useState('');
 
 	useEffect(() => {
+		window.scrollTo(0, 0);
+	}, []);
+
+	useEffect(() => {
 		if (defaultValue !== null) {
 			setPostContent({
 				title: defaultValue.title,
@@ -40,6 +44,7 @@ const PostRoommate = ({ defaultValue = null, ver = 'post' }) => {
 	}, [defaultValue]);
 
 	useEffect(() => {
+		console.log(postContent);
 		setButton(isFormValid());
 		if (postContent.date === null || !isDateValid()) {
 			setAlertMsg('형식에 알맞게 입력해주세요.');
@@ -65,7 +70,7 @@ const PostRoommate = ({ defaultValue = null, ver = 'post' }) => {
 		}));
 	};
 
-	const handleSubmit = () => {
+	const handleSubmit = async () => {
 		const SubmitData = {
 			title: postContent.title,
 			content: postContent.detail,
@@ -74,10 +79,11 @@ const PostRoommate = ({ defaultValue = null, ver = 'post' }) => {
 			dongType: postContent.building,
 			roomSizeType: postContent.type,
 		};
-		postMatchingPostAPI(SubmitData);
+		const res = await postMatchingPostAPI(SubmitData);
+		console.log(res);
 	};
 
-	const handleEdit = () => {
+	const handleEdit = async () => {
 		const SubmitData = {
 			title: postContent.title,
 			content: postContent.detail,
@@ -86,7 +92,9 @@ const PostRoommate = ({ defaultValue = null, ver = 'post' }) => {
 			dongType: postContent.building,
 			roomSizeType: postContent.type,
 		};
-		putMatchingPostAPI(defaultValue.id, SubmitData);
+		console.log(SubmitData);
+		const res = await putMatchingPostAPI(defaultValue.id, SubmitData);
+		console.log(res);
 	};
 
 	const isDateValid = () => {
@@ -174,6 +182,7 @@ const PostRoommate = ({ defaultValue = null, ver = 'post' }) => {
 									people: value === '2인실' ? 1 : 0,
 								}))
 							}
+							defaultValue={postContent.type}
 						/>
 					)}
 				</div>
@@ -193,6 +202,7 @@ const PostRoommate = ({ defaultValue = null, ver = 'post' }) => {
 							setSelected={(value) =>
 								setPostContent({ ...postContent, people: parseInt(value[0]) })
 							}
+							defaultValue={defaultValue !== null && `${postContent.people}명`}
 						/>
 					)}
 				</div>
