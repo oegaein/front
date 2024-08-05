@@ -36,7 +36,6 @@ const Chatroom = () => {
 		memberCount: 0,
 		matchingPostId: -1,
 		matchingStatus: '',
-		memberId: -1,
 	});
 	const [message, setMessage] = useState('');
 	const [confirm, setConfirm] = useState(false);
@@ -86,8 +85,9 @@ const Chatroom = () => {
 			memberCount: result.memberCount,
 			matchingPostId: result.matchingPostId,
 			matchingStatus: result.matchingStatus,
-			memberId: result.memberId,
 		}));
+
+		setChat(result.data);
 	};
 
 	useEffect(() => {
@@ -141,27 +141,6 @@ const Chatroom = () => {
 		}));
 	};
 
-	const handleRightBtn = () => {
-		if (room.memberId === myId) {
-			if (room.matchingStatus !== '매칭 완료') {
-				setConfirm(true);
-				setConfirmContent((prev) => ({
-					...prev,
-					msg: '매칭을 마감하시겠습니까?',
-					btn: '확인',
-					func: async () => {
-						getMatchingEnd(room.matchingPostId);
-						setRoom({ matchingStatus: '매칭 완료' });
-					},
-				}));
-			} else {
-				return;
-			}
-		} else {
-			navigate(`/post-detail/${room.matchingPostId}`);
-		}
-	};
-
 	const onEnter = (e) => {
 		if (message !== '' && e.keyCode === 13) {
 			sendHandler();
@@ -181,9 +160,18 @@ const Chatroom = () => {
 	};
 
 	const getDate = (current, prev) => {
-		// "2024-06-24T00:24:13.27823219"
-		const visible = current.slice(0, 9) !== prev.slice(0, 9);
-		console.log(visible);
+		if (!prev) return formatDate(current);
+		if (current?.slice(0, 10) !== prev?.slice(0, 10))
+			return formatDate(current);
+		return null;
+	};
+
+	const formatDate = (dateString) => {
+		const date = new Date(dateString);
+		const year = date.getFullYear();
+		const month = date.getMonth() + 1;
+		const day = date.getDate();
+		return `${year}년 ${month}월 ${day}일`;
 	};
 
 	return (
@@ -201,12 +189,9 @@ const Chatroom = () => {
 						<Header
 							backPath={'/chat'}
 							backEvent={onDisconnect}
-							rightContent={ConfirmMatching(
-								room.matchingStatus,
-								room.memberId === myId,
-							)}
+							rightContent={ConfirmMatching(room.matchingStatus)}
 							rightEvent={() => {
-								handleRightBtn();
+								getMatchingEnd(room.matchingPostId);
 							}}
 						>
 							<div className="flex justify-center">
@@ -218,49 +203,65 @@ const Chatroom = () => {
 					<NotificationDropdown />
 				</section>
 				<section className="chatRoom">
-					{chats.map((chat, index) => (
-						<ChattingStyle key={index} isMyChat={isMyChat(chat.senderId)}>
-							<ImgVisible
-								className={isMyChat(chat.senderId) ? 'noneDisplay' : ''}
-								visible={
-									index > 0 &&
-									prevSender(chat.senderName, chats[index - 1].senderName)
-								}
-							>
-								<ImgWrapper mr={'10px'} width={'50px'} height={'50px'}>
-									<img src={chat.photoUrl} alt="profile" className="img" />
-								</ImgWrapper>
-							</ImgVisible>
-							<div className="flex flex-col">
-								<div
-									className={
-										isMyChat(chat.senderId) ||
-										(index > 0 &&
-											prevSender(chat.senderName, chats[index - 1].senderName))
-											? 'noneDisplay '
-											: 'name'
-									}
-								>
-									{chat.senderName}
-								</div>
-								<div
-									className={`chat ${isMyChat(chat.senderId) ? 'myChat' : 'yourChat'} ${
-										index > 0 &&
-										prevSender(chat.senderName, chats[index - 1].senderName)
-											? nextSender(
-													chat.senderName,
-													chats[index + 1]?.senderName,
-												)
-												? 'middleMsg'
-												: 'endMsg'
-											: ''
-									}`}
-								>
-									{chat.message}
-								</div>
-							</div>
-						</ChattingStyle>
-					))}
+					{chats.map((chat, index) => {
+						const prevChat = chats[index - 1];
+						const dateSeparator = getDate(
+							chat.date,
+							prevChat ? prevChat.date : null,
+						);
+
+						return (
+							<>
+								{dateSeparator && (
+									<DateSeparator>{dateSeparator}</DateSeparator>
+								)}
+								<ChattingStyle key={index} isMyChat={isMyChat(chat.senderId)}>
+									<ImgVisible
+										className={isMyChat(chat.senderId) ? 'noneDisplay' : ''}
+										visible={
+											index > 0 &&
+											prevSender(chat.senderName, chats[index - 1].senderName)
+										}
+									>
+										<ImgWrapper mr={'10px'} width={'50px'} height={'50px'}>
+											<img src={chat.photoUrl} alt="profile" className="img" />
+										</ImgWrapper>
+									</ImgVisible>
+									<div className="flex flex-col">
+										<div
+											className={
+												isMyChat(chat.senderId) ||
+												(index > 0 &&
+													prevSender(
+														chat.senderName,
+														chats[index - 1].senderName,
+													))
+													? 'noneDisplay '
+													: 'name'
+											}
+										>
+											{chat.senderName}
+										</div>
+										<div
+											className={`chat ${isMyChat(chat.senderId) ? 'myChat' : 'yourChat'} ${
+												index > 0 &&
+												prevSender(chat.senderName, chats[index - 1].senderName)
+													? nextSender(
+															chat.senderName,
+															chats[index + 1]?.senderName,
+														)
+														? 'middleMsg'
+														: 'endMsg'
+													: ''
+											}`}
+										>
+											{chat.message}
+										</div>
+									</div>
+								</ChattingStyle>
+							</>
+						);
+					})}
 					<div ref={messageEndRef}></div>
 				</section>
 				<InputStyle>
@@ -297,18 +298,10 @@ const Chatroom = () => {
 
 export default Chatroom;
 
-const ConfirmMatching = (status, isMyPost) => {
+const ConfirmMatching = (status) => {
 	return (
 		<BtnStyle status={status === '매칭 완료'}>
-			{isMyPost ? (
-				status === '매칭 완료' ? (
-					<p>매칭 마감</p>
-				) : (
-					<p>마감하기</p>
-				)
-			) : (
-				<p>글 보기</p>
-			)}
+			{status === '매칭 완료' ? <p>매칭 마감</p> : <p>마감하기</p>}
 		</BtnStyle>
 	);
 };
@@ -354,7 +347,7 @@ const ChatContainer = styled.div`
 	}
 	.chatRoom {
 		width: 100%;
-		padding: 150px 25px 0px 25px;
+		padding: 130px 25px 0px 25px;
 		overflow-y: auto;
 	}
 	.noneDisplay {
@@ -456,4 +449,14 @@ const ImgVisible = styled.div`
 	height: 50px;
 	margin-right: 10px;
 	opacity: ${({ visible }) => (visible ? 0 : 1)};
+`;
+
+const DateSeparator = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	margin: 25px 0px;
+	font: ${FONT.caption3M12};
+	color: ${COLOR.gray800};
 `;
