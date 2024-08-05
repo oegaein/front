@@ -4,7 +4,6 @@ import { Input, ContainerStyle } from '@styles/basicInfo/Input';
 import Xbutton from '@assets/images/common/Xbutton.svg';
 import { DropdownWrapper } from '@common/dropdown/BasicDropdown';
 import { postCommentsAPI, postReplyAPI } from 'services/api/CommentsAPI';
-import useAuthStore from '@store/authStore';
 
 //
 export const BasicInput = ({ onChangeValue, limitNum }) => {

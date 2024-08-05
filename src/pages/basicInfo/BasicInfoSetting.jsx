@@ -16,7 +16,6 @@ import Smoking from '@components/basicInfo/Smoking';
 import Sound from '@components/basicInfo/Sound';
 import COLOR from '@styles/color';
 import { PostProfileAPI } from 'services/api/ProfileAPI';
-import useAuthStore from '@store/authStore';
 
 const BasicInfoSetting = () => {
 	const [activeButton, setActiveButton] = useState(true);
