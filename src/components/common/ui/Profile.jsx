@@ -58,10 +58,8 @@ export const BasicProfile = ({
 			func: async () => {
 				if (isReply) {
 					const res = await deleteRepliesAPI(commentID);
-					console.log(res);
 				} else {
 					const res = await deleteCommentsAPI(commentID);
-					console.log(res);
 				}
 				window.location.reload();
 			},

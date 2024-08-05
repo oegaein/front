@@ -51,7 +51,6 @@ const PostDetail = () => {
 
 	const fetchPostData = async () => {
 		const result = await getMatchingPostAPI(postId);
-		console.log('상세 게시글', result);
 		setData(result);
 	};
 	useEffect(() => {
@@ -74,8 +73,6 @@ const PostDetail = () => {
 			btn: '삭제',
 			func: async () => {
 				const res = await deleteMatchingPostAPI(postId);
-				console.log(res);
-				// 성공하면 홈 화면으로
 				navigate('/home');
 			},
 		}));
@@ -89,7 +86,6 @@ const PostDetail = () => {
 			btn: '차단',
 			func: async () => {
 				const res = await BlockUserAPI(data.author_profile.id);
-				console.log(res);
 			},
 		}));
 	};

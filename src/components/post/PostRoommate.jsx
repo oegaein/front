@@ -74,7 +74,6 @@ const PostRoommate = ({ defaultValue = null, ver = 'post' }) => {
 			dongType: postContent.building,
 			roomSizeType: postContent.type,
 		};
-		console.log(SubmitData);
 		postMatchingPostAPI(SubmitData);
 	};
 
@@ -87,7 +86,6 @@ const PostRoommate = ({ defaultValue = null, ver = 'post' }) => {
 			dongType: postContent.building,
 			roomSizeType: postContent.type,
 		};
-		console.log(SubmitData);
 		putMatchingPostAPI(defaultValue.id, SubmitData);
 	};
 
