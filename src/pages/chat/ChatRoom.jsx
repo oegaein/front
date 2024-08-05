@@ -215,50 +215,63 @@ const Chatroom = () => {
 								{dateSeparator && (
 									<DateSeparator>{dateSeparator}</DateSeparator>
 								)}
-								<ChattingStyle key={index} isMyChat={isMyChat(chat.senderId)}>
-									<ImgVisible
-										className={isMyChat(chat.senderId) ? 'noneDisplay' : ''}
-										visible={
-											index > 0 &&
-											prevSender(chat.senderName, chats[index - 1].senderName)
-										}
-									>
-										<ImgWrapper mr={'10px'} width={'50px'} height={'50px'}>
-											<img src={chat.photoUrl} alt="profile" className="img" />
-										</ImgWrapper>
-									</ImgVisible>
-									<div className="flex flex-col">
-										<div
-											className={
-												isMyChat(chat.senderId) ||
-												(index > 0 &&
+								{chat.senderId === null ? (
+									<AlertStyle>
+										<p>{chat.message}</p>
+									</AlertStyle>
+								) : (
+									<ChattingStyle key={index} isMyChat={isMyChat(chat.senderId)}>
+										<ImgVisible
+											className={isMyChat(chat.senderId) ? 'noneDisplay' : ''}
+											visible={
+												index > 0 &&
+												prevSender(chat.senderName, chats[index - 1].senderName)
+											}
+										>
+											<ImgWrapper mr={'10px'} width={'50px'} height={'50px'}>
+												<img
+													src={chat.photoUrl}
+													alt="profile"
+													className="img"
+												/>
+											</ImgWrapper>
+										</ImgVisible>
+										<div className="flex flex-col">
+											<div
+												className={
+													isMyChat(chat.senderId) ||
+													(index > 0 &&
+														prevSender(
+															chat.senderName,
+															chats[index - 1].senderName,
+														))
+														? 'noneDisplay '
+														: 'name'
+												}
+											>
+												{chat.senderName}
+											</div>
+											<div
+												className={`chat ${isMyChat(chat.senderId) ? 'myChat' : 'yourChat'} ${
+													index > 0 &&
 													prevSender(
 														chat.senderName,
 														chats[index - 1].senderName,
-													))
-													? 'noneDisplay '
-													: 'name'
-											}
-										>
-											{chat.senderName}
+													)
+														? nextSender(
+																chat.senderName,
+																chats[index + 1]?.senderName,
+															)
+															? 'middleMsg'
+															: 'endMsg'
+														: ''
+												}`}
+											>
+												{chat.message}
+											</div>
 										</div>
-										<div
-											className={`chat ${isMyChat(chat.senderId) ? 'myChat' : 'yourChat'} ${
-												index > 0 &&
-												prevSender(chat.senderName, chats[index - 1].senderName)
-													? nextSender(
-															chat.senderName,
-															chats[index + 1]?.senderName,
-														)
-														? 'middleMsg'
-														: 'endMsg'
-													: ''
-											}`}
-										>
-											{chat.message}
-										</div>
-									</div>
-								</ChattingStyle>
+									</ChattingStyle>
+								)}
 							</>
 						);
 					})}
@@ -459,4 +472,17 @@ const DateSeparator = styled.div`
 	margin: 25px 0px;
 	font: ${FONT.caption3M12};
 	color: ${COLOR.gray800};
+`;
+
+const AlertStyle = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	max-width: 200px;
+	height: 24px;
+	padding: 5px 8px;
+	background-color: ${COLOR.gray50};
+	border-radius: 100px;
+	font: ${FONT.caption3M12};
+	color: ${FONT.black};
 `;
