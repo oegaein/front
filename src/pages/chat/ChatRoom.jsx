@@ -457,6 +457,7 @@ const BtnStyle = styled.div`
 	padding: 8px 11px;
 	background-color: ${(props) =>
 		props.status ? COLOR.gray100 : COLOR.purple1};
+	cursor: ${(props) => (props.status ? 'auto' : 'pointer')};
 
 	> p {
 		font: ${FONT.caption2M14};
