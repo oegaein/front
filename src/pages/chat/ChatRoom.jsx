@@ -485,7 +485,7 @@ const InputStyle = styled.div`
 	}
 
 	.input {
-		width: 90%;
+		width: 85%;
 		background-color: transparent;
 	}
 
