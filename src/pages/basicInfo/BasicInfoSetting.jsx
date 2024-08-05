@@ -37,8 +37,6 @@ const BasicInfoSetting = () => {
 		sound_sensitivity: null,
 	});
 
-	console.log(info);
-
 	const step = [
 		{ id: 1, btn: '다음', title: '닉네임을 입력해 주세요' },
 		{ id: 2, btn: '다음', title: '프로필을 완성해 주세요' },
@@ -69,7 +67,6 @@ const BasicInfoSetting = () => {
 		if (count === 11) {
 			try {
 				const response = await PostProfileAPI(info);
-				console.log(response);
 			} catch (error) {
 				console.error(error);
 			}
@@ -93,7 +90,6 @@ const BasicInfoSetting = () => {
 		if (count === 11) {
 			try {
 				const response = await PostProfileAPI(info);
-				console.log(response);
 			} catch (error) {
 				console.error(error);
 			}

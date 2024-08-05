@@ -39,7 +39,6 @@ const MyProfileEdit = () => {
 	useEffect(() => {
 		const fetchData = async () => {
 			const response = await makeAuthorizedRequest(`/api/v1/member/my-profile`);
-			console.log(response);
 			setInfo(response.data);
 		};
 		fetchData();

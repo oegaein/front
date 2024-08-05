@@ -47,9 +47,7 @@ const Chatroom = () => {
 
 		clientRef.current = new Client({
 			webSocketFactory: () => socket,
-			debug: (str) => {
-				console.log(str);
-			},
+			debug: (str) => {},
 			connectHeaders: {
 				Authorization: `Bearer ${accessToken}`,
 				roomId: subscribeID,
@@ -79,7 +77,6 @@ const Chatroom = () => {
 
 	const checkChat = async () => {
 		const result = await getChatHistory(subscribeID);
-		console.log(result);
 		setRoom((prev) => ({
 			...prev,
 			roomName: result.roomName,
@@ -105,7 +102,6 @@ const Chatroom = () => {
 		if (messageEndRef.current) {
 			messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
 		}
-		console.log(chats);
 	}, [chats]);
 
 	const inputMessage = (e) => {
@@ -136,7 +132,6 @@ const Chatroom = () => {
 			btn: '나가기',
 			func: async () => {
 				const result = await deleteChatRoom(subscribeID);
-				console.log(result);
 				navigate('/chat');
 			},
 		}));
@@ -152,7 +147,6 @@ const Chatroom = () => {
 					btn: '확인',
 					func: async () => {
 						const res = await getMatchingEnd(room.matchingPostId);
-						console.log(res);
 						checkChat();
 						// setRoom({ matchingStatus: '매칭 완료' });
 					},
@@ -457,6 +451,7 @@ const BtnStyle = styled.div`
 	padding: 8px 11px;
 	background-color: ${(props) =>
 		props.status ? COLOR.gray100 : COLOR.purple1};
+	cursor: ${(props) => (props.status ? 'auto' : 'pointer')};
 
 	> p {
 		font: ${FONT.caption2M14};

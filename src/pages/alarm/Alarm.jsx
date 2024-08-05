@@ -31,7 +31,6 @@ const Alarm = () => {
 	const DeleteAllAlarm = () => {
 		const fetchData = async () => {
 			const result = await deleteAllAlarmAPI();
-			console.log(result);
 			setData(result);
 		};
 		fetchData();
@@ -40,7 +39,6 @@ const Alarm = () => {
 	const DeleteAlarm = (id) => {
 		const fetchData = async () => {
 			const result = await deleteAlarmAPI(id);
-			console.log(result);
 			setData(result);
 		};
 		fetchData();
