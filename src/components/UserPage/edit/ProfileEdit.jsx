@@ -23,19 +23,17 @@ const SIoptions = [
 ];
 
 const ProfileEdit = ({ onGetValue, defaultValue, setDisable }) => {
-	console.log(defaultValue);
 	const gender = [
 		{ id: '여성', img: FemailImg },
 		{ id: '남성', img: MailImg },
 	];
-	const [selectedGender, setSelectedGender] = useState(
-		defaultValue[0] === '여성' ? 0 : 1,
-	);
+	const [selectedGender, setSelectedGender] = useState(-1);
 	const [selectedStudentId, setSelectedStudentId] = useState(0);
 	const [selectedBirth, setSelectedBirth] = useState('');
 	const [alertMsg, setAlertMsg] = useState('');
 
 	useEffect(() => {
+		setSelectedGender(defaultValue[0] === '여성' ? 0 : 1);
 		setSelectedStudentId(defaultValue[1]);
 	}, [defaultValue]);
 
