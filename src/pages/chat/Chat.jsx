@@ -11,6 +11,7 @@ import { timeAgo } from '@utils/TimeAgo';
 import { ImgWrapper } from '@common/ui/Profile';
 import { getChatListAPI } from 'services/api/ChatAPI';
 import useInterval from '@utils/useInterval';
+import DeliveryNotification from '@common/ui/item/DeliveryNotification';
 
 const Chat = () => {
 	const setAccessToken = useAuthStore((state) => state.setAccessToken);
@@ -111,7 +112,9 @@ const Chat = () => {
 						)}
 					</div>
 				) : (
-					<div></div>
+					<div className="flex justify-center items-center w-full h-[50vh]">
+						<DeliveryNotification />
+					</div>
 				)}
 			</ChatStyle>
 		</>

@@ -13,6 +13,7 @@ import {
 import useAuthStore from '@store/authStore';
 import { timeAgo } from '@utils/TimeAgo';
 import { Link } from 'react-router-dom';
+import DeliveryNotification from '@common/ui/item/DeliveryNotification';
 
 const Alarm = () => {
 	const setAccessToken = useAuthStore((state) => state.setAccessToken);
@@ -118,12 +119,12 @@ const Alarm = () => {
 						)}
 					</div>
 				) : (
-					<div>
-						{data.length === 0 ? (
+					<div className="flex justify-center items-center w-full h-[50vh]">
+						{/* {data.length === 0 ? (
 							<p className="sub mt-10">새로운 알림이 없습니다.</p>
-						) : (
-							<div></div>
-						)}
+						) : ( */}
+						<DeliveryNotification />
+						{/* )} */}
 					</div>
 				)}
 			</AlarmContainer>
