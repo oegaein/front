@@ -45,6 +45,18 @@ const Alarm = () => {
 		fetchData();
 	};
 
+	const AlarmMsg = (type, name) => {
+		if (type === '매칭 요청') {
+			return `${name}님이 룸메이트 신청을 보냈어요.`;
+		} else if (type === '매칭 수락') {
+			return `${name}님이 신청을 수락했습니다.`;
+		} else if (type === '매칭 거부') {
+			return `${name}님이 신청을 거절했습니다.`;
+		} else if (type === '매칭 완료') {
+			return `${name}님 과의 매칭이 완료되었습니다.`;
+		}
+	};
+
 	return (
 		<>
 			<AlarmContainer>
@@ -82,7 +94,7 @@ const Alarm = () => {
 											</div>
 											<div className="flex flex-col justify-center items-start">
 												<p className="title">
-													{alarm.name}님이 룸메이트 신청을 보냈어요.
+													{AlarmMsg(alarm.type, alarm.name)}
 												</p>
 												{/* <p className="sub">{alarm.title}</p> */}
 												<p className="time mt-1">{timeAgo(alarm.created_at)}</p>
@@ -90,7 +102,7 @@ const Alarm = () => {
 										</div>
 										<button
 											onClick={() => {
-												DeleteAlarm(alarm.matching_post_id);
+												DeleteAlarm(alarm.roommate_alarm_id);
 											}}
 											className="flex items-center mb-5"
 										>
@@ -106,33 +118,7 @@ const Alarm = () => {
 						{data.length === 0 ? (
 							<p className="sub mt-10">새로운 알림이 없습니다.</p>
 						) : (
-							data?.map((alarm, index) => (
-								<div className="flex w-full justify-between px-6 py-4">
-									<div className="flex">
-										<div className="mr-[10px]">
-											<img
-												src={alarm.photo_url}
-												style={{ width: '65px', height: '65px' }}
-											/>
-										</div>
-										<div className="flex flex-col justify-center items-start">
-											<p className="title">
-												{alarm.name}님이 룸메이트 신청을 보냈어요.
-											</p>
-											{alarm.sub !== '' && <p className="sub">{alarm.sub}</p>}
-											<p className="time mt-1">{timeAgo(alarm.created_at)}</p>
-										</div>
-									</div>
-									<button
-										onClick={() => {
-											DeleteAlarm(alarm.matching_post_id);
-										}}
-										className="flex items-center mb-5"
-									>
-										<img src={Close} alt="close button" />
-									</button>
-								</div>
-							))
+							<div></div>
 						)}
 					</div>
 				)}
