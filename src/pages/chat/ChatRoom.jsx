@@ -479,6 +479,7 @@ const InputStyle = styled.div`
 		justify-content: space-between;
 		margin-right: 17px;
 		width: 90%;
+		height: 58px;
 		padding: 14px;
 		background-color: ${COLOR.purple2};
 		border-radius: 10px;
