@@ -36,6 +36,7 @@ const Chatroom = () => {
 		memberCount: 0,
 		matchingPostId: -1,
 		matchingStatus: '',
+		memberId: -1,
 	});
 	const [message, setMessage] = useState('');
 	const [confirm, setConfirm] = useState(false);
@@ -85,6 +86,7 @@ const Chatroom = () => {
 			memberCount: result.memberCount,
 			matchingPostId: result.matchingPostId,
 			matchingStatus: result.matchingStatus,
+			memberId: result.memberId,
 		}));
 
 		setChat(result.data);
@@ -135,10 +137,32 @@ const Chatroom = () => {
 			func: async () => {
 				const result = await deleteChatRoom(subscribeID);
 				console.log(result);
-				// 성공하면 홈 화면으로
 				navigate('/chat');
 			},
 		}));
+	};
+
+	const handleRightBtn = () => {
+		if (room.memberId === myId) {
+			if (room.matchingStatus !== '매칭 완료') {
+				setConfirm(true);
+				setConfirmContent((prev) => ({
+					...prev,
+					msg: '매칭을 마감하시겠습니까?',
+					btn: '확인',
+					func: async () => {
+						const res = await getMatchingEnd(room.matchingPostId);
+						console.log(res);
+						checkChat();
+						// setRoom({ matchingStatus: '매칭 완료' });
+					},
+				}));
+			} else {
+				return;
+			}
+		} else {
+			navigate(`/post-detail/${room.matchingPostId}`);
+		}
 	};
 
 	const onEnter = (e) => {
@@ -189,9 +213,12 @@ const Chatroom = () => {
 						<Header
 							backPath={'/chat'}
 							backEvent={onDisconnect}
-							rightContent={ConfirmMatching(room.matchingStatus)}
+							rightContent={ConfirmMatching(
+								room.matchingStatus,
+								room.memberId === myId,
+							)}
 							rightEvent={() => {
-								getMatchingEnd(room.matchingPostId);
+								handleRightBtn();
 							}}
 						>
 							<div className="flex justify-center">
@@ -217,7 +244,9 @@ const Chatroom = () => {
 								)}
 								{chat.senderId === null ? (
 									<AlertStyle>
-										<p>{chat.message}</p>
+										<div className="alert_box">
+											<p>{chat.message}</p>
+										</div>
 									</AlertStyle>
 								) : (
 									<ChattingStyle key={index} isMyChat={isMyChat(chat.senderId)}>
@@ -311,10 +340,18 @@ const Chatroom = () => {
 
 export default Chatroom;
 
-const ConfirmMatching = (status) => {
+const ConfirmMatching = (status, isMyPost) => {
 	return (
 		<BtnStyle status={status === '매칭 완료'}>
-			{status === '매칭 완료' ? <p>매칭 마감</p> : <p>마감하기</p>}
+			{isMyPost ? (
+				status === '매칭 완료' ? (
+					<p>매칭 마감</p>
+				) : (
+					<p>마감하기</p>
+				)
+			) : (
+				<p>글 보기</p>
+			)}
 		</BtnStyle>
 	);
 };
@@ -448,7 +485,7 @@ const InputStyle = styled.div`
 	}
 
 	.input {
-		width: 100%;
+		width: 90%;
 		background-color: transparent;
 	}
 
@@ -469,8 +506,8 @@ const DateSeparator = styled.div`
 	justify-content: center;
 	align-items: center;
 	width: 100%;
-	margin: 25px 0px;
-	font: ${FONT.caption3M12};
+	margin: 20px 0px 10px 0px;
+	font: ${FONT.caption2M14};
 	color: ${COLOR.gray800};
 `;
 
@@ -478,11 +515,19 @@ const AlertStyle = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	max-width: 200px;
-	height: 24px;
-	padding: 5px 8px;
-	background-color: ${COLOR.gray50};
-	border-radius: 100px;
-	font: ${FONT.caption3M12};
-	color: ${FONT.black};
+	width: 100%;
+	margin-bottom: 10px;
+
+	.alert_box {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: fit-content;
+		height: 30px;
+		padding: 8px 10px;
+		background-color: ${COLOR.gray50};
+		border-radius: 100px;
+		font: ${FONT.caption3M12};
+		color: ${FONT.black};
+	}
 `;
