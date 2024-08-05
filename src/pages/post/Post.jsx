@@ -14,11 +14,7 @@ const Post = () => {
 		<>
 			<PostStyle>
 				<section className="w-full px-[25px] border-b border-solid border-[#DEDEDE] mb-6">
-					<Header
-						backPath="home"
-						rightContent={'임시저장'}
-						rightEvent={handleSave}
-					>
+					<Header backPath="home" rightContent={' '} rightEvent={() => {}}>
 						<p className="currentP">룸메이트 찾기</p>
 					</Header>
 				</section>
