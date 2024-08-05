@@ -94,9 +94,9 @@ const Alarm = () => {
 											</div>
 											<div className="flex flex-col justify-center items-start">
 												<p className="title">
-													{AlarmMsg(alarm.type, alarm.name)}
+													{AlarmMsg(alarm.roommate_alarm_type, alarm.name)}
 												</p>
-												{/* <p className="sub">{alarm.title}</p> */}
+												<p className="sub">{alarm.title}</p>
 												<p className="time mt-1">{timeAgo(alarm.created_at)}</p>
 											</div>
 										</div>
