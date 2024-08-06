@@ -22,7 +22,7 @@ const SIoptions = [
 	'15학번',
 ];
 
-const ProfileEdit = ({ onGetValue, defaultValue, setDisable }) => {
+const ProfileEdit = ({ onGetValue, defaultValue, setBirthValid }) => {
 	const gender = [
 		{ id: '여성', img: FemailImg },
 		{ id: '남성', img: MailImg },
@@ -42,11 +42,10 @@ const ProfileEdit = ({ onGetValue, defaultValue, setDisable }) => {
 	};
 
 	useEffect(() => {
-		console.log(selectedGender, selectedStudentId, selectedBirth);
 		if (
 			selectedGender !== -1 &&
 			selectedStudentId !== 0 &&
-			selectedBirth !== ''
+			selectedBirth !== null
 		) {
 			const values = {
 				gender: gender[selectedGender].id,
@@ -58,10 +57,10 @@ const ProfileEdit = ({ onGetValue, defaultValue, setDisable }) => {
 
 		if (selectedBirth === null) {
 			setAlertMsg('형식에 알맞게 입력해주세요.');
-			setDisable(true);
+			setBirthValid(false);
 		} else {
 			setAlertMsg('');
-			setDisable(false);
+			setBirthValid(true);
 		}
 	}, [selectedGender, selectedStudentId, selectedBirth]);
 

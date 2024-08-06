@@ -3,22 +3,36 @@ import COLOR from '@styles/color';
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import FONT from '@styles/fonts';
-import {
-	BasicInput,
-	EditNicknameInput,
-} from '@components/basicInfo/BasicSettingInput';
+import { EditNicknameInput } from '@components/basicInfo/BasicSettingInput';
 import { GetDuplicate } from 'services/api/ProfileAPI';
 
-const NicknameEdit = ({ onGetValue, defaultValue, setDisable }) => {
+const NicknameEdit = ({ onGetValue, defaultValue, setNameValid }) => {
 	const [input, setInput] = useState('');
-	const [duplicated, setDuplicated] = useState(true);
+	const [duplicated, setDuplicated] = useState(false);
 	const [alertMsg, setAlertMsg] = useState('');
+
+	useEffect(() => {
+		setInput(defaultValue);
+	}, [defaultValue]);
+
+	useEffect(() => {
+		console.log(input);
+		console.log('validateNickname(input): ' + validateNickname(input));
+
+		if (input === '') return;
+
+		if (!duplicated && validateNickname(input)) {
+			onGetValue('name', input);
+			setNameValid(true);
+		} else {
+			setNameValid(false);
+		}
+	}, [duplicated, input, defaultValue]);
 
 	const handleChangeValue = (nickname) => {
 		setInput(nickname);
 		setDuplicated(true);
-		handleButton(nickname);
-		setDisable(true);
+		setNameValid(false);
 	};
 
 	const handleDuplicate = async () => {
@@ -35,23 +49,15 @@ const NicknameEdit = ({ onGetValue, defaultValue, setDisable }) => {
 		}
 	};
 
-	const handleButton = (nickname) => {
-		if (!validateNickname(nickname) || duplicated) {
-			setDisable(true);
-		} else {
-			onGetValue(nickname);
-			setDisable(false);
-		}
-	};
-
 	const validateNickname = (nickname) => {
-		const speicalCH = /[!@#$%^&*(),.?":{}|<>]/;
+		const speicalCH = /[~`!@#$%^&*(),.?'":{}|<>]/;
 		const isValidLength = nickname.length >= 2 && nickname.length <= 6;
 
 		if (speicalCH.test(nickname)) {
 			setAlertMsg('특수 문자는 사용이 불가합니다.');
 			return false;
 		} else if (!isValidLength) {
+			console.log(nickname);
 			setAlertMsg('닉네임은 2~6자여야 합니다');
 			return false;
 		} else {
