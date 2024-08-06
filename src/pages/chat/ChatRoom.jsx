@@ -236,7 +236,8 @@ const Chatroom = () => {
 								{dateSeparator && (
 									<DateSeparator>{dateSeparator}</DateSeparator>
 								)}
-								{chat.senderId === null ? (
+								{chat.messageStatus === 'ENTER' ||
+								chat.messageStatus === 'LEAVE' ? (
 									<AlertStyle>
 										<div className="alert_box">
 											<p>{chat.message}</p>
