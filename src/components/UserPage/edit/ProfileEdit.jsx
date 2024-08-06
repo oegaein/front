@@ -27,18 +27,24 @@ const ProfileEdit = ({ onGetValue, defaultValue, setDisable }) => {
 		{ id: '여성', img: FemailImg },
 		{ id: '남성', img: MailImg },
 	];
-	const [selectedGender, setSelectedGender] = useState(0);
+	const [selectedGender, setSelectedGender] = useState(-1);
 	const [selectedStudentId, setSelectedStudentId] = useState(0);
 	const [selectedBirth, setSelectedBirth] = useState('');
 	const [alertMsg, setAlertMsg] = useState('');
+
+	useEffect(() => {
+		setSelectedGender(defaultValue[0] === '여성' ? 0 : 1);
+		setSelectedStudentId(defaultValue[1]);
+	}, [defaultValue]);
 
 	const handleGenderChange = (index) => {
 		setSelectedGender(index);
 	};
 
 	useEffect(() => {
+		console.log(selectedGender, selectedStudentId, selectedBirth);
 		if (
-			selectedGender !== 0 &&
+			selectedGender !== -1 &&
 			selectedStudentId !== 0 &&
 			selectedBirth !== ''
 		) {

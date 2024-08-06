@@ -14,6 +14,7 @@ const Delivery = () => {
 			<DeliveryStyle>
 				<div className="header_container">
 					<Header
+						backPath="/"
 						rightContent={Alarm}
 						rightEvent={() => {
 							navigate('/alarm');

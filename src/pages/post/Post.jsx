@@ -13,7 +13,7 @@ const Post = () => {
 	return (
 		<>
 			<PostStyle>
-				<section className="w-full px-[25x] border-b border-solid border-[#DEDEDE] mb-6">
+				<section className="w-full px-[25px] border-b border-solid border-[#DEDEDE] mb-6">
 					<Header
 						backPath="home"
 						rightContent={'임시저장'}

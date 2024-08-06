@@ -91,7 +91,7 @@ const PostDetail = () => {
 	};
 
 	const handleProfile = () => {
-		if (myId === data.author_id) {
+		if (myId === data.author_profile.id) {
 			navigate('/user/my-profile');
 		} else {
 			navigate(`/user/${data.author_profile.id}`);
@@ -135,7 +135,7 @@ const PostDetail = () => {
 		<>
 			{threedots && (
 				<OptionModal
-					options={data.author_id === myId ? postOptions : yourOption}
+					options={data.author_profile.id === myId ? postOptions : yourOption}
 					isOpen={threedots}
 					setIsOpen={setThreedots}
 				/>
@@ -246,7 +246,7 @@ const PostDetail = () => {
 					<div className="container flex-col">
 						<div className="flex flex-col mb-4">
 							<div className="flex justify-center items-center mb-4">
-								<img src={Checkbox} className="mr-1" />
+								<img src={Checkbox} className="mr-1" alt="checkIcon" />
 								<Subtitle style={{ margin: '0px' }}>
 									희망하는 기숙사 동 & 호실 유형
 								</Subtitle>
@@ -258,7 +258,7 @@ const PostDetail = () => {
 						</div>
 						<div className="flex flex-col mb-4">
 							<div className="flex justify-center items-center mb-4">
-								<img src={Checkbox} className="mr-1" />
+								<img src={Checkbox} className="mr-1" alt="checkIcon" />
 								<Subtitle style={{ margin: '0px' }}>모집 인원</Subtitle>
 							</div>
 							<PurpleBox className="w-16">
@@ -267,7 +267,7 @@ const PostDetail = () => {
 						</div>
 						<div className="flex flex-col">
 							<div className="flex justify-center items-center mb-4">
-								<img src={Checkbox} className="mr-1" />
+								<img src={Checkbox} className="mr-1" alt="checkIcon" />
 								<Subtitle style={{ margin: '0px' }}>마감 기한</Subtitle>
 							</div>
 							<p className="body5 text-left">{changeDate(data.deadline)}</p>

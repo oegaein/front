@@ -3,7 +3,6 @@ import COLOR from '@styles/color';
 import FONT from '@styles/fonts';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import Alarm from '@assets/images/bell.svg';
 import NicknameEdit from '@components/UserPage/edit/Nickname-edit';
 import ProfileEdit from '@components/UserPage/edit/ProfileEdit';
 import { Subtitle } from '@styles/basicInfo/Text';
@@ -105,7 +104,7 @@ const MyProfileEdit = () => {
 					</Header>
 				</div>
 				<div className="img">
-					<img src={info.photo_url} alt="photo" />
+					<img src={info.photo_url} alt="user_photo" />
 				</div>
 				<section className="w-full">
 					<div className="w-full px-[25px]">
