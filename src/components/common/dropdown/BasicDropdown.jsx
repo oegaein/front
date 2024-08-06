@@ -65,37 +65,20 @@ const BasicDropdown = ({
 						</div>
 						<p>{choice}</p>
 					</div>
-					{location.pathname === 'setting' ? (
-						<div className="w-full h-[233px] overflow-auto">
-							{options.map((option, index) => (
-								<span
-									key={option}
-									className="item"
-									onClick={() => {
-										handleSelected(option);
-										setIsOpen(false);
-									}}
-								>
-									{option}
-								</span>
-							))}
-						</div>
-					) : (
-						<ListLayout>
-							{options.map((option, index) => (
-								<span
-									key={option}
-									className="item"
-									onClick={() => {
-										handleSelected(option);
-										setIsOpen(false);
-									}}
-								>
-									{option}
-								</span>
-							))}
-						</ListLayout>
-					)}
+					<ListLayout>
+						{options.map((option, index) => (
+							<span
+								key={option}
+								className="item"
+								onClick={() => {
+									handleSelected(option);
+									setIsOpen(false);
+								}}
+							>
+								{option}
+							</span>
+						))}
+					</ListLayout>
 				</DropdownList>
 			)}
 		</>
@@ -108,7 +91,8 @@ function ListLayout({ children }) {
 	const location = useLocation();
 	return (
 		<>
-			{location.pathname === '/setting' ? (
+			{location.pathname === '/setting' ||
+			location.pathname?.substring(0, 11) === '/my-profile' ? (
 				<div className="w-full h-[233px] overflow-auto">{children}</div>
 			) : (
 				<div className="w-full overflow-auto">{children}</div>
@@ -154,10 +138,6 @@ export const DropdownList = styled(motion.div)`
 	width: 393px;
 	bottom: 0px;
 	left: calc(50% - 197px);
-	/* position: absolute;
-	bottom: 0;
-	left: 0;
-	width: 100%; */
 	max-height: 450px;
 	padding: 11px 26px;
 	background-color: ${COLOR.white};
@@ -166,9 +146,15 @@ export const DropdownList = styled(motion.div)`
 	z-index: 60;
 	overflow-y: auto;
 
+	/* Hide scrollbar for WebKit browsers */
 	::-webkit-scrollbar {
 		width: 0;
+		height: 0;
 	}
+
+	/* Hide scrollbar for IE, Edge, and Firefox */
+	scrollbar-width: none; /* Firefox */
+	-ms-overflow-style: none; /* IE and Edge */
 
 	p {
 		margin-bottom: 24px;
