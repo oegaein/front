@@ -34,6 +34,8 @@ const MyProfileEdit = () => {
 		sound_sensitivity: null,
 	});
 	const [disable, setDisable] = useState(false);
+	const [nameValid, setNameValid] = useState(true);
+	const [birthValid, setBirthValid] = useState(true);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -44,18 +46,19 @@ const MyProfileEdit = () => {
 	}, []);
 
 	useEffect(() => {
+		console.log(info);
 		if (
-			info.name !== '' &&
+			nameValid &&
 			info.gender !== '' &&
 			info.student_no !== 0 &&
-			info.birthdate !== null &&
+			birthValid &&
 			info.introduction !== ''
 		) {
 			setDisable(false);
 		} else {
 			setDisable(true);
 		}
-	}, [info]);
+	}, [info, nameValid, birthValid]);
 
 	const handleInfo = (index, value) => {
 		setInfo((prevInfo) => ({
@@ -112,14 +115,14 @@ const MyProfileEdit = () => {
 							<NicknameEdit
 								onGetValue={handleInfo}
 								defaultValue={info.name}
-								setDisable={setDisable}
+								setNameValid={setNameValid}
 							/>
 						</div>
 						<div className="profile mb">
 							<ProfileEdit
 								onGetValue={handleProfile}
 								defaultValue={[info.gender, info.student_no, info.birthdate]}
-								setDisable={setDisable}
+								setBirthValid={setBirthValid}
 							/>
 						</div>
 						<div className="major mb">
