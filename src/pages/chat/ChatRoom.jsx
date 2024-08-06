@@ -249,7 +249,7 @@ const Chatroom = () => {
 											className={isMyChat(chat.senderId) ? 'noneDisplay' : ''}
 											visible={
 												index > 0 &&
-												prevSender(chat.senderName, chats[index - 1].senderName)
+												prevSender(chat.senderId, chats[index - 1].senderId)
 											}
 										>
 											<ImgWrapper mr={'10px'} width={'50px'} height={'50px'}>
@@ -266,8 +266,8 @@ const Chatroom = () => {
 													isMyChat(chat.senderId) ||
 													(index > 0 &&
 														prevSender(
-															chat.senderName,
-															chats[index - 1].senderName,
+															chat.senderId,
+															chats[index - 1].senderId,
 														))
 														? 'noneDisplay '
 														: 'name'
@@ -278,13 +278,10 @@ const Chatroom = () => {
 											<div
 												className={`chat ${isMyChat(chat.senderId) ? 'myChat' : 'yourChat'} ${
 													index > 0 &&
-													prevSender(
-														chat.senderName,
-														chats[index - 1].senderName,
-													)
+													prevSender(chat.senderId, chats[index - 1].senderId)
 														? nextSender(
-																chat.senderName,
-																chats[index + 1]?.senderName,
+																chat.senderId,
+																chats[index + 1]?.senderId,
 															)
 															? 'middleMsg'
 															: 'endMsg'
