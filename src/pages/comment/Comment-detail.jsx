@@ -63,4 +63,13 @@ const CommentDetailStyle = styled.div`
 			font: ${FONT.title4SB17};
 		}
 	}
+
+	.color-purple {
+		font: ${FONT.caption2M14};
+		color: ${COLOR.purple1};
+	}
+	.color-gray {
+		font: ${FONT.caption2M14};
+		color: ${COLOR.gray400};
+	}
 `;

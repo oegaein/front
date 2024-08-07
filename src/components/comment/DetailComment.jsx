@@ -99,11 +99,7 @@ const DetailComment = ({ postId, comments, refetchData }) => {
 							))}
 						</section>
 						<div className="input_box">
-							<CommentInput
-								postId={id}
-								setSelected={setValue}
-								refetchData={refetchData}
-							/>
+							<CommentInput postId={id} refetchData={refetchData} />
 						</div>
 					</>
 				)}
