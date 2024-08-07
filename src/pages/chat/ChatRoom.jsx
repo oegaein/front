@@ -21,12 +21,14 @@ import { ImgWrapper } from '@common/ui/Profile';
 import useMyInfoStore from '@store/myInfoStore';
 import ConfirmModal from '@common/modal/ConfirmModal';
 import NotificationDropdown from '@common/dropdown/NotificationDropdown';
+import BasicModal from '@common/modal/BasicModal';
 
 const Chatroom = () => {
 	const messageEndRef = useRef(null);
 	const clientRef = useRef(null);
 	const accessToken = useAuthStore.getState().accessToken;
 	const myId = useMyInfoStore.getState().myInfo.id;
+	const myName = useMyInfoStore.getState().myInfo.name;
 	const navigate = useNavigate();
 	const { subscribeID } = useParams();
 
@@ -41,6 +43,7 @@ const Chatroom = () => {
 	const [message, setMessage] = useState('');
 	const [confirm, setConfirm] = useState(false);
 	const [confirmContent, setConfirmContent] = useState({});
+	const [isOpen, setIsOpen] = useState(false);
 
 	const connectClient = () => {
 		const socket = new SockJS(`${chatSeverURL}/oegaein`);
@@ -58,6 +61,10 @@ const Chatroom = () => {
 
 			onConnect: (frame) => {
 				clientRef.current.subscribe(`/topic/${subscribeID}`, (message) => {
+					let jsonMsg = JSON.parse(message.body);
+					if (jsonMsg.messageStatus === 'LEAVE') {
+						checkChat();
+					}
 					setChat((prevChat) => [...prevChat, JSON.parse(message.body)]);
 				});
 			},
@@ -68,7 +75,12 @@ const Chatroom = () => {
 			},
 
 			onWebSocketClose: () => {
-				console.log('WebSocket connection closed');
+				setIsOpen(true);
+				return (
+					<BasicModal isOpen={isOpen} setIsOpen={setIsOpen}>
+						웹소켓과의 연결이 끊겼습니다.
+					</BasicModal>
+				);
 			},
 		});
 
@@ -77,16 +89,26 @@ const Chatroom = () => {
 
 	const checkChat = async () => {
 		const result = await getChatHistory(subscribeID);
-		setRoom((prev) => ({
-			...prev,
-			roomName: result.roomName,
-			memberCount: result.memberCount,
-			matchingPostId: result.matchingPostId,
-			matchingStatus: result.matchingStatus,
-			memberId: result.memberId,
-		}));
+		if (result.status === 200) {
+			let data = result.data;
+			setRoom((prev) => ({
+				...prev,
+				roomName: data.roomName,
+				memberCount: data.memberCount,
+				matchingPostId: data.matchingPostId,
+				matchingStatus: data.matchingStatus,
+				memberId: data.memberId,
+			}));
 
-		setChat(result.data);
+			setChat(data.data);
+		} else {
+			setIsOpen(true);
+			return (
+				<BasicModal isOpen={isOpen} setIsOpen={setIsOpen}>
+					{result.data.errorMessage}
+				</BasicModal>
+			);
+		}
 	};
 
 	useEffect(() => {
@@ -100,7 +122,7 @@ const Chatroom = () => {
 
 	useEffect(() => {
 		if (messageEndRef.current) {
-			messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
+			messageEndRef.current.scrollIntoView({ behavior: 'auto' }); //
 		}
 	}, [chats]);
 
@@ -124,7 +146,6 @@ const Chatroom = () => {
 	};
 
 	const onDisconnect = async () => {
-		clientRef.current.deactivate();
 		setConfirm(true);
 		setConfirmContent((prev) => ({
 			...prev,
@@ -132,7 +153,17 @@ const Chatroom = () => {
 			btn: '나가기',
 			func: async () => {
 				const result = await deleteChatRoom(subscribeID);
-				navigate('/chat');
+				if (result.status === 204) {
+					clientRef.current.publish({
+						destination: '/pub/message',
+						body: JSON.stringify({
+							message: `${myName}님이 나갔습니다.`,
+							messageStatus: 'LEAVE',
+						}),
+					});
+					clientRef.current.deactivate();
+					navigate('/chat');
+				}
 			},
 		}));
 	};
@@ -147,8 +178,15 @@ const Chatroom = () => {
 					btn: '확인',
 					func: async () => {
 						const res = await getMatchingEnd(room.matchingPostId);
-						checkChat();
-						// setRoom({ matchingStatus: '매칭 완료' });
+						if (res.status === 200) {
+							checkChat();
+						} else {
+							return (
+								<BasicModal isOpen={isOpen} setIsOpen={setIsOpen}>
+									{res.data.errorMessage}
+								</BasicModal>
+							);
+						}
 					},
 				}));
 			} else {
@@ -391,6 +429,16 @@ const ChatContainer = styled.div`
 		width: 100%;
 		padding: 130px 25px 0px 25px;
 		overflow-y: auto;
+
+		/* Hide scrollbar for WebKit browsers */
+		::-webkit-scrollbar {
+			width: 0;
+			height: 0;
+		}
+
+		/* Hide scrollbar for IE, Edge, and Firefox */
+		scrollbar-width: none; /* Firefox */
+		-ms-overflow-style: none; /* IE and Edge */
 	}
 	.noneDisplay {
 		display: none;
@@ -422,12 +470,14 @@ const ChattingStyle = styled.div`
 	}
 
 	.myChat {
+		min-width: 48px;
 		background-color: ${COLOR.purple2};
 		padding-right: 15px;
 		border-radius: 20px 20px 3px 20px;
 	}
 
 	.yourChat {
+		min-width: 48px;
 		background-color: ${COLOR.purple3};
 		padding-left: 15px;
 		border-radius: 20px 20px 20px 3px;
