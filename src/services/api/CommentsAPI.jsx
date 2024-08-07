@@ -7,7 +7,7 @@ export const postCommentsAPI = async (id, content) => {
 		matchingPostId: id,
 		content: content,
 	});
-	return response.data;
+	return response;
 };
 
 export const postReplyAPI = async (id, content) => {

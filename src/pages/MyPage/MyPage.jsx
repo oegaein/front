@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom';
 import { useMatchingPosts } from 'hooks/useMatchingPosts';
 import { useNavigate } from 'react-router-dom';
 // import { API } from '@utils/api';
-import useAuthStore from '@store/authStore';
-import useMyInfoStore from '@store/myInfoStore';
 import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest';
 
 //components
@@ -55,6 +53,7 @@ const MyPage = () => {
 	} = useMatchingPosts('mypost');
 
 	const navigate = useNavigate();
+	const [myInfo, setMyInfo] = useState()
 	const [likeData, setLikeData] = useState([]);
 	const [uploadPostType, setUploadPostType] = useState('룸메이트');
 	const [likeType, setLikeType] = useState('룸메이트');
@@ -67,7 +66,19 @@ const MyPage = () => {
 		window.scrollTo(0, 0);
 	}, []);
 
+	const fetchMyInfoData = async () => {
+		try {
+			const response  = await makeAuthorizedRequest(`/api/v1/member/my-profile`)
+			console.log('myinfo', response)
+			setMyInfo(response.data)
+		} catch (error) {
+			console.error(error)
+		}
+	}
+
 	useEffect(() => {
+		fetchMyInfoData()
+		window.scrollTo(0, 0);
 		const fetchLikeData = async () => {
 			try {
 				const response = await makeAuthorizedRequest('/api/v1/member/like');
@@ -112,7 +123,7 @@ const MyPage = () => {
 						<div>
 							<img
 								className="w-[45px] h-[45px] rounded-[50%]"
-								src={myInfo?.photoUrl}
+								src={myInfo?.photo_url}
 							/>
 						</div>
 						<div>
