@@ -32,7 +32,7 @@ import ComeMatchingRequest from '@common/ui/item/ComeMatchingRequest';
 import MyPost from '@common/ui/item/MyPost';
 
 const MyPage = () => {
-	const myInfo = useMyInfoStore.getState().myInfo
+	const myInfo = useMyInfoStore.getState().myInfo;
 	//나에게 온 매칭신청 목록 조회
 	const {
 		data: comeMatchingRequests,
@@ -59,9 +59,12 @@ const MyPage = () => {
 	const [likeType, setLikeType] = useState('roommate');
 	const [confirm, setConfirm] = useState(false);
 	const [confirmContent, setConfirmContent] = useState({});
-	const [option, setOption] = useState(false)
+	const [option, setOption] = useState(false);
 	const [optionModalOptions, setOptionModalOptions] = useState({});
 
+	useEffect(() => {
+		window.scrollTo(0, 0);
+	}, []);
 
 	useEffect(() => {
 		const fetchLikeData = async () => {
@@ -85,13 +88,13 @@ const MyPage = () => {
 					setIsOpen={setConfirm}
 				/>
 			)}
-			{option &&
-        <OptionModal
-          options={optionModalOptions}
-          isOpen={option}
-          setIsOpen={setOption}
-        />
-      }
+			{option && (
+				<OptionModal
+					options={optionModalOptions}
+					isOpen={option}
+					setIsOpen={setOption}
+				/>
+			)}
 			<section className="bg-white px-[25px] pb-[24px]">
 				<div className=" bg-white">
 					<Header
@@ -192,10 +195,18 @@ const MyPage = () => {
 					/>
 					<div className="flex flex-col gap-[10px] px-[25px] mt-[16px]">
 						{myMatchingPosts?.data?.length > 0 ? (
-							myMatchingPosts.data.slice(0, 2).map((post, index) => (
-								<MyPost post={post} index={index} setConfirm={setConfirm} setConfirmContent={setConfirmContent}
-								setOption={setOption} setOptionModalOptions={setOptionModalOptions}/>
-							))
+							myMatchingPosts.data
+								.slice(0, 2)
+								.map((post, index) => (
+									<MyPost
+										post={post}
+										index={index}
+										setConfirm={setConfirm}
+										setConfirmContent={setConfirmContent}
+										setOption={setOption}
+										setOptionModalOptions={setOptionModalOptions}
+									/>
+								))
 						) : (
 							<div>내가 올린 글이 존재하지 않습니다.</div>
 						)}
