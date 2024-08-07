@@ -297,7 +297,7 @@ const PostDetail = () => {
 				<MatchingApplyNavBar
 					version={'comment'}
 					isLowerBarVisible={isLowerBarVisible}
-					memberId={data.author_id}
+					memberId={data.author_profile.id}
 					postId={postId}
 					userInfo={data.author_profile}
 					reFetchData={fetchPostData}
