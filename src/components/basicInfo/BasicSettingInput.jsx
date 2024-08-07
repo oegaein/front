@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Input, ContainerStyle } from '@styles/basicInfo/Input';
 import Xbutton from '@assets/images/common/Xbutton.svg';
 import { DropdownWrapper } from '@common/dropdown/BasicDropdown';
 import { postCommentsAPI, postReplyAPI } from 'services/api/CommentsAPI';
+import { debounce } from 'lodash';
 
 //
 export const BasicInput = ({ onChangeValue, limitNum }) => {
@@ -212,26 +213,45 @@ export const CheckboxInput = ({
 //
 export const CommentInput = ({
 	postId,
-	setSelected,
 	setReply,
 	isReply = false,
+	refetchData,
 }) => {
 	const [value, setValue] = useState('');
 
 	const handleChange = (e) => {
 		const inputValue = e.target.value;
 		setValue(inputValue);
-		setSelected(inputValue);
 	};
 
 	const handlePost = async () => {
 		if (isReply) {
 			const res = await postReplyAPI(postId, value);
-			setReply(false);
+			if (res.status === 201) {
+				setReply(false);
+				refetchData();
+				setValue('');
+			}
 		} else {
 			const res = await postCommentsAPI(postId, value);
+			if (res.status === 201) {
+				refetchData();
+				setValue('');
+			}
 		}
-		// window.location.reload();
+	};
+
+	// 중복 엔터 방지
+	const handlePostDebounced = useCallback(debounce(handlePost, 200), [
+		value,
+		isReply,
+	]);
+
+	const handleKeyPress = (e) => {
+		if (e.key === 'Enter') {
+			e.preventDefault();
+			handlePostDebounced();
+		}
 	};
 
 	return (
@@ -241,12 +261,14 @@ export const CommentInput = ({
 					padding: '20px 15px',
 					display: 'flex',
 					justifyContent: 'space-between',
+					backgroundColor: 'white',
 				}}
 			>
 				<input
 					type="text"
 					placeholder="댓글을 입력해주세요"
 					value={value}
+					onKeyDown={handleKeyPress}
 					onChange={handleChange}
 					className="cation2"
 					style={{

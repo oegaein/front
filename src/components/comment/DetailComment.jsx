@@ -6,7 +6,7 @@ import FONT from '@styles/fonts';
 import COLOR from '@styles/color';
 import { timeAgo } from '@utils/TimeAgo';
 
-const DetailComment = ({ postId, comments }) => {
+const DetailComment = ({ postId, comments, refetchData }) => {
 	const id = postId;
 	const [value, setValue] = useState('');
 	const [reply, setReply] = useState(false);
@@ -32,9 +32,9 @@ const DetailComment = ({ postId, comments }) => {
 					<div className="inputContainer">
 						<CommentInput
 							postId={commentID}
-							setSelected={setValue}
 							setReply={setReply}
 							isReply={true}
+							refetchData={refetchData}
 						/>
 					</div>
 				</CommentBox>
@@ -98,11 +98,13 @@ const DetailComment = ({ postId, comments }) => {
 								</div>
 							))}
 						</section>
-						<section className="flex flex-col p-[25px]">
-							<div className="w-[343px] fixed bottom-0">
-								<CommentInput postId={id} setSelected={setValue} />
-							</div>
-						</section>
+						<div className="input_box">
+							<CommentInput
+								postId={id}
+								setSelected={setValue}
+								refetchData={refetchData}
+							/>
+						</div>
 					</>
 				)}
 			</CommentStyle>
@@ -149,6 +151,18 @@ const CommentStyle = styled.div`
 		justify-content: center;
 		align-items: center;
 		padding: 16px 0px;
+	}
+
+	.input_box {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: 12px 25px;
+		width: 393px;
+		position: fixed;
+		bottom: 0;
+		background-color: ${COLOR.white};
+		box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.05);
 	}
 `;
 

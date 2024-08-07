@@ -15,7 +15,7 @@ export const postReplyAPI = async (id, content) => {
 		commentId: id,
 		content: content,
 	});
-	return response.data;
+	return response;
 };
 
 export const putCommentsAPI = async (commentID, content) => {

@@ -36,7 +36,7 @@ import Checkbox from '@assets/images/common/Checkbox.svg';
 
 const PostDetail = () => {
 	const myId = useMyInfoStore.getState().myInfo?.id;
-	const accessToken = useAuthStore.getState().accessToken
+	const accessToken = useAuthStore.getState().accessToken;
 	const { postId } = useParams();
 	const navigate = useNavigate();
 	const [data, setData] = useState(null);
@@ -53,14 +53,9 @@ const PostDetail = () => {
 
 	const fetchPostData = async () => {
 		const result = await getMatchingPostAPI(postId);
-		console.log('result', result)
 		setData(result);
 	};
 	useEffect(() => {
-		// if (!accessToken) {
-		// 	navigate('/login')
-		// 	return
-		// }
 		fetchPostData();
 	}, [postId]);
 
@@ -299,6 +294,7 @@ const PostDetail = () => {
 						postId={data.id}
 						comments={data.comments}
 						count={data.comments_count}
+						refetchData={fetchPostData}
 					/>
 				</section>
 				<MatchingApplyNavBar

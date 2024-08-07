@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { CommentInput } from '@components/basicInfo/BasicSettingInput';
 import { Subtitle } from '@styles/basicInfo/Text';
@@ -10,10 +10,9 @@ import { Box } from '@pages/post/Post-detail';
 import { useNavigate } from 'react-router-dom';
 import { timeAgo } from '@utils/TimeAgo';
 
-const PreviewComment = ({ postId, comments, count }) => {
+const PreviewComment = ({ postId, comments, count, refetchData }) => {
 	const id = postId;
 	const navigate = useNavigate();
-	const [value, setValue] = useState('');
 	const [reply, setReply] = useState(false);
 	const [owner, setOwner] = useState('');
 	const [commentID, setCommentID] = useState(-1);
@@ -41,9 +40,9 @@ const PreviewComment = ({ postId, comments, count }) => {
 					<div className="inputContainer">
 						<CommentInput
 							postId={commentID}
-							setSelected={setValue}
 							setReply={setReply}
 							isReply={true}
+							refetchData={refetchData}
 						/>
 					</div>
 				</CommentBox>
@@ -52,7 +51,7 @@ const PreviewComment = ({ postId, comments, count }) => {
 				<section className="flex flex-col p-[25px] pb-[0px]">
 					<Subtitle>댓글 {count}개</Subtitle>
 					<div className="w-full">
-						<CommentInput postId={id} setSelected={setValue} />
+						<CommentInput postId={id} refetchData={refetchData} />
 					</div>
 				</section>
 				{comments.length === 0 ? (
