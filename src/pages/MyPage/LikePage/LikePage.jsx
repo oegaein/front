@@ -6,13 +6,12 @@ import COLOR from '@styles/color';
 import Profile from '@assets/images/profile-image.svg';
 import LikeItem from '@components/LikePage/LikeItem';
 import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest';
+import DeliveryNotification from '@common/ui/item/DeliveryNotification';
+import SelectMenuBar from '@common/menu/SelectMenuBar';
 
 const LikePage = () => {
 	const [likeData, setLikeData] = useState([]);
-	const [uploadPostType, setUploadPostType] = useState('roommate');
-	const handleClickUploadPost = (type) => {
-		setUploadPostType(type);
-	};
+	const [uploadPostType, setUploadPostType] = useState('룸메이트');
 
 	useEffect(() => {
 		const fetchLikeData = async () => {
@@ -30,27 +29,28 @@ const LikePage = () => {
 		<SettingStyle>
 			<div className="px-[28px]">
 				<Header backPath="/mypage" rightContent=" " rightEvent={() => {}}>
-					<span className='header'>좋아요한 룸메이트</span>
+					<span className="header">좋아요한 룸메이트</span>
 				</Header>
 			</div>
 			<div>
-				<div className="flex">
-					<div
-						onClick={() => handleClickUploadPost('roommate')}
-						className={`notification-title ${uploadPostType === 'roommate' && 'selected-title'}`}
-					>
-						룸메이트
+				<SelectMenuBar
+					menuList={['룸메이트', '공동배달']}
+					pickedMenuId={setUploadPostType}
+				/>
+				{uploadPostType === '룸메이트' ? (
+					<div className="likelist flex flex-col gap-[1px]">
+						{likeData.length > 0 ? (
+							likeData.map((like) => (
+								<LikeItem profileImage={Profile} like={like} />
+							))
+						) : (
+							<NoResults />
+						)}
 					</div>
-					{/* <div onClick={()=>handleClickUploadPost('delivery')}className={`notification-title ${uploadPostType === 'delivery' && 'selected-title'}`}>공동배달</div> */}
-				</div>
-			</div>
-			<div className="likelist flex flex-col gap-[1px]">
-				{likeData.length > 0 ? (
-					likeData.map((like) => (
-						<LikeItem profileImage={Profile} like={like} />
-					))
 				) : (
-					<NoResults />
+					<div className="flex justify-center items-center w-full p-6">
+						<DeliveryNotification />
+					</div>
 				)}
 			</div>
 		</SettingStyle>

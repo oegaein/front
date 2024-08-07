@@ -13,24 +13,22 @@ import OptionModal from '@common/modal/OptionModal';
 import styled from 'styled-components';
 import FONT from '@styles/fonts';
 import COLOR from '@styles/color';
+import DeliveryNotification from '@common/ui/item/DeliveryNotification';
+import SelectMenuBar from '@common/menu/SelectMenuBar';
 
 const MyPostPage = () => {
-	const [uploadPostType, setUploadPostType] = useState('roommate');
+	const [uploadPostType, setUploadPostType] = useState('룸메이트');
 	const [currentPage, setCurrentPage] = useState(0);
 	const [confirm, setConfirm] = useState(false);
 	const [confirmContent, setConfirmContent] = useState({});
 	const [option, setOption] = useState(false);
 	const [optionModalOptions, setOptionModalOptions] = useState({});
 
-	const location = useLocation();
 	const {
 		data: myMatchingPosts,
 		isLoading: isLoadingMyUpload,
 		error: isErrorMyUpload,
 	} = useMatchingPosts('mypost', currentPage);
-	const handleClickUploadPost = (type) => {
-		setUploadPostType(type);
-	};
 
 	if (isLoadingMyUpload) {
 		return <div>로딩중</div>;
@@ -57,33 +55,39 @@ const MyPostPage = () => {
 				</Header>
 			</div>
 			<div>
-				<div className="flex">
-					<div
-						onClick={() => handleClickUploadPost('roommate')}
-						className={`notification-title ${uploadPostType === 'roommate' && 'selected-title'}`}
-					>
-						룸메이트
+				<SelectMenuBar
+					menuList={['룸메이트', '공동배달']}
+					pickedMenuId={setUploadPostType}
+				/>
+				{uploadPostType === '룸메이트' ? (
+					<>
+						<div className="flex flex-col gap-[10px] px-[25px] mt-[16px]">
+							{myMatchingPosts?.data?.length > 0 ? (
+								myMatchingPosts.data.map((post, index) => (
+									<MyPost
+										post={post}
+										index={index}
+										setConfirm={setConfirm}
+										setConfirmContent={setConfirmContent}
+										setOption={setOption}
+										setOptionModalOptions={setOptionModalOptions}
+									/>
+								))
+							) : (
+								<NoResults />
+							)}
+						</div>
+						<Pagination
+							data={myMatchingPosts}
+							setCurrentPage={setCurrentPage}
+						/>
+					</>
+				) : (
+					<div className="flex justify-center items-center w-full p-6">
+						<DeliveryNotification />
 					</div>
-					{/* <div onClick={()=>handleClickUploadPost('delivery')}className={`notification-title ${uploadPostType === 'delivery' && 'selected-title'}`}>공동배달</div> */}
-				</div>
-				<div className="flex flex-col gap-[10px] px-[25px] mt-[16px]">
-					{myMatchingPosts?.data?.length > 0 ? (
-						myMatchingPosts.data.map((post, index) => (
-							<MyPost
-								post={post}
-								index={index}
-								setConfirm={setConfirm}
-								setConfirmContent={setConfirmContent}
-								setOption={setOption}
-								setOptionModalOptions={setOptionModalOptions}
-							/>
-						))
-					) : (
-						<NoResults />
-					)}
-				</div>
+				)}
 			</div>
-			<Pagination data={myMatchingPosts} setCurrentPage={setCurrentPage} />
 		</SettingStyle>
 	);
 };

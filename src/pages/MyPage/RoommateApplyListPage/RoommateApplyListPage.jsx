@@ -8,31 +8,31 @@ import COLOR from '@styles/color';
 
 import Header from '@common/header/Header';
 import RoommateScrollList from '@common/RoommateScrollList';
+import DeliveryNotification from '@common/ui/item/DeliveryNotification';
+import SelectMenuBar from '@common/menu/SelectMenuBar';
 const RoommateApplyListPage = () => {
-	const [uploadPostType, setUploadPostType] = useState('roommate');
-	const handleChangeType = (type) => {
-		//api 요청 로직
-		setUploadPostType(type);
-	};
+	const [uploadPostType, setUploadPostType] = useState('룸메이트');
+
 	return (
 		<SettingStyle className="bg-white">
 			<div className="px-[28px]">
 				<Header backPath="/mypage" rightContent=" " rightEvent={() => {}}>
-					<span className='header'>내가 신청한 룸메이트</span>
+					<span className="header">내가 신청한 룸메이트</span>
 				</Header>
 			</div>
 			<div>
-				<div className="flex">
-					<div
-						onClick={() => handleChangeType('roommate')}
-						className={`notification-title ${uploadPostType === 'roommate' && 'selected-title'}`}
-					>
-						룸메이트
+				<SelectMenuBar
+					menuList={['룸메이트', '공동배달']}
+					pickedMenuId={setUploadPostType}
+				/>
+				{uploadPostType === '룸메이트' ? (
+					<RoommateScrollList type="my-matchingrequests" />
+				) : (
+					<div className="flex justify-center items-center w-full p-6">
+						<DeliveryNotification />
 					</div>
-					{/* <div onClick={()=>handleChangeType('delivery')}className={`notification-title ${uploadPostType === 'delivery' && 'selected-title'}`}>공동배달</div> */}
-				</div>
+				)}
 			</div>
-			<RoommateScrollList type="my-matchingrequests" />
 		</SettingStyle>
 	);
 };
