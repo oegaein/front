@@ -44,7 +44,6 @@ const PostRoommate = ({ defaultValue = null, ver = 'post' }) => {
 	}, [defaultValue]);
 
 	useEffect(() => {
-		console.log(postContent);
 		setButton(isFormValid());
 		if (postContent.date === null || !isDateValid()) {
 			setAlertMsg('형식에 알맞게 입력해주세요.');

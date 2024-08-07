@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import COLOR from '@styles/color';
@@ -15,7 +15,6 @@ const BasicDropdown = ({
 	setSelected,
 	defaultValue,
 }) => {
-	const location = useLocation();
 	const [isOpen, setIsOpen] = useState(false);
 	const [selectedOption, setSelectedOption] = useState('');
 
@@ -54,14 +53,14 @@ const BasicDropdown = ({
 			<DropdownWrapper option={selectedOption}>
 				<div className="header" onClick={toggleDropdown}>
 					<span>{selectedOption !== '' ? `${selectedOption}` : label}</span>
-					<img src={isOpen ? ArrowUpIcon : ArrowDownIcon} />
+					<img src={isOpen ? ArrowUpIcon : ArrowDownIcon} alt="arrowIcon" />
 				</div>
 			</DropdownWrapper>
 			{isOpen && (
 				<DropdownList initial={{ y: 100 }} animate={{ y: 0 }}>
 					<div className="flex flex-col w-full sticky top-0 bg-white">
 						<div className="flex justify-center mb-9 w-full">
-							<img src={Bar} />
+							<img src={Bar} alt="barIcon" />
 						</div>
 						<p>{choice}</p>
 					</div>

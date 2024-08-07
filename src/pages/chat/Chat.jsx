@@ -8,7 +8,6 @@ import Header from '@common/header/Header';
 import useAuthStore from '@store/authStore';
 import SelectMenuBar from '@common/menu/SelectMenuBar';
 import { timeAgo } from '@utils/TimeAgo';
-import { ImgWrapper } from '@common/ui/Profile';
 import { getChatListAPI } from 'services/api/ChatAPI';
 import useInterval from '@utils/useInterval';
 import DeliveryNotification from '@common/ui/item/DeliveryNotification';
@@ -35,7 +34,7 @@ const Chat = () => {
 			setChatList(reversedResult);
 		};
 		fetchData();
-	}, []);
+	}, [setAccessToken]);
 
 	return (
 		<>
@@ -61,7 +60,7 @@ const Chat = () => {
 							<p className="mt-10">새로운 채팅이 없습니다.</p>
 						) : (
 							chatList?.map(
-								(chat, index) =>
+								(chat) =>
 									chat.last_message_content !== null && (
 										<Link
 											key={chat.id}
@@ -70,17 +69,13 @@ const Chat = () => {
 										>
 											<ChatList>
 												<div className="w-[65px] h-[65px] mr-[11px]">
-													<ImgWrapper
-														mr={'11px'}
+													<img
+														src={chat.photo_url}
+														alt="profile"
+														className="img mr-[11px]"
 														width={'65px'}
 														height={'65px'}
-													>
-														<img
-															src={chat.photo_url}
-															alt="profile"
-															className="img"
-														/>
-													</ImgWrapper>
+													/>
 												</div>
 												<div className="info_wrapper">
 													<div className="flex justify-between items-center mb-1">
@@ -150,6 +145,14 @@ const ChatList = styled.div`
 	width: 100%;
 	justify-content: start;
 	margin-bottom: 16px;
+
+	.img {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		border-radius: 100%;
+		background-color: ${COLOR.gray100};
+	}
 
 	.info_wrapper {
 		display: flex;

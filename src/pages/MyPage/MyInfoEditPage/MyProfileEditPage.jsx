@@ -46,7 +46,6 @@ const MyProfileEdit = () => {
 	}, []);
 
 	useEffect(() => {
-		console.log(info);
 		if (
 			nameValid &&
 			info.gender !== '' &&

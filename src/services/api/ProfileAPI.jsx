@@ -28,10 +28,8 @@ export const EditProfileAPI = async (submitData) => {
 };
 
 export const BlockUserAPI = async (block_user) => {
-	const response = await makeAuthorizedRequest(
-		`/api/v1/member/profile`,
-		'post',
-		{ blocked_id: block_user },
-	);
+	const response = await makeAuthorizedRequest(`api/v1/member/block`, 'post', {
+		blocked_id: block_user,
+	});
 	return response.data;
 };

@@ -104,14 +104,16 @@ const Alarm = () => {
 											<p className="time mt-1">{timeAgo(alarm.created_at)}</p>
 										</div>
 									</Link>
-									<button
-										onClick={() => {
-											DeleteAlarm(alarm.roommate_alarm_id);
-										}}
-										className="flex items-center"
-									>
-										<img src={Close} alt="close button" />
-									</button>
+									<div className="flex items-start pt-[7px]">
+										<button
+											onClick={() => {
+												DeleteAlarm(alarm.roommate_alarm_id);
+											}}
+											className="flex items-center"
+										>
+											<img src={Close} alt="close button" />
+										</button>
+									</div>
 								</div>
 							))
 						)}

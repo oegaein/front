@@ -15,7 +15,7 @@ export const getChatHistory = async (roomId) => {
 	const response = await makeAuthorizedRequest(
 		`${chatSeverURL}/api/v1/messages/${roomId}`,
 	);
-	return response.data;
+	return response;
 };
 
 export const getMatchingEnd = async (id) => {
