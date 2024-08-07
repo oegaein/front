@@ -56,8 +56,8 @@ const MyPage = () => {
 
 	const navigate = useNavigate();
 	const [likeData, setLikeData] = useState([]);
-	const [uploadPostType, setUploadPostType] = useState('roommate');
-	const [likeType, setLikeType] = useState('roommate');
+	const [uploadPostType, setUploadPostType] = useState('룸메이트');
+	const [likeType, setLikeType] = useState('룸메이트');
 	const [confirm, setConfirm] = useState(false);
 	const [confirmContent, setConfirmContent] = useState({});
 	const [option, setOption] = useState(false);
