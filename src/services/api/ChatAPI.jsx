@@ -1,5 +1,3 @@
-import useAuthStore from '@store/authStore';
-import { API } from '@utils/api';
 import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest';
 
 export const chatSeverURL = 'https://api.oegaein.org:8081';
