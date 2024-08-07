@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { DropdownBackground } from '@common/dropdown/BasicDropdown';
 import { motion } from 'framer-motion';
@@ -29,7 +29,7 @@ const OptionModal = ({ options, isOpen, setIsOpen }) => {
 					{options.map((option, index) => (
 						<>
 							<List
-								key={index}
+								key={option.content}
 								onClick={() => {
 									option.func();
 									closeModal();

@@ -16,9 +16,6 @@ const NicknameEdit = ({ onGetValue, defaultValue, setNameValid }) => {
 	}, [defaultValue]);
 
 	useEffect(() => {
-		console.log(input);
-		console.log('validateNickname(input): ' + validateNickname(input));
-
 		if (input === '') return;
 
 		if (!duplicated && validateNickname(input)) {
@@ -27,7 +24,7 @@ const NicknameEdit = ({ onGetValue, defaultValue, setNameValid }) => {
 		} else {
 			setNameValid(false);
 		}
-	}, [duplicated, input, defaultValue]);
+	}, [duplicated, input]);
 
 	const handleChangeValue = (nickname) => {
 		setInput(nickname);
