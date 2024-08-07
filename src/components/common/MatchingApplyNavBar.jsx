@@ -20,7 +20,7 @@ import Comment from '@assets/images/comment.svg'
 const MatchingApplyNavBar = ({version, isLowerBarVisible, memberId, postId, userInfo,
   reFetchData, matchingStatus, matchingRequestId, setConfirm, setConfirmContent}) => {
     const [isLike, setIsLike] = useState(false)
-    const [firstRendering, setFirstRendering] = useState(true)
+    // const [firstRendering, setFirstRendering] = useState(true)
     const [isMyPost, setIsMyPost] = useState(false)
     const isLikeProps = userInfo?.is_like
     const navigate = useNavigate()
@@ -38,12 +38,9 @@ const MatchingApplyNavBar = ({version, isLowerBarVisible, memberId, postId, user
   const isMatchingPending = matchingStatus === '매칭 대기';
   const isMatchingClosed = matchingStatus === '매칭 완료' || matchingStatus === '매칭 마감';
   useEffect(() => {
-    if (!isLikeProps && firstRendering) {
-      // myProps가 undefined가 아닌 경우에만 state 업데이트
-      setIsLike(isLikeProps);
-      setFirstRendering(false)
-      console.log(isLike)
-    }
+    // myProps가 undefined가 아닌 경우에만 state 업데이트
+    setIsLike(isLikeProps);
+    console.log('isLike', isLike)
   }, [isLikeProps]);
   useEffect(() => {
     if (myInfo.id === memberId) {
