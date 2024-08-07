@@ -139,11 +139,7 @@ const Chatroom = () => {
 
 	useEffect(() => {
 		if (messageEndRef.current) {
-			if (isInitialLoad.current) {
-				messageEndRef.current.scrollIntoView({ behavior: 'auto' });
-			} else {
-				messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
-			}
+			messageEndRef.current.scrollIntoView({ behavior: 'auto' });
 		}
 	}, [chats]);
 
