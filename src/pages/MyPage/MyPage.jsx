@@ -28,8 +28,10 @@ import LikeItem from '@components/LikePage/LikeItem';
 import SelectMenuBar from '@common/menu/SelectMenuBar';
 import ComeMatchingRequest from '@common/ui/item/ComeMatchingRequest';
 import MyPost from '@common/ui/item/MyPost';
+import DeliveryNotification from '@common/ui/item/DeliveryNotification';
 
 const MyPage = () => {
+	const myInfo = useMyInfoStore.getState().myInfo;
 	//나에게 온 매칭신청 목록 조회
 	const {
 		data: comeMatchingRequests,
@@ -53,12 +55,16 @@ const MyPage = () => {
 	const navigate = useNavigate();
 	const [myInfo, setMyInfo] = useState()
 	const [likeData, setLikeData] = useState([]);
-	const [uploadPostType, setUploadPostType] = useState('roommate');
-	const [likeType, setLikeType] = useState('roommate');
+	const [uploadPostType, setUploadPostType] = useState('룸메이트');
+	const [likeType, setLikeType] = useState('룸메이트');
 	const [confirm, setConfirm] = useState(false);
 	const [confirmContent, setConfirmContent] = useState({});
-	const [option, setOption] = useState(false)
+	const [option, setOption] = useState(false);
 	const [optionModalOptions, setOptionModalOptions] = useState({});
+
+	useEffect(() => {
+		window.scrollTo(0, 0);
+	}, []);
 
 	const fetchMyInfoData = async () => {
 		try {
@@ -94,13 +100,13 @@ const MyPage = () => {
 					setIsOpen={setConfirm}
 				/>
 			)}
-			{option &&
-        <OptionModal
-          options={optionModalOptions}
-          isOpen={option}
-          setIsOpen={setOption}
-        />
-      }
+			{option && (
+				<OptionModal
+					options={optionModalOptions}
+					isOpen={option}
+					setIsOpen={setOption}
+				/>
+			)}
 			<section className="bg-white px-[25px] pb-[24px]">
 				<div className=" bg-white">
 					<Header
@@ -196,19 +202,33 @@ const MyPage = () => {
 				</div>
 				<div className="pt-[24px]">
 					<SelectMenuBar
-						menuList={['룸메이트']}
+						menuList={['룸메이트', '공동배달']}
 						pickedMenuId={setUploadPostType}
 					/>
-					<div className="flex flex-col gap-[10px] px-[25px] mt-[16px]">
-						{myMatchingPosts?.data?.length > 0 ? (
-							myMatchingPosts.data.slice(0, 2).map((post, index) => (
-								<MyPost post={post} index={index} setConfirm={setConfirm} setConfirmContent={setConfirmContent}
-								setOption={setOption} setOptionModalOptions={setOptionModalOptions}/>
-							))
-						) : (
-							<div>내가 올린 글이 존재하지 않습니다.</div>
-						)}
-					</div>
+					{uploadPostType === '룸메이트' ? (
+						<div className="flex flex-col gap-[10px] px-[25px] mt-[16px]">
+							{myMatchingPosts?.data?.length > 0 ? (
+								myMatchingPosts.data
+									.slice(0, 2)
+									.map((post, index) => (
+										<MyPost
+											post={post}
+											index={index}
+											setConfirm={setConfirm}
+											setConfirmContent={setConfirmContent}
+											setOption={setOption}
+											setOptionModalOptions={setOptionModalOptions}
+										/>
+									))
+							) : (
+								<div>내가 올린 글이 존재하지 않습니다.</div>
+							)}
+						</div>
+					) : (
+						<div className="flex justify-center items-center w-full p-6">
+							<DeliveryNotification />
+						</div>
+					)}
 				</div>
 			</section>
 			<section className="bg-white py-[24px] text-left">
@@ -234,18 +254,27 @@ const MyPage = () => {
 					</Link>
 				</div>
 				<div className="pt-[24px]">
-					<SelectMenuBar menuList={['룸메이트']} pickedMenuId={setLikeType} />
-					<div className="likelist flex flex-col gap-[1px]">
-						{likeData?.length > 0 ? (
-							likeData.slice(0, 2).map((like) => <LikeItem like={like} />)
-						) : (
-							<div className="bg-white pt-[15px]">
-								좋아하는 룸메이트가 없습니다.
-								<br />
-								다른 사람의 좋아요를 눌러보세요!
-							</div>
-						)}
-					</div>
+					<SelectMenuBar
+						menuList={['룸메이트', '공동배달']}
+						pickedMenuId={setLikeType}
+					/>
+					{likeType === '룸메이트' ? (
+						<div className="likelist flex flex-col gap-[1px]">
+							{likeData?.length > 0 ? (
+								likeData.slice(0, 2).map((like) => <LikeItem like={like} />)
+							) : (
+								<div className="bg-white pt-[15px]">
+									좋아하는 룸메이트가 없습니다.
+									<br />
+									다른 사람의 좋아요를 눌러보세요!
+								</div>
+							)}
+						</div>
+					) : (
+						<div className="flex justify-center items-center w-full p-6">
+							<DeliveryNotification />
+						</div>
+					)}
 				</div>
 			</section>
 		</SettingStyle>

@@ -8,6 +8,8 @@ import {
 	Outlet,
 } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 //pages
 import LandingPage from '@pages/LandingPage/LandingPage';
@@ -32,7 +34,6 @@ import PostDetail from '@pages/post/Post-detail';
 import CommentDetail from '@pages/comment/Comment-detail';
 import MyProfileEditPage from '@pages/MyPage/MyInfoEditPage/MyProfileEditPage';
 import Alarm from '@pages/alarm/Alarm';
-import RoommateReviewPage from '@pages/UserPage/RoommateReviewPage/RoommateReviewPage';
 import LikePage from '@pages/MyPage/LikePage/LikePage';
 import MyPostPage from '@pages/MyPage/MyPostPage/MyPostPage';
 import RoommateApplyListPage from '@pages/MyPage/RoommateApplyListPage/RoommateApplyListPage';
@@ -113,20 +114,18 @@ function App() {
 	);
 }
 
-function IncludeSearchBar() {
-	return (
-		<>
-			<SearchAndNotice />
-			<Outlet />
-		</>
-	);
-}
-
 function MainLayout() {
 	const location = useLocation();
 	return (
 		<div className="main-layout">
 			<div className="content">
+				<ToastContainer
+					position="top-center"
+					limit={1}
+					closeButton={true}
+					autoClose={4000}
+					hideProgressBar
+				/>
 				<Outlet />
 			</div>
 			{location.pathname !== '/' &&
