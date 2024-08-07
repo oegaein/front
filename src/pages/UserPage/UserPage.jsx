@@ -26,7 +26,9 @@ import { BlockUserAPI } from 'services/api/ProfileAPI';
 const UserPage = () => {
 	const location = useLocation();
 	console.log(location.pathname);
-	const myId = useMyInfoStore.getState().myInfo.id;
+	const myId = useMyInfoStore.getState().myInfo?.id;
+	const accessToken = useAuthStore.getState().accessToken
+	console.log('accessToken', accessToken);
 	const navigate = useNavigate();
 	const [userInfo, setUserInfo] = useState({});
 	const [threedots, setThreedots] = useState(false);
@@ -95,6 +97,10 @@ const UserPage = () => {
 	];
 
 	useEffect(() => {
+		if (!accessToken) {
+			navigate('/login')
+			return
+		}
 		if (memberId === 'my-profile') {
 			fetchMyInfoData();
 		} else {

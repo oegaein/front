@@ -18,7 +18,7 @@ import Comment from '@assets/images/comment.svg'
 
 
 const MatchingApplyNavBar = ({version, isLowerBarVisible, memberId, postId, userInfo,
-  reFetchData, matchingStatus, matchingRequestId, setConfirm, setConfirmContent}) => {
+  reFetchData, matchingStatus, matchingRequestId, setConfirm, setConfirmContent, authorName, title}) => {
     const [isLike, setIsLike] = useState(false)
     // const [firstRendering, setFirstRendering] = useState(true)
     const [isMyPost, setIsMyPost] = useState(false)
@@ -43,7 +43,7 @@ const MatchingApplyNavBar = ({version, isLowerBarVisible, memberId, postId, user
     console.log('isLike', isLike)
   }, [isLikeProps]);
   useEffect(() => {
-    if (myInfo.id === memberId) {
+    if (myInfo?.id === memberId) {
       setIsMyPost(true)
     }
     console.log('isMyPost',isMyPost)
@@ -152,7 +152,7 @@ const MatchingApplyNavBar = ({version, isLowerBarVisible, memberId, postId, user
         objectType: 'feed',
         content: {
           title: '이 룸메 어떠세요?',
-          description: `${userInfo?.introduction}`,
+          description: `${version === 'comment' ? title : userInfo.introduction}`,
           imageUrl:
             'https://i.ibb.co/dts410Q/oegaeinlogo.png',
           link: {
@@ -161,7 +161,7 @@ const MatchingApplyNavBar = ({version, isLowerBarVisible, memberId, postId, user
           },
         },
         itemContent: {
-          profileText: `${userInfo?.name} 님의 글 | 외개인`,
+          profileText: `${version === 'comment' ? authorName : userInfo.name} 님의 글 | 외개인`,
           profileImageUrl: `${userInfo?.photo_url}`,
           // titleImageText: 'www.hufs.ac.kr',
           // titleImageCategory: '공유한 친구: 김혁수',
