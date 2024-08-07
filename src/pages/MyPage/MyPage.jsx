@@ -155,7 +155,7 @@ const MyPage = () => {
 						<img className="mb-[14px]" src={Heart} alt="알림 페이지로 가기" />
 						<span>좋아요</span>
 					</Link>
-					<Link to={`/user/1/reviews`} className="flex flex-col items-center">
+					<Link className="flex flex-col items-center">
 						<img className="mb-[14px]" src={Review} alt="알림 페이지로 가기" />
 						<span>후기</span>
 					</Link>
