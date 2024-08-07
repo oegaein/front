@@ -44,6 +44,7 @@ const Chatroom = () => {
 	const [confirm, setConfirm] = useState(false);
 	const [confirmContent, setConfirmContent] = useState({});
 	const [isOpen, setIsOpen] = useState(false);
+	const isInitialLoad = useRef(true);
 
 	const connectClient = () => {
 		const socket = new SockJS(`${chatSeverURL}/oegaein`);
@@ -122,7 +123,11 @@ const Chatroom = () => {
 
 	useEffect(() => {
 		if (messageEndRef.current) {
-			messageEndRef.current.scrollIntoView({ behavior: 'auto' }); //
+			if (isInitialLoad.current) {
+				messageEndRef.current.scrollIntoView({ behavior: 'auto' });
+			} else {
+				messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
+			}
 		}
 	}, [chats]);
 
