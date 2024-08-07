@@ -31,7 +31,6 @@ import MyPost from '@common/ui/item/MyPost';
 import DeliveryNotification from '@common/ui/item/DeliveryNotification';
 
 const MyPage = () => {
-	const myInfo = useMyInfoStore.getState().myInfo;
 	//나에게 온 매칭신청 목록 조회
 	const {
 		data: comeMatchingRequests,
@@ -53,7 +52,7 @@ const MyPage = () => {
 	} = useMatchingPosts('mypost');
 
 	const navigate = useNavigate();
-	const [myInfo, setMyInfo] = useState()
+	const [myInfo, setMyInfo] = useState();
 	const [likeData, setLikeData] = useState([]);
 	const [uploadPostType, setUploadPostType] = useState('룸메이트');
 	const [likeType, setLikeType] = useState('룸메이트');
@@ -68,16 +67,16 @@ const MyPage = () => {
 
 	const fetchMyInfoData = async () => {
 		try {
-			const response  = await makeAuthorizedRequest(`/api/v1/member/my-profile`)
-			console.log('myinfo', response)
-			setMyInfo(response.data)
+			const response = await makeAuthorizedRequest(`/api/v1/member/my-profile`);
+			console.log('myinfo', response);
+			setMyInfo(response.data);
 		} catch (error) {
-			console.error(error)
+			console.error(error);
 		}
-	}
+	};
 
 	useEffect(() => {
-		fetchMyInfoData()
+		fetchMyInfoData();
 		window.scrollTo(0, 0);
 		const fetchLikeData = async () => {
 			try {
