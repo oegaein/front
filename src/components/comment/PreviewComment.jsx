@@ -14,6 +14,12 @@ const PreviewComment = ({ postId, comments, count, refetchData }) => {
 	const id = postId;
 	const navigate = useNavigate();
 	const [reply, setReply] = useState(false);
+	const [edit, setEdit] = useState(false);
+	const [editContent, setEditContent] = useState({
+		commentId: -1,
+		content: '',
+		end: 'reply' | 'comment',
+	});
 	const [owner, setOwner] = useState('');
 	const [commentID, setCommentID] = useState(-1);
 
@@ -29,6 +35,26 @@ const PreviewComment = ({ postId, comments, count, refetchData }) => {
 
 	return (
 		<>
+			{edit && (
+				<CommentBox>
+					<div className="ing">
+						<p className="ingText">수정 중...</p>
+						<p className="ingText" onClick={() => setEdit(false)}>
+							취소
+						</p>
+					</div>
+					<div className="inputContainer">
+						<CommentInput
+							editContent={editContent}
+							postId={id}
+							setReply={setEdit}
+							isReply={editContent.end === 'reply' ? true : false}
+							isEdit={true}
+							refetchData={refetchData}
+						/>
+					</div>
+				</CommentBox>
+			)}
 			{reply && (
 				<CommentBox>
 					<div className="ing">
@@ -73,6 +99,8 @@ const PreviewComment = ({ postId, comments, count, refetchData }) => {
 										height="40px"
 										ver="comment"
 										commentID={item.id}
+										setEditContent={setEditContent}
+										setEdit={setEdit}
 									/>
 									<div className="flex justify-between mt-2 pl-[53px] w-[43%]">
 										<span>{timeAgo(item.created_at)}</span>
@@ -97,6 +125,8 @@ const PreviewComment = ({ postId, comments, count, refetchData }) => {
 													ver="comment"
 													commentID={reply.id}
 													isReply={true}
+													setEditContent={setEditContent}
+													setEdit={setEdit}
 												/>
 												<div className="flex justify-between mt-2 pl-14 w-[53%]">
 													<span>{timeAgo(reply.created_at)}</span>

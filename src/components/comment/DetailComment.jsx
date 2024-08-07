@@ -8,10 +8,15 @@ import { timeAgo } from '@utils/TimeAgo';
 
 const DetailComment = ({ postId, comments, refetchData }) => {
 	const id = postId;
-	const [value, setValue] = useState('');
 	const [reply, setReply] = useState(false);
 	const [owner, setOwner] = useState('');
 	const [commentID, setCommentID] = useState(-1);
+	const [edit, setEdit] = useState(false);
+	const [editContent, setEditContent] = useState({
+		commentId: -1,
+		content: '',
+		end: 'reply' | 'comment',
+	});
 
 	const handleReply = (index) => {
 		setReply(true);
@@ -21,6 +26,26 @@ const DetailComment = ({ postId, comments, refetchData }) => {
 
 	return (
 		<>
+			{edit && (
+				<CommentBox>
+					<div className="ing">
+						<p className="ingText">수정 중...</p>
+						<p className="ingText" onClick={() => setEdit(false)}>
+							취소
+						</p>
+					</div>
+					<div className="inputContainer">
+						<CommentInput
+							editContent={editContent}
+							postId={id}
+							setReply={setEdit}
+							isReply={editContent.end === 'reply' ? true : false}
+							isEdit={true}
+							refetchData={refetchData}
+						/>
+					</div>
+				</CommentBox>
+			)}
 			{reply && (
 				<CommentBox>
 					<div className="ing">
@@ -59,6 +84,8 @@ const DetailComment = ({ postId, comments, refetchData }) => {
 										height="40px"
 										ver="comment"
 										commentID={item.id}
+										setEditContent={setEditContent}
+										setEdit={setEdit}
 									/>
 									<div className="flex justify-between mt-2 pl-[53px] w-[43%]">
 										<span>{timeAgo(item.created_at)}</span>
@@ -83,6 +110,8 @@ const DetailComment = ({ postId, comments, refetchData }) => {
 													ver="comment"
 													commentID={reply.id}
 													isReply={true}
+													setEditContent={setEditContent}
+													setEdit={setEdit}
 												/>
 												<div className="flex justify-between mt-2 pl-14 w-[53%]">
 													<span>{timeAgo(reply.created_at)}</span>

@@ -26,7 +26,7 @@ export const putCommentsAPI = async (commentID, content) => {
 			content: content,
 		},
 	);
-	return response.data;
+	return response;
 };
 
 export const putReplyAPI = async (commentID, content) => {
@@ -37,7 +37,7 @@ export const putReplyAPI = async (commentID, content) => {
 			content: content,
 		},
 	);
-	return response.data;
+	return response;
 };
 
 export const deleteCommentsAPI = async (commentID) => {

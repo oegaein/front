@@ -8,7 +8,12 @@ import Threedots from '@assets/images/common/Threedots.svg';
 import OptionModal from '@common/modal/OptionModal';
 import ConfirmModal from '@common/modal/ConfirmModal';
 import useMyInfoStore from '@store/myInfoStore';
-import { deleteCommentsAPI, deleteRepliesAPI } from 'services/api/CommentsAPI';
+import {
+	deleteCommentsAPI,
+	deleteRepliesAPI,
+	putCommentsAPI,
+	putReplyAPI,
+} from 'services/api/CommentsAPI';
 import { BlockUserAPI } from 'services/api/ProfileAPI';
 
 export const SimpleProfile = ({ Img, nickname, mr, width, height, weight }) => {
@@ -33,6 +38,8 @@ export const BasicProfile = ({
 	ver,
 	commentID = -1,
 	isReply = false,
+	setEditContent,
+	setEdit,
 }) => {
 	const myId = useMyInfoStore.getState().myInfo?.id;
 	const navigate = useNavigate();
@@ -46,7 +53,20 @@ export const BasicProfile = ({
 	});
 
 	const EditFunc = async () => {
-		alert('수정!');
+		setEdit(true);
+		if (isReply) {
+			setEditContent({
+				commentID: commentID,
+				content: content,
+				end: 'reply',
+			});
+		} else {
+			setEditContent({
+				commentID: commentID,
+				content: content,
+				end: 'comment',
+			});
+		}
 	};
 
 	const DeleteFunc = () => {

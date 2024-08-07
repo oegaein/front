@@ -1,9 +1,14 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Input, ContainerStyle } from '@styles/basicInfo/Input';
 import Xbutton from '@assets/images/common/Xbutton.svg';
 import { DropdownWrapper } from '@common/dropdown/BasicDropdown';
-import { postCommentsAPI, postReplyAPI } from 'services/api/CommentsAPI';
+import {
+	postCommentsAPI,
+	postReplyAPI,
+	putCommentsAPI,
+	putReplyAPI,
+} from 'services/api/CommentsAPI';
 import { debounce } from 'lodash';
 
 //
@@ -212,12 +217,21 @@ export const CheckboxInput = ({
 
 //
 export const CommentInput = ({
+	editContent,
 	postId,
 	setReply,
 	isReply = false,
+	isEdit = false,
 	refetchData,
 }) => {
 	const [value, setValue] = useState('');
+	console.log(value);
+
+	useEffect(() => {
+		if (isEdit) {
+			setValue(editContent.content);
+		}
+	}, [editContent]);
 
 	const handleChange = (e) => {
 		const inputValue = e.target.value;
@@ -225,18 +239,37 @@ export const CommentInput = ({
 	};
 
 	const handlePost = async () => {
-		if (isReply) {
-			const res = await postReplyAPI(postId, value);
-			if (res.status === 201) {
-				setReply(false);
-				refetchData();
-				setValue('');
-			}
-		} else {
-			const res = await postCommentsAPI(postId, value);
-			if (res.status === 201) {
-				refetchData();
-				setValue('');
+		if (value !== '') {
+			if (isEdit) {
+				if (isReply) {
+					const res = await putReplyAPI(editContent.commentId, value);
+					if (res.status === 201) {
+						setReply(false);
+						refetchData();
+						setValue('');
+					}
+				} else {
+					const res = await putCommentsAPI(editContent.commentId, value);
+					if (res.status === 201) {
+						refetchData();
+						setValue('');
+					}
+				}
+			} else {
+				if (isReply) {
+					const res = await postReplyAPI(postId, value);
+					if (res.status === 201) {
+						setReply(false);
+						refetchData();
+						setValue('');
+					}
+				} else {
+					const res = await postCommentsAPI(postId, value);
+					if (res.status === 201) {
+						refetchData();
+						setValue('');
+					}
+				}
 			}
 		}
 	};
@@ -277,7 +310,7 @@ export const CommentInput = ({
 					}}
 				/>
 				<button
-					className={value.length >= 1 ? 'color-purple' : 'color-gray'}
+					className={value?.length >= 1 ? 'color-purple' : 'color-gray'}
 					onClick={handlePost}
 				>
 					등록
