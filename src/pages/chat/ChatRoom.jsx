@@ -22,8 +22,10 @@ import useMyInfoStore from '@store/myInfoStore';
 import ConfirmModal from '@common/modal/ConfirmModal';
 import NotificationDropdown from '@common/dropdown/NotificationDropdown';
 import BasicModal from '@common/modal/BasicModal';
+import { API } from '@utils/api';
 
 const Chatroom = () => {
+	const setAccessToken = useAuthStore((state) => state.setAccessToken);
 	const messageEndRef = useRef(null);
 	const clientRef = useRef(null);
 	const accessToken = useAuthStore.getState().accessToken;
@@ -31,7 +33,6 @@ const Chatroom = () => {
 	const myName = useMyInfoStore.getState().myInfo.name;
 	const navigate = useNavigate();
 	const { subscribeID } = useParams();
-
 	const [chats, setChat] = useState([]);
 	const [room, setRoom] = useState({
 		roomName: '',
@@ -68,6 +69,7 @@ const Chatroom = () => {
 					}
 					setChat((prevChat) => [...prevChat, JSON.parse(message.body)]);
 				});
+				// sessionStorage.setItem('isConnected', 'true');
 			},
 
 			onStompError: (frame) => {
@@ -76,6 +78,7 @@ const Chatroom = () => {
 			},
 
 			onWebSocketClose: () => {
+				// sessionStorage.removeItem('isConnected');
 				setIsOpen(true);
 				return (
 					<BasicModal isOpen={isOpen} setIsOpen={setIsOpen}>
@@ -87,6 +90,28 @@ const Chatroom = () => {
 
 		clientRef.current.activate();
 	};
+
+	useEffect(() => {
+		const connectChat = async () => {
+			if (!accessToken) {
+				const refreshResponse = await API.get('/api/v1/member/refresh');
+				setAccessToken(refreshResponse.data.access_token);
+				await connectClient();
+				await checkChat();
+			} else {
+				await connectClient();
+				await checkChat();
+			}
+		};
+
+		connectChat();
+
+		return () => {
+			if (clientRef.current) {
+				clientRef.current.deactivate();
+			}
+		};
+	}, [accessToken, subscribeID]);
 
 	const checkChat = async () => {
 		const result = await getChatHistory(subscribeID);
@@ -113,15 +138,6 @@ const Chatroom = () => {
 	};
 
 	useEffect(() => {
-		connectClient();
-		checkChat();
-
-		return () => {
-			clientRef.current.deactivate();
-		};
-	}, []);
-
-	useEffect(() => {
 		if (messageEndRef.current) {
 			if (isInitialLoad.current) {
 				messageEndRef.current.scrollIntoView({ behavior: 'auto' });
@@ -135,7 +151,7 @@ const Chatroom = () => {
 		setMessage(e.target.value);
 	};
 
-	const sendHandler = () => {
+	const sendHandler = async () => {
 		if (clientRef.current.connected) {
 			clientRef.current.publish({
 				destination: '/pub/message',
@@ -145,8 +161,6 @@ const Chatroom = () => {
 				}),
 			});
 			setMessage('');
-		} else {
-			console.error('STOMP connection is not active.');
 		}
 	};
 
@@ -159,15 +173,18 @@ const Chatroom = () => {
 			func: async () => {
 				const result = await deleteChatRoom(subscribeID);
 				if (result.status === 204) {
-					clientRef.current.publish({
-						destination: '/pub/message',
-						body: JSON.stringify({
-							message: `${myName}님이 나갔습니다.`,
-							messageStatus: 'LEAVE',
-						}),
-					});
-					clientRef.current.deactivate();
-					navigate('/chat');
+					if (clientRef.current.connected) {
+						clientRef.current.publish({
+							destination: '/pub/message',
+							body: JSON.stringify({
+								message: `${myName}님이 나갔습니다.`,
+								messageStatus: 'LEAVE',
+							}),
+						});
+						clientRef.current.deactivate();
+						navigate('/chat');
+					} else {
+					}
 				}
 			},
 		}));
