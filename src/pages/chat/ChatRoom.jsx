@@ -426,7 +426,7 @@ const ChatContainer = styled.div`
 	.headerContainer {
 		display: flex;
 		flex-direction: column;
-		padding: 10px 10px;
+		padding: 10px 10px 0px 10px;
 		width: 393px;
 		position: fixed;
 		top: 0;
