@@ -231,7 +231,7 @@ export const CommentInput = ({
 		} else {
 			const res = await postCommentsAPI(postId, value);
 		}
-		window.location.reload();
+		// window.location.reload();
 	};
 
 	return (

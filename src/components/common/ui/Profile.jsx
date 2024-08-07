@@ -34,7 +34,7 @@ export const BasicProfile = ({
 	commentID = -1,
 	isReply = false,
 }) => {
-	const myId = useMyInfoStore.getState().myInfo.id;
+	const myId = useMyInfoStore.getState().myInfo?.id;
 	const navigate = useNavigate();
 	const [threedots, setThreedots] = useState(false);
 	const [confirm, setConfirm] = useState(false);
@@ -61,7 +61,7 @@ export const BasicProfile = ({
 				} else {
 					const res = await deleteCommentsAPI(commentID);
 				}
-				window.location.reload();
+				// window.location.reload();
 			},
 		}));
 	};

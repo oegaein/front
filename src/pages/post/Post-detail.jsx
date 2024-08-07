@@ -57,10 +57,10 @@ const PostDetail = () => {
 		setData(result);
 	};
 	useEffect(() => {
-		if (!accessToken) {
-			navigate('/login')
-			return
-		}
+		// if (!accessToken) {
+		// 	navigate('/login')
+		// 	return
+		// }
 		fetchPostData();
 	}, [postId]);
 

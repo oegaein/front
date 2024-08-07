@@ -6,6 +6,8 @@ import useLowerBarVisible from '@hooks/useLowerBarVisible';
 import Next from '@assets/images/next.svg';
 import Dots from '@assets/images/header-dots.svg';
 import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest';
+
+
 //styles
 import styled from 'styled-components';
 import FONT from '@styles/fonts';
@@ -45,7 +47,7 @@ const UserPage = () => {
 	const fetchUserInfoData = async () => {
 		try {
 			const response = await makeAuthorizedRequest(
-				`/api/v1/member/profile/${memberId}`,
+				`/api/v1/member/profile/${memberId}`
 			);
 			setUserInfo(response.data);
 			console.log('fetchUserInfoData', response.data);
@@ -97,10 +99,10 @@ const UserPage = () => {
 	];
 
 	useEffect(() => {
-		if (!accessToken) {
-			navigate('/login')
-			return
-		}
+		// if (!accessToken) {
+		// 	navigate('/login')
+		// 	return
+		// }
 		if (memberId === 'my-profile') {
 			fetchMyInfoData();
 		} else {

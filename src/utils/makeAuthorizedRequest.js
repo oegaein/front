@@ -35,12 +35,10 @@ const makeAuthorizedRequest = async (url, method = 'get', config) => {
 
         return await makeAuthorizedRequest(url, method, config);
       } catch (error) {
-        console.error(error);
-        NavigateToLogin()
-        throw error;
+        window.location.href = 'http://127.0.0.1:3000/login'
       }
     }
-    throw error;
+    // throw error;
   }
 };
 
