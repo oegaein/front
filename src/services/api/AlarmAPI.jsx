@@ -1,7 +1,13 @@
 import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest';
+import { toast } from 'react-toastify';
 export const getAlarmAPI = async () => {
 	const response = await makeAuthorizedRequest(`/api/v1/roommate-alarms`);
-	return response.data.data;
+	if (response.status === 200) {
+		return response;
+	} else {
+		toast.error(response.data.errorMsg);
+		return;
+	}
 };
 
 export const deleteAllAlarmAPI = async () => {
@@ -9,7 +15,12 @@ export const deleteAllAlarmAPI = async () => {
 		`/api/v1/roommate-alarms`,
 		'delete',
 	);
-	return response.data;
+	if (response.status === 204) {
+		return true;
+	} else {
+		toast.error(response.data.errorMsg);
+		return false;
+	}
 };
 
 export const deleteAlarmAPI = async (id) => {
@@ -17,5 +28,10 @@ export const deleteAlarmAPI = async (id) => {
 		`/api/v1/roommate-alarms/${id}`,
 		'delete',
 	);
-	return response.data;
+	if (response.status === 204) {
+		return true;
+	} else {
+		toast.error(response.data.errorMsg);
+		return false;
+	}
 };
