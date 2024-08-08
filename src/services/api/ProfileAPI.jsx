@@ -6,7 +6,13 @@ export const PostProfileAPI = async (submitData) => {
 		'post',
 		submitData,
 	);
-	return response.data;
+	if (response === undefined) {
+		window.location.href = 'http://127.0.0.1:3000/login';
+	} else {
+		if (response.status === 201) {
+			return response;
+		}
+	}
 };
 
 export const GetDuplicate = async (nickname) => {
