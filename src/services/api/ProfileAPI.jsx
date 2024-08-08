@@ -1,4 +1,5 @@
 import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest';
+import { toast } from 'react-toastify';
 
 export const PostProfileAPI = async (submitData) => {
 	const response = await makeAuthorizedRequest(
@@ -6,12 +7,10 @@ export const PostProfileAPI = async (submitData) => {
 		'post',
 		submitData,
 	);
-	if (response === undefined) {
-		window.location.href = 'http://127.0.0.1:3000/login';
+	if (response.status && response.status === 201) {
+		return response;
 	} else {
-		if (response.status === 201) {
-			return response;
-		}
+		toast.error(response);
 	}
 };
 
@@ -30,7 +29,12 @@ export const EditProfileAPI = async (submitData) => {
 		'put',
 		submitData,
 	);
-	return response;
+	if (response.status && response.status === 200) {
+		return response;
+	} else {
+		toast.error(response);
+		return;
+	}
 };
 
 export const BlockUserAPI = async (block_user) => {
