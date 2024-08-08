@@ -64,16 +64,11 @@ const BasicInfoSetting = () => {
 		setActiveButton(true);
 
 		if (count === 11) {
-			try {
-				const response = await PostProfileAPI(info);
-			} catch (error) {
-				console.error(error);
-			}
+			await PostProfileAPI(info);
 		}
 	};
 
 	const handleSkip = async () => {
-		setCount((prev) => prev + 1);
 		setActiveButton(true);
 		const currentStep = step.find((item) => item.id === count);
 		if (currentStep) {
@@ -85,13 +80,11 @@ const BasicInfoSetting = () => {
 				}));
 			}
 		}
-
 		if (count === 11) {
-			try {
-				const response = await PostProfileAPI(info);
-			} catch (error) {
-				console.error(error);
-			}
+			setCount((prev) => prev);
+			await PostProfileAPI(info);
+		} else {
+			setCount((prev) => prev + 1);
 		}
 	};
 

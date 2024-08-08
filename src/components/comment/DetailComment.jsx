@@ -6,12 +6,17 @@ import FONT from '@styles/fonts';
 import COLOR from '@styles/color';
 import { timeAgo } from '@utils/TimeAgo';
 
-const DetailComment = ({ postId, comments }) => {
+const DetailComment = ({ postId, comments, refetchData }) => {
 	const id = postId;
-	const [value, setValue] = useState('');
 	const [reply, setReply] = useState(false);
 	const [owner, setOwner] = useState('');
 	const [commentID, setCommentID] = useState(-1);
+	const [edit, setEdit] = useState(false);
+	const [editContent, setEditContent] = useState({
+		commentId: -1,
+		content: '',
+		end: 'reply' | 'comment',
+	});
 
 	const handleReply = (index) => {
 		setReply(true);
@@ -21,6 +26,26 @@ const DetailComment = ({ postId, comments }) => {
 
 	return (
 		<>
+			{edit && (
+				<CommentBox>
+					<div className="ing">
+						<p className="ingText">수정 중...</p>
+						<p className="ingText" onClick={() => setEdit(false)}>
+							취소
+						</p>
+					</div>
+					<div className="inputContainer">
+						<CommentInput
+							editContent={editContent}
+							postId={id}
+							setReply={setEdit}
+							isReply={editContent.end === 'reply' ? true : false}
+							isEdit={true}
+							refetchData={refetchData}
+						/>
+					</div>
+				</CommentBox>
+			)}
 			{reply && (
 				<CommentBox>
 					<div className="ing">
@@ -32,9 +57,9 @@ const DetailComment = ({ postId, comments }) => {
 					<div className="inputContainer">
 						<CommentInput
 							postId={commentID}
-							setSelected={setValue}
 							setReply={setReply}
 							isReply={true}
+							refetchData={refetchData}
 						/>
 					</div>
 				</CommentBox>
@@ -59,6 +84,9 @@ const DetailComment = ({ postId, comments }) => {
 										height="40px"
 										ver="comment"
 										commentID={item.id}
+										setEditContent={setEditContent}
+										setEdit={setEdit}
+										event={refetchData}
 									/>
 									<div className="flex justify-between mt-2 pl-[53px] w-[43%]">
 										<span>{timeAgo(item.created_at)}</span>
@@ -83,6 +111,9 @@ const DetailComment = ({ postId, comments }) => {
 													ver="comment"
 													commentID={reply.id}
 													isReply={true}
+													setEditContent={setEditContent}
+													setEdit={setEdit}
+													event={refetchData}
 												/>
 												<div className="flex justify-between mt-2 pl-14 w-[53%]">
 													<span>{timeAgo(reply.created_at)}</span>
@@ -98,11 +129,9 @@ const DetailComment = ({ postId, comments }) => {
 								</div>
 							))}
 						</section>
-						<section className="flex flex-col p-[25px]">
-							<div className="w-[343px] fixed bottom-0">
-								<CommentInput postId={id} setSelected={setValue} />
-							</div>
-						</section>
+						<div className="input_box">
+							<CommentInput postId={id} refetchData={refetchData} />
+						</div>
 					</>
 				)}
 			</CommentStyle>
@@ -149,6 +178,18 @@ const CommentStyle = styled.div`
 		justify-content: center;
 		align-items: center;
 		padding: 16px 0px;
+	}
+
+	.input_box {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: 12px 25px;
+		width: 393px;
+		position: fixed;
+		bottom: 0;
+		background-color: ${COLOR.white};
+		box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.05);
 	}
 `;
 

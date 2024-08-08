@@ -4,8 +4,6 @@ import styled from 'styled-components';
 import Header from '@common/header/Header';
 import FONT from '@styles/fonts';
 import COLOR from '@styles/color';
-import Comment from '@components/comment/Comment';
-import PreviewComment from '@components/comment/PreviewComment';
 import { getMatchingPostAPI } from 'services/api/MatchingPostAPI';
 import DetailComment from '@components/comment/DetailComment';
 
@@ -13,13 +11,12 @@ const CommentDetail = () => {
 	const { postId } = useParams();
 	const [data, setData] = useState(null);
 
+	const fetchPostData = async () => {
+		const result = await getMatchingPostAPI(postId);
+		setData(result);
+	};
 	useEffect(() => {
-		const fetchData = async () => {
-			const result = await getMatchingPostAPI(postId);
-			setData(result);
-		};
-		fetchData();
-		console.log(data);
+		fetchPostData();
 	}, [postId]);
 
 	return (
@@ -35,8 +32,12 @@ const CommentDetail = () => {
 					</Header>
 				</div>
 				{data !== null && (
-					<div className="w-full">
-						<DetailComment postId={postId} comments={data.comments} />
+					<div className="w-full ">
+						<DetailComment
+							postId={postId}
+							comments={data.comments}
+							refetchData={fetchPostData}
+						/>
 					</div>
 				)}
 			</CommentDetailStyle>
@@ -61,5 +62,14 @@ const CommentDetailStyle = styled.div`
 		p {
 			font: ${FONT.title4SB17};
 		}
+	}
+
+	.color-purple {
+		font: ${FONT.caption2M14};
+		color: ${COLOR.purple1};
+	}
+	.color-gray {
+		font: ${FONT.caption2M14};
+		color: ${COLOR.gray400};
 	}
 `;

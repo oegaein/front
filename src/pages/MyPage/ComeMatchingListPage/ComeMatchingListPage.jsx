@@ -10,19 +10,18 @@ import COLOR from '@styles/color';
 //components
 import Header from '@common/header/Header';
 import ComeMatchingRequest from '@common/ui/item/ComeMatchingRequest';
+import DeliveryNotification from '@common/ui/item/DeliveryNotification';
+import SelectMenuBar from '@common/menu/SelectMenuBar';
 
 const ComeMatchingListPage = () => {
-	const [uploadPostType, setUploadPostType] = useState('roommate');
+	const [uploadPostType, setUploadPostType] = useState('룸메이트');
 	const {
 		data: comeMatchingRequests,
 		refetch: reFetchComeMatchingRequests,
 		isLoading: isLoadingCome,
 		error: isErrorCome,
 	} = useMatchingPosts('come-matchingrequests');
-	const handleChangeType = (type) => {
-		//api 요청 로직
-		setUploadPostType(type);
-	};
+
 	if (isLoadingCome) {
 		return <div>로딩중</div>;
 	}
@@ -30,33 +29,34 @@ const ComeMatchingListPage = () => {
 		<SettingStyle className="bg-white">
 			<div className="px-[28px]">
 				<Header backPath="/mypage" rightContent=" " rightEvent={() => {}}>
-					<span className='header'>내게 온 룸메이트 신청</span>
+					<span className="header">내게 온 룸메이트 신청</span>
 				</Header>
 			</div>
 			<div>
-				<div className="flex">
-					<div
-						onClick={() => handleChangeType('roommate')}
-						className={`notification-title ${uploadPostType === 'roommate' && 'selected-title'}`}
-					>
-						룸메이트
+				<SelectMenuBar
+					menuList={['룸메이트', '공동배달']}
+					pickedMenuId={setUploadPostType}
+				/>
+				{uploadPostType === '룸메이트' ? (
+					<div className="flex flex-col gap-[10px] px-[25px] mt-[16px]">
+						{comeMatchingRequests?.data?.length > 0 ? (
+							comeMatchingRequests.data
+								.slice(0, 3)
+								.map((post, index) => (
+									<ComeMatchingRequest
+										post={post}
+										index={index}
+										reFetchComeMatchingRequests={reFetchComeMatchingRequests}
+									/>
+								))
+						) : (
+							<div className="text-center">나에게 온 신청 요청이 없습니다.</div>
+						)}
 					</div>
-					{/* <div onClick={()=>handleChangeType('delivery')}className={`notification-title ${uploadPostType === 'delivery' && 'selected-title'}`}>공동배달</div> */}
-				</div>
-			</div>
-			<div className="flex flex-col gap-[10px] px-[25px] mt-[16px]">
-				{comeMatchingRequests?.data?.length > 0 ? (
-					comeMatchingRequests.data
-						.slice(0, 3)
-						.map((post, index) => (
-							<ComeMatchingRequest
-								post={post}
-								index={index}
-								reFetchComeMatchingRequests={reFetchComeMatchingRequests}
-							/>
-						))
 				) : (
-					<div className="text-center">나에게 온 신청 요청이 없습니다.</div>
+					<div className="flex justify-center items-center w-full p-6">
+						<DeliveryNotification />
+					</div>
 				)}
 			</div>
 		</SettingStyle>

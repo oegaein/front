@@ -78,8 +78,7 @@ const PostRoommate = ({ defaultValue = null, ver = 'post' }) => {
 			dongType: postContent.building,
 			roomSizeType: postContent.type,
 		};
-		const res = await postMatchingPostAPI(SubmitData);
-		console.log(res);
+		await postMatchingPostAPI(SubmitData);
 	};
 
 	const handleEdit = async () => {
@@ -91,9 +90,7 @@ const PostRoommate = ({ defaultValue = null, ver = 'post' }) => {
 			dongType: postContent.building,
 			roomSizeType: postContent.type,
 		};
-		console.log(SubmitData);
-		const res = await putMatchingPostAPI(defaultValue.id, SubmitData);
-		console.log(res);
+		await putMatchingPostAPI(defaultValue.id, SubmitData);
 	};
 
 	const isDateValid = () => {

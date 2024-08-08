@@ -1,19 +1,30 @@
 import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest';
 import { toast } from 'react-toastify';
+
 export const postMatchingPostAPI = async (submitData) => {
 	const response = await makeAuthorizedRequest(
 		`/api/v1/matchingposts`,
 		'post',
 		submitData,
 	);
-	return response.data;
+	if (response.status && response.status === 201) {
+		return response.data;
+	} else {
+		toast.error(response);
+		return;
+	}
 };
 
 export const getMatchingPostAPI = async (matchingpostID) => {
 	const response = await makeAuthorizedRequest(
 		`/api/v1/matchingposts/${matchingpostID}`,
 	);
-	return response.data;
+	if (response.status && response.status === 200) {
+		return response.data;
+	} else {
+		toast.error(response);
+		return;
+	}
 };
 
 export const putMatchingPostAPI = async (matchingpostID, submitData) => {
@@ -22,7 +33,12 @@ export const putMatchingPostAPI = async (matchingpostID, submitData) => {
 		'put',
 		submitData,
 	);
-	return response.data;
+	if (response.status && response.status === 200) {
+		return response.data;
+	} else {
+		toast.error(response);
+		return;
+	}
 };
 
 export const deleteMatchingPostAPI = async (matchingpostID) => {
@@ -30,5 +46,10 @@ export const deleteMatchingPostAPI = async (matchingpostID) => {
 		`/api/v1/matchingposts/${matchingpostID}`,
 		'delete',
 	);
-	return response;
+	if (response.status && response.status === 204) {
+		return response;
+	} else {
+		toast.error(response);
+		return;
+	}
 };

@@ -1,4 +1,5 @@
 import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest';
+import { toast } from 'react-toastify';
 
 export const PostProfileAPI = async (submitData) => {
 	const response = await makeAuthorizedRequest(
@@ -6,7 +7,12 @@ export const PostProfileAPI = async (submitData) => {
 		'post',
 		submitData,
 	);
-	return response.data;
+	if (response.status && response.status === 201) {
+		return response;
+	} else {
+		toast.error(response);
+		return;
+	}
 };
 
 export const GetDuplicate = async (nickname) => {
@@ -24,7 +30,12 @@ export const EditProfileAPI = async (submitData) => {
 		'put',
 		submitData,
 	);
-	return response;
+	if (response.status && response.status === 200) {
+		return response;
+	} else {
+		toast.error(response);
+		return;
+	}
 };
 
 export const BlockUserAPI = async (block_user) => {
