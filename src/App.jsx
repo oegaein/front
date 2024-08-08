@@ -121,7 +121,7 @@ function MainLayout() {
 			<div className="content">
 				<ToastContainer
 					position="top-center"
-					limit={1}
+					limit={10}
 					closeButton={true}
 					autoClose={4000}
 					hideProgressBar
