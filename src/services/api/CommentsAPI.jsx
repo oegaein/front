@@ -1,13 +1,17 @@
-import useAuthStore from '@store/authStore';
-import { API } from '@utils/api';
 import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest';
+import { toast } from 'react-toastify';
 
 export const postCommentsAPI = async (id, content) => {
 	const response = await makeAuthorizedRequest(`/api/v1/comments`, 'post', {
 		matchingPostId: id,
 		content: content,
 	});
-	return response;
+	if (response.status && response.status === 201) {
+		return response;
+	} else {
+		toast.error(response);
+		return;
+	}
 };
 
 export const postReplyAPI = async (id, content) => {
@@ -15,7 +19,12 @@ export const postReplyAPI = async (id, content) => {
 		commentId: id,
 		content: content,
 	});
-	return response;
+	if (response.status && response.status === 201) {
+		return response;
+	} else {
+		toast.error(response);
+		return;
+	}
 };
 
 export const putCommentsAPI = async (commentID, content) => {
@@ -26,7 +35,12 @@ export const putCommentsAPI = async (commentID, content) => {
 			content: content,
 		},
 	);
-	return response;
+	if (response.status && response.status === 200) {
+		return response;
+	} else {
+		toast.error(response);
+		return;
+	}
 };
 
 export const putReplyAPI = async (commentID, content) => {
@@ -37,7 +51,12 @@ export const putReplyAPI = async (commentID, content) => {
 			content: content,
 		},
 	);
-	return response;
+	if (response.status && response.status === 200) {
+		return response;
+	} else {
+		toast.error(response);
+		return;
+	}
 };
 
 export const deleteCommentsAPI = async (commentID) => {
@@ -45,7 +64,12 @@ export const deleteCommentsAPI = async (commentID) => {
 		`/api/v1/comments/${commentID}`,
 		'delete',
 	);
-	return response;
+	if (response.status && response.status === 204) {
+		return response;
+	} else {
+		toast.error(response);
+		return;
+	}
 };
 
 export const deleteRepliesAPI = async (commentID) => {
@@ -53,5 +77,10 @@ export const deleteRepliesAPI = async (commentID) => {
 		`/api/v1/replies/${commentID}`,
 		'delete',
 	);
-	return response;
+	if (response.status && response.status === 204) {
+		return response;
+	} else {
+		toast.error(response);
+		return;
+	}
 };

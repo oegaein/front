@@ -101,6 +101,7 @@ const PreviewComment = ({ postId, comments, count, refetchData }) => {
 										commentID={item.id}
 										setEditContent={setEditContent}
 										setEdit={setEdit}
+										event={refetchData}
 									/>
 									<div className="flex justify-between mt-2 pl-[53px] w-[43%]">
 										<span>{timeAgo(item.created_at)}</span>
@@ -127,6 +128,7 @@ const PreviewComment = ({ postId, comments, count, refetchData }) => {
 													isReply={true}
 													setEditContent={setEditContent}
 													setEdit={setEdit}
+													event={refetchData}
 												/>
 												<div className="flex justify-between mt-2 pl-14 w-[53%]">
 													<span>{timeAgo(reply.created_at)}</span>

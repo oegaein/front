@@ -35,6 +35,7 @@ export const BasicProfile = ({
 	isReply = false,
 	setEditContent,
 	setEdit,
+	event,
 }) => {
 	const myId = useMyInfoStore.getState().myInfo?.id;
 	const navigate = useNavigate();
@@ -73,10 +74,15 @@ export const BasicProfile = ({
 			func: async () => {
 				if (isReply) {
 					const res = await deleteRepliesAPI(commentID);
+					if (res.status === 204) {
+						event();
+					}
 				} else {
 					const res = await deleteCommentsAPI(commentID);
+					if (res.status === 204) {
+						event();
+					}
 				}
-				// window.location.reload();
 			},
 		}));
 	};
