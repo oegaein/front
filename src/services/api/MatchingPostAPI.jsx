@@ -1,5 +1,5 @@
 import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest';
-
+import { toast } from 'react-toastify';
 export const postMatchingPostAPI = async (submitData) => {
 	const response = await makeAuthorizedRequest(
 		`/api/v1/matchingposts`,
@@ -30,5 +30,5 @@ export const deleteMatchingPostAPI = async (matchingpostID) => {
 		`/api/v1/matchingposts/${matchingpostID}`,
 		'delete',
 	);
-	return response.data;
+	return response;
 };
