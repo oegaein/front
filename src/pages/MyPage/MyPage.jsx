@@ -68,11 +68,8 @@ const MyPage = () => {
 	const fetchMyInfoData = async () => {
 		try {
 			const response = await makeAuthorizedRequest(`/api/v1/member/my-profile`);
-			console.log('myinfo', response);
 			setMyInfo(response.data);
-		} catch (error) {
-			console.error(error);
-		}
+		} catch (error) {}
 	};
 
 	useEffect(() => {
@@ -81,11 +78,8 @@ const MyPage = () => {
 		const fetchLikeData = async () => {
 			try {
 				const response = await makeAuthorizedRequest('/api/v1/member/like');
-				console.log('like', response.data.data);
 				setLikeData(response.data.data);
-			} catch (error) {
-				console.error(error);
-			}
+			} catch (error) {}
 		};
 		fetchLikeData();
 	}, []);

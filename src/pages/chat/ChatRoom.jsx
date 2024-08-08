@@ -23,6 +23,7 @@ import ConfirmModal from '@common/modal/ConfirmModal';
 import NotificationDropdown from '@common/dropdown/NotificationDropdown';
 import BasicModal from '@common/modal/BasicModal';
 import { API } from '@utils/api';
+import { toast } from 'react-toastify';
 
 const Chatroom = () => {
 	const setAccessToken = useAuthStore((state) => state.setAccessToken);
@@ -72,8 +73,8 @@ const Chatroom = () => {
 			},
 
 			onStompError: (frame) => {
-				console.error('Broker reported error: ' + frame.headers['message']);
-				console.error('Additional details: ' + frame.body);
+				toast.error(frame.headers['message']);
+				toast.error(frame.body);
 			},
 
 			onWebSocketClose: () => {

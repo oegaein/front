@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 //styles
 import styled from 'styled-components';
@@ -18,7 +17,6 @@ import AddRoommateButton from '@common/button/AddRoommateButton';
 const RoommatePage = () => {
 	const location = useLocation();
 	const filters = location.state;
-	console.log('필터:', filters);
 
 	return (
 		<SettingStyle className="bg-white flex flex-col gap-[10px] scroll-smooth">

@@ -1,12 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate, useLocation } from 'react-router-dom';
-import { API } from '@utils/api';
-import useAuthStore from '@store/authStore';
+import { useParams, useNavigate } from 'react-router-dom';
 import useLowerBarVisible from '@hooks/useLowerBarVisible';
-import Next from '@assets/images/next.svg';
 import Dots from '@assets/images/header-dots.svg';
 import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest';
-
 
 //styles
 import styled from 'styled-components';
@@ -16,7 +12,6 @@ import COLOR from '@styles/color';
 //components
 import Header from '@common/header/Header';
 import ProfileImageContainer from '@components/UserPage/ProfileImageContainer';
-import RoommateReviewList from '@components/UserPage/RoommateReviewList';
 import UserPageInfo from '@components/UserPage/UserPageInfo';
 import UserLifeStyles from '@components/UserPage/UserLifeStyles';
 import useMyInfoStore from '@store/myInfoStore';
@@ -26,11 +21,7 @@ import MatchingApplyNavBar from '@common/MatchingApplyNavBar';
 import { BlockUserAPI } from 'services/api/ProfileAPI';
 
 const UserPage = () => {
-	const location = useLocation();
-	console.log(location.pathname);
 	const myId = useMyInfoStore.getState().myInfo?.id;
-	const accessToken = useAuthStore.getState().accessToken
-	console.log('accessToken', accessToken);
 	const navigate = useNavigate();
 	const [userInfo, setUserInfo] = useState({});
 	const [threedots, setThreedots] = useState(false);
@@ -43,26 +34,19 @@ const UserPage = () => {
 	});
 	const isLowerBarVisible = useLowerBarVisible();
 	let { memberId } = useParams();
-	console.log('memberId',memberId)
 	const fetchUserInfoData = async () => {
 		try {
 			const response = await makeAuthorizedRequest(
-				`/api/v1/member/profile/${memberId}`
+				`/api/v1/member/profile/${memberId}`,
 			);
 			setUserInfo(response.data);
-			console.log('fetchUserInfoData', response.data);
-		} catch (error) {
-			console.error(error);
-		}
+		} catch (error) {}
 	};
 	const fetchMyInfoData = async () => {
 		try {
 			const response = await makeAuthorizedRequest(`/api/v1/member/my-profile`);
 			setUserInfo(response.data);
-			console.log('fetchMyInfoData', response.data);
-		} catch (error) {
-			console.error(error);
-		}
+		} catch (error) {}
 	};
 	const handleClickDotsBtn = () => {
 		setThreedots(true);
@@ -79,8 +63,7 @@ const UserPage = () => {
 			msg: `${userInfo.name}님을 차단할까요?`,
 			btn: '차단',
 			func: async () => {
-				// const res = await BlockUserAPI(data.author_profile.id);
-				// console.log(res);
+				await BlockUserAPI(userInfo.author_profile.id);
 			},
 		}));
 	};

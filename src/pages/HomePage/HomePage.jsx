@@ -1,12 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { useLocation } from 'react-router-dom';
 import { Pagination, Autoplay } from 'swiper/modules';
 import { Link } from 'react-router-dom';
 import { useDormNews } from '@hooks/useDormNews';
-import { API } from '@utils/api';
-import useAuthStore from '@store/authStore';
 //styles
 import styled from 'styled-components';
 import COLOR from '@styles/color';
@@ -25,10 +21,7 @@ import DormNews from '@components/HomePage/DormNews';
 import AddRoommateButton from '@common/button/AddRoommateButton';
 
 const HomePage = () => {
-	useEffect(()=> {console.log('마운트')},[])
-	const accessToken = useAuthStore.getState().accessToken;
-	console.log(accessToken);
-	const { data: dormNews, isLoading, error } = useDormNews();
+	const { data: dormNews } = useDormNews();
 	return (
 		<SettingStyle className="flex flex-col gap-[10px] scroll-smooth">
 			<AddRoommateButton />
