@@ -45,7 +45,6 @@ const Chatroom = () => {
 	const [confirm, setConfirm] = useState(false);
 	const [confirmContent, setConfirmContent] = useState({});
 	const [isOpen, setIsOpen] = useState(false);
-	const isInitialLoad = useRef(true);
 
 	const connectClient = () => {
 		const socket = new SockJS(`${chatSeverURL}/oegaein`);
@@ -128,12 +127,7 @@ const Chatroom = () => {
 
 			setChat(data.data);
 		} else {
-			setIsOpen(true);
-			return (
-				<BasicModal isOpen={isOpen} setIsOpen={setIsOpen}>
-					{result.data.errorMessage}
-				</BasicModal>
-			);
+			setIsOpen(false);
 		}
 	};
 
@@ -167,20 +161,18 @@ const Chatroom = () => {
 			msg: '채팅방에서 나가시겠습니까?',
 			btn: '나가기',
 			func: async () => {
-				const result = await deleteChatRoom(subscribeID);
-				if (result.status === 204) {
-					if (clientRef.current.connected) {
-						clientRef.current.publish({
-							destination: '/pub/message',
-							body: JSON.stringify({
-								message: `${myName}님이 나갔습니다.`,
-								messageStatus: 'LEAVE',
-							}),
-						});
-						clientRef.current.deactivate();
-						navigate('/chat');
-					} else {
-					}
+				await deleteChatRoom(subscribeID);
+				if (clientRef.current.connected) {
+					clientRef.current.publish({
+						destination: '/pub/message',
+						body: JSON.stringify({
+							message: `${myName}님이 나갔습니다.`,
+							messageStatus: 'LEAVE',
+						}),
+					});
+					clientRef.current.deactivate();
+					navigate('/chat');
+				} else {
 				}
 			},
 		}));
@@ -195,16 +187,8 @@ const Chatroom = () => {
 					msg: '매칭을 마감하시겠습니까?',
 					btn: '확인',
 					func: async () => {
-						const res = await getMatchingEnd(room.matchingPostId);
-						if (res.status === 200) {
-							checkChat();
-						} else {
-							return (
-								<BasicModal isOpen={isOpen} setIsOpen={setIsOpen}>
-									{res.data.errorMessage}
-								</BasicModal>
-							);
-						}
+						await getMatchingEnd(room.matchingPostId);
+						checkChat();
 					},
 				}));
 			} else {
