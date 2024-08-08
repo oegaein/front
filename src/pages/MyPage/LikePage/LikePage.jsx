@@ -18,9 +18,7 @@ const LikePage = () => {
 			try {
 				const response = await makeAuthorizedRequest('/api/v1/member/like');
 				setLikeData(response.data.data);
-			} catch (error) {
-				console.error(error);
-			}
+			} catch (error) {}
 		};
 		fetchLikeData();
 	}, []);

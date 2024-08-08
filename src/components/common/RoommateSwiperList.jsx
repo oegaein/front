@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import RoommateSwiperItem from '../RoommatePage/RoommateSwiperItem';
 import { useMatchingPosts } from 'hooks/useMatchingPosts';
 import ConfirmModal from './modal/ConfirmModal';
@@ -14,10 +14,9 @@ import Next from '@assets/images/next.svg';
 const RoommateSwiperList = ({ type }) => {
 	//type: new/best/mypost/my-matchingrequests
 	const { data, isLoading, error } = useMatchingPosts(type);
-	const [confirm, setConfirm] = useState(false)
+	const [confirm, setConfirm] = useState(false);
 	const [confirmContent, setConfirmContent] = useState({});
 
-	console.log('my-matchingrequests', data)
 	if (isLoading) return <div>데이터 로딩중</div>;
 	if (error) return <div>에러 발생 {error.message}</div>;
 	return (
@@ -35,19 +34,25 @@ const RoommateSwiperList = ({ type }) => {
 				slidesOffsetAfter={12}
 				className="mySwiper pt-[5px]"
 			>
-				{data?.data?.length > 0 ?
-					data.data
-					.map((post, index) => (
+				{data?.data?.length > 0 ? (
+					data.data.map((post, index) => (
 						<SwiperSlide key={post.matchingPostId}>
-							<RoommateSwiperItem post={post} type={type} index={index} setConfirm={setConfirm} setConfirmContent={setConfirmContent} />
+							<RoommateSwiperItem
+								post={post}
+								type={type}
+								index={index}
+								setConfirm={setConfirm}
+								setConfirmContent={setConfirmContent}
+							/>
 						</SwiperSlide>
-						)
-					)
-					:
-					<div className="text-center pt-[16px]">룸메이트 데이터가 없습니다.</div>
-				}
+					))
+				) : (
+					<div className="text-center pt-[16px]">
+						룸메이트 데이터가 없습니다.
+					</div>
+				)}
 			</Swiper>
-			{(type === 'new' || type === 'mypost') ? (
+			{type === 'new' || type === 'mypost' ? (
 				<div className="px-[25px] mt-[16px]">
 					<Link
 						to={

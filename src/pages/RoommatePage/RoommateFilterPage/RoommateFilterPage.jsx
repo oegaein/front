@@ -1,26 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { throttle } from 'lodash';
-import { useNavigate } from 'react-router-dom';
 
 //styles
 import styled from 'styled-components';
 import FONT from '@styles/fonts';
 import COLOR from '@styles/color';
 import DoubleRangeSlider from '@components/RoommatePage/DoubleRangeSlider';
-import { type } from '@testing-library/user-event/dist/type';
 import Close from '@assets/images/close-white.svg';
 import Header from '@common/header/Header';
 import RoommateScrollList from '@common/RoommateScrollList';
 import { useMatchingPosts } from '@hooks/useMatchingPosts';
-import { matchingPostsData } from 'mocks/api/data/matchingPostsData';
 function RoommateFilterPage() {
-	const navigate = useNavigate();
 	const [screenType, setScreenType] = useState('filters'); //filters||results
-	const { data: matchingPosts, isLoading, error } = useMatchingPosts('new');
+	const { data: matchingPosts } = useMatchingPosts('new');
 	const [filteredPosts, setFilteredPosts] = useState([]);
-	useEffect(() => {
-		console.log(filteredPosts); // 여기서는 업데이트된 상태를 볼 수 있음
-	}, [filteredPosts]); // myState가 변경될 때마다 실행
+
 	const [filters, setFilters] = useState({
 		sort: '', // 'latest' or 'deadline'
 		targetNumberOfPeople: [], // '1인', '2인', '3인', '4인' 중복 선택 가능
@@ -301,7 +295,6 @@ function RoommateFilterPage() {
 
 	const handleClickFilterBtn = () => {
 		setScreenType('results');
-		// console.log(filters)
 	};
 
 	useEffect(() => {
@@ -309,29 +302,41 @@ function RoommateFilterPage() {
 		if (matchingPosts?.data?.length > 0) {
 			const filtered = matchingPosts.data.filter((post) => {
 				const now = new Date();
-				const age = now.getFullYear() - Number(post.birthdate?.substring(0, 4)) + 1;
-	
+				const age =
+					now.getFullYear() - Number(post.birthdate?.substring(0, 4)) + 1;
+
 				return (
 					(filters.targetNumberOfPeople.length === 0 ||
-						filters.targetNumberOfPeople.includes(`${post.targetNumberOfPeople}인`)) &&
+						filters.targetNumberOfPeople.includes(
+							`${post.targetNumberOfPeople}인`,
+						)) &&
 					(filters.gender === '' || filters.gender === post.gender) &&
 					(filters.dong.length === 0 || filters.dong.includes(post.dong)) &&
-					(filters.roomSize.length === 0 || filters.roomSize.includes(post.roomSize)) &&
+					(filters.roomSize.length === 0 ||
+						filters.roomSize.includes(post.roomSize)) &&
 					(filters.mbti.length === 0 || filters.mbti.includes(post.mbti)) &&
 					(filters.sleepingHabits.length === 0 ||
-						(post.sleepingHabits && filters.sleepingHabits.some((habit) => post.sleepingHabits.includes(habit)))) &&
-					(filters.lifePattern.length === 0 || filters.lifePattern.includes(post.lifePattern)) &&
-					(filters.smoking.length === 0 || filters.smoking.includes(post.smoking)) &&
-					(filters.cleaningCycle.length === 0 || filters.cleaningCycle.includes(post.cleaningCycle)) &&
-					(filters.outing.length === 0 || filters.outing.includes(post.outing)) &&
-					(filters.sensitivity.length === 0 || filters.sensitivity.includes(post.sensitivity)) &&
+						(post.sleepingHabits &&
+							filters.sleepingHabits.some((habit) =>
+								post.sleepingHabits.includes(habit),
+							))) &&
+					(filters.lifePattern.length === 0 ||
+						filters.lifePattern.includes(post.lifePattern)) &&
+					(filters.smoking.length === 0 ||
+						filters.smoking.includes(post.smoking)) &&
+					(filters.cleaningCycle.length === 0 ||
+						filters.cleaningCycle.includes(post.cleaningCycle)) &&
+					(filters.outing.length === 0 ||
+						filters.outing.includes(post.outing)) &&
+					(filters.sensitivity.length === 0 ||
+						filters.sensitivity.includes(post.sensitivity)) &&
 					age >= filters.minAge &&
 					age <= filters.maxAge &&
 					Number(post.studentNo) >= filters.minYear &&
 					Number(post.studentNo) <= filters.maxYear
 				);
 			});
-	
+
 			if (filters.sort === '최신순') {
 				const sorted = filtered.sort((a, b) => {
 					const dateA = new Date(a.createdAt);
@@ -354,15 +359,12 @@ function RoommateFilterPage() {
 			setFilteredPosts([]);
 		}
 	}, [filters, matchingPosts]);
-		useEffect(() => {
-		console.log(filters);
-	}, [filters]);
 
 	return (
 		<SettingStyle className="flex flex-col">
 			<div className="px-[28px]">
 				<Header backPath="/roommate" rightContent=" " rightEvent={() => {}}>
-					<div className='header'>필터</div>
+					<div className="header">필터</div>
 				</Header>
 			</div>
 			{screenType === 'results' ? (

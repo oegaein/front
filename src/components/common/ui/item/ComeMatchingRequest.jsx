@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { timeAgo } from '@utils/TimeAgo';
 import { toast } from 'react-toastify';
 //components
@@ -15,8 +15,7 @@ import COLOR from '@styles/color';
 //images
 import Next from '@assets/images/next.svg';
 
-const ComeMatchingRequest = ({ post, index, reFetchComeMatchingRequests }) => {
-	const queryClient = useQueryClient();
+const ComeMatchingRequest = ({ post, reFetchComeMatchingRequests }) => {
 	const [confirm, setConfirm] = useState(false);
 	const [confirmContent, setConfirmContent] = useState({});
 
@@ -25,13 +24,12 @@ const ComeMatchingRequest = ({ post, index, reFetchComeMatchingRequests }) => {
 			makeAuthorizedRequest(`/api/v1/matchingrequests/${id}/accept`, 'patch'),
 		onSuccess: (data) => {
 			if (data.status === 200) {
-				toast.success('수락이 완료되었습니다.')
+				toast.success('수락이 완료되었습니다.');
 				reFetchComeMatchingRequests();
 			}
-			console.log('수락', data);
 		},
-		onError: (error) => {
-			console.log(error);
+		onError: () => {
+			toast.error('실패했습니다.');
 		},
 	});
 	const rejectMutation = useMutation({
@@ -39,13 +37,12 @@ const ComeMatchingRequest = ({ post, index, reFetchComeMatchingRequests }) => {
 			makeAuthorizedRequest(`/api/v1/matchingrequests/${id}/reject`, 'patch'),
 		onSuccess: (data) => {
 			if (data.status === 200) {
-				toast.success('거절이 완료되었습니다.')
+				toast.success('거절이 완료되었습니다.');
 				reFetchComeMatchingRequests();
 			}
-			console.log('거절', data);
 		},
-		onError: (error) => {
-			console.log(error);
+		onError: () => {
+			toast.error('실패했습니다.');
 		},
 	});
 

@@ -1,12 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest';
+import { useQueryClient } from '@tanstack/react-query';
 import { timeAgo } from '@utils/TimeAgo';
-import {
-	deleteMatchingPostAPI,
-	getMatchingPostAPI,
-} from 'services/api/MatchingPostAPI';
+import { deleteMatchingPostAPI } from 'services/api/MatchingPostAPI';
 import { toast } from 'react-toastify';
 //styles
 import styled from 'styled-components';
@@ -16,12 +12,10 @@ import COLOR from '@styles/color';
 import Dots from '@assets/images/dots-black.svg';
 const MyPost = ({
 	post,
-	index,
 	setConfirm,
 	setConfirmContent,
 	setOption,
 	setOptionModalOptions,
-	reFetch
 }) => {
 	//   매칭글 - 매칭 대기 | 매칭 마감 | 매칭 완료
 	// 매칭요청(내 룸메이트 신청 목록, 룸메이트 신청 요청 ) - 매칭 대기 | 매칭 수락 | 매칭 거절
@@ -47,12 +41,11 @@ const MyPost = ({
 			msg: '게시글을 삭제할까요?',
 			btn: '삭제',
 			func: async () => {
-					const res = await deleteMatchingPostAPI(post.matchingPostId);
-					console.log('삭제', res);
-					if (res?.status === 204) {
-						toast.success('삭제를 완료했습니다.')
-						queryClient.invalidateQueries(['matchingPosts', 'mypost'])
-					} 
+				const res = await deleteMatchingPostAPI(post.matchingPostId);
+				if (res?.status === 204) {
+					toast.success('삭제를 완료했습니다.');
+					queryClient.invalidateQueries(['matchingPosts', 'mypost']);
+				}
 			},
 		}));
 	};

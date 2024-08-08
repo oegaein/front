@@ -55,7 +55,6 @@ const NicknameEdit = ({ onGetValue, defaultValue, setNameValid }) => {
 			setAlertMsg('특수 문자는 사용이 불가합니다.');
 			return false;
 		} else if (!isValidLength) {
-			console.log(nickname);
 			setAlertMsg('닉네임은 2~6자여야 합니다');
 			return false;
 		} else {

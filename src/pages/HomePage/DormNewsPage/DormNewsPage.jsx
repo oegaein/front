@@ -14,8 +14,7 @@ import Alarm from '@assets/images/common/alarm.svg';
 
 const DormNewsPage = () => {
 	const navigate = useNavigate();
-	const { data: dormNews, isLoading, error } = useDormNews();
-	console.log(dormNews);
+	const { data: dormNews } = useDormNews();
 	return (
 		<SettingStyle className="flex flex-col gap-[10px]">
 			<div>

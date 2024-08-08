@@ -42,12 +42,11 @@ const RoommateScrollList = ({
 
 	const fetchData = async (searchTerm, currentPage) => {
 		try {
-			const response = await API.get(`/api/v1/search?q=${searchTerm}&page=${currentPage}`);
-			console.log('검색', response.data);
+			const response = await API.get(
+				`/api/v1/search?q=${searchTerm}&page=${currentPage}`,
+			);
 			return response.data;
-		} catch (err) {
-			console.log(err);
-		}
+		} catch (err) {}
 	};
 	const location = useLocation();
 	const path = location.pathname;
@@ -88,7 +87,6 @@ const RoommateScrollList = ({
 					} else if (type === 'filters') {
 						// filters일 때
 						if (filteredPosts) {
-							console.log(filteredPosts);
 							content = filteredPosts.map((post) => (
 								<RoommateScrollItem key={post.matchingPostId} post={post} />
 							));
@@ -115,14 +113,13 @@ const RoommateScrollList = ({
 					return content; // 조건에 따라 결정된 내용을 리턴
 				})()}
 			</div>
-			{type === 'search' ?
-			searchResults ?
-			<Pagination data={searchResults} setCurrentPage={setCurrentPage}/>
-			:
-			null
-			:
-			<Pagination data={matchingPosts} setCurrentPage={setCurrentPage}/>
-			}
+			{type === 'search' ? (
+				searchResults ? (
+					<Pagination data={searchResults} setCurrentPage={setCurrentPage} />
+				) : null
+			) : (
+				<Pagination data={matchingPosts} setCurrentPage={setCurrentPage} />
+			)}
 		</SettingStyle>
 	);
 };
@@ -159,9 +156,6 @@ const SettingStyle = styled.div`
 `;
 
 const FindRoommateTitle = ({ path }) => {
-	const handleClickNewestBtn = () => {};
-	const handleClickOldestBtn = () => {};
-
 	return (
 		<>
 			<h1 className="title">룸메이트 찾기</h1>
