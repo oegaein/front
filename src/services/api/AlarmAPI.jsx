@@ -2,12 +2,12 @@ import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest';
 import { toast } from 'react-toastify';
 export const getAlarmAPI = async () => {
 	const response = await makeAuthorizedRequest(`/api/v1/roommate-alarms`);
-	if (response === undefined) {
-		return;
+
+	if (response.status && response.status === 200) {
+		return response;
 	} else {
-		if (response.status === 200) {
-			return response;
-		}
+		toast.error(response);
+		return;
 	}
 };
 
@@ -16,13 +16,12 @@ export const deleteAllAlarmAPI = async () => {
 		`/api/v1/roommate-alarms`,
 		'delete',
 	);
-	if (response === undefined) {
-		toast.error('알림을 삭제하지 못했습니다!');
-		return;
+
+	if (response.status && response.status === 204) {
+		return response;
 	} else {
-		if (response.status === 204) {
-			return response;
-		}
+		toast.error(response);
+		return;
 	}
 };
 
@@ -31,12 +30,10 @@ export const deleteAlarmAPI = async (id) => {
 		`/api/v1/roommate-alarms/${id}`,
 		'delete',
 	);
-	if (response === undefined) {
-		toast.error('알림을 삭제하지 못했습니다!');
-		return;
+	if (response.status && response.status === 204) {
+		return response;
 	} else {
-		if (response.status === 204) {
-			return response;
-		}
+		toast.error(response);
+		return;
 	}
 };
