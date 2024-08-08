@@ -33,7 +33,7 @@ export const getMatchingEnd = async (id) => {
 		'patch',
 	);
 	if (response.status && response.status === 200) {
-		return response.data;
+		return response;
 	} else {
 		toast.error(response);
 		return;
@@ -45,7 +45,6 @@ export const deleteChatRoom = async (id) => {
 		`${chatSeverURL}/api/v1/chatrooms/${id}`,
 		'delete',
 	);
-	console.log(response);
 	if (response.status && response.status === 204) {
 		return response;
 	} else {

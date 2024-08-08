@@ -161,18 +161,19 @@ const Chatroom = () => {
 			msg: '채팅방에서 나가시겠습니까?',
 			btn: '나가기',
 			func: async () => {
-				await deleteChatRoom(subscribeID);
-				if (clientRef.current.connected) {
-					clientRef.current.publish({
-						destination: '/pub/message',
-						body: JSON.stringify({
-							message: `${myName}님이 나갔습니다.`,
-							messageStatus: 'LEAVE',
-						}),
-					});
-					clientRef.current.deactivate();
-					navigate('/chat');
-				} else {
+				const res = await deleteChatRoom(subscribeID);
+				if (res.status === 204) {
+					if (clientRef.current.connected) {
+						clientRef.current.publish({
+							destination: '/pub/message',
+							body: JSON.stringify({
+								message: `${myName}님이 나갔습니다.`,
+								messageStatus: 'LEAVE',
+							}),
+						});
+						clientRef.current.deactivate();
+						navigate('/chat');
+					}
 				}
 			},
 		}));
@@ -187,8 +188,10 @@ const Chatroom = () => {
 					msg: '매칭을 마감하시겠습니까?',
 					btn: '확인',
 					func: async () => {
-						await getMatchingEnd(room.matchingPostId);
-						checkChat();
+						const res = await getMatchingEnd(room.matchingPostId);
+						if (res.status === 200) {
+							checkChat();
+						}
 					},
 				}));
 			} else {
