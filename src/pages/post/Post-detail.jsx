@@ -75,7 +75,9 @@ const PostDetail = () => {
 			btn: '삭제',
 			func: async () => {
 				const res = await deleteMatchingPostAPI(postId);
-				navigate('/home');
+				if (res.status === 204) {
+					navigate('/home');
+				}
 			},
 		}));
 	};

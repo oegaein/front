@@ -3,10 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest';
 import { timeAgo } from '@utils/TimeAgo';
-import {
-	deleteMatchingPostAPI,
-	getMatchingPostAPI,
-} from 'services/api/MatchingPostAPI';
+import { deleteMatchingPostAPI } from 'services/api/MatchingPostAPI';
 //styles
 import styled from 'styled-components';
 import FONT from '@styles/fonts';
@@ -55,7 +52,7 @@ const MyPost = ({
 		if (isMatchingClosed) {
 			return <div className="color-gray500 font-caption2m14">매칭 마감</div>;
 		} else {
-			return <div className="color-purple1 font-caption2m14">매칭 대기</div>
+			return <div className="color-purple1 font-caption2m14">매칭 대기</div>;
 		}
 	};
 	const editFunc = () => {
@@ -70,8 +67,9 @@ const MyPost = ({
 			btn: '삭제',
 			func: async () => {
 				const res = await deleteMatchingPostAPI(post.matchingPostId);
-				console.log('삭제', res);
-				navigate('/mypage');
+				if (res.status === 204) {
+					navigate('/mypage');
+				}
 			},
 		}));
 	};
