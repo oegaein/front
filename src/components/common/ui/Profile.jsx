@@ -8,12 +8,7 @@ import Threedots from '@assets/images/common/Threedots.svg';
 import OptionModal from '@common/modal/OptionModal';
 import ConfirmModal from '@common/modal/ConfirmModal';
 import useMyInfoStore from '@store/myInfoStore';
-import {
-	deleteCommentsAPI,
-	deleteRepliesAPI,
-	putCommentsAPI,
-	putReplyAPI,
-} from 'services/api/CommentsAPI';
+import { deleteCommentsAPI, deleteRepliesAPI } from 'services/api/CommentsAPI';
 import { BlockUserAPI } from 'services/api/ProfileAPI';
 
 export const SimpleProfile = ({ Img, nickname, mr, width, height, weight }) => {

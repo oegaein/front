@@ -16,7 +16,7 @@ const PreviewComment = ({ postId, comments, count, refetchData }) => {
 	const [reply, setReply] = useState(false);
 	const [edit, setEdit] = useState(false);
 	const [editContent, setEditContent] = useState({
-		commentId: -1,
+		commentID: -1,
 		content: '',
 		end: 'reply' | 'comment',
 	});

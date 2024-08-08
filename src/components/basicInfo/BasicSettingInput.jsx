@@ -225,7 +225,6 @@ export const CommentInput = ({
 	refetchData,
 }) => {
 	const [value, setValue] = useState('');
-	console.log(value);
 
 	useEffect(() => {
 		if (isEdit) {
@@ -242,15 +241,15 @@ export const CommentInput = ({
 		if (value !== '') {
 			if (isEdit) {
 				if (isReply) {
-					const res = await putReplyAPI(editContent.commentId, value);
-					if (res.status === 201) {
+					const res = await putReplyAPI(editContent.commentID, value);
+					if (res.status === 200) {
 						setReply(false);
 						refetchData();
 						setValue('');
 					}
 				} else {
-					const res = await putCommentsAPI(editContent.commentId, value);
-					if (res.status === 201) {
+					const res = await putCommentsAPI(editContent.commentID, value);
+					if (res.status === 200) {
 						refetchData();
 						setValue('');
 					}
