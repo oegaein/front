@@ -64,6 +64,17 @@ const RoommateScrollItem = ({post, type, setConfirm, setConfirmContent}) => {
 		})
   }
   const handleClickPost = (matchingPostId) => {
+    let postId = matchingPostId;
+
+    if (typeof matchingPostId === 'object') {
+        if (matchingPostId.id) {
+            postId = matchingPostId.id;
+        } else {
+            console.error('Invalid matchingPostId object:', matchingPostId);
+            return;
+        }
+    }
+    console.log(`/post-detail/${matchingPostId}`)
     navigate(`/post-detail/${matchingPostId}`)
   }
   const isMyMatchingRequests = type === 'my-matchingrequests';
@@ -92,7 +103,7 @@ const RoommateScrollItem = ({post, type, setConfirm, setConfirmContent}) => {
   };
 
   return (
-    <SettingStyle onClick={()=>handleClickPost(post.matchingPostId)} key={post.matchingPostId} className={`flex bg-white border border-[${COLOR.gray100}] rounded-[20px] p-[14px]`}>
+    <SettingStyle onClick={()=>handleClickPost(post?.matchingPostId)} key={post.matchingPostId} className={`flex bg-white border border-[${COLOR.gray100}] rounded-[20px] p-[14px]`}>
       <img className='w-[100px] h-[100px] mr-[12px] rounded-[50%]' src={post.photoUrl}/>
       <div className='w-full flex flex-col justify-between'>
         <div>

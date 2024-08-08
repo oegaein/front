@@ -3,7 +3,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest';
 import { timeAgo } from '@utils/TimeAgo';
-import { deleteMatchingPostAPI } from 'services/api/MatchingPostAPI';
+import {
+	deleteMatchingPostAPI,
+	getMatchingPostAPI,
+} from 'services/api/MatchingPostAPI';
+import { toast } from 'react-toastify';
 //styles
 import styled from 'styled-components';
 import FONT from '@styles/fonts';
@@ -17,6 +21,7 @@ const MyPost = ({
 	setConfirmContent,
 	setOption,
 	setOptionModalOptions,
+	reFetch
 }) => {
 	//   매칭글 - 매칭 대기 | 매칭 마감 | 매칭 완료
 	// 매칭요청(내 룸메이트 신청 목록, 룸메이트 신청 요청 ) - 매칭 대기 | 매칭 수락 | 매칭 거절
@@ -24,30 +29,6 @@ const MyPost = ({
 	const navigate = useNavigate();
 	const isMatchingClosed =
 		post.matchingStatus === '매칭 완료' || post.matchingStatus === '매칭 마감';
-	// const confirmMutation = useMutation(
-	// 	{
-	// 		mutationFn: (matchingRequestId) => makeAuthorizedRequest(`/api/v1/matchingrequests/${matchingRequestId}/accept`, 'patch'),
-	// 		onSuccess: (data) => {
-	// 			if (data.status === 200) {
-	// 				queryClient.invalidateQueries(['matchingPosts', 'mypost'])
-	// 			}
-	// 			console.log('매칭확정', data);
-	// 		},
-	// 		onError: (error) => {
-	// 			console.log(error);
-	// 		}
-	// 	}
-	// );
-	// const handleClickConfirmBtn = async () => {
-	// 	// e.stopPropagation()
-	//   setConfirm(true)
-	// 	setConfirmContent({
-	// 		id: -1,
-	// 		msg: `룸메이트 매칭을 확정할까요?`,
-	// 		btn: '확정',
-	// 		func: () => {confirmMutation.mutate(post.matchingPostId)},
-	// 	})
-	// }
 	const renderStatus = () => {
 		if (isMatchingClosed) {
 			return <div className="color-gray500 font-caption2m14">매칭 마감</div>;
@@ -66,10 +47,12 @@ const MyPost = ({
 			msg: '게시글을 삭제할까요?',
 			btn: '삭제',
 			func: async () => {
-				const res = await deleteMatchingPostAPI(post.matchingPostId);
-				if (res.status === 204) {
-					navigate('/mypage');
-				}
+					const res = await deleteMatchingPostAPI(post.matchingPostId);
+					console.log('삭제', res);
+					if (res?.status === 204) {
+						toast.success('삭제를 완료했습니다.')
+						queryClient.invalidateQueries(['matchingPosts', 'mypost'])
+					} 
 			},
 		}));
 	};

@@ -4,6 +4,7 @@ import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { postMatchingRequestAPI } from 'services/api/MatchingRequestAPI';
 import useMyInfoStore from '@store/myInfoStore';
+import { toast } from 'react-toastify';
 
 //styles
 import styled from 'styled-components'
@@ -107,6 +108,7 @@ const MatchingApplyNavBar = ({version, isLowerBarVisible, memberId, postId, user
 			onSuccess: (data) => {
 				if (data.status === 200) {
 					// queryClient.invalidateQueries(['matchingPosts', 'mypost'])
+          toast.success('매칭을 마감하였습니다.')
           reFetchData()
 				}
 				console.log('매칭마감', data);
@@ -135,10 +137,8 @@ const MatchingApplyNavBar = ({version, isLowerBarVisible, memberId, postId, user
       if (response.status === 201) {
         //setIsMyApplyPost(true)
         reFetchData()
-        alert('매칭 신청 완료')
-      } else {
-        alert('신청 안됨')
-      }
+        toast.success('매칭 신청이 완료되었습니다.')
+      } 
     } catch (err) {
       console.error(err)
     }
