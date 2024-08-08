@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { makeAuthorizedRequest } from '@utils/makeAuthorizedRequest';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { timeAgo } from '@utils/TimeAgo';
+import { toast } from 'react-toastify';
 //components
 import ConfirmModal from '@common/modal/ConfirmModal';
 
@@ -24,6 +25,7 @@ const ComeMatchingRequest = ({ post, index, reFetchComeMatchingRequests }) => {
 			makeAuthorizedRequest(`/api/v1/matchingrequests/${id}/accept`, 'patch'),
 		onSuccess: (data) => {
 			if (data.status === 200) {
+				toast.success('수락이 완료되었습니다.')
 				reFetchComeMatchingRequests();
 			}
 			console.log('수락', data);
@@ -37,6 +39,7 @@ const ComeMatchingRequest = ({ post, index, reFetchComeMatchingRequests }) => {
 			makeAuthorizedRequest(`/api/v1/matchingrequests/${id}/reject`, 'patch'),
 		onSuccess: (data) => {
 			if (data.status === 200) {
+				toast.success('거절이 완료되었습니다.')
 				reFetchComeMatchingRequests();
 			}
 			console.log('거절', data);

@@ -62,10 +62,7 @@ const setAccessToken = (token) => {
   useAuthStore.getState().setAccessToken(token);
 };
 
-const NavigateToLogin = () => {
-  const navigate = useNavigate();
-  navigate('/login');
-};
+
 
 
 export { makeAuthorizedRequest };
