@@ -26,41 +26,39 @@ const makeAuthorizedRequest = async (url, method = 'get', config) => {
 		}
 		return response;
 	} catch (error) {
-		console.error(error);
 		if (error.response && error.response.status === 403) {
 			try {
 				const refreshResponse = await API.get('/api/v1/member/refresh');
 				setAccessToken(refreshResponse.data.access_token);
 				const accessToken = useAuthStore.getState().accessToken;
 				API.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-        return await makeAuthorizedRequest(url, method, config);
-      } catch (error) {
-       toast.error('로그인이 필요한 서비스입니다!');
+				return await makeAuthorizedRequest(url, method, config);
+			} catch (error) {
+				toast.error('로그인이 필요한 서비스입니다!');
 				setTimeout(() => {
 					window.location.href = 'http://127.0.0.1:3000/login';
 				}, 3000);
-      }
-    } else {
-      if (error.response) {
-        const errorMessage = error.response.data?.errorMessages?.errorMessage;
-        return error.response.data.errorMessages.errorMessage;
-    
-        if (errorMessage) {
-          toast.error(errorMessage);
-          console.log('Displayed errorMessage:', errorMessage); // 표시된 에러 메시지 출력
-        } else {
-          toast.error('알 수 없는 오류가 발생했습니다.');
-        }
-      } else {
-        toast.error('네트워크 오류가 발생했습니다.');
-      }
-    }
-    // throw error;
-  }
+			}
+		} else {
+			if (error.response) {
+				const errorMessage = error.response.data?.errorMessages?.errorMessage;
+
+				if (errorMessage) {
+					toast.error(errorMessage);
+				} else {
+					toast.error('알 수 없는 오류가 발생했습니다.');
+				}
+			} else {
+				toast.error('네트워크 오류가 발생했습니다.');
+			}
+			return error.response.data.errorMessages.errorMessage;
+		}
+		// throw error;
+	}
 };
 
 const setAccessToken = (token) => {
-  useAuthStore.getState().setAccessToken(token);
+	useAuthStore.getState().setAccessToken(token);
 };
 
 export { makeAuthorizedRequest };
