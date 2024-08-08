@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import FONT from '@styles/fonts';
 import { GetDuplicate } from 'services/api/ProfileAPI';
+import { toast } from 'react-toastify';
 
 const Nickname = ({ onGetValue, setButton }) => {
 	const [input, setInput] = useState('');
@@ -32,12 +33,12 @@ const Nickname = ({ onGetValue, setButton }) => {
 		if (validateNickname(input)) {
 			if (!result) {
 				setDuplicated(false);
-				alert('사용 가능한 닉네임입니다!');
+				toast.success('사용 가능한 닉네임입니다!');
 				onGetValue(input);
 				setButton(false);
 			} else {
 				setDuplicated(true);
-				alert('사용 불가능한 닉네임입니다!');
+				toast.error('사용 불가능한 닉네임입니다!');
 				setButton(true);
 			}
 		}
