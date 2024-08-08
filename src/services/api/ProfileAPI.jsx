@@ -11,6 +11,7 @@ export const PostProfileAPI = async (submitData) => {
 		return response;
 	} else {
 		toast.error(response);
+		return;
 	}
 };
 
