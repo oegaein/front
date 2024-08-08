@@ -43,6 +43,7 @@ import UserPostPage from '@pages/UserPage/UserPostPage/UserPostPage';
 import ComeMatchingListPage from '@pages/MyPage/ComeMatchingListPage/ComeMatchingListPage';
 import PostRoommateEdit from '@components/post/PostRoommateEdit';
 import Delivery from '@pages/delivery/Delivery';
+import { StyledToastContainer } from '@components/toastify/Toast';
 
 const queryClient = new QueryClient();
 
@@ -119,7 +120,7 @@ function MainLayout() {
 	return (
 		<div className="main-layout">
 			<div className="content">
-				<ToastContainer
+				<StyledToastContainer
 					position="top-center"
 					limit={10}
 					closeButton={true}
