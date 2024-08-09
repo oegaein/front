@@ -130,8 +130,7 @@ function MainLayout() {
 				/>
 				<Outlet />
 			</div>
-			{location.pathname !== '/' &&
-				location.pathname !== '/onboarding' &&
+			{location.pathname !== '/onboarding' &&
 				location.pathname !== '/login' &&
 				location.pathname !== '/setting' &&
 				location.pathname !== '/roommate/filter' &&
