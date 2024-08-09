@@ -188,7 +188,7 @@ const EndingSoonTitle = () => {
 				<img className="ml-[3px]" src={Hourglass} alt="hourglass icon" />
 			</h1>
 			<div className="flex justify-between gap-[4px]">
-				<button className="ending-soon-btn selected">룸메이트</button>
+				{/* <button className="ending-soon-btn selected">룸메이트</button> */}
 				{/* <button className="ending-soon-btn">공동배달</button> */}
 			</div>
 		</>
