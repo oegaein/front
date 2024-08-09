@@ -17,7 +17,7 @@ const LoginPage = () => {
 	};
 	const CLIENT_ID =
 		'393836402841-kce6okeggrgkkern512g91o39mbb273a.apps.googleusercontent.com';
-	const REDIRECT_URL = 'http://127.0.0.1:3000';
+	const REDIRECT_URL = 'https://oegaein-front-end.vercel.app';
 	return (
 		<>
 			<div className="px-[35px] mt-[65px] mb-[62px] flex flex-col">
@@ -39,7 +39,7 @@ const LoginPage = () => {
 			</div>
 			<div className="px-[35px]">
 				<Link
-					to={`https://accounts.google.com/o/oauth2/v2/auth?client_id=393836402841-kce6okeggrgkkern512g91o39mbb273a.apps.googleusercontent.com&redirect_uri=http://127.0.0.1:3000/callback&response_type=code&scope=https://www.googleapis.com/auth/userinfo.email`}
+					to={`https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URL}/callback&response_type=code&scope=https://www.googleapis.com/auth/userinfo.email`}
 					style={{ borderColor: COLOR.gray200 }}
 					className="border w-full h-[50px] rounded-[5px] flex items-center px-[23px] shadow-[1px_1px_4px_rgba(0,0,0,0.25)] hover:opacity-20"
 				>
