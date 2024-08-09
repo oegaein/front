@@ -55,8 +55,9 @@ function App() {
 				<Router>
 					<Routes>
 						<Route path="/" element={<MainLayout />}>
+							<Route index element={<HomePage />} />
 							<Route path="callback" element={<CallBack />} />
-							<Route index path="home" element={<HomePage />} />
+							<Route path="home" element={<HomePage />} />
 							<Route path="home/dormnews" element={<DormNewsPage />} />
 							<Route path="home/ending-soon" element={<EndingsoonPage />} />
 							<Route
