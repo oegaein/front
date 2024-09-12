@@ -161,5 +161,5 @@ front
 
 ## 학교 에브리타임 커뮤니티 홍보
 | ![image](https://github.com/user-attachments/assets/9b4fbf0a-1295-4cae-843b-fa3a19e8bbcf) | ![image](https://github.com/user-attachments/assets/4c411e80-c4d9-48ed-8e23-c13eadb5159d) |
-
+|-------------------------------------------|-------------------------------------------|
 
