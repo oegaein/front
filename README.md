@@ -152,3 +152,6 @@ front
     └── index.js
 ...
 ```
+
+## 홍보물
+![image](https://github.com/user-attachments/assets/374f3ddb-c0cf-41bc-a8ed-ce5e5c1a29f7)
