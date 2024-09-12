@@ -155,12 +155,11 @@ front
 
 ## 홍보물
 
-| ![image](https://github.com/user-attachments/assets/86c63c47-d109-4176-bb33-708af09fde3c)
- | ![image2](https://github.com/user-attachments/assets/69ce315a-62ca-451f-b1cd-5681e1564db6) |
+| ![image](https://github.com/user-attachments/assets/86c63c47-d109-4176-bb33-708af09fde3c) | ![image2](https://github.com/user-attachments/assets/69ce315a-62ca-451f-b1cd-5681e1564db6) |
 |-------------------------------------------|-------------------------------------------|
 | ![image3](https://github.com/user-attachments/assets/acfb0948-4b7f-474f-a17c-a173ec6f27cb) | ![image4](https://github.com/user-attachments/assets/69ce315a-62ca-451f-b1cd-5681e1564db6) |
 
 ## 학교 에브리타임 커뮤니티 홍보
-|![image](https://github.com/user-attachments/assets/9b4fbf0a-1295-4cae-843b-fa3a19e8bbcf)|![image](https://github.com/user-attachments/assets/4c411e80-c4d9-48ed-8e23-c13eadb5159d)|
+| ![image](https://github.com/user-attachments/assets/9b4fbf0a-1295-4cae-843b-fa3a19e8bbcf) | ![image](https://github.com/user-attachments/assets/4c411e80-c4d9-48ed-8e23-c13eadb5159d) |
 
 
