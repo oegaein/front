@@ -154,8 +154,10 @@ front
 ```
 
 ## 홍보물
-![image](https://github.com/user-attachments/assets/374f3ddb-c0cf-41bc-a8ed-ce5e5c1a29f7)
-![image](https://github.com/user-attachments/assets/39dc27a7-c7b6-4a19-8dd4-f70a7a98fffe)
+|||
+|![image](https://github.com/user-attachments/assets/374f3ddb-c0cf-41bc-a8ed-ce5e5c1a29f7)|
+
+![image](https://github.com/user-attachments/assets/39dc27a7-c7b6-4a19-8dd4-f70a7a98fffe)|
 ![image](https://github.com/user-attachments/assets/acfb0948-4b7f-474f-a17c-a173ec6f27cb)
 ![image](https://github.com/user-attachments/assets/69ce315a-62ca-451f-b1cd-5681e1564db6)
 
