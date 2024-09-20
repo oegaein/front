@@ -45,13 +45,15 @@ const CallBack = () => {
 				} else {
 					navigate('/setting');
 				}
-			} catch (error) {}
+			} catch (error) {
+				navigate('/login');
+			}
 		};
 		if (code) {
 			fetchData();
 		}
 	}, []);
-	return <div>CallBack</div>;
+	return <div></div>;
 };
 
 export default CallBack;
