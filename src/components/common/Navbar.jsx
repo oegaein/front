@@ -26,16 +26,16 @@ const Navbar = () => {
 	const location = useLocation();
 	const [chatCount, setChatCount] = useState(0);
 
-	useInterval(
-		() => {
-			if (accessToken) {
-				getChattingCountAPI(setAccessToken).then((res) => {
-					setChatCount(res);
-				});
-			}
-		},
-		accessToken ? 5000 : null,
-	);
+	// useInterval(
+	// 	() => {
+	// 		if (accessToken) {
+	// 			getChattingCountAPI(setAccessToken).then((res) => {
+	// 				setChatCount(res);
+	// 			});
+	// 		}
+	// 	},
+	// 	accessToken ? 5000 : null,
+	// );
 
 	return (
 		<SettingStyle className="flex fixed z-50 bottom-0 max-w-[393px] justify-around items-center h-[76px] bg-white w-full">

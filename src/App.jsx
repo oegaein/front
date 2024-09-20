@@ -8,9 +8,7 @@ import {
 	Outlet,
 } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 //pages
 import LandingPage from '@pages/LandingPage/LandingPage';
 import OnboardingPage from '@pages/OnboardingPage/OnboardingPage';
@@ -21,7 +19,6 @@ import HomePage from '@pages/HomePage/HomePage';
 import Navbar from '@components/common/Navbar';
 import MyPage from '@pages/MyPage/MyPage';
 import UserPage from '@pages/UserPage/UserPage';
-import SearchAndNotice from '@common/SearchAndNotice';
 import SearchPage from '@pages/SearchPage/SearchPage';
 import NotificationPage from '@pages/NotificationPage/NotificationPage';
 import EndingsoonPage from '@pages/HomePage/EndingsoonPage/EndingsoonPage';
