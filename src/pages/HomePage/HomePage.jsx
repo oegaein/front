@@ -39,7 +39,7 @@ const HomePage = () => {
 							<img src={Next} />
 						</Link>
 					</div>
-					{dormNews ? (
+					{dormNews && dormNews.length > 0 ? (
 						<Swiper
 							direction={'vertical'}
 							modules={[Pagination, Autoplay]}

@@ -5,7 +5,7 @@ import useAuthStore from '@store/authStore';
 let isToastVisible = false; // 전역 플래그 변수
 
 export const API = axios.create({
-  baseURL: 'http://127.0.0.1:8080',
+  baseURL: process.env.REACT_APP_SERVER_URL,
   timeout: 30000,
   withCredentials: true
 });
@@ -48,7 +48,7 @@ API.interceptors.response.use(
       if (!originalRequest._retry) {
         originalRequest._retry = true; // 재전송 플래그 설정
         try {
-          const refreshResponse = await axios.get('http://127.0.0.1:8080/api/v1/member/refresh');
+          const refreshResponse = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/v1/member/refresh`);
           if (refreshResponse.status === 200) {
             setAccessToken(refreshResponse.data.access_token);
             API.defaults.headers.common['Authorization'] = `Bearer ${refreshResponse.data.access_token}`;
@@ -57,7 +57,7 @@ API.interceptors.response.use(
         } catch (refreshError) {
           showToast('로그인이 필요한 서비스입니다!');
           setTimeout(() => {
-            window.location.href = 'http://127.0.0.1:3000/login';
+            window.location.href = `${process.env.REACT_APP_SERVICE_URL}/login`;
           }, 3000);
         }
       }
