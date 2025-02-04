@@ -17,7 +17,7 @@ const LoginPage = () => {
 	};
 	const CLIENT_ID =
 		'393836402841-kce6okeggrgkkern512g91o39mbb273a.apps.googleusercontent.com';
-	const REDIRECT_URL = 'http://127.0.0.1:3000';
+	const REDIRECT_URL = process.env.REACT_APP_SERVICE_URL;
 	// const REDIRECT_URL = 'https://oegaein-front-end.vercel.app';
 	return (
 		<>

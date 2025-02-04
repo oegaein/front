@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom';
 
 //pages
+import ProtectedRoute from './ProtectedRoute';
 import LandingPage from '@pages/LandingPage/LandingPage';
 import OnboardingPage from '@pages/OnboardingPage/OnboardingPage';
 import BasicInfoSetting from '@pages/basicInfo/BasicInfoSetting';
@@ -43,6 +44,53 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<MainLayout />}>
+      {/* Protected Route 적용 */}
+        <Route path="notification" element={
+          <ProtectedRoute>
+            <NotificationPage />
+          </ProtectedRoute>
+        } />
+        <Route path="/alarm" element={
+          <ProtectedRoute>
+            <Alarm />
+          </ProtectedRoute>
+        } />
+        <Route path="mypage" element={
+          <ProtectedRoute>
+            <MyPage />
+          </ProtectedRoute>
+        } />
+        <Route path="mypage/come-matchingrequests" element={
+          <ProtectedRoute>
+            <ComeMatchingListPage />
+          </ProtectedRoute>
+        } />
+        <Route path="mypage/roommate-applylist" element={
+          <ProtectedRoute>
+            <RoommateApplyListPage />
+          </ProtectedRoute>
+        } />
+        <Route path="mypage/like" element={
+          <ProtectedRoute>
+            <LikePage />
+          </ProtectedRoute>
+        } />
+        <Route path="mypage/mypost" element={
+          <ProtectedRoute>
+            <MyPostPage />
+          </ProtectedRoute>
+        } />
+        <Route path="/chat" element={
+          <ProtectedRoute>
+            <Chat />
+          </ProtectedRoute>} />
+        <Route
+          path="/chat/chatroom/:subscribeID"
+          element={
+          <ProtectedRoute>
+            <ChatRoom />
+          </ProtectedRoute>}
+        />
         <Route index element={<HomePage />} />
         <Route path="callback" element={<CallBack />} />
         <Route path="home" element={<HomePage />} />
@@ -52,24 +100,12 @@ const AppRoutes = () => {
           path="home/best-roommates"
           element={<BestRoommatesPage />}
         />
-        <Route path="notification" element={<NotificationPage />} />
         <Route path="search" element={<SearchPage />} />
         <Route path="roommate" element={<RoommatePage />} />
         <Route path="roommate/filter" element={<RoommateFilterPage />} />
         <Route path="landing" element={<LandingPage />} />
         <Route path="onboarding" element={<OnboardingPage />} />
         <Route path="login" element={<LoginPage />} />
-        <Route path="mypage" element={<MyPage />} />
-        <Route
-          path="mypage/come-matchingrequests"
-          element={<ComeMatchingListPage />}
-        />
-        <Route
-          path="mypage/roommate-applylist"
-          element={<RoommateApplyListPage />}
-        />
-        <Route path="mypage/like" element={<LikePage />} />
-        <Route path="mypage/mypost" element={<MyPostPage />} />
         <Route path="my-profile/edit" element={<MyProfileEditPage />} />
         <Route path="user/:memberId" element={<UserPage />} />
         <Route path="user/:memberId/posts" element={<UserPostPage />} />
@@ -88,12 +124,6 @@ const AppRoutes = () => {
           path="/comment-detail/:postId"
           element={<CommentDetail />}
         />
-        <Route path="/chat" element={<Chat />} />
-        <Route
-          path="/chat/chatroom/:subscribeID"
-          element={<ChatRoom />}
-        />
-        <Route path="/alarm" element={<Alarm />} />
         <Route path="/delivery" element={<Delivery />} />
       </Route>
     </Routes>
