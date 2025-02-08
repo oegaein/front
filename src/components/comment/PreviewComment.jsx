@@ -25,6 +25,7 @@ const PreviewComment = ({ postId, comments, count, refetchData }) => {
 
 	const handleReply = (index) => {
 		setReply(true);
+		let a = 'Dd';
 		setOwner(comments[index].author_name);
 		setCommentID(comments[index].id);
 	};
