@@ -42,7 +42,7 @@ const ProfileImageContainer = ({
         z-10 absolute translate-y-[calc(-50%)] ${path === '/mypage' ? 'left-[40px]' : 'left-[50%] translate-x-[calc(-50%)]'} top-[100%] rounded-[50%]`}
 				>
 					<img
-						onerror={`this.onerror=null; this.src=${InitialProfile};`}
+						onError={`this.onerror=null; this.src=${InitialProfile};`}
 						className={`rounded-[50%] ${profileImage === InitialProfile ? 'h-[58px] w-[58px]' : 'h-[172px] w-[172px]'}`}
 						src={profileImage}
 						alt="profile-image"
