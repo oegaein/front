@@ -63,7 +63,7 @@ const MatchingApplyNavBar = ({
 	useEffect(() => {
 		// 카카오 SDK 초기화
 		if (!window.Kakao.isInitialized()) {
-			window.Kakao.init('090826f305f3c07c40d74086a30a34cb');
+			window.Kakao.init(process.env.REACT_APP_KAKAO_API_KEY);
 		}
 	}, []);
 
