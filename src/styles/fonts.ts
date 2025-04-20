@@ -1,4 +1,6 @@
-const FONT = {
+type FontStyleType = Record<string, string>;
+
+const FONT: FontStyleType = {
 	title1B23: `
       font-family: 'Pretendard';
       font-size: 23px;

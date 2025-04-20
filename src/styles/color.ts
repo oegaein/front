@@ -1,4 +1,5 @@
-const COLOR = {
+import { ColorPalette } from '../types/color';
+const COLOR: ColorPalette = {
 	black: '#000000',
 	white: '#FFFFFF',
 	red: '#F9595F',

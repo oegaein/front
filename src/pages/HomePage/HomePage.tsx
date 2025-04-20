@@ -3,17 +3,17 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Autoplay } from 'swiper/modules';
 import { Link } from 'react-router-dom';
 import { useDormNews } from '@hooks/useDormNews';
-//styles
+// styles
 import styled from 'styled-components';
 import COLOR from '@styles/color';
 import FONT from '@styles/fonts';
 // Import Swiper styles
 import 'swiper/css';
 
-//components
+// components
 import SearchAndNotice from '@components/common/SearchAndNotice';
 import RoommateSwiperList from '@components/common/RoommateSwiperList';
-//images
+// images
 import Next from '@assets/images/next.svg';
 import Buttons from '@components/HomePage/Buttons';
 import Premium from '@assets/images/premium-quality.svg';
@@ -22,6 +22,7 @@ import AddRoommateButton from '@common/button/AddRoommateButton';
 
 const HomePage = () => {
 	const { data: dormNews } = useDormNews();
+
 	return (
 		<SettingStyle className="flex flex-col gap-[10px] scroll-smooth">
 			<AddRoommateButton />
@@ -36,7 +37,7 @@ const HomePage = () => {
 						</div>
 						<Link to="/home/dormnews" className="more flex">
 							더보기
-							<img src={Next} />
+							<img src={Next} alt="Next" />
 						</Link>
 					</div>
 					{dormNews && dormNews.length > 0 ? (
@@ -48,7 +49,7 @@ const HomePage = () => {
 							className={`mySwiper mb-[16px] h-[73px] border border-[${COLOR.gray100}] rounded-[15px]`}
 						>
 							{dormNews.map((news) => (
-								<SwiperSlide>
+								<SwiperSlide key={news.id}>
 									<DormNews news={news} />
 								</SwiperSlide>
 							))}

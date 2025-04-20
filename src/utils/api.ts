@@ -1,10 +1,21 @@
-import axios from 'axios';
+import axios, {
+	AxiosInstance,
+	InternalAxiosRequestConfig,
+	AxiosResponse,
+	AxiosError,
+} from 'axios';
 import { toast } from 'react-toastify';
 import useAuthStore from '@store/authStore';
 
 let isToastVisible = false; // 전역 플래그 변수
 
-export const API = axios.create({
+interface ErrorResponseData {
+	errorMessages?: {
+		errorMessage?: string;
+	};
+}
+
+export const API: AxiosInstance = axios.create({
 	baseURL: process.env.REACT_APP_SERVER_URL,
 	timeout: 30000,
 	withCredentials: true,
@@ -12,20 +23,20 @@ export const API = axios.create({
 
 // 요청 인터셉터
 API.interceptors.request.use(
-	(config) => {
+	(config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
 		const accessToken = useAuthStore.getState().accessToken;
 		if (accessToken) {
-			config.headers['Authorization'] = `Bearer ${accessToken}`;
+			config.headers.Authorization = `Bearer ${accessToken}`;
 		}
 		return config;
 	},
-	(error) => {
+	(error: AxiosError): Promise<AxiosError> => {
 		return Promise.reject(error);
 	},
 );
 
 // 토스트 메시지 표시 함수
-const showToast = (message) => {
+const showToast = (message: string): void => {
 	if (!isToastVisible) {
 		isToastVisible = true;
 		toast.error(message);
@@ -37,17 +48,16 @@ const showToast = (message) => {
 
 // 응답 인터셉터
 API.interceptors.response.use(
-	(response) => {
+	(response: AxiosResponse): AxiosResponse => {
 		return response;
 	},
-	async (error) => {
+	async (error: AxiosError): Promise<AxiosError> => {
 		const originalRequest = error.config;
-
-		// 재전송 방지 플래그
 
 		// 일반 에러 처리
 		if (error.response) {
-			const errorMessage = error.response.data?.errorMessages?.errorMessage;
+			const errorData = error.response.data as ErrorResponseData; // 타입 단언
+			const errorMessage = errorData?.errorMessages?.errorMessage;
 			if (errorMessage) {
 				showToast(errorMessage);
 			} else {
@@ -66,6 +76,6 @@ API.interceptors.response.use(
 );
 
 // Access Token 설정 함수
-const setAccessToken = (token) => {
+const setAccessToken = (token: string): void => {
 	useAuthStore.getState().setAccessToken(token);
 };
