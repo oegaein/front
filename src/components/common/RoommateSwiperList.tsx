@@ -11,11 +11,31 @@ import COLOR from '@styles/color';
 //images
 import Next from '@assets/images/next.svg';
 
-const RoommateSwiperList = ({ type }) => {
+interface RoommateSwiperListProps {
+	type: 'new' | 'best' | 'mypost' | 'my-matchingrequests';
+}
+
+interface MatchingPost {
+	matchingPostId: number;
+	[key: string]: any;
+}
+
+interface ConfirmContent {
+	id: number,
+	msg: string,
+	btn: string,
+	func: () => void
+}
+const RoommateSwiperList = ({ type }: RoommateSwiperListProps) => {
 	//type: new/best/mypost/my-matchingrequests
 	const { data, isLoading, error } = useMatchingPosts(type);
 	const [confirm, setConfirm] = useState(false);
-	const [confirmContent, setConfirmContent] = useState({});
+	const [confirmContent, setConfirmContent] = useState<ConfirmContent>({
+		id: 0,
+		msg: '',
+		btn: '',
+		func: () => void
+	})
 
 	if (isLoading) return <div>데이터 로딩중</div>;
 	if (error) return <div>에러 발생 {error.message}</div>;
@@ -35,7 +55,7 @@ const RoommateSwiperList = ({ type }) => {
 				className="mySwiper pt-[5px]"
 			>
 				{data?.data?.length > 0 ? (
-					data.data.map((post, index) => (
+					data.data.map((post: MatchingPost, index: number) => (
 						<SwiperSlide key={post.matchingPostId}>
 							<RoommateSwiperItem
 								post={post}
@@ -60,7 +80,7 @@ const RoommateSwiperList = ({ type }) => {
 								? '/roommate'
 								: type === 'mypost'
 									? '/mypage/roommate-applylist'
-									: null
+									: ''
 						}
 						className={`more flex justify-center items-center rounded-[10px] border border-[${COLOR.gray200}] h-[40px]`}
 					>

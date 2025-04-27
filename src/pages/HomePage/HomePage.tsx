@@ -12,7 +12,7 @@ import 'swiper/css';
 
 // components
 import SearchAndNotice from '@components/common/SearchAndNotice';
-import RoommateSwiperList from '@components/common/RoommateSwiperList';
+import RoommateSwiperList from '@common/RoommateSwiperList';
 // images
 import Next from '@assets/images/next.svg';
 import Buttons from '@components/HomePage/Buttons';

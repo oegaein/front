@@ -23,6 +23,17 @@ const SearchBar = forwardRef<HTMLInputElement, SearchBarProps>(
 			setSearchTerm(e.target.value);
 		};
 
+		const handleSearchButtonClick = () => {
+			if (handleClickSearchBtn) {
+				handleClickSearchBtn(searchTerm);
+			}
+		};
+
+		const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+			if (handleKeyPress) {
+				handleKeyPress(e, searchTerm);
+			}
+		};
 		return (
 			<div
 				onClick={onClick}
@@ -35,10 +46,10 @@ const SearchBar = forwardRef<HTMLInputElement, SearchBarProps>(
 					placeholder="외개인 통합검색"
 					value={searchTerm}
 					onChange={handleChange}
-					onKeyDown={(e) => handleKeyPress(e, searchTerm)}
+					onKeyDown={handleKeyDown}
 				/>
 				<button
-					onClick={() => handleClickSearchBtn(searchTerm)}
+					onClick={handleSearchButtonClick}
 					className={`w-[32px] h-[32px] border-l border-[${COLOR.gray100}]`}
 				>
 					<img className="ml-auto" src={SearchIcon} alt="search icon" />

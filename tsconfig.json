@@ -31,7 +31,8 @@
 		// "moduleResolution": "node10",                     /* Specify how TypeScript looks up a file from a given module specifier. */
 		"baseUrl": "src" /* Base directory to resolve non-relative module names. */,
 		"paths": {
-			/* Path mapping for module resolution. */ "@assets/*": ["assets/*"],
+			/* Path mapping for module resolution. */
+			"@assets/*": ["assets/*"],
 			"@pages/*": ["pages/*"],
 			"@common/*": ["components/common/*"],
 			"@components/*": ["components/*"],
